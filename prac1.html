@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML講座デモ</title>
+</head>
+
+<body>
+  <h1>h1</h1>
+  <h2>h2</h2>
+  <h3>h3</h3>
+  <h4>h4</h4>
+  <h5>h5</h5>
+  <h6>h6</h6>
+  <hr>
+  hrで水平線を引けます。
+  <hr>
+  <h2>テキスト関連のタグを試しましょう！</h2>
+  <p>pは段落を表します。</p>
+  <p>
+    タグはネストできます。
+    <strong>strongは強調(ボールド体)</strong>を表します。
+    <em>emも強調(斜体)</em>を表します。
+    <br>brは改行を表します。<br>
+    <b>ただ装飾</b>したい場合は<i>b,i,uタグ</i><u>を使いましょう。</u><br>
+    <u><i><b>Combination</b></i></u><br>
+    <a href="https://www.google.com">aタグは要素にリンク</a>を埋め込めます。<br>
+    <a href="link.html" title="タイトルをここに指定">フォルダ内リンク＞link.html</a><br>
+    aタグにtarget属性を持たせ、_brankを指定すると、<a href="https://www.google.com" target="_brank">別タブでURLが開く</a>
+  </p>
+  <p>ス      ペ         ー         ス        はいくつ入れても1つ分の意味しか成しません。</p>
+  <p>特&nbsp;殊&nbsp;&nbsp;&nbsp;文&nbsp;字&nbsp;&nbsp;を使い&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ます</p>
+  <p>他にもいろいろ：&amp;,&lt;,&gt;,&le;,&ge;,&yen;,&copy; などなど</p>
+  <p>タグをテキストとしてあらわす：&lt;p&gt;pタグ&lt;/p&gt;</p>
+  <hr>
+
+  <h2>画像を表示してみよう！</h2>
+  <p>
+    <img src="https://kgo.googleusercontent.com/profile_vrt_raw_bytes_1587515358_10512.png" alt="googleのロゴ">
+    imgタグで画像を読み込めます。
+  </p>
+  hrefやsrc, alt, width, heightなど属性(atribute)でこれらを指定することで、タグに様々な効果を持たせることができる。
+  <p>
+    <a href="https://www.amazon.co.jp/" target="_brank">
+      <img
+        src="https://m.media-amazon.com/images/G/09/gc/designs/livepreview/amazon_dkblue_noto_email_v2016_jp-main._CB462229751_.png" 
+        alt="Amazonのロゴ"
+        width="320" 
+        height="180"
+      ></a>
+    リンクも埋め込めます。
+  </p>
+  <p>
+    <img src="ms.jpg" alt="マイクロソフトのロゴ" width="200" height="200" title="タイトルです">
+    フォルダ内の画像もOK。
+  </p>
+  <hr>
+
+  <h2>要素をグループ化する</h2>
+  <p>class属性を付与し、CSS等をグループ全体に適用するときなどに使う。</p>
+  <div>
+    divではこんな風に要素を
+  </div>
+  <div>
+    グループ化できます。
+  </div>
+  <div>
+    div同士はデフォルトで縦方向に並びます。
+  </div>
+  <div>
+    <p>div要素はほんとによく出会います。</p>
+  </div>
+  <span>span要素も</span>
+  <span>グループ化でよく使われますが、</span>
+  <span>デフォルトで横方向に並びます。</span>
+  <hr>
+
+  <h2>フォームを作りましょう！</h2>
+  <form action="https://www.google.com" method="get">
+    <h3>Input</h3>
+    <div>
+      <input type="text">
+    </div>
+    <div>
+      <label>labelタグ: </label>
+      <input type="text" value="初期値">
+    </div>
+    <div>
+      <label for="ph">for属性あり: </label>
+      <input type="text" placeholder="プレースホルダ" id="ph">
+    </div>
+    <h3>Radio button</h3>
+    <div>
+      <div>
+        <input type="radio" name="lang">HTML
+        <input type="radio" name="lang">CSS
+      </div>
+      <div>
+        <label for="js">
+          <input type="radio" name="lang2" id="js">JavaScript
+        </label>
+        <label for="ts">
+          <input type="radio" name="lang2" id="ts" checked>TypeScript
+        </label>
+      </div>
+    </div>
+    <h3>Checkbox</h3>
+    <div>
+      <input type="checkbox" name="c" value="1">C/C++
+      <input type="checkbox" name="py" value="2" checked>Python
+      <label for="ch-js"><input type="checkbox" name="js" value="3" id="ch-js">JavaScript</label>
+      <label for="ch-ts"><input type="checkbox" name="ts" value="4" id="ch-ts">TypeScript</label>
+    </div>
+    <h3>Select</h3>
+    <div>
+      <label for="lang">Language: </label>
+      <select id="lang">
+        <option value="c">C/C++</option>
+        <option value="py">Python</option>
+        <option value="js">JavaScript</option>
+        <option value="ts">TypeScript</option>
+      </select>
+    </div>
+    <h3>Button</h3>
+    <div>
+      <input type="button" value="button type">
+      <input type="submit" value="button type">
+      <button>button tag</button>
+    </div>
+  </form>
+  <hr>
+
+  <h2>コードブロック</h2>
+  <p>プログラムのコード等を表すタグです</p>
+  <code lang="html">
+    function f(){
+      return "Hello World."
+    }
+  </code>
+  <pre>
+    <code lang="js">
+// 改行やインデントを反映したいときは、preタグで囲む
+// 背景色やシンタックスハイライトはCSSで指定します。
+function f(){
+  return "Hello World."
+}
+    </code>
+  </pre>
+  <hr>
+
+  <h2>テーブルを使ってみよう！</h2>
+  <h3>tableにボーダーなし</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>名前</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>html</td>
+        <td>HTML</td>
+      </tr>
+      <tr>
+        <td>css</td>
+        <td>CSS</td>
+      </tr>
+      <tr>
+        <td>js</td>
+        <td>JavaScript</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>tableにボーダー指定あり</h3>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>名前</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>html</td>
+        <td>HTML</td>
+      </tr>
+      <tr>
+        <td>css</td>
+        <td>CSS</td>
+      </tr>
+      <tr>
+        <td>js</td>
+        <td>JavaScript</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>ボーダーを一本にしたり、色を変えるのはCSSでやります。</p>
+  <h3>以下のような物は推奨されません。</h3>
+  <p>昔はレイアウトで使われていたが、今は使わないのが主流。</p>
+  <b>ユーザーリスト</b>
+  <table border="0">
+    <thead>
+      <tr>
+        <th>アイコン</th>
+        <th>名前</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><img src="ms.jpg" alt="マイクロソフトのロゴ" width="24" height="24"></td>
+        <td>マイクロソフト</td>
+      </tr>
+      <tr>
+        <td><img src="https://kgo.googleusercontent.com/profile_vrt_raw_bytes_1587515358_10512.png" alt="googleのロゴ"
+            width="24" height="24"></td>
+        <td>Google</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>レイアウトはCSSを使いましょ！</p>
+  <hr>
+
+  <h2>箇条書きリスト使おう</h2>
+  <h3>順序なしリスト(unordered list)</h3>
+  <ul>
+    <li>HTML</li>
+    <li>CSS</li>
+    <li>JavaScript</li>
+    <li>TypeScript</li>
+  </ul>
+  <h3>順序ありリスト(ordered list)</h3>
+  <ol>
+    <li>HTML</li>
+    <li>CSS</li>
+    <li>JavaScript</li>
+    <li>TypeScript</li>
+  </ol>
+  <h3>定義リスト(definition list)</h3>
+  <dl>
+    <dt>HTML</dt>
+    <dd>マークアップする</dd>
+    <dt>CSS</dt>
+    <dd>スタイルを指定する</dd>
+    <dt>JavaScript</dt>
+    <dd>ページに動きを与える</dd>
+  </dl>
+  <hr>
+
+  <h2>iframeの埋め込み</h2>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/pbQQAwSQUX4" title="YouTube video player"
+    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
+</body>
+
+</html>
