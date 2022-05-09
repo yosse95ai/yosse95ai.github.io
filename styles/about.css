@@ -1,1 +1,62 @@
 /* About page のスタイル */
+.wrapper {
+  display: flex;
+  justify-content: center;
+  padding-top: 150px;
+}
+
+.content_wrapper {
+  width: 95%;
+  max-width: 967px;
+  margin-bottom: 50px;
+  padding: 20px 20px;
+  background-color: #3f3f3f;
+  border: 1px solid #dada1f;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+/* タイトル */
+.content_wrapper h1 {
+  padding: 10px 0 48px 0;
+  font-size: 48px;
+  font-weight: 800;
+  color:#fafafa;
+}
+
+/* 小見出し */
+.content_wrapper h2 {
+  padding: 18px 0 10px 0;
+  font-size: 24px;
+  color: #8f8ffa;
+}
+
+/* 本文 */
+.content_wrapper p {
+  margin-bottom: 8px;
+  font-weight: 400;
+  color: #ddd;
+}
+
+/* リンク */
+.content_wrapper a {
+  color: #ddd;
+  text-decoration: underline;
+}
+
+/* 画像をなるべく横並びにする設定 */
+.img_container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  overflow: hidden;
+  padding-top: 10px;
+}
+
+.img_container img {
+  max-width: 400px;
+  min-width: 240px;
+  width:48%;
+  margin-bottom: 10px;
+  border: 1px solid #dada1f;
+}

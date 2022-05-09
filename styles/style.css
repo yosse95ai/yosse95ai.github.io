@@ -5,8 +5,7 @@ html,
 body {
   font-family: 'Roboto', 'M PLUS 1p', sans-serif;
   background-color: #333;
-  overflow: hidden;
-  overflow-y: auto;
+  overflow: hidden auto;
 }
 
 /*****************
@@ -16,13 +15,14 @@ header {
   position: fixed;
   width: 100%;
   height: 80px;
-  padding: 30px 20px 0 25px;
+  padding: 30px 30px 0 30px;
 }
 
 .hedder_wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 /* アイコン設定 */
@@ -43,13 +43,14 @@ header {
   height: 65px;
 }
 
-/* ナビゲーション */
+/** ナビゲーション **/
 .right_content {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .right_content a {
-  font-size: 20px;
+  font-size: 1.2em;
   font-weight: 600;
   color: #dada1f;
 }
@@ -63,12 +64,8 @@ header {
  *****************/
 main {
   min-height: calc(100vh - 30px);
-  padding-top: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #ddd;
 }
+
 
 /*****************
  フッター
