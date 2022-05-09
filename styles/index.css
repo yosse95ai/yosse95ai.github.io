@@ -1,0 +1,22 @@
+/* Index page のスタイル */
+.title {
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.desc {
+  padding-top: 10px;
+  font-weight: 200;
+}
+
+.content_wrapper {
+  width: 95%;
+  margin: 200px 0 50px 0;
+  padding: 10px 20px;
+  max-width: 967px;
+  /* min-height: 100px; */
+  border-radius: 5px;
+  border: 1px solid #dada1f;
+  background-color: #dd9;
+  color:#333;
+}
