@@ -1,9 +1,28 @@
+/* スタイルのオーバーライド */
+main {
+  z-index: -1;
+  position: fixed;
+  top: 0;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+  min-height: auto;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 /* Index page のスタイル */
 .wrapper {
-  padding-top: 300px;
+  height: 100%;
   color: #ddd;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
@@ -17,4 +36,33 @@
 .desc {
   padding-top: 10px;
   font-weight: 200;
+}
+
+/* ソーシャルアカウント */
+.soclial{
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.soclial a:nth-child(n + 2) {
+  margin-left: 10px;
+}
+
+.twt {
+  color: #1da1f2;
+}
+
+.qiita img {
+  width: 20px;
+}
+
+.so {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  background-color: hsl(1, 42%, 49%);
+  color:white;
 }

@@ -21,14 +21,14 @@
   padding: 10px 0 48px 0;
   font-size: 48px;
   font-weight: 800;
-  color:#fafafa;
+  color:#dada1f;
 }
 
 /* 小見出し */
 .content_wrapper h2 {
   padding: 18px 0 10px 0;
   font-size: 24px;
-  color: #8f8ffa;
+  color: #9f9ffa;
 }
 
 /* 本文 */
@@ -42,6 +42,10 @@
 .content_wrapper a {
   color: #ddd;
   text-decoration: underline;
+}
+
+.content_wrapper a:hover {
+  color: #8f8ffa;
 }
 
 /* 画像をなるべく横並びにする設定 */
