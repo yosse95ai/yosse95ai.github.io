@@ -1,4 +1,6 @@
 /* About page のスタイル */
+@import url(./root.css);
+
 .wrapper {
   display: flex;
   justify-content: center;
@@ -10,8 +12,8 @@
   max-width: 967px;
   margin-bottom: 50px;
   padding: 20px 20px;
-  background-color: #3f3f3f;
-  border: 1px solid #dada1f;
+  background-color: var(--base_light);
+  border: 1px solid var(--main);
   border-radius: 5px;
 }
 
@@ -20,31 +22,31 @@
   padding: 10px 0 48px 0;
   font-size: 48px;
   font-weight: 800;
-  color:#dada1f;
+  color:var(--main);
 }
 
 /* 小見出し */
 .content_wrapper h2 {
   padding: 18px 0 10px 0;
   font-size: 24px;
-  color: #9f9ffa;
+  color: var(--secondary);
 }
 
 /* 本文 */
 .content_wrapper p {
   margin-bottom: 8px;
   font-weight: 400;
-  color: #ddd;
+  color: var(--offwhite);
 }
 
 /* リンク */
 .content_wrapper a {
-  color: #fafa8f;
+  color: var(--main_light);
   text-decoration: underline;
 }
 
 .content_wrapper a:hover {
-  color: #8f8ffa;
+  color: var(--offwhite);
 }
 
 /* 画像をなるべく横並びにする設定 */
@@ -61,5 +63,5 @@
   min-width: 240px;
   width:48%;
   margin-bottom: 10px;
-  border: 1px solid #dada1f;
+  border: 1px solid var(--main);
 }

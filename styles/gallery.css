@@ -1,4 +1,6 @@
 /* Gallery page のスタイル */
+@import url(./root.css);
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -18,7 +20,7 @@
 }
 
 .title p {
-  color: #ddd;
+  color: var(--offwhite);
   font-size: 20px;
 }
 
@@ -39,8 +41,8 @@
   min-height: 200px;
   /* max-height: 280px; */
   margin-bottom: 10px;
-  background-color: #3f3f3f;
-  border: 1px solid #dada1f99;
+  background-color: var(--base_light);
+  border: 1px solid var(--main_dark);
   border-radius: 5px;
   overflow: hidden;
 }

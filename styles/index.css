@@ -1,4 +1,6 @@
 /* スタイルのオーバーライド */
+@import url(./root.css);
+
 main {
   z-index: -1;
   position: fixed;
@@ -19,7 +21,7 @@ footer {
 /* Index page のスタイル */
 .wrapper {
   height: 100%;
-  color: #ddd;
+  color: var(--offwhite);
   display: flex;
   flex-direction: column;
   justify-content: center;
