@@ -65,6 +65,6 @@ footer {
   align-items: center;
   width: 20px;
   height: 20px;
-  background-color: hsl(1, 42%, 49%);
+  background-color: var(--sof);
   color:white;
 }
