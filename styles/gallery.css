@@ -1,6 +1,3 @@
-/* Gallery page のスタイル */
-@import url(./root.css);
-
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -20,7 +17,7 @@
 }
 
 .title p {
-  color: var(--offwhite);
+  color: var(--text);
   font-size: 20px;
 }
 

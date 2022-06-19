@@ -1,70 +1,43 @@
-/* スタイルのオーバーライド */
-@import url(./root.css);
-
-main {
-  z-index: -1;
-  position: fixed;
-  top: 0;
-  bottom: 30px;
-  left: 0;
-  right: 0;
-  min-height: auto;
-}
-
-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-/* Index page のスタイル */
 .wrapper {
-  height: 100%;
-  color: var(--offwhite);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: var(--text);
 }
 
-/* 真ん中の名前 */
 .title {
   font-size: 32px;
   font-weight: 600;
 }
 
-/* 名前下の文章 */
 .desc {
   padding-top: 10px;
   font-weight: 200;
 }
 
-/* ソーシャルアカウント */
-.soclial{
+.social {
   padding-top: 10px;
   display: flex;
   align-items: center;
 }
 
-.soclial a:nth-child(n + 2) {
-  margin-left: 10px;
+.social a:not(:last-child) {
+  margin-right: 10px;
 }
 
 .twt {
-  color: var(--twitter);
+  color: #1da1f2;
 }
-
-.qiita img {
-  width: 20px;
+.git {
+  color: var(--text);
 }
-
 .so {
+  width: 20px;
+  height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 20px;
-  height: 20px;
-  background-color: var(--sof);
-  color:white;
+  background-color: hsl(1, 42%, 49%);
+  color: var(--text);
 }
