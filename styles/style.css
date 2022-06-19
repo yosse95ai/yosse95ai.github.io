@@ -53,7 +53,7 @@ a{
 
 main { 
     min-height: calc(100vh - 110px);
-    min-height: calc(100svh - 110px);
+    min-height: calc(100dvh - 110px);
 }
 
 footer {
