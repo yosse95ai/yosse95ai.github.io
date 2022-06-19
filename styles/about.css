@@ -44,7 +44,7 @@
 
 .img_container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
   overflow: hidden;
   padding-top: 10px;
