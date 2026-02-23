@@ -15,7 +15,7 @@ const sorted = allCareer.sort(
   (a, b) => b.data.startDate.localeCompare(a.data.startDate)
 );
 const items = showAll ? sorted : sorted.slice(0, 3);
-const hasMore = !showAll && sorted.length > 3;
+const hasMore = !showAll;
 ---
 
 <section
