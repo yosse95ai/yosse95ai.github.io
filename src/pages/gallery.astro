@@ -1,3 +1,14 @@
 ---
+import BaseLayout from '../components/templates/BaseLayout.astro';
+import PhotoGrid from '../components/organisms/PhotoGrid.astro';
 ---
-<html lang="ja"><body><h1>Gallery</h1></body></html>
+
+<BaseLayout
+  title="Gallery — Hiroaki Yoshimura"
+  description="愛猫たちの写真ギャラリーです。"
+>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-2xl font-bold mb-6" style="color: oklch(0.20 0.010 250);">Gallery</h1>
+    <PhotoGrid />
+  </div>
+</BaseLayout>

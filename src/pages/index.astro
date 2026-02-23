@@ -1,17 +1,52 @@
 ---
+import BaseLayout from '../components/templates/BaseLayout.astro';
+import HeroSection from '../components/organisms/HeroSection.astro';
+import CareerTimeline from '../components/organisms/CareerTimeline.astro';
+import SkillsGrid from '../components/organisms/SkillsGrid.astro';
+import BlogList from '../components/organisms/BlogList.astro';
+import SocialLink from '../components/molecules/SocialLink.astro';
 
+const socialLinks = [
+  { platform: 'github'   as const, url: 'https://github.com/yosse95ai' },
+  { platform: 'linkedin' as const, url: 'https://www.linkedin.com/in/hiroaki-yoshimura/' },
+  { platform: 'qiita'    as const, url: 'https://qiita.com/yosse95ai' },
+  { platform: 'zenn'     as const, url: 'https://zenn.dev/yosse95ai' },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-4 md:gap-5">
+
+    <!-- 行1: Hero × SNS -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5 items-stretch">
+      <div class="md:col-span-8 flex">
+        <HeroSection />
+      </div>
+      <div
+        class="md:col-span-4 rounded-3xl p-6 flex flex-col justify-center gap-3"
+        style="background: oklch(0.96 0.006 120); box-shadow: 0 1px 4px oklch(0.70 0.010 150 / 0.10);"
+      >
+        <h2 class="text-sm font-semibold uppercase tracking-wider mb-1" style="color: oklch(0.55 0.15 145);">
+          Links
+        </h2>
+        {socialLinks.map(({ platform, url }) => (
+          <SocialLink platform={platform} url={url} />
+        ))}
+      </div>
+    </div>
+
+    <!-- 行2: Career × Skills -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5 items-stretch">
+      <div class="md:col-span-4 flex">
+        <CareerTimeline showAll={false} />
+      </div>
+      <div class="md:col-span-8 flex">
+        <SkillsGrid />
+      </div>
+    </div>
+
+    <!-- 行3: Blog -->
+    <BlogList />
+
+  </div>
+</BaseLayout>
