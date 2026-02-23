@@ -8,7 +8,6 @@ import icon from 'astro-icon';
 export default defineConfig({
   site: 'https://yosse95ai.github.io',
   build: {
-    excludeRoutes: ['/catalog'],
   },
   integrations: [
     sitemap(),

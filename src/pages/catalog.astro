@@ -1,8 +1,11 @@
 ---
 /**
  * コンポーネントカタログ（開発・デバッグ用）
- * 本番ビルドには含まれない（astro.config.mjs の build.excludeRoutes で除外）
+ * 本番環境ではトップページへリダイレクト
  */
+if (import.meta.env.PROD) {
+  return Astro.redirect('/');
+}
 import Badge from '../components/atoms/Badge.astro';
 import Tag from '../components/atoms/Tag.astro';
 import Icon from '../components/atoms/Icon.astro';
