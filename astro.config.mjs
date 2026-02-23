@@ -12,9 +12,7 @@ export default defineConfig({
   },
   integrations: [
     sitemap(),
-    icon({
-      iconDir: 'src/icons',
-    }),
+    icon(),
   ],
   vite: {
     plugins: [tailwindcss()],

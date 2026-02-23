@@ -15,7 +15,9 @@
 
 ## アイコン
 - `astro-icon` + `@iconify-json/devicon` + `@iconify-json/simple-icons`
-- カスタムアイコンは `src/icons/` に配置
+- 固定カラーを持つカスタムアイコン（Kiro・Dify等）は `src/components/atoms/` に専用コンポーネント（`KiroIcon.astro`・`DifyIcon.astro`）としてSVGを直接インライン展開する
+  - `astro-icon` はIconify形式でfill色を正規化するため、ブランドカラーが失われる場合はこの方式を採用する
+  - `src/icons/` ディレクトリは使用しない
 
 ## コンテンツ管理
 - Astro Content Collections（Content Layer API）

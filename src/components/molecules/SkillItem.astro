@@ -1,0 +1,55 @@
+---
+import Icon from '../atoms/Icon.astro';
+import KiroIcon from '../atoms/KiroIcon.astro';
+import DifyIcon from '../atoms/DifyIcon.astro';
+
+export interface Props {
+  name: string;
+  icon?: string;
+  url: string;
+  category: 'cloud' | 'language' | 'framework' | 'tool' | 'other';
+}
+
+const { name, icon, url, category } = Astro.props;
+
+const isKiro = icon === 'local:kiro';
+const isDify = icon === 'local:dify';
+
+const categoryColor: Record<string, string> = {
+  cloud:     'oklch(0.55 0.15 145)',
+  language:  'oklch(0.50 0.14 250)',
+  framework: 'oklch(0.55 0.13 200)',
+  tool:      'oklch(0.55 0.12 60)',
+  other:     'oklch(0.50 0.08 150)',
+};
+---
+
+<a
+  href={url}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="group flex items-center gap-2.5 rounded-xl px-3 py-2 transition-colors hover:bg-[oklch(0.92_0.008_145)] no-underline"
+  title={name}
+>
+  {isKiro ? (
+    <div class="shrink-0 w-[22px] h-[22px] rounded flex items-center justify-center" style="background: oklch(0.52 0.24 295);">
+      <KiroIcon size={14} />
+    </div>
+  ) : isDify ? (
+    <div class="shrink-0 h-[22px] flex items-center justify-center">
+      <DifyIcon size={14} />
+    </div>
+  ) : icon ? (
+    <Icon name={icon} size={22} class="shrink-0" />
+  ) : (
+    <span
+      class="shrink-0 w-[22px] h-[22px] rounded-full flex items-center justify-center text-white text-[10px] font-bold"
+      style={`background: ${categoryColor[category]};`}
+    >
+      {name.charAt(0)}
+    </span>
+  )}
+  <span class="text-sm font-medium whitespace-nowrap" style="color: oklch(0.25 0.010 250);">
+    {name}
+  </span>
+</a>

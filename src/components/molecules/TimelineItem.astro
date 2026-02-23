@@ -1,0 +1,45 @@
+---
+export interface Props {
+  organization: string;
+  role: string;
+  startDate: string;   // "YYYY-MM"
+  endDate: string | null;
+  isLast?: boolean;
+}
+
+const { organization, role, startDate, endDate, isLast = false } = Astro.props;
+
+function formatDate(ym: string): string {
+  const [year, month] = ym.split('-');
+  return `${year}年${parseInt(month)}月`;
+}
+
+const start = formatDate(startDate);
+const end = endDate ? formatDate(endDate) : '現在';
+---
+
+<div class="relative flex gap-4">
+  <!-- タイムラインライン -->
+  <div class="flex flex-col items-center">
+    <div
+      class="w-3 h-3 rounded-full shrink-0 mt-1"
+      style="background: oklch(0.55 0.15 145);"
+    />
+    {!isLast && (
+      <div class="w-px flex-1 mt-1" style="background: oklch(0.88 0.008 150);"></div>
+    )}
+  </div>
+
+  <!-- コンテンツ -->
+  <div class="pb-6 flex-1">
+    <p class="text-xs font-mono mb-1" style="color: oklch(0.55 0.15 145);">
+      {start} — {end}
+    </p>
+    <p class="font-semibold text-sm leading-snug" style="color: oklch(0.20 0.010 250);">
+      {organization}
+    </p>
+    <p class="text-sm mt-0.5" style="color: oklch(0.45 0.010 250);">
+      {role}
+    </p>
+  </div>
+</div>

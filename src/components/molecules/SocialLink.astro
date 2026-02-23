@@ -1,0 +1,53 @@
+---
+import Icon from '../atoms/Icon.astro';
+
+export interface Props {
+  platform: 'github' | 'linkedin' | 'qiita' | 'zenn';
+  url: string;
+  label?: string;
+}
+
+const { platform, url, label } = Astro.props;
+
+const config = {
+  github: {
+    icon: 'simple-icons:github',
+    name: 'GitHub',
+    color: 'oklch(0.20 0.000 0)',
+    bg: 'oklch(0.92 0.000 0)',
+  },
+  linkedin: {
+    icon: 'simple-icons:linkedin',
+    name: 'LinkedIn',
+    color: 'oklch(0.45 0.17 250)',
+    bg: 'oklch(0.93 0.05 250)',
+  },
+  qiita: {
+    icon: 'simple-icons:qiita',
+    name: 'Qiita',
+    color: 'oklch(0.60 0.17 155)',
+    bg: 'oklch(0.93 0.06 155)',
+  },
+  zenn: {
+    icon: 'simple-icons:zenn',
+    name: 'Zenn',
+    color: 'oklch(0.68 0.17 240)',
+    bg: 'oklch(0.93 0.05 240)',
+  },
+} as const;
+
+const { icon, name, color, bg } = config[platform];
+const displayLabel = label ?? name;
+---
+
+<a
+  href={url}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label={displayLabel}
+  class="group flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200 hover:scale-[1.02] hover:shadow-md no-underline"
+  style={`background: ${bg};`}
+>
+  <Icon name={icon} size={24} style={`color: ${color};`} label={displayLabel} />
+  <span class="text-sm font-semibold" style={`color: ${color};`}>{displayLabel}</span>
+</a>

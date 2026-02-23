@@ -1,0 +1,57 @@
+---
+import Tag from '../atoms/Tag.astro';
+
+export interface Props {
+  externalUrl: string;
+  type: 'translation' | 'original';
+  title: string;
+  description: string;
+  ogpImage: string;
+}
+
+const { externalUrl, type, title, description, ogpImage } = Astro.props;
+
+// ホスト名をソース表示用に取得
+const hostname = new URL(externalUrl).hostname.replace(/^www\./, '');
+---
+
+<a
+  href={externalUrl}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="group flex flex-col rounded-2xl overflow-hidden border transition-shadow hover:shadow-lg no-underline"
+  style="background: oklch(0.96 0.006 120); border-color: oklch(0.88 0.008 150); box-shadow: 0 1px 4px oklch(0.70 0.010 150 / 0.10);"
+>
+  <!-- OGP画像 -->
+  <div class="aspect-[1200/630] w-full overflow-hidden bg-[oklch(0.92_0.006_120)]">
+    {ogpImage ? (
+      <img
+        src={ogpImage}
+        alt={title}
+        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        loading="lazy"
+        decoding="async"
+      />
+    ) : (
+      <div class="w-full h-full flex items-center justify-center text-[oklch(0.65_0.008_150)]">
+        <span class="text-sm">No Image</span>
+      </div>
+    )}
+  </div>
+
+  <!-- テキスト -->
+  <div class="flex flex-col gap-2 p-4 flex-1">
+    <div class="flex items-center gap-2">
+      <Tag type={type} />
+      <span class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">{hostname}</span>
+    </div>
+    <p class="text-sm font-semibold leading-snug line-clamp-2" style="color: oklch(0.20 0.010 250);">
+      {title}
+    </p>
+    {description && (
+      <p class="text-xs leading-relaxed line-clamp-2" style="color: oklch(0.45 0.010 250);">
+        {description}
+      </p>
+    )}
+  </div>
+</a>

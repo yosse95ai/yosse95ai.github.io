@@ -6,6 +6,30 @@
 import Badge from '../components/atoms/Badge.astro';
 import Tag from '../components/atoms/Tag.astro';
 import Icon from '../components/atoms/Icon.astro';
+import KiroIcon from '../components/atoms/KiroIcon.astro';
+import DifyIcon from '../components/atoms/DifyIcon.astro';
+import OgpCard from '../components/molecules/OgpCard.astro';
+import SkillItem from '../components/molecules/SkillItem.astro';
+import SocialLink from '../components/molecules/SocialLink.astro';
+import TimelineItem from '../components/molecules/TimelineItem.astro';
+import { fetchOgp } from '../lib/fetchOgp';
+import { getCollection } from 'astro:content';
+
+const sampleUrls = [
+  { url: 'https://aws.amazon.com/jp/blogs/news/introducing-powers/', type: 'translation' as const },
+  { url: 'https://findy-tools.io/articles/aws-amplify-gen-2/40', type: 'original' as const },
+];
+
+const sampleOgp = await Promise.all(
+  sampleUrls.map(async ({ url, type }) => ({ ...(await fetchOgp(url)), url, type }))
+);
+
+// skills.json からデータ取得してカテゴリ別に分類
+const allSkills = await getCollection('skills');
+const categories = ['cloud', 'language', 'framework', 'tool', 'other'] as const;
+const skillsByCategory = Object.fromEntries(
+  categories.map(cat => [cat, allSkills.filter(s => s.data.category === cat)])
+);
 ---
 
 <html lang="ja">
@@ -43,47 +67,56 @@ import Icon from '../components/atoms/Icon.astro';
     </section>
 
     <!-- ===== Icon ===== -->
-    <section class="space-y-4">
+    <section class="space-y-6">
       <h2 class="text-xl font-semibold">Icon</h2>
-      <div class="flex flex-wrap gap-6 items-center">
-        <div class="flex flex-col items-center gap-1">
-          <Icon name="devicon:typescript" size={32} />
-          <span class="text-xs">TypeScript</span>
+      {categories.map(cat => (
+        <div>
+          <p class="text-xs font-mono mb-3" style="color: oklch(0.55 0.010 250);">{cat}</p>
+          <div class="flex flex-wrap gap-6 items-end">
+            {skillsByCategory[cat].map(skill => (
+              <div class="flex flex-col items-center gap-1">
+                {skill.data.icon === 'local:kiro' ? (
+                  <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: oklch(0.52 0.24 295);">
+                    <KiroIcon size={20} />
+                  </div>
+                ) : skill.data.icon === 'local:dify' ? (
+                  <div class="h-8 flex items-center justify-center">
+                    <DifyIcon size={20} />
+                  </div>
+                ) : skill.data.icon ? (
+                  <Icon name={skill.data.icon} size={32} />
+                ) : (
+                  <span class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold" style="background: oklch(0.55 0.12 60);">
+                    {skill.data.name.charAt(0)}
+                  </span>
+                )}
+                <span class="text-xs">{skill.data.name}</span>
+              </div>
+            ))}
+          </div>
         </div>
-        <div class="flex flex-col items-center gap-1">
-          <Icon name="devicon:python" size={32} />
-          <span class="text-xs">Python</span>
-        </div>
-        <div class="flex flex-col items-center gap-1">
-          <Icon name="devicon:react" size={32} />
-          <span class="text-xs">React</span>
-        </div>
-        <div class="flex flex-col items-center gap-1">
-          <Icon name="devicon:docker" size={32} />
-          <span class="text-xs">Docker</span>
-        </div>
-        <div class="flex flex-col items-center gap-1">
-          <Icon name="devicon:amazonwebservices-wordmark" size={48} />
-          <span class="text-xs">AWS</span>
-        </div>
-        <div class="flex flex-col items-center gap-1">
-          <!-- AWS Amplify brand color: #FF9900 → oklch(0.75 0.18 60) -->
-          <Icon name="simple-icons:awsamplify" size={32} style="color: oklch(0.75 0.18 60);" label="AWS Amplify" />
-          <span class="text-xs">Amplify</span>
-        </div>
-        <div class="flex flex-col items-center gap-1">
-          <Icon name="simple-icons:github" size={32} label="GitHub" />
-          <span class="text-xs">GitHub</span>
-        </div>
-        <div class="flex flex-col items-center gap-1">
-          <!-- LinkedIn brand color: #0A66C2 → oklch(0.45 0.17 250) -->
-          <Icon name="simple-icons:linkedin" size={32} style="color: oklch(0.45 0.17 250);" label="LinkedIn" />
-          <span class="text-xs">LinkedIn</span>
-        </div>
-        <div class="flex flex-col items-center gap-1">
-          <!-- Zenn brand color: #3EA8FF → oklch(0.68 0.17 240) -->
-          <Icon name="simple-icons:zenn" size={32} style="color: oklch(0.68 0.17 240);" label="Zenn" />
-          <span class="text-xs">Zenn</span>
+      ))}
+
+      <!-- SNS -->
+      <div>
+        <p class="text-xs font-mono mb-3" style="color: oklch(0.55 0.010 250);">SNS</p>
+        <div class="flex flex-wrap gap-6 items-end">
+          <div class="flex flex-col items-center gap-1">
+            <Icon name="simple-icons:github" size={32} label="GitHub" />
+            <span class="text-xs">GitHub</span>
+          </div>
+          <div class="flex flex-col items-center gap-1">
+            <Icon name="simple-icons:linkedin" size={32} style="color: oklch(0.45 0.17 250);" label="LinkedIn" />
+            <span class="text-xs">LinkedIn</span>
+          </div>
+          <div class="flex flex-col items-center gap-1">
+            <Icon name="simple-icons:qiita" size={32} style="color: oklch(0.60 0.17 155);" label="Qiita" />
+            <span class="text-xs">Qiita</span>
+          </div>
+          <div class="flex flex-col items-center gap-1">
+            <Icon name="simple-icons:zenn" size={32} style="color: oklch(0.68 0.17 240);" label="Zenn" />
+            <span class="text-xs">Zenn</span>
+          </div>
         </div>
       </div>
     </section>
@@ -109,6 +142,74 @@ import Icon from '../components/atoms/Icon.astro';
             <span class="text-xs font-mono">{name}</span>
           </div>
         ))}
+      </div>
+    </section>
+
+    <!-- ===== Molecules: OgpCard ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">OgpCard</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl">
+        {sampleOgp.map(({ url, type, title, description, ogpImage }) => (
+          <OgpCard
+            externalUrl={url}
+            type={type}
+            title={title}
+            description={description}
+            ogpImage={ogpImage}
+          />
+        ))}
+      </div>
+    </section>
+
+    <!-- ===== Molecules: SkillItem ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">SkillItem</h2>
+      <div class="flex flex-wrap gap-1 max-w-2xl">
+        {allSkills.map(skill => (
+          <SkillItem
+            name={skill.data.name}
+            icon={skill.data.icon}
+            url={skill.data.url}
+            category={skill.data.category}
+          />
+        ))}
+      </div>
+    </section>
+
+    <!-- ===== Molecules: SocialLink ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">SocialLink</h2>
+      <div class="flex flex-col gap-2 max-w-xs">
+        <SocialLink platform="github" url="https://github.com/yosse95ai" />
+        <SocialLink platform="linkedin" url="https://www.linkedin.com/in/hiroaki-yoshimura/" />
+        <SocialLink platform="qiita" url="https://qiita.com/yosse95ai" />
+        <SocialLink platform="zenn" url="https://zenn.dev/yosse95ai" />
+      </div>
+    </section>
+
+    <!-- ===== Molecules: TimelineItem ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">TimelineItem</h2>
+      <div class="max-w-sm">
+        <TimelineItem
+          organization="Amazon Web Services（AWS）"
+          role="Solutions Architect"
+          startDate="2023-04"
+          endDate={null}
+        />
+        <TimelineItem
+          organization="九州工業大学 大学院"
+          role="先端情報工学専攻（情報工学）"
+          startDate="2021-04"
+          endDate="2023-03"
+        />
+        <TimelineItem
+          organization="九州工業大学"
+          role="情報工学部 知能情報工学科"
+          startDate="2017-04"
+          endDate="2021-03"
+          isLast={true}
+        />
       </div>
     </section>
 

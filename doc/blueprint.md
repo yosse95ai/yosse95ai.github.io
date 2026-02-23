@@ -95,18 +95,18 @@ AWSに勤務するソフトウェアエンジニアの個人紹介サイト。�
 | language | C++ | https://isocpp.org | devicon:cplusplus |
 | language | JavaScript | https://developer.mozilla.org/docs/Web/JavaScript | devicon:javascript |
 | language | Ruby | https://www.ruby-lang.org | devicon:ruby |
+| language | Go | https://go.dev | devicon:go |
+| language | Go | https://go.dev | devicon:go |
 | framework | React | https://react.dev | devicon:react |
-| framework | React Native | https://reactnative.dev | devicon:react |
+| framework | React Native | https://reactnative.dev | devicon:reactnative-wordmark |
 | framework | Angular | https://angular.dev | devicon:angular |
 | framework | Flask | https://flask.palletsprojects.com | devicon:flask |
-| framework | LangChain | https://www.langchain.com | simple-icons:langchain |
 | framework | Ruby on Rails | https://rubyonrails.org | devicon:rails |
 | framework | Unity | https://unity.com | devicon:unity |
-| tool | AWS Amplify | https://aws.amazon.com/amplify | simple-icons:awsamplify |
+| tool | Kiro | https://kiro.dev | カスタム（KiroIcon.astro） |
 | tool | Docker | https://www.docker.com | devicon:docker |
-| tool | Amazon SageMaker | https://aws.amazon.com/sagemaker | simple-icons:amazonsagemaker |
 | tool | OpenCV | https://opencv.org | devicon:opencv |
-| tool | Dify | https://dify.ai | -（未収録） |
+| tool | Dify | https://dify.ai | カスタム（DifyIcon.astro） |
 | other | 医療情報技師（資格） | https://www.jami.jp/jadite | - |
 | other | 応用情報技術者（資格） | https://www.ipa.go.jp/shiken/kubun/ap.html | - |
 
