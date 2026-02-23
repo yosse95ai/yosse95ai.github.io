@@ -3,7 +3,7 @@
 **プロジェクト:** 個人ホームページ — yosse95ai.github.io
 **URL:** https://yosse95ai.github.io
 **作成日:** 2026-02-23
-**ステータス:** ドラフト
+**ステータス:** 確定
 
 ---
 
@@ -56,30 +56,61 @@ AWSに勤務するソフトウェアエンジニアの個人紹介サイト。�
 
 ### 5.1 ブログ記事
 
-- 表示形式: OGPカード（サムネイル・タイトル・説明・日付・記事種別バッジ）
+- 表示形式: OGPカード（サムネイル・タイトル・説明・記事種別バッジ）
 - 記事種別: `translation`（翻訳） / `original`（執筆）
 - 各カードは外部記事URLへリンク
 - Astro Content Collections（Markdownファイル）で管理
+- OGPデータ（タイトル・説明・OGP画像URL）は**ビルド時にfetchして静的生成**する（SSG）
+  - Markdownファイルには `externalUrl` と `type` のみ記載
+  - ビルド時に各URLへNode.jsからfetchしてOGPメタタグを解析・埋め込む
+  - `ogpUrl` フィールドは不要（自動取得のため）
 
 ### 5.2 経歴タイムライン
 
 - エントリー: 大学 → 大学院 → AWS（現在）
-- 具体的な学校名・学部・在籍期間はオーナーから提供
+- 確定情報:
+  - 九州工業大学 情報工学部 知能情報工学科（2017年4月〜2021年3月）
+  - 九州工業大学 大学院 先端情報工学修士・情報工学（2021年4月〜2023年3月）
+  - Amazon Web Services（AWS） Solutions Architect・正社員（2023年4月〜現在）
 
 ### 5.3 スキル
 
 - カテゴリ: `cloud`、`language`、`framework`、`tool`、`other`
 - Astro Content Collections（JSONファイル）で管理
-- 具体的なスキル一覧はオーナーから提供
+- 習熟度（level）は不要
+
+| カテゴリ | スキル名 | URL | Iconify ID |
+|---|---|---|---|
+| cloud | AWS | https://aws.amazon.com | devicon:amazonwebservices-wordmark |
+| language | TypeScript | https://www.typescriptlang.org | devicon:typescript |
+| language | Python | https://www.python.org | devicon:python |
+| language | C# | https://dotnet.microsoft.com/languages/csharp | devicon:csharp |
+| language | C++ | https://isocpp.org | devicon:cplusplus |
+| language | JavaScript | https://developer.mozilla.org/docs/Web/JavaScript | devicon:javascript |
+| language | Ruby | https://www.ruby-lang.org | devicon:ruby |
+| framework | React | https://react.dev | devicon:react |
+| framework | React Native | https://reactnative.dev | devicon:react |
+| framework | Angular | https://angular.dev | devicon:angular |
+| framework | Flask | https://flask.palletsprojects.com | devicon:flask |
+| framework | LangChain | https://www.langchain.com | simple-icons:langchain |
+| framework | Ruby on Rails | https://rubyonrails.org | devicon:rails |
+| framework | Unity | https://unity.com | devicon:unity |
+| tool | AWS Amplify | https://aws.amazon.com/amplify | simple-icons:awsamplify |
+| tool | Docker | https://www.docker.com | devicon:docker |
+| tool | Amazon SageMaker | https://aws.amazon.com/sagemaker | simple-icons:amazonsagemaker |
+| tool | OpenCV | https://opencv.org | devicon:opencv |
+| tool | Dify | https://dify.ai | -（未収録） |
+| other | 医療情報技師（資格） | https://www.jami.jp/jadite | - |
+| other | 応用情報技術者（資格） | https://www.ipa.go.jp/shiken/kubun/ap.html | - |
 
 ### 5.4 SNSリンク
 
-| プラットフォーム | 表示 |
-|---|---|
-| GitHub | アイコン + リンク |
-| LinkedIn | アイコン + リンク |
-| Qiita | アイコン + リンク |
-| Zenn | アイコン + リンク |
+| プラットフォーム | 表示 | URL |
+|---|---|---|
+| GitHub | アイコン + リンク | https://github.com/yosse95ai |
+| LinkedIn | アイコン + リンク | https://www.linkedin.com/in/hiroaki-yoshimura/ |
+| Qiita | アイコン + リンク | https://qiita.com/yosse95ai |
+| Zenn | アイコン + リンク | https://zenn.dev/yosse95ai |
 
 ---
 
@@ -88,8 +119,27 @@ AWSに勤務するソフトウェアエンジニアの個人紹介サイト。�
 ### 6.1 スタイル
 
 - モダン・クリーンな雰囲気
-- Bento Gridレイアウト（カード型・非対称グリッド）
+- Bento Gridレイアウト（カード型・非対称グリッド）、参考: [Bentofolio](https://astro.build/themes/details/bento-grid-portfolio/)
 - 余白を広めに取る
+- カードスタイル: 角丸・オフホワイト背景・ソフトシャドウ
+
+**デスクトップ（12カラムグリッド）カード配置:**
+
+```
+┌───────────────────────────┬─────────────┐
+│  Hero（名前・役職・自己紹介・写真）      │ SNSリンク   │
+│  col-span-8               │ col-span-4  │
+├─────────────┬─────────────┴─────────────┤
+│  Career     │  Skills                   │
+│  Timeline   │  （カテゴリ別バッジグリッド）│
+│  col-span-4 │  col-span-8               │
+├─────────────┴───────────────────────────┤
+│  Blog 記事一覧（OGPカード横スクロール）  │
+│  col-span-12                            │
+└─────────────────────────────────────────┘
+```
+
+**モバイル:** 全カード縦積み（Hero → SNS → Timeline → Skills → Blog）
 
 ### 6.2 カラーパレット
 
@@ -134,6 +184,7 @@ AWSに勤務するソフトウェアエンジニアの個人紹介サイト。�
 | アニメーション | Motion（Vanilla JS API）+ Astro CSS View Transitions |
 | パッケージ管理 | pnpm |
 | コンテンツ管理 | Astro Content Collections（Content Layer API） |
+| アイコン | `@iconify/astro` + `@iconify-json/devicon` + `@iconify-json/simple-icons` |
 | デプロイ | GitHub Actions（`withastro/action`）→ GitHub Pages |
 
 ### 7.1 コンポーネント設計
@@ -152,9 +203,9 @@ src/components/
 
 | コレクション | ローダー | 主なフィールド |
 |---|---|---|
-| `blog` | `glob`（Markdown） | title, description, pubDate, externalUrl, ogpUrl, type（translation/original）, tags, draft |
+| `blog` | `glob`（Markdown） | externalUrl, type（translation/original）, tags, draft ※title・description・ogpImageはビルド時OGP fetchで自動取得 |
 | `gallery` | `file`（JSON） | id, title, src, alt, width, height, takenAt |
-| `skills` | `file`（JSON） | id, name, category, level, icon, url |
+| `skills` | `file`（JSON） | id, name, category, icon, url |
 
 ### 7.3 ディレクトリ構成
 
@@ -163,9 +214,13 @@ yosse95ai.github.io/
 ├── .github/workflows/deploy.yml
 ├── public/
 │   ├── favicon.svg
-│   └── images/gallery/
+│   ├── images/
+│   │   ├── icon.jpg        # プロフィール写真
+│   │   └── gallery/        # 猫写真
 ├── src/
 │   ├── content.config.ts
+│   ├── lib/
+│   │   └── fetchOgp.ts     # ビルド時OGP取得ユーティリティ
 │   ├── data/
 │   │   ├── blog/*.md
 │   │   ├── gallery/cats.json
@@ -225,14 +280,6 @@ yosse95ai.github.io/
 
 ---
 
-## 11. 未確定事項（実装前にオーナーから提供が必要）
+## 11. 未確定事項
 
-| # | 項目 |
-|---|---|
-| 1 | ブログ記事URL一覧（翻訳・執筆）とOGP画像URL |
-| 2 | 経歴詳細（学校名・学部・在籍期間） |
-| 3 | スキル一覧（カテゴリ・習熟度） |
-| 4 | 各SNSアカウントURL（GitHub・LinkedIn・Qiita・Zenn） |
-| 5 | プロフィール写真（ヒーローセクションで使用する場合） |
-| 6 | Bento Gridのレイアウト構成（カード配置・サイズ） |
-| 7 | ファビコン・サイトアイコン |
+全項目確定済み。実装を開始できる状態。
