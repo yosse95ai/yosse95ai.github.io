@@ -3,9 +3,6 @@
  * コンポーネントカタログ（開発・デバッグ用）
  * 本番環境ではトップページへリダイレクト
  */
-if (import.meta.env.PROD) {
-  return Astro.redirect('/');
-}
 import Badge from '../components/atoms/Badge.astro';
 import Tag from '../components/atoms/Tag.astro';
 import Icon from '../components/atoms/Icon.astro';
@@ -23,6 +20,10 @@ import CareerTimeline from '../components/organisms/CareerTimeline.astro';
 import SkillsGrid from '../components/organisms/SkillsGrid.astro';
 import BlogList from '../components/organisms/BlogList.astro';
 import PhotoGrid from '../components/organisms/PhotoGrid.astro';
+
+if (import.meta.env.PROD) {
+  return Astro.redirect('/');
+}
 
 const sampleUrls = [
   'https://aws.amazon.com/jp/blogs/news/introducing-powers/',

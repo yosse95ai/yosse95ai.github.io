@@ -275,7 +275,7 @@ yosse95ai.github.io/
 |---|---|
 | ホスティング | GitHub Pages |
 | CI/CD | GitHub Actions（`withastro/action@v3` + `actions/deploy-pages@v4`） |
-| トリガー | `main` ブランチへのプッシュ |
+| トリガー | `master` ブランチへのプッシュ |
 | サイトURL | https://yosse95ai.github.io |
 | ベースパス | 不要（リポジトリ名がユーザー名と一致するため） |
 
