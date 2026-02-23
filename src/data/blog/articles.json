@@ -1,0 +1,122 @@
+[
+  {
+    "id": "kiro-security-governance",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/kiroweeeeeek-in-japan-day-3-security-governance/",
+    "type": "original",
+    "source": "aws"
+  },
+  {
+    "id": "medical-network-part2",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/japan-security-guidelines-for-medical-information-systems-2024-network-part2/",
+    "type": "original",
+    "source": "aws"
+  },
+  {
+    "id": "ransomware-healthcare",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/safeguard-healthcare-data-from-ransomware/",
+    "type": "original",
+    "source": "aws"
+  },
+  {
+    "id": "kiro-enterprise-identity",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/enterprise-identity-and-usage-metrics/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "sonnet-46-kiro",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/sonnet-4-6/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "refactoring-ai-agents",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/refactoring-made-right-2/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "aws-transform-java",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/aws-transform-custom-ai-driven-java-modernization-to-reduce-tech-debt/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "introducing-kiro-powers",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/introducing-powers/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "kiro-checkpointing",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/introducing-checkpointing/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "kiro-steering-mcp",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/teaching-kiro-new-tricks-with-agent-steering-and-mcp/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "kiro-free-until-september",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/free-until-september-15/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "amplify-offline-caching",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/offline-caching-with-aws-amplify-tanstack-appsync-and-mongodb-atlas/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "appsync-realtime-game",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/working-with-aws-appsync-events-real-time-web-games-with-chat/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "amplify-multi-app",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/simplifying-multi-app-management-in-aws-amplify-hosting/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "appsync-pubsub-websocket",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/working-with-aws-appsync-events-serverless-websockets-for-pub-sub/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "amplify-rag-neon",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/building-rag-based-applications-with-aws-amplify-ai-kit-and-neon-postgres/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "react-native-travel-planner",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/building-a-personalized-travel-planner-with-amazon-bedrocks-knowledge-bases-and-rag/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "nextjs-amplify-auth0",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/how-to-build-next-js-apps-with-authentication-using-aws-amplify-and-auth0/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "amplify-functions-typescript",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/amplify-functions-create-serverless-functions-using-typescript-powered-by-aws-lambda/",
+    "type": "translation",
+    "source": "aws"
+  },
+  {
+    "id": "amplify-gen2-findy",
+    "externalUrl": "https://findy-tools.io/articles/aws-amplify-gen-2/40",
+    "type": "original",
+    "source": "other"
+  }
+]

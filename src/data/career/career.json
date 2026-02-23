@@ -1,0 +1,23 @@
+[
+  {
+    "id": "aws",
+    "organization": "Amazon Web Services（AWS）",
+    "role": "Solutions Architect",
+    "startDate": "2023-04",
+    "endDate": null
+  },
+  {
+    "id": "kyutech-master",
+    "organization": "九州工業大学 大学院",
+    "role": "先端情報工学専攻（情報工学）",
+    "startDate": "2021-04",
+    "endDate": "2023-03"
+  },
+  {
+    "id": "kyutech-undergrad",
+    "organization": "九州工業大学",
+    "role": "情報工学部 知能情報工学科",
+    "startDate": "2017-04",
+    "endDate": "2021-03"
+  }
+]

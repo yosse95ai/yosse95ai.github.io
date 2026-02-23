@@ -1,0 +1,16 @@
+[
+  { "id": "kanure",     "src": "/images/gallery/kanure.jpg",      "alt": "かぬれ" },
+  { "id": "kipu",       "src": "/images/gallery/kipu.jpg",        "alt": "きぷ" },
+  { "id": "kota",       "src": "/images/gallery/kota.jpg",        "alt": "こた" },
+  { "id": "kota2",      "src": "/images/gallery/kota2.jpg",       "alt": "こた" },
+  { "id": "kota3",      "src": "/images/gallery/kota3.jpg",       "alt": "こた" },
+  { "id": "nakopu",     "src": "/images/gallery/nakopu.jpg",      "alt": "なこぷ" },
+  { "id": "naru1",      "src": "/images/gallery/naru1.jpg",       "alt": "なる" },
+  { "id": "naru2",      "src": "/images/gallery/naru2.jpg",       "alt": "なる" },
+  { "id": "naru4",      "src": "/images/gallery/naru4.jpg",       "alt": "なる" },
+  { "id": "naru5",      "src": "/images/gallery/naru5.jpg",       "alt": "なる" },
+  { "id": "naru-kota1", "src": "/images/gallery/naru_kota1.JPG",  "alt": "なるとこた" },
+  { "id": "naru-kota2", "src": "/images/gallery/naru_kota2.JPG",  "alt": "なるとこた" },
+  { "id": "naru-kota3", "src": "/images/gallery/naru_kota3.jpg",  "alt": "なるとこた" },
+  { "id": "snowball",   "src": "/images/gallery/snowball.jpg",    "alt": "スノーボール" }
+]

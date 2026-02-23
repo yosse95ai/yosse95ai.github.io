@@ -211,10 +211,10 @@ src/components/
 
 | コレクション | ローダー | 主なフィールド |
 |---|---|---|
-| `blog` | `file`（JSON） | id, externalUrl, type（translation/original）, tags, draft ※title・description・ogpImageはビルド時OGP fetchで自動取得 |
-| `gallery` | `file`（JSON） | id, title, src, alt, width, height, takenAt |
+| `blog` | `file`（JSON） | id, externalUrl, type（translation/original）, source（aws/other）※title・description・ogpImageはビルド時OGP fetchで自動取得 |
+| `gallery` | `file`（JSON） | id, src, alt, width, height |
 | `skills` | `file`（JSON） | id, name, category, icon, url |
-| `career` | `file`（JSON） | id, organization, role, startDate, endDate（nullable）, description ※表示時は startDate 降順（最新が上）|
+| `career` | `file`（JSON） | id, organization, role, startDate, endDate（nullable）※表示時は startDate 降順（最新が上）|
 
 ### 7.3 ディレクトリ構成
 
@@ -232,7 +232,7 @@ yosse95ai.github.io/
 │   │   └── fetchOgp.ts     # ビルド時OGP取得ユーティリティ
 │   ├── data/
 │   │   ├── blog/articles.json
-│   │   ├── gallery/cats.json
+│   │   ├── gallery/img.json
 │   │   ├── skills/skills.json
 │   │   └── career/career.json
 │   ├── components/

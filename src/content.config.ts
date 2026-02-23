@@ -9,24 +9,18 @@ const blog = defineCollection({
     id: z.string(),
     externalUrl: z.string().url(),
     type: z.enum(['translation', 'original']),
-    tags: z.array(z.string()).default([]),
-    draft: z.boolean().default(false),
+    source: z.enum(['aws', 'other']),
   }),
 });
 
 // ギャラリーコレクション（JSON）
 const gallery = defineCollection({
-  loader: file('./src/data/gallery/cats.json'),
+  loader: file('./src/data/gallery/img.json'),
   schema: z.object({
     id: z.string(),
-    title: z.string(),
     src: z.string(),
     alt: z.string(),
-    width: z.number(),
-    height: z.number(),
-    takenAt: z.string().optional(),
-  }),
-});
+  }),});
 
 // スキルコレクション（JSON）
 const skills = defineCollection({
@@ -49,7 +43,6 @@ const career = defineCollection({
     role: z.string(),
     startDate: z.string(),
     endDate: z.string().nullable(),
-    description: z.string().optional(),
   }),
 });
 

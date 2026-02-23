@@ -1,0 +1,23 @@
+[
+  { "id": "aws",           "name": "AWS",             "category": "cloud",     "icon": "devicon:amazonwebservices-wordmark", "url": "https://aws.amazon.com" },
+  { "id": "typescript",    "name": "TypeScript",      "category": "language",  "icon": "devicon:typescript",                "url": "https://www.typescriptlang.org" },
+  { "id": "python",        "name": "Python",          "category": "language",  "icon": "devicon:python",                    "url": "https://www.python.org" },
+  { "id": "csharp",        "name": "C#",              "category": "language",  "icon": "devicon:csharp",                    "url": "https://dotnet.microsoft.com/languages/csharp" },
+  { "id": "cplusplus",     "name": "C++",             "category": "language",  "icon": "devicon:cplusplus",                 "url": "https://isocpp.org" },
+  { "id": "javascript",    "name": "JavaScript",      "category": "language",  "icon": "devicon:javascript",                "url": "https://developer.mozilla.org/docs/Web/JavaScript" },
+  { "id": "ruby",          "name": "Ruby",            "category": "language",  "icon": "devicon:ruby",                      "url": "https://www.ruby-lang.org" },
+  { "id": "react",         "name": "React",           "category": "framework", "icon": "devicon:react",                     "url": "https://react.dev" },
+  { "id": "react-native",  "name": "React Native",    "category": "framework", "icon": "devicon:react",                     "url": "https://reactnative.dev" },
+  { "id": "angular",       "name": "Angular",         "category": "framework", "icon": "devicon:angular",                   "url": "https://angular.dev" },
+  { "id": "flask",         "name": "Flask",           "category": "framework", "icon": "devicon:flask",                     "url": "https://flask.palletsprojects.com" },
+  { "id": "langchain",     "name": "LangChain",       "category": "framework", "icon": "simple-icons:langchain",            "url": "https://www.langchain.com" },
+  { "id": "rails",         "name": "Ruby on Rails",   "category": "framework", "icon": "devicon:rails",                     "url": "https://rubyonrails.org" },
+  { "id": "unity",         "name": "Unity",           "category": "framework", "icon": "devicon:unity",                     "url": "https://unity.com" },
+  { "id": "amplify",       "name": "AWS Amplify",     "category": "tool",      "icon": "simple-icons:awsamplify",           "url": "https://aws.amazon.com/amplify" },
+  { "id": "docker",        "name": "Docker",          "category": "tool",      "icon": "devicon:docker",                    "url": "https://www.docker.com" },
+  { "id": "sagemaker",     "name": "Amazon SageMaker","category": "tool",      "icon": "simple-icons:amazonsagemaker",      "url": "https://aws.amazon.com/sagemaker" },
+  { "id": "opencv",        "name": "OpenCV",          "category": "tool",      "icon": "devicon:opencv",                    "url": "https://opencv.org" },
+  { "id": "dify",          "name": "Dify",            "category": "tool",                                                   "url": "https://dify.ai" },
+  { "id": "medical-it",    "name": "医療情報技師",     "category": "other",                                                  "url": "https://www.jami.jp/jadite" },
+  { "id": "applied-info",  "name": "応用情報技術者",   "category": "other",                                                  "url": "https://www.ipa.go.jp/shiken/kubun/ap.html" }
+]
