@@ -23,13 +23,11 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - uses: actions/configure-pages@v5
       - run: npm ci
       - run: npm run test
-      - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
+      - uses: withastro/action@v3
         with:
-          path: dist
+          node-version-file: .nvmrc
 
   deploy:
     needs: build
