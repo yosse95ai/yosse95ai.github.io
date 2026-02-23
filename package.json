@@ -1,0 +1,16 @@
+{
+  "name": "yosse95ai-github-io",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.6",
+    "astro": "^5.17.1",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,2 +1,7 @@
 .tmp/
 .vscode/
+
+# Astro
+dist/
+.astro/
+node_modules/
