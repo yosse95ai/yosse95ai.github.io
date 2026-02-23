@@ -19,12 +19,12 @@ const socialLinks = [
 
     <!-- 行1: Hero × SNS -->
     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5 items-stretch">
-      <div class="md:col-span-8 flex">
+      <div class="md:col-span-8 flex" data-animate>
         <HeroSection />
       </div>
       <div
         class="md:col-span-4 rounded-3xl p-6 flex flex-col justify-center gap-3"
-        style="background: oklch(0.96 0.006 120); box-shadow: 0 1px 4px oklch(0.70 0.010 150 / 0.10);"
+        data-animate style="background: oklch(0.96 0.006 120); box-shadow: 0 1px 4px oklch(0.70 0.010 150 / 0.10);"
       >
         <h2 class="text-sm font-semibold uppercase tracking-wider mb-1" style="color: oklch(0.55 0.15 145);">
           Links
@@ -37,16 +37,48 @@ const socialLinks = [
 
     <!-- 行2: Career × Skills -->
     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5 items-stretch">
-      <div class="md:col-span-4 flex">
+      <div class="md:col-span-4 flex" data-animate>
         <CareerTimeline showAll={false} />
       </div>
-      <div class="md:col-span-8 flex">
+      <div class="md:col-span-8 flex" data-animate>
         <SkillsGrid />
       </div>
     </div>
 
     <!-- 行3: Blog -->
-    <BlogList />
+    <div data-animate>
+      <BlogList />
+    </div>
 
   </div>
 </BaseLayout>
+
+<script>
+  import { inView } from 'motion';
+
+  function initAnimations() {
+    document.querySelectorAll('[data-animate]').forEach((el) => {
+      el.classList.remove('is-visible');
+    });
+    inView('[data-animate]', (element) => {
+      element.classList.add('is-visible');
+    }, { margin: '-5% 0px' });
+  }
+
+  // 初回ロード
+  initAnimations();
+  // View Transitions 後の再実行
+  document.addEventListener('astro:page-load', initAnimations);
+</script>
+
+<style>
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  [data-animate].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
