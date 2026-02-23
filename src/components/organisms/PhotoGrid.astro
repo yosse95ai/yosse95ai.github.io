@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+
+const images = await getCollection('gallery');
+---
+
+<section class="p-4 sm:p-6">
+  <div class="columns-2 sm:columns-3 lg:columns-4 gap-3 space-y-3">
+    {images.map(img => (
+      <div class="break-inside-avoid overflow-hidden rounded-2xl" style="box-shadow: 0 1px 4px oklch(0.70 0.010 150 / 0.12);">
+        <img
+          src={img.data.src}
+          alt={img.data.alt}
+          class="w-full h-auto block select-none pointer-events-none"
+          loading="lazy"
+          decoding="async"
+          draggable="false"
+        />
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  // 右クリック・長押し防止
+  document.addEventListener('contextmenu', (e) => {
+    if ((e.target as HTMLElement).tagName === 'IMG') e.preventDefault();
+  });
+  document.addEventListener('touchstart', (e) => {
+    if ((e.target as HTMLElement).tagName === 'IMG') e.preventDefault();
+  }, { passive: false });
+</script>

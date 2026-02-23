@@ -1,0 +1,102 @@
+---
+import OgpCard from '../molecules/OgpCard.astro';
+import { getCollection } from 'astro:content';
+import { fetchOgp } from '../../lib/fetchOgp';
+
+const [awsArticles, otherArticles] = await Promise.all([
+  getCollection('blogAws'),
+  getCollection('blogOther'),
+]);
+
+const [awsCards, otherCards] = await Promise.all([
+  Promise.all(
+    awsArticles.map(async (a) => {
+      const ogp = await fetchOgp(a.data.externalUrl);
+      return {
+        id: a.id,
+        externalUrl: a.data.externalUrl,
+        type: 'aws' as const,
+        ...ogp,
+        // JSONに publishedAt があればそれを優先
+        publishedAt: a.data.publishedAt ?? ogp.publishedAt,
+      };
+    })
+  ),
+  Promise.all(
+    otherArticles.map(async (a) => {
+      const ogp = await fetchOgp(a.data.externalUrl);
+      return {
+        id: a.id,
+        externalUrl: a.data.externalUrl,
+        type: 'other' as const,
+        ...ogp,
+        publishedAt: a.data.publishedAt ?? ogp.publishedAt,
+      };
+    })
+  ),
+]);
+
+// publishedAt 降順（null は末尾）
+const sortByDate = <T extends { publishedAt: string | null }>(cards: T[]) =>
+  cards.sort((a, b) => {
+    if (!a.publishedAt && !b.publishedAt) return 0;
+    if (!a.publishedAt) return 1;
+    if (!b.publishedAt) return -1;
+    return b.publishedAt.localeCompare(a.publishedAt);
+  });
+
+const sortedAwsCards = sortByDate(awsCards);
+const sortedOtherCards = sortByDate(otherCards);
+---
+
+<section
+  class="rounded-3xl p-6 flex flex-col gap-6"
+  style="background: oklch(0.96 0.006 120); box-shadow: 0 1px 4px oklch(0.70 0.010 150 / 0.10);"
+>
+  <h2 class="text-sm font-semibold uppercase tracking-wider" style="color: oklch(0.55 0.15 145);">
+    Blog
+  </h2>
+
+  <!-- AWS Blog -->
+  <div class="flex flex-col gap-3">
+    <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">AWS Blog</p>
+    <div
+      class="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2"
+      style="scrollbar-width: thin; scrollbar-color: oklch(0.88 0.008 150) transparent;"
+    >
+      {sortedAwsCards.map(card => (
+        <div class="shrink-0 w-72">
+          <OgpCard
+            externalUrl={card.externalUrl}
+            title={card.title}
+            description={card.description}
+            ogpImage={card.ogpImage}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- 区切り線 -->
+  <hr style="border-color: oklch(0.88 0.008 150);" />
+
+  <!-- Other Blog -->
+  <div class="flex flex-col gap-3">
+    <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">Other</p>
+    <div
+      class="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2"
+      style="scrollbar-width: thin; scrollbar-color: oklch(0.88 0.008 150) transparent;"
+    >
+      {sortedOtherCards.map(card => (
+        <div class="shrink-0 w-72">
+          <OgpCard
+            externalUrl={card.externalUrl}
+            title={card.title}
+            description={card.description}
+            ogpImage={card.ogpImage}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

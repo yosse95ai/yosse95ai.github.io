@@ -41,14 +41,14 @@ const categoryColor: Record<string, string> = {
     </div>
   ) : icon ? (
     <Icon name={icon} size={22} class="shrink-0" />
-  ) : (
+  ) : category !== 'other' ? (
     <span
       class="shrink-0 w-[22px] h-[22px] rounded-full flex items-center justify-center text-white text-[10px] font-bold"
       style={`background: ${categoryColor[category]};`}
     >
       {name.charAt(0)}
     </span>
-  )}
+  ) : null}
   <span class="text-sm font-medium whitespace-nowrap" style="color: oklch(0.25 0.010 250);">
     {name}
   </span>

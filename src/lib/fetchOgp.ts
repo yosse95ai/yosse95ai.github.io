@@ -2,6 +2,7 @@ export interface OgpData {
   title: string;
   description: string;
   ogpImage: string;
+  publishedAt: string | null;
 }
 
 const cache = new Map<string, OgpData>();
@@ -19,7 +20,7 @@ export async function fetchOgp(url: string): Promise<OgpData> {
     return cache.get(url)!;
   }
 
-  const fallback: OgpData = { title: url, description: '', ogpImage: '' };
+  const fallback: OgpData = { title: url, description: '', ogpImage: '', publishedAt: null };
 
   try {
     const res = await fetch(url, {
@@ -37,6 +38,7 @@ export async function fetchOgp(url: string): Promise<OgpData> {
       title: extractMeta(html, 'og:title') ?? extractTag(html, 'title') ?? url,
       description: extractMeta(html, 'og:description') ?? extractMeta(html, 'description') ?? '',
       ogpImage: extractMeta(html, 'og:image') ?? '',
+      publishedAt: extractMeta(html, 'article:published_time') ?? null,
     };
 
     cache.set(url, data);

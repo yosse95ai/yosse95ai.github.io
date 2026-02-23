@@ -1,0 +1,52 @@
+---
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/gallery', label: 'Gallery' },
+  { href: '/history', label: 'History' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header
+  class="sticky top-0 z-50 w-full border-b backdrop-blur-sm"
+  style="background: oklch(0.98 0.005 120 / 0.85); border-color: oklch(0.88 0.008 150);"
+>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-14 items-center justify-between">
+      <!-- ロゴ -->
+      <a
+        href="/"
+        class="font-mono text-lg font-semibold no-underline"
+        style="color: oklch(0.55 0.15 145);"
+      >
+        hiroaki
+      </a>
+
+      <!-- ナビゲーション -->
+      <nav aria-label="メインナビゲーション">
+        <ul class="flex items-center gap-1 list-none m-0 p-0">
+          {navLinks.map(({ href, label }) => {
+            const isActive = href === '/'
+              ? currentPath === '/'
+              : currentPath.startsWith(href);
+            return (
+              <li>
+                <a
+                  href={href}
+                  class="rounded-lg px-3 py-1.5 text-sm font-medium transition-colors no-underline"
+                  style={isActive
+                    ? 'background: oklch(0.92 0.010 145); color: oklch(0.40 0.15 145);'
+                    : 'color: oklch(0.45 0.010 250);'}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {label}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>

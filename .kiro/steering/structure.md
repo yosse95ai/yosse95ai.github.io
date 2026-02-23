@@ -42,10 +42,11 @@ public/
 ## Content Collections スキーマ
 | コレクション | ファイル | 主なフィールド |
 |---|---|---|
-| `blog` | `data/blog/articles.json` | id, externalUrl, type（translation/original）, source（aws/other）|
+| `blogAws`   | `data/blog/aws-articles.json`   | id, externalUrl, publishedAt（optional）|
+| `blogOther` | `data/blog/other-articles.json` | id, externalUrl, publishedAt（optional）|
 | `gallery` | `data/gallery/img.json` | id, src, alt |
 | `skills` | `data/skills/skills.json` | id, name, category, icon, url |
-| `career` | `data/career/career.json` | id, organization, role, startDate, endDate（nullable）|
+| `career` | `data/career/career.json` | id, organization, role, startDate, endDate（nullable）, description（nullable, optional）|
 
 ## スタイリング規約
 - Tailwind CSS v4 ユーティリティクラスを基本とする

@@ -1,12 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { fetchOgp, clearCache } from '../lib/fetchOgp';
 
-const mockHtml = (title: string, description: string, image: string) => `
+const mockHtml = (title: string, description: string, image: string, publishedAt?: string) => `
 <html>
   <head>
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${description}" />
     <meta property="og:image" content="${image}" />
+    ${publishedAt ? `<meta property="article:published_time" content="${publishedAt}" />` : ''}
   </head>
 </html>
 `;
@@ -20,7 +21,7 @@ describe('fetchOgp', () => {
   it('OGPメタタグを正常に取得できる', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
       ok: true,
-      text: async () => mockHtml('テストタイトル', 'テスト説明文', 'https://example.com/image.png'),
+      text: async () => mockHtml('テストタイトル', 'テスト説明文', 'https://example.com/image.png', '2025-06-01T10:00:00+09:00'),
     }));
 
     const result = await fetchOgp('https://example.com/article');
@@ -28,6 +29,18 @@ describe('fetchOgp', () => {
     expect(result.title).toBe('テストタイトル');
     expect(result.description).toBe('テスト説明文');
     expect(result.ogpImage).toBe('https://example.com/image.png');
+    expect(result.publishedAt).toBe('2025-06-01T10:00:00+09:00');
+  });
+
+  it('article:published_time がない場合は publishedAt が null になる', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      text: async () => mockHtml('タイトル', '説明', ''),
+    }));
+
+    const result = await fetchOgp('https://example.com/no-date');
+
+    expect(result.publishedAt).toBeNull();
   });
 
   it('fetchが失敗した場合にfallbackを返す', async () => {

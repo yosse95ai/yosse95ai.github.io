@@ -22,11 +22,12 @@
 ## コンテンツ管理
 - Astro Content Collections（Content Layer API）
 - ローダー: `file()`（JSONファイル）
-- コレクション: `blog` / `gallery` / `skills` / `career`
+- コレクション: `blogAws` / `blogOther` / `gallery` / `skills` / `career`
 
 ## OGP取得
 - ビルド時に `src/lib/fetchOgp.ts` で外部URLからOGPメタタグをfetch・静的埋め込み
-- `blog` コレクションは `externalUrl` と `type` のみ管理、title/description/ogpImageは自動取得
+- `blog` コレクションは `externalUrl` のみ管理、title/description/ogpImage/publishedAtは自動取得
+- `article:published_time` メタタグから投稿日を取得し、取得できない場合は `null`
 
 ## デプロイ
 - GitHub Pages（`https://yosse95ai.github.io`）

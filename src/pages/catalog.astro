@@ -14,14 +14,20 @@ import SocialLink from '../components/molecules/SocialLink.astro';
 import TimelineItem from '../components/molecules/TimelineItem.astro';
 import { fetchOgp } from '../lib/fetchOgp';
 import { getCollection } from 'astro:content';
+import Header from '../components/organisms/Header.astro';
+import HeroSection from '../components/organisms/HeroSection.astro';
+import CareerTimeline from '../components/organisms/CareerTimeline.astro';
+import SkillsGrid from '../components/organisms/SkillsGrid.astro';
+import BlogList from '../components/organisms/BlogList.astro';
+import PhotoGrid from '../components/organisms/PhotoGrid.astro';
 
 const sampleUrls = [
-  { url: 'https://aws.amazon.com/jp/blogs/news/introducing-powers/', type: 'translation' as const },
-  { url: 'https://findy-tools.io/articles/aws-amplify-gen-2/40', type: 'original' as const },
+  'https://aws.amazon.com/jp/blogs/news/introducing-powers/',
+  'https://findy-tools.io/articles/aws-amplify-gen-2/40',
 ];
 
 const sampleOgp = await Promise.all(
-  sampleUrls.map(async ({ url, type }) => ({ ...(await fetchOgp(url)), url, type }))
+  sampleUrls.map(async (url) => ({ ...(await fetchOgp(url)), url }))
 );
 
 // skills.json からデータ取得してカテゴリ別に分類
@@ -61,8 +67,8 @@ const skillsByCategory = Object.fromEntries(
     <section class="space-y-4">
       <h2 class="text-xl font-semibold">Tag</h2>
       <div class="flex flex-wrap gap-3 items-center">
-        <Tag type="translation" />
-        <Tag type="original" />
+        <Tag type="aws" />
+        <Tag type="other" />
       </div>
     </section>
 
@@ -149,10 +155,9 @@ const skillsByCategory = Object.fromEntries(
     <section class="space-y-4">
       <h2 class="text-xl font-semibold">OgpCard</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl">
-        {sampleOgp.map(({ url, type, title, description, ogpImage }) => (
+        {sampleOgp.map(({ url, title, description, ogpImage }) => (
           <OgpCard
             externalUrl={url}
-            type={type}
             title={title}
             description={description}
             ogpImage={ogpImage}
@@ -224,6 +229,51 @@ const skillsByCategory = Object.fromEntries(
         <p class="text-sm" style="color: oklch(0.45 0.010 250);">補足テキスト / Muted text</p>
         <p class="font-mono text-sm">等幅フォント / Monospace: const hello = "world"</p>
       </div>
+    </section>
+
+    <!-- ===== Organisms: Header ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">Header</h2>
+      <p class="text-xs" style="color: oklch(0.55 0.010 250);">※ ページ上部に sticky 表示されているものが実物です</p>
+      <div class="border rounded-2xl overflow-hidden" style="border-color: oklch(0.88 0.008 150);">
+        <Header />
+      </div>
+    </section>
+
+    <!-- ===== Organisms: HeroSection ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">HeroSection</h2>
+      <div class="max-w-2xl">
+        <HeroSection />
+      </div>
+    </section>
+
+    <!-- ===== Organisms: CareerTimeline ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">CareerTimeline</h2>
+      <div class="max-w-sm">
+        <CareerTimeline />
+      </div>
+    </section>
+
+    <!-- ===== Organisms: SkillsGrid ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">SkillsGrid</h2>
+      <div class="max-w-3xl">
+        <SkillsGrid />
+      </div>
+    </section>
+
+    <!-- ===== Organisms: BlogList ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">BlogList</h2>
+      <BlogList />
+    </section>
+
+    <!-- ===== Organisms: PhotoGrid ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">PhotoGrid</h2>
+      <PhotoGrid />
     </section>
 
   </body>

@@ -1,0 +1,48 @@
+---
+import SkillItem from '../molecules/SkillItem.astro';
+import { getCollection } from 'astro:content';
+
+const allSkills = await getCollection('skills');
+
+const categories = [
+  { key: 'cloud',     label: 'Cloud' },
+  { key: 'language',  label: 'Language' },
+  { key: 'framework', label: 'Framework' },
+  { key: 'tool',      label: 'Tool' },
+  { key: 'other',     label: 'Certification' },
+] as const;
+
+const skillsByCategory = Object.fromEntries(
+  categories.map(({ key }) => [
+    key,
+    allSkills.filter(s => s.data.category === key),
+  ])
+);
+---
+
+<section
+  class="rounded-3xl p-6 flex flex-col gap-5 h-full"
+  style="background: oklch(0.96 0.006 120); box-shadow: 0 1px 4px oklch(0.70 0.010 150 / 0.10);"
+>
+  <h2 class="text-sm font-semibold uppercase tracking-wider" style="color: oklch(0.55 0.15 145);">
+    Skills
+  </h2>
+
+  <div class="flex flex-col gap-4">
+    {categories.map(({ key, label }) => (
+      <div>
+        <p class="text-xs font-mono mb-2" style="color: oklch(0.60 0.010 250);">{label}</p>
+        <div class="flex flex-wrap gap-1">
+          {skillsByCategory[key].map(skill => (
+            <SkillItem
+              name={skill.data.name}
+              icon={skill.data.icon}
+              url={skill.data.url}
+              category={skill.data.category}
+            />
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

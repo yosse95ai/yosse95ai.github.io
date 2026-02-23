@@ -1,16 +1,23 @@
 import { defineCollection, z } from 'astro:content';
 import { file } from 'astro/loaders';
 
-// ブログ記事コレクション（JSON）
-// title・description・ogpImageはビルド時OGP fetchで自動取得するためスキーマに含めない
-const blog = defineCollection({
-  loader: file('./src/data/blog/articles.json'),
-  schema: z.object({
-    id: z.string(),
-    externalUrl: z.string().url(),
-    type: z.enum(['translation', 'original']),
-    source: z.enum(['aws', 'other']),
-  }),
+// ブログ記事スキーマ（共通）
+const blogSchema = z.object({
+  id: z.string(),
+  externalUrl: z.string().url(),
+  publishedAt: z.string().optional(),
+});
+
+// AWSブログコレクション
+const blogAws = defineCollection({
+  loader: file('./src/data/blog/aws-articles.json'),
+  schema: blogSchema,
+});
+
+// その他ブログコレクション
+const blogOther = defineCollection({
+  loader: file('./src/data/blog/other-articles.json'),
+  schema: blogSchema,
 });
 
 // ギャラリーコレクション（JSON）
@@ -43,7 +50,8 @@ const career = defineCollection({
     role: z.string(),
     startDate: z.string(),
     endDate: z.string().nullable(),
+    description: z.string().nullable().optional(),
   }),
 });
 
-export const collections = { blog, gallery, skills, career };
+export const collections = { blogAws, blogOther, gallery, skills, career };

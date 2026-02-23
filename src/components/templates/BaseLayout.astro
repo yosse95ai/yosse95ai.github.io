@@ -1,0 +1,56 @@
+---
+import Header from '../organisms/Header.astro';
+import { ClientRouter } from 'astro:transitions';
+
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Hiroaki Yoshimura',
+  description = 'AWSのSolutions Architectとして活動するソフトウェアエンジニアのポートフォリオサイトです。',
+} = Astro.props;
+
+const siteUrl = 'https://yosse95ai.github.io';
+const ogImage = `${siteUrl}/images/icon.jpg`;
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- OGP -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={siteUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- View Transitions -->
+    <ClientRouter />
+
+    <style>@import '../../styles/global.css';</style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <footer
+      class="mt-16 border-t py-6 text-center text-xs"
+      style="border-color: oklch(0.88 0.008 150); color: oklch(0.60 0.010 250);"
+    >
+      © {new Date().getFullYear()} Hiroaki Yoshimura
+    </footer>
+  </body>
+</html>

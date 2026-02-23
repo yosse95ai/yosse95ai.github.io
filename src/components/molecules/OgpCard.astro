@@ -1,17 +1,13 @@
 ---
-import Tag from '../atoms/Tag.astro';
-
 export interface Props {
   externalUrl: string;
-  type: 'translation' | 'original';
   title: string;
   description: string;
   ogpImage: string;
 }
 
-const { externalUrl, type, title, description, ogpImage } = Astro.props;
+const { externalUrl, title, description, ogpImage } = Astro.props;
 
-// ホスト名をソース表示用に取得
 const hostname = new URL(externalUrl).hostname.replace(/^www\./, '');
 ---
 
@@ -40,16 +36,13 @@ const hostname = new URL(externalUrl).hostname.replace(/^www\./, '');
   </div>
 
   <!-- テキスト -->
-  <div class="flex flex-col gap-2 p-4 flex-1">
-    <div class="flex items-center gap-2">
-      <Tag type={type} />
-      <span class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">{hostname}</span>
-    </div>
-    <p class="text-sm font-semibold leading-snug line-clamp-2" style="color: oklch(0.20 0.010 250);">
+  <div class="flex flex-col gap-0.5 p-3 flex-1">
+    <span class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">{hostname}</span>
+    <p class="text-sm font-semibold leading-tight line-clamp-2" style="color: oklch(0.20 0.010 250);">
       {title}
     </p>
     {description && (
-      <p class="text-xs leading-relaxed line-clamp-2" style="color: oklch(0.45 0.010 250);">
+      <p class="text-xs leading-snug line-clamp-3 mt-0" style="color: oklch(0.45 0.010 250); margin-top: 2px;">
         {description}
       </p>
     )}

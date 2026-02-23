@@ -1,0 +1,21 @@
+[
+  { "id": "kiro-enterprise-identity",    "externalUrl": "https://aws.amazon.com/jp/blogs/news/enterprise-identity-and-usage-metrics/",                                                    "publishedAt": "2026-02-20" },
+  { "id": "sonnet-46-kiro",             "externalUrl": "https://aws.amazon.com/jp/blogs/news/sonnet-4-6/",                                                                               "publishedAt": "2026-02-19" },
+  { "id": "refactoring-ai-agents",       "externalUrl": "https://aws.amazon.com/jp/blogs/news/refactoring-made-right-2/",                                                                "publishedAt": "2026-02-18" },
+  { "id": "aws-transform-java",          "externalUrl": "https://aws.amazon.com/jp/blogs/news/aws-transform-custom-ai-driven-java-modernization-to-reduce-tech-debt/",                   "publishedAt": "2026-02-09" },
+  { "id": "introducing-kiro-powers",     "externalUrl": "https://aws.amazon.com/jp/blogs/news/introducing-powers/",                                                                      "publishedAt": "2025-12-05" },
+  { "id": "kiro-security-governance",    "externalUrl": "https://aws.amazon.com/jp/blogs/news/kiroweeeeeeek-in-japan-day-3-security-governance/",                                        "publishedAt": "2025-11-21" },
+  { "id": "kiro-checkpointing",          "externalUrl": "https://aws.amazon.com/jp/blogs/news/introducing-checkpointing/",                                                               "publishedAt": "2025-11-21" },
+  { "id": "kiro-steering-mcp",           "externalUrl": "https://aws.amazon.com/jp/blogs/news/teaching-kiro-new-tricks-with-agent-steering-and-mcp/",                                   "publishedAt": "2025-10-30" },
+  { "id": "kiro-free-until-september",   "externalUrl": "https://aws.amazon.com/jp/blogs/news/free-until-september-15/",                                                                 "publishedAt": "2025-09-01" },
+  { "id": "amplify-offline-caching",     "externalUrl": "https://aws.amazon.com/jp/blogs/news/offline-caching-with-aws-amplify-tanstack-appsync-and-mongodb-atlas/",                    "publishedAt": "2025-08-21" },
+  { "id": "amplify-multi-app",           "externalUrl": "https://aws.amazon.com/jp/blogs/news/simplifying-multi-app-management-in-aws-amplify-hosting/",                                "publishedAt": "2025-04-09" },
+  { "id": "appsync-realtime-game",       "externalUrl": "https://aws.amazon.com/jp/blogs/news/working-with-aws-appsync-events-real-time-web-games-with-chat/",                          "publishedAt": "2025-05-01" },
+  { "id": "react-native-travel-planner", "externalUrl": "https://aws.amazon.com/jp/blogs/news/building-a-personalized-travel-planner-with-amazon-bedrocks-knowledge-bases-and-rag/",   "publishedAt": "2025-01-24" },
+  { "id": "amplify-rag-neon",            "externalUrl": "https://aws.amazon.com/jp/blogs/news/building-rag-based-applications-with-aws-amplify-ai-kit-and-neon-postgres/",              "publishedAt": "2025-02-17" },
+  { "id": "appsync-pubsub-websocket",    "externalUrl": "https://aws.amazon.com/jp/blogs/news/working-with-aws-appsync-events-serverless-websockets-for-pub-sub/",                      "publishedAt": "2025-02-17" },
+  { "id": "nextjs-amplify-auth0",        "externalUrl": "https://aws.amazon.com/jp/blogs/news/how-to-build-next-js-apps-with-authentication-using-aws-amplify-and-auth0/",              "publishedAt": "2024-10-07" },
+  { "id": "medical-network-part2",       "externalUrl": "https://aws.amazon.com/jp/blogs/news/japan-security-guidelines-for-medical-information-systems-2024-network-part2/",           "publishedAt": "2024-05-15" },
+  { "id": "amplify-functions-typescript","externalUrl": "https://aws.amazon.com/jp/blogs/news/amplify-functions-create-serverless-functions-using-typescript-powered-by-aws-lambda/",  "publishedAt": "2024-05-13" },
+  { "id": "ransomware-healthcare",       "externalUrl": "https://aws.amazon.com/jp/blogs/news/safeguard-healthcare-data-from-ransomware/",                                              "publishedAt": "2023-11-14" }
+]

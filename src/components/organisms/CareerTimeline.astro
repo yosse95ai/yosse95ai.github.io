@@ -1,0 +1,51 @@
+---
+import TimelineItem from '../molecules/TimelineItem.astro';
+import { getCollection } from 'astro:content';
+
+export interface Props {
+  /** true のとき全件表示、false のとき最新3件のみ */
+  showAll?: boolean;
+}
+
+const { showAll = false } = Astro.props;
+
+const allCareer = await getCollection('career');
+// startDate 降順（最新が上）
+const sorted = allCareer.sort(
+  (a, b) => b.data.startDate.localeCompare(a.data.startDate)
+);
+const items = showAll ? sorted : sorted.slice(0, 3);
+const hasMore = !showAll && sorted.length > 3;
+---
+
+<section
+  class="rounded-3xl p-6 flex flex-col gap-4 h-full"
+  style="background: oklch(0.96 0.006 120); box-shadow: 0 1px 4px oklch(0.70 0.010 150 / 0.10);"
+>
+  <h2 class="text-sm font-semibold uppercase tracking-wider" style="color: oklch(0.55 0.15 145);">
+    Career
+  </h2>
+
+  <div class="flex-1">
+    {items.map((item, i) => (
+      <TimelineItem
+        organization={item.data.organization}
+        role={item.data.role}
+        startDate={item.data.startDate}
+        endDate={item.data.endDate ?? null}
+        isLast={i === items.length - 1}
+      />
+    ))}
+  </div>
+
+  {hasMore && (
+    <a
+      href="/history"
+      class="inline-flex items-center gap-1 text-xs font-medium transition-colors no-underline self-start"
+      style="color: oklch(0.55 0.15 145);"
+    >
+      全てを見る
+      <span aria-hidden="true">→</span>
+    </a>
+  )}
+</section>

@@ -1,18 +1,18 @@
 ---
 /**
- * 記事種別タグ（translation / original）
+ * 記事ソースタグ（aws / other）
  */
 export interface Props {
-  type: 'translation' | 'original';
+  type: 'aws' | 'other';
   class?: string;
 }
 
 const { type, class: className = '' } = Astro.props;
 
-const label = type === 'translation' ? '翻訳' : '執筆';
+const label = type === 'aws' ? 'AWS Blog' : 'Other';
 const colorClass =
-  type === 'translation'
-    ? 'bg-[oklch(0.90_0.06_200)] text-[oklch(0.30_0.10_200)]'
+  type === 'aws'
+    ? 'bg-[oklch(0.90_0.06_60)] text-[oklch(0.35_0.12_60)]'
     : 'bg-[oklch(0.90_0.06_145)] text-[oklch(0.30_0.10_145)]';
 ---
 
