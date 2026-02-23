@@ -189,7 +189,8 @@ AWSに勤務するソフトウェアエンジニアの個人紹介サイト。�
 | スタイリング | Tailwind CSS v4（`@tailwindcss/vite`） |
 | UIコンポーネント | DaisyUI v5（Tailwind v4ネイティブ、React不要） |
 | アニメーション | Motion（Vanilla JS API）+ Astro CSS View Transitions |
-| パッケージ管理 | pnpm |
+| パッケージ管理 | npm |
+| Nodeバージョン管理 | nvm |
 | コンテンツ管理 | Astro Content Collections（Content Layer API） |
 | アイコン | `@iconify/astro` + `@iconify-json/devicon` + `@iconify-json/simple-icons` |
 | デプロイ | GitHub Actions（`withastro/action`）→ GitHub Pages |
@@ -246,7 +247,8 @@ yosse95ai.github.io/
 │   └── styles/global.css
 ├── astro.config.mjs
 ├── tsconfig.json
-└── pnpm-lock.yaml
+└── package-lock.json
+└── .nvmrc
 ```
 
 ---
