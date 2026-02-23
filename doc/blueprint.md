@@ -38,8 +38,9 @@ AWSに勤務するソフトウェアエンジニアの個人紹介サイト。�
 
 | セクション | 内容 |
 |---|---|
+| ヘッダー | サイト名・ナビゲーションリンク（トップ・ギャラリー・ヒストリー） |
 | ヒーロー / 自己紹介 | 名前・役職（AWSエンジニア）・短い自己紹介・Kiroブログへの関与 |
-| 経歴タイムライン | 大学 → 大学院 → AWS（現在） |
+| 経歴タイムライン | 最新3件を縦タイムラインで表示。4件以上の場合は「全てを見る」ボタンを表示し `/history` へ遷移 |
 | スキル | カテゴリ別技術スキル一覧 |
 | ブログ記事一覧 | 翻訳・執筆記事のOGPカード一覧 |
 | SNSリンク | GitHub、LinkedIn、Qiita、Zenn |
@@ -49,6 +50,12 @@ AWSに勤務するソフトウェアエンジニアの個人紹介サイト。�
 - `img/` フォルダの猫の写真をグリッド表示
 - ダウンロード不可（CSS/JSによる右クリック・長押し防止）
 - ライトボックス不要（MVP）
+
+### 4.3 ヒストリーページ (`/history`)
+
+- 全経歴エントリーを縦タイムラインで表示
+- エントリー数に関わらず常にヘッダーナビからアクセス可能
+- トップページの「全てを見る」ボタンは4件以上の場合のみ表示
 
 ---
 
@@ -195,7 +202,7 @@ Atomic Designパターンを採用:
 src/components/
 ├── atoms/       # Button, Badge, Icon, Tag など
 ├── molecules/   # OgpCard, SkillItem, SocialLink, TimelineItem など
-├── organisms/   # HeroSection, CareerTimeline, SkillsGrid, BlogList, PhotoGrid など
+├── organisms/   # Header, HeroSection, CareerTimeline, SkillsGrid, BlogList, PhotoGrid など
 └── templates/   # BaseLayout など
 ```
 
@@ -206,6 +213,7 @@ src/components/
 | `blog` | `glob`（Markdown） | externalUrl, type（translation/original）, tags, draft ※title・description・ogpImageはビルド時OGP fetchで自動取得 |
 | `gallery` | `file`（JSON） | id, title, src, alt, width, height, takenAt |
 | `skills` | `file`（JSON） | id, name, category, icon, url |
+| `career` | `file`（JSON） | id, organization, role, startDate, endDate（nullable）, description ※表示時は startDate 降順（最新が上）|
 
 ### 7.3 ディレクトリ構成
 
@@ -224,7 +232,8 @@ yosse95ai.github.io/
 │   ├── data/
 │   │   ├── blog/*.md
 │   │   ├── gallery/cats.json
-│   │   └── skills/skills.json
+│   │   ├── skills/skills.json
+│   │   └── career/career.json
 │   ├── components/
 │   │   ├── atoms/
 │   │   ├── molecules/
@@ -232,7 +241,8 @@ yosse95ai.github.io/
 │   │   └── templates/
 │   ├── pages/
 │   │   ├── index.astro
-│   │   └── gallery.astro
+│   │   ├── gallery.astro
+│   │   └── history.astro
 │   └── styles/global.css
 ├── astro.config.mjs
 ├── tsconfig.json
