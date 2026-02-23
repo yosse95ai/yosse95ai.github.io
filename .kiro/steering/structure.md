@@ -23,6 +23,7 @@ src/
 ├── styles/
 │   └── global.css              # Tailwind import, DaisyUI plugin, テーマ変数
 ├── icons/                      # カスタムSVGアイコン
+├── tests/                      # ユニットテスト（*.test.ts）
 └── content.config.ts           # Content Collections スキーマ定義
 
 public/

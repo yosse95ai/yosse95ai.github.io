@@ -36,6 +36,7 @@
 npm run dev      # 開発サーバー起動
 npm run build    # 本番ビルド
 npm run preview  # ビルド結果のプレビュー
+npm run test     # ユニットテスト実行（Vitest）
 ```
 
 ## Node バージョン
@@ -43,3 +44,8 @@ npm run preview  # ビルド結果のプレビュー
 
 ## Gitルール
 `git push` は勝手に行わない。
+
+## テスト
+- フレームワーク: Vitest
+- テストファイルは `src/tests/` に配置（`*.test.ts`）
+- `src/lib/` の TypeScript ユーティリティには対応するテストを作成する
