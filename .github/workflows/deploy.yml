@@ -27,7 +27,8 @@ jobs:
       - run: npm run test
       - uses: withastro/action@v3
         with:
-          node-version-file: .nvmrc
+          node-version: '22'
+          build-cmd: npm run build
 
   deploy:
     needs: build
