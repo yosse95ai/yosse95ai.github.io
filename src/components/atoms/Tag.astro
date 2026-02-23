@@ -1,0 +1,23 @@
+---
+/**
+ * 記事種別タグ（translation / original）
+ */
+export interface Props {
+  type: 'translation' | 'original';
+  class?: string;
+}
+
+const { type, class: className = '' } = Astro.props;
+
+const label = type === 'translation' ? '翻訳' : '執筆';
+const colorClass =
+  type === 'translation'
+    ? 'bg-[oklch(0.90_0.06_200)] text-[oklch(0.30_0.10_200)]'
+    : 'bg-[oklch(0.90_0.06_145)] text-[oklch(0.30_0.10_145)]';
+---
+
+<span
+  class={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${colorClass} ${className}`}
+>
+  {label}
+</span>

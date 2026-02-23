@@ -19,7 +19,8 @@ src/
 ├── pages/
 │   ├── index.astro             # トップページ（Bento Grid）
 │   ├── gallery.astro           # 猫写真ギャラリー
-│   └── history.astro           # 全経歴タイムライン
+│   ├── history.astro           # 全経歴タイムライン
+│   └── catalog.astro           # コンポーネントカタログ（開発用・本番ビルド除外）
 ├── styles/
 │   └── global.css              # Tailwind import, DaisyUI plugin, テーマ変数
 ├── icons/                      # カスタムSVGアイコン

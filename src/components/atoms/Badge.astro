@@ -1,0 +1,25 @@
+---
+export interface Props {
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'sm' | 'md';
+  class?: string;
+}
+
+const {
+  variant = 'secondary',
+  size = 'sm',
+  class: className = '',
+} = Astro.props;
+
+const variantClass = {
+  primary: 'badge-primary',
+  secondary: 'badge-secondary',
+  ghost: 'badge-ghost',
+}[variant];
+
+const sizeClass = size === 'sm' ? 'badge-sm' : 'badge-md';
+---
+
+<span class={`badge ${variantClass} ${sizeClass} ${className}`}>
+  <slot />
+</span>

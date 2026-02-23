@@ -1,0 +1,129 @@
+---
+/**
+ * コンポーネントカタログ（開発・デバッグ用）
+ * 本番ビルドには含まれない（astro.config.mjs の build.excludeRoutes で除外）
+ */
+import Badge from '../components/atoms/Badge.astro';
+import Tag from '../components/atoms/Tag.astro';
+import Icon from '../components/atoms/Icon.astro';
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>コンポーネントカタログ</title>
+    <style>@import '../styles/global.css';</style>
+  </head>
+  <body class="p-8 space-y-12" style="background: oklch(0.98 0.005 120); color: oklch(0.20 0.010 250);">
+
+    <h1 class="text-3xl font-bold border-b pb-4" style="border-color: oklch(0.88 0.008 150);">
+      🧩 コンポーネントカタログ
+    </h1>
+
+    <!-- ===== Badge ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">Badge</h2>
+      <div class="flex flex-wrap gap-3 items-center">
+        <Badge variant="primary">primary</Badge>
+        <Badge variant="secondary">secondary</Badge>
+        <Badge variant="ghost">ghost</Badge>
+        <Badge variant="primary" size="md">primary md</Badge>
+        <Badge variant="secondary" size="md">secondary md</Badge>
+      </div>
+    </section>
+
+    <!-- ===== Tag ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">Tag</h2>
+      <div class="flex flex-wrap gap-3 items-center">
+        <Tag type="translation" />
+        <Tag type="original" />
+      </div>
+    </section>
+
+    <!-- ===== Icon ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">Icon</h2>
+      <div class="flex flex-wrap gap-6 items-center">
+        <div class="flex flex-col items-center gap-1">
+          <Icon name="devicon:typescript" size={32} />
+          <span class="text-xs">TypeScript</span>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+          <Icon name="devicon:python" size={32} />
+          <span class="text-xs">Python</span>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+          <Icon name="devicon:react" size={32} />
+          <span class="text-xs">React</span>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+          <Icon name="devicon:docker" size={32} />
+          <span class="text-xs">Docker</span>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+          <Icon name="devicon:amazonwebservices-wordmark" size={48} />
+          <span class="text-xs">AWS</span>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+          <!-- AWS Amplify brand color: #FF9900 → oklch(0.75 0.18 60) -->
+          <Icon name="simple-icons:awsamplify" size={32} style="color: oklch(0.75 0.18 60);" label="AWS Amplify" />
+          <span class="text-xs">Amplify</span>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+          <Icon name="simple-icons:github" size={32} label="GitHub" />
+          <span class="text-xs">GitHub</span>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+          <!-- LinkedIn brand color: #0A66C2 → oklch(0.45 0.17 250) -->
+          <Icon name="simple-icons:linkedin" size={32} style="color: oklch(0.45 0.17 250);" label="LinkedIn" />
+          <span class="text-xs">LinkedIn</span>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+          <!-- Zenn brand color: #3EA8FF → oklch(0.68 0.17 240) -->
+          <Icon name="simple-icons:zenn" size={32} style="color: oklch(0.68 0.17 240);" label="Zenn" />
+          <span class="text-xs">Zenn</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== カラーパレット ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">カラーパレット</h2>
+      <div class="flex flex-wrap gap-3">
+        {[
+          { name: 'bg', value: 'oklch(0.98 0.005 120)' },
+          { name: 'surface', value: 'oklch(0.96 0.006 120)' },
+          { name: 'primary', value: 'oklch(0.55 0.15 145)' },
+          { name: 'secondary', value: 'oklch(0.60 0.08 150)' },
+          { name: 'border', value: 'oklch(0.88 0.008 150)' },
+          { name: 'text', value: 'oklch(0.20 0.010 250)' },
+          { name: 'text-muted', value: 'oklch(0.45 0.010 250)' },
+        ].map(({ name, value }) => (
+          <div class="flex flex-col items-center gap-1">
+            <div
+              class="w-16 h-16 rounded-lg border"
+              style={`background: ${value}; border-color: oklch(0.88 0.008 150);`}
+            />
+            <span class="text-xs font-mono">{name}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ===== タイポグラフィ ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">タイポグラフィ</h2>
+      <div class="space-y-2">
+        <p class="text-4xl font-bold">見出し H1 / Heading</p>
+        <p class="text-2xl font-semibold">見出し H2 / Subheading</p>
+        <p class="text-lg font-medium">見出し H3 / Section</p>
+        <p class="text-base">本文テキスト / Body text — AWSソフトウェアエンジニア</p>
+        <p class="text-sm" style="color: oklch(0.45 0.010 250);">補足テキスト / Muted text</p>
+        <p class="font-mono text-sm">等幅フォント / Monospace: const hello = "world"</p>
+      </div>
+    </section>
+
+  </body>
+</html>
