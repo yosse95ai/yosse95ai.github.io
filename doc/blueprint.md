@@ -168,7 +168,7 @@ AWSに勤務するソフトウェアエンジニアの個人紹介サイト。�
 
 ### 6.4 アニメーション
 
-- スクロールトリガーによるフェードイン・スライドイン（Motion `inView()`）
+- ページロード時フェードイン・スライドイン（CSS transition + `astro:page-load` イベント、View Transitions との互換性のため `inView()` は不使用）
 - ページ遷移アニメーション（Astro `<ClientRouter />` によるCSS View Transitions）
 - ホバー時のマイクロインタラクション（DaisyUI + Tailwindトランジション）
 

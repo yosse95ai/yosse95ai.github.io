@@ -54,20 +54,20 @@ const socialLinks = [
 </BaseLayout>
 
 <script>
-  import { inView } from 'motion';
-
+  // View Transitions 後に is-visible を付与し直す
   function initAnimations() {
     document.querySelectorAll('[data-animate]').forEach((el) => {
       el.classList.remove('is-visible');
+      // 少し遅らせて reflow を確保してから付与
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          el.classList.add('is-visible');
+        });
+      });
     });
-    inView('[data-animate]', (element) => {
-      element.classList.add('is-visible');
-    }, { margin: '-5% 0px' });
   }
 
-  // 初回ロード
   initAnimations();
-  // View Transitions 後の再実行
   document.addEventListener('astro:page-load', initAnimations);
 </script>
 

@@ -10,7 +10,7 @@
 - カラー空間: OKLCH（`--color-*` カスタムプロパティで定義）
 
 ## アニメーション
-- Motion（Vanilla JS `inView()` によるスクロールトリガー）
+- CSS transition + `astro:page-load` イベントによるページロード時フェードイン（`inView()` は View Transitions との互換性問題のため不使用）
 - Astro `<ClientRouter />` によるCSS View Transitions
 
 ## アイコン
