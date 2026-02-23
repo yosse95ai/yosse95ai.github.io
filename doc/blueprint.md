@@ -66,9 +66,9 @@ AWSに勤務するソフトウェアエンジニアの個人紹介サイト。�
 - 表示形式: OGPカード（サムネイル・タイトル・説明・記事種別バッジ）
 - 記事種別: `translation`（翻訳） / `original`（執筆）
 - 各カードは外部記事URLへリンク
-- Astro Content Collections（Markdownファイル）で管理
+- Astro Content Collections（JSONファイル）で管理
 - OGPデータ（タイトル・説明・OGP画像URL）は**ビルド時にfetchして静的生成**する（SSG）
-  - Markdownファイルには `externalUrl` と `type` のみ記載
+  - `articles.json` に `externalUrl` と `type` のみ記載
   - ビルド時に各URLへNode.jsからfetchしてOGPメタタグを解析・埋め込む
   - `ogpUrl` フィールドは不要（自動取得のため）
 
@@ -211,7 +211,7 @@ src/components/
 
 | コレクション | ローダー | 主なフィールド |
 |---|---|---|
-| `blog` | `glob`（Markdown） | externalUrl, type（translation/original）, tags, draft ※title・description・ogpImageはビルド時OGP fetchで自動取得 |
+| `blog` | `file`（JSON） | id, externalUrl, type（translation/original）, tags, draft ※title・description・ogpImageはビルド時OGP fetchで自動取得 |
 | `gallery` | `file`（JSON） | id, title, src, alt, width, height, takenAt |
 | `skills` | `file`（JSON） | id, name, category, icon, url |
 | `career` | `file`（JSON） | id, organization, role, startDate, endDate（nullable）, description ※表示時は startDate 降順（最新が上）|
@@ -231,7 +231,7 @@ yosse95ai.github.io/
 │   ├── lib/
 │   │   └── fetchOgp.ts     # ビルド時OGP取得ユーティリティ
 │   ├── data/
-│   │   ├── blog/*.md
+│   │   ├── blog/articles.json
 │   │   ├── gallery/cats.json
 │   │   ├── skills/skills.json
 │   │   └── career/career.json

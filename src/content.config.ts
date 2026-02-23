@@ -1,0 +1,56 @@
+import { defineCollection, z } from 'astro:content';
+import { file } from 'astro/loaders';
+
+// ブログ記事コレクション（JSON）
+// title・description・ogpImageはビルド時OGP fetchで自動取得するためスキーマに含めない
+const blog = defineCollection({
+  loader: file('./src/data/blog/articles.json'),
+  schema: z.object({
+    id: z.string(),
+    externalUrl: z.string().url(),
+    type: z.enum(['translation', 'original']),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
+// ギャラリーコレクション（JSON）
+const gallery = defineCollection({
+  loader: file('./src/data/gallery/cats.json'),
+  schema: z.object({
+    id: z.string(),
+    title: z.string(),
+    src: z.string(),
+    alt: z.string(),
+    width: z.number(),
+    height: z.number(),
+    takenAt: z.string().optional(),
+  }),
+});
+
+// スキルコレクション（JSON）
+const skills = defineCollection({
+  loader: file('./src/data/skills/skills.json'),
+  schema: z.object({
+    id: z.string(),
+    name: z.string(),
+    category: z.enum(['cloud', 'language', 'framework', 'tool', 'other']),
+    icon: z.string().optional(),
+    url: z.string().url(),
+  }),
+});
+
+// 経歴コレクション（JSON）
+const career = defineCollection({
+  loader: file('./src/data/career/career.json'),
+  schema: z.object({
+    id: z.string(),
+    organization: z.string(),
+    role: z.string(),
+    startDate: z.string(),
+    endDate: z.string().nullable(),
+    description: z.string().optional(),
+  }),
+});
+
+export const collections = { blog, gallery, skills, career };

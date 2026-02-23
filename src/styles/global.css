@@ -1,1 +1,35 @@
-/* global styles - Step 1-5 で詳細設定 */
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@theme {
+  /* フォント */
+  --font-sans: 'Inter', 'Noto Sans JP', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* OKLCHカラーパレット */
+  --color-bg:        oklch(0.98 0.005 120);
+  --color-surface:   oklch(0.96 0.006 120);
+  --color-text:      oklch(0.20 0.010 250);
+  --color-text-muted: oklch(0.45 0.010 250);
+  --color-primary:   oklch(0.55 0.15 145);
+  --color-primary-content: oklch(0.98 0.005 145);
+  --color-secondary: oklch(0.60 0.08 150);
+  --color-border:    oklch(0.88 0.008 150);
+  --color-shadow:    oklch(0.70 0.010 150 / 0.15);
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-height: 100dvh;
+  }
+}
