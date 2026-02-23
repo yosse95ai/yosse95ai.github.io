@@ -1,6 +1,7 @@
 ---
 import Header from '../organisms/Header.astro';
 import { ClientRouter } from 'astro:transitions';
+import '../../styles/global.css';
 
 export interface Props {
   title?: string;
@@ -38,8 +39,6 @@ const ogImage = `${siteUrl}/images/icon.jpg`;
 
     <!-- View Transitions -->
     <ClientRouter />
-
-    <style>@import '../../styles/global.css';</style>
   </head>
   <body>
     <Header />
