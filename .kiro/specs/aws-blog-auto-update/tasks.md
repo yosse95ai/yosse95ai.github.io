@@ -134,8 +134,8 @@ RSSフィードを定期取得してAWSブログ記事リストを自動更新�
     - ソート順、重複排除、`publishedAt` なし記事の末尾配置のケースをテストする
     - _Requirements: 5.1, 5.2, 5.3_
 
-- [ ] 10. エントリーポイントスクリプトの実装
-  - [ ] 10.1 `scripts/update-aws-blog.ts` を実装する
+- [x] 10. エントリーポイントスクリプトの実装
+  - [x] 10.1 `scripts/update-aws-blog.ts` を実装する
     - `parseFeed` → `feedCache` → `detectDiff` → `ArticleEntry` 補完 → `updateArticles` の一連の処理を実行する
     - `detectDiff` が返す `newUrls` を `parseFeed` の結果（`FeedArticle[]`）と突き合わせて `id`・`publishedAt` を補完し完全な `ArticleEntry[]` を生成する
     - `parseFeed` の結果に存在しないURLは `extractIdFromUrl` でスラッグを生成し `publishedAt` は省略する
@@ -148,8 +148,8 @@ RSSフィードを定期取得してAWSブログ記事リストを自動更新�
     - エラー時はエラーログを出力して非ゼロ終了コードで終了する
     - _Requirements: 1.4, 5.4, 5.5, 6.1, 6.2, 6.3, 6.4, 7.1, 7.2, 7.3, 7.4_
 
-- [ ] 11. GitHub Actionsワークフローの実装
-  - [ ] 11.1 `.github/workflows/update-aws-blog.yml` を作成する
+- [x] 11. GitHub Actionsワークフローの実装
+  - [x] 11.1 `.github/workflows/update-aws-blog.yml` を作成する
     - `schedule` で毎日 00:00 UTC（09:00 JST）にcron実行するよう設定する
     - `workflow_dispatch` による手動実行をサポートする
     - `contents: write` と `pull-requests: write` の最小権限を付与する
@@ -158,7 +158,7 @@ RSSフィードを定期取得してAWSブログ記事リストを自動更新�
     - `tsx scripts/update-aws-blog.ts` でスクリプトを実行する
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 6.4, 6.5_
 
-- [ ] 12. 最終チェックポイント — 全テストが通ることを確認する
+- [x] 12. 最終チェックポイント — 全テストが通ることを確認する
   - 全テストが通ることを確認し、疑問点があればユーザーに確認する。
 
 ## 注意事項
