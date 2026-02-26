@@ -17,6 +17,6 @@ export interface ArticleEntry {
 
 /** 差分検出結果 */
 export interface DiffResult {
-  newArticles: ArticleEntry[];
+  newUrls: string[];  // 新規追加すべき記事のURL一覧
   hasChanges: boolean;
 }

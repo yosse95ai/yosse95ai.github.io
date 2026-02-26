@@ -17,7 +17,7 @@ function makeRss(links: string[]): string {
 // Validates: Requirements 4.1, 4.4
 // ─────────────────────────────────────────────
 describe('Property 5: 差分検出の正確性', () => {
-  it('newArticles は「今回XMLに存在し前回XMLに存在しないURL」の集合と一致する', () => {
+  it('newUrls は「今回XMLに存在し前回XMLに存在しないURL」の集合と一致する', () => {
     const patterns: Array<{
       currentLinks: string[];
       previousLinks: string[];
@@ -68,7 +68,7 @@ describe('Property 5: 差分検出の正確性', () => {
       const previousXml = makeRss(previousLinks);
       const result = detectDiff(currentXml, previousXml);
 
-      const resultUrls = result.newArticles.map((a) => a.externalUrl).sort();
+      const resultUrls = [...result.newUrls].sort();
       const expectedUrls = [...expectedNew].sort();
 
       expect(resultUrls).toEqual(expectedUrls);
@@ -82,7 +82,7 @@ describe('Property 5: 差分検出の正確性', () => {
 // Validates: Requirements 4.2
 // ─────────────────────────────────────────────
 describe('Property 6: 初回実行時の全件新規扱い', () => {
-  it('previousFeedXml が null の場合、newArticles はXML内の全 <link> 要素を含む', () => {
+  it('previousFeedXml が null の場合、newUrls はXML内の全 <link> 要素を含む', () => {
     const patterns: Array<{ links: string[] }> = [
       // パターン1: 3件
       {
@@ -112,7 +112,7 @@ describe('Property 6: 初回実行時の全件新規扱い', () => {
       const currentXml = makeRss(links);
       const result = detectDiff(currentXml, null);
 
-      const resultUrls = result.newArticles.map((a) => a.externalUrl).sort();
+      const resultUrls = [...result.newUrls].sort();
       const expectedUrls = [...links].sort();
 
       expect(resultUrls).toEqual(expectedUrls);
@@ -155,7 +155,7 @@ describe('Property 7: 差分なし時の冪等性', () => {
       const result = detectDiff(xml, xml);
 
       expect(result.hasChanges).toBe(false);
-      expect(result.newArticles).toHaveLength(0);
+      expect(result.newUrls).toHaveLength(0);
     }
   });
 });
@@ -164,7 +164,7 @@ describe('Property 7: 差分なし時の冪等性', () => {
 // ユニットテスト
 // ─────────────────────────────────────────────
 describe('detectDiff ユニットテスト', () => {
-  it('新規記事あり: 今回XMLに新しいURLがある場合、hasChanges: true と newArticles が返る', () => {
+  it('新規記事あり: 今回XMLに新しいURLがある場合、hasChanges: true と newUrls が返る', () => {
     const currentXml = makeRss([
       'https://example.com/article-old',
       'https://example.com/article-new',
@@ -174,13 +174,11 @@ describe('detectDiff ユニットテスト', () => {
     const result = detectDiff(currentXml, previousXml);
 
     expect(result.hasChanges).toBe(true);
-    expect(result.newArticles).toHaveLength(1);
-    expect(result.newArticles[0].externalUrl).toBe('https://example.com/article-new');
-    expect(result.newArticles[0].id).toBe('');
-    expect(result.newArticles[0].publishedAt).toBeUndefined();
+    expect(result.newUrls).toHaveLength(1);
+    expect(result.newUrls[0]).toBe('https://example.com/article-new');
   });
 
-  it('差分なし: 同じURLセットの場合、hasChanges: false と空の newArticles が返る', () => {
+  it('差分なし: 同じURLセットの場合、hasChanges: false と空の newUrls が返る', () => {
     const xml = makeRss([
       'https://example.com/article-a',
       'https://example.com/article-b',
@@ -189,10 +187,10 @@ describe('detectDiff ユニットテスト', () => {
     const result = detectDiff(xml, xml);
 
     expect(result.hasChanges).toBe(false);
-    expect(result.newArticles).toHaveLength(0);
+    expect(result.newUrls).toHaveLength(0);
   });
 
-  it('初回実行（全件新規）: previousFeedXml が null の場合、全URLが newArticles に含まれる', () => {
+  it('初回実行（全件新規）: previousFeedXml が null の場合、全URLが newUrls に含まれる', () => {
     const links = [
       'https://example.com/article-1',
       'https://example.com/article-2',
@@ -203,18 +201,18 @@ describe('detectDiff ユニットテスト', () => {
     const result = detectDiff(currentXml, null);
 
     expect(result.hasChanges).toBe(true);
-    expect(result.newArticles).toHaveLength(3);
+    expect(result.newUrls).toHaveLength(3);
 
-    const resultUrls = result.newArticles.map((a) => a.externalUrl).sort();
+    const resultUrls = [...result.newUrls].sort();
     expect(resultUrls).toEqual([...links].sort());
   });
 
-  it('空フィード: item なしのXMLを渡すと hasChanges: false と空の newArticles が返る', () => {
+  it('空フィード: item なしのXMLを渡すと hasChanges: false と空の newUrls が返る', () => {
     const emptyXml = `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel></channel></rss>`;
 
     const result = detectDiff(emptyXml, null);
 
     expect(result.hasChanges).toBe(false);
-    expect(result.newArticles).toHaveLength(0);
+    expect(result.newUrls).toHaveLength(0);
   });
 });

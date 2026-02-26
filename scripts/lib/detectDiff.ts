@@ -1,5 +1,5 @@
 import { XMLParser } from 'fast-xml-parser';
-import type { ArticleEntry, DiffResult } from './types.js';
+import type { DiffResult } from './types.js';
 
 /**
  * XML文字列から <link> 要素のURLセットを抽出する
@@ -74,14 +74,10 @@ export function detectDiff(
     }
   }
 
-  const newArticles: ArticleEntry[] = Array.from(newUrls).map((url) => ({
-    id: '',
-    externalUrl: url,
-    publishedAt: undefined,
-  }));
+  const newUrlsArray = Array.from(newUrls);
 
   return {
-    newArticles,
-    hasChanges: newArticles.length > 0,
+    newUrls: newUrlsArray,
+    hasChanges: newUrlsArray.length > 0,
   };
 }

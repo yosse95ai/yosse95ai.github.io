@@ -52,3 +52,10 @@ npm run test     # ユニットテスト実行（Vitest）
 - フレームワーク: Vitest
 - テストファイルは `src/tests/` に配置（`*.test.ts`）
 - `src/lib/` の TypeScript ユーティリティには対応するテストを作成する
+- ユニットテストの必要性がある場合はTDDを行う。Red-Green-Refactorメソッドにのっとる。
+
+## typescript
+### DONOT's
+- any型は使わない。
+- 不必要にunknown方を使わない。
+- TypeScriptのベストプラクティスに従うこと。
