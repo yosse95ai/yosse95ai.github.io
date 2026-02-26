@@ -41,6 +41,8 @@ function mockFetch(status: number, body: string) {
   );
 }
 
+const ALLOWED_FEED_URL = 'https://aws.amazon.com/jp/blogs/news/author/test/feed/';
+
 beforeEach(() => {
   vi.unstubAllGlobals();
 });
@@ -69,7 +71,7 @@ describe('parseFeed', () => {
   describe('正常パース', () => {
     it('有効なRSSフィードXMLを渡すと FeedArticle[] が返る', async () => {
       mockFetch(200, VALID_RSS_XML);
-      const articles = await parseFeed('https://example.com/feed.rss');
+      const articles = await parseFeed(ALLOWED_FEED_URL);
 
       expect(articles).toHaveLength(2);
       expect(articles[0].externalUrl).toBe('https://aws.amazon.com/jp/blogs/news/article-one/');
@@ -80,7 +82,7 @@ describe('parseFeed', () => {
 
     it('結果が publishedAt 降順でソートされている', async () => {
       mockFetch(200, VALID_RSS_XML);
-      const articles = await parseFeed('https://example.com/feed.rss');
+      const articles = await parseFeed(ALLOWED_FEED_URL);
 
       expect(articles[0].publishedAt).toBe('2025-07-01');
       expect(articles[1].publishedAt).toBe('2025-06-30');
@@ -91,7 +93,7 @@ describe('parseFeed', () => {
   describe('pubDate変換', () => {
     it('RFC 2822形式の日付が YYYY-MM-DD に変換される', async () => {
       mockFetch(200, VALID_RSS_XML);
-      const articles = await parseFeed('https://example.com/feed.rss');
+      const articles = await parseFeed(ALLOWED_FEED_URL);
 
       // "Tue, 01 Jul 2025 00:00:00 +0000" → "2025-07-01"
       expect(articles[0].publishedAt).toBe('2025-07-01');
@@ -103,7 +105,7 @@ describe('parseFeed', () => {
   describe('空フィード', () => {
     it('<item> が存在しないRSSフィードを渡すと空配列が返る', async () => {
       mockFetch(200, EMPTY_RSS_XML);
-      const articles = await parseFeed('https://example.com/feed.rss');
+      const articles = await parseFeed(ALLOWED_FEED_URL);
 
       expect(articles).toEqual([]);
     });
@@ -112,23 +114,41 @@ describe('parseFeed', () => {
   describe('不正XML', () => {
     it('不正なXML文字列を渡すと例外がスローされる', async () => {
       mockFetch(200, INVALID_XML);
-      await expect(parseFeed('https://example.com/feed.rss')).rejects.toThrow();
+      await expect(parseFeed(ALLOWED_FEED_URL)).rejects.toThrow();
     });
   });
 
   describe('非200レスポンス', () => {
     it('fetchが404を返すと例外がスローされる', async () => {
       mockFetch(404, 'Not Found');
-      await expect(parseFeed('https://example.com/feed.rss')).rejects.toThrow(
+      await expect(parseFeed(ALLOWED_FEED_URL)).rejects.toThrow(
         /HTTP 404/,
       );
     });
 
     it('fetchが500を返すと例外がスローされる', async () => {
       mockFetch(500, 'Internal Server Error');
-      await expect(parseFeed('https://example.com/feed.rss')).rejects.toThrow(
+      await expect(parseFeed(ALLOWED_FEED_URL)).rejects.toThrow(
         /HTTP 500/,
       );
+    });
+  });
+
+  describe('SSRF対策: 許可されていないオリジンは拒否される', () => {
+    it('https://example.com は拒否される', async () => {
+      await expect(parseFeed('https://example.com/feed.rss')).rejects.toThrow(
+        /feedUrl origin not allowed/,
+      );
+    });
+
+    it('http://aws.amazon.com（HTTP）は拒否される', async () => {
+      await expect(parseFeed('http://aws.amazon.com/feed.rss')).rejects.toThrow(
+        /feedUrl origin not allowed/,
+      );
+    });
+
+    it('不正なURLは拒否される', async () => {
+      await expect(parseFeed('not-a-url')).rejects.toThrow(/Invalid feedUrl/);
     });
   });
 });
@@ -166,7 +186,7 @@ describe('Property 1: パース結果は常に publishedAt 降順', () => {
 
     for (const xml of patterns) {
       mockFetch(200, xml);
-      const articles = await parseFeed('https://example.com/feed.rss');
+      const articles = await parseFeed(ALLOWED_FEED_URL);
       for (let i = 0; i < articles.length - 1; i++) {
         expect(articles[i].publishedAt >= articles[i + 1].publishedAt).toBe(true);
       }
@@ -194,7 +214,7 @@ describe('Property 2: 日付変換は常に YYYY-MM-DD 形式', () => {
   <item><link>https://aws.amazon.com/jp/blogs/news/test-article/</link><pubDate>${pubDate}</pubDate></item>
 </channel></rss>`;
       mockFetch(200, xml);
-      const articles = await parseFeed('https://example.com/feed.rss');
+      const articles = await parseFeed(ALLOWED_FEED_URL);
       expect(articles).toHaveLength(1);
       expect(articles[0].publishedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       expect(articles[0].publishedAt).toBe(expected);
@@ -240,7 +260,7 @@ describe('Property 10: URLバリデーションの網羅性', () => {
 </channel></rss>`;
 
     mockFetch(200, xml);
-    const articles = await parseFeed('https://example.com/feed.rss');
+    const articles = await parseFeed(ALLOWED_FEED_URL);
 
     // 正しいプレフィックスのURLのみが含まれる
     expect(articles).toHaveLength(1);
@@ -268,7 +288,7 @@ describe('Property 10: URLバリデーションの網羅性', () => {
 </channel></rss>`;
 
     mockFetch(200, xml);
-    const articles = await parseFeed('https://example.com/feed.rss');
+    const articles = await parseFeed(ALLOWED_FEED_URL);
     expect(articles).toEqual([]);
   });
 });

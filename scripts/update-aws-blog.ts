@@ -4,6 +4,7 @@ import { parseFeed, extractIdFromUrl } from './lib/feedParser.js';
 import { loadCache, saveCache } from './lib/feedCache.js';
 import { detectDiff } from './lib/detectDiff.js';
 import { mergeAndSort } from './lib/updateArticles.js';
+import { sanitizeForLog } from './lib/sanitize.js';
 import type { ArticleEntry } from './lib/types.js';
 
 // 定数
@@ -96,7 +97,7 @@ async function main(): Promise<void> {
 
   if (existingPr === null) {
     // 既存PRなし: 新規ブランチを作成してコミット・PR作成
-    console.log(`[update-aws-blog] 新規ブランチ "${newBranchName}" を作成します`);
+    console.log(`[update-aws-blog] 新規ブランチ "${sanitizeForLog(newBranchName)}" を作成します`);
     execSync(`git checkout -b ${newBranchName}`, { encoding: 'utf-8' });
     execSync(`git add ${ARTICLES_PATH} ${CACHE_PATH}`, { encoding: 'utf-8' });
     execSync(`git commit -m "chore: update AWS blog articles (${today})"`, { encoding: 'utf-8' });
@@ -108,7 +109,7 @@ async function main(): Promise<void> {
   } else {
     // 既存PRあり: 既存ブランチへforce push
     const existingBranch = existingPr.headRefName;
-    console.log(`[update-aws-blog] 既存PR #${existingPr.number} のブランチ "${existingBranch}" へforce pushします`);
+    console.log(`[update-aws-blog] 既存PR #${existingPr.number} のブランチ "${sanitizeForLog(existingBranch)}" へforce pushします`);
     execSync(`git checkout -b ${existingBranch}`, { encoding: 'utf-8' });
     execSync(`git add ${ARTICLES_PATH} ${CACHE_PATH}`, { encoding: 'utf-8' });
     execSync(`git commit -m "chore: update AWS blog articles (${today})"`, { encoding: 'utf-8' });

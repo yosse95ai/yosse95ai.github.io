@@ -54,6 +54,16 @@ npm run test     # ユニットテスト実行（Vitest）
 - `src/lib/` の TypeScript ユーティリティには対応するテストを作成する
 - ユニットテストの必要性がある場合はTDDを行う。Red-Green-Refactorメソッドにのっとる。
 
+### テスト実行コマンド
+`cd` は使用不可。テストはプロジェクトルートから以下のコマンドで実行する。
+
+```bash
+npx vitest run          # 全テスト（ワンショット）
+npx vitest run <path>   # 特定ファイルのみ
+```
+
+`npm run test -- --run` は `--run` が二重になりエラーになるため使わない。
+
 ## typescript
 ### DONOT's
 - any型は使わない。

@@ -1,7 +1,10 @@
 import { XMLParser } from 'fast-xml-parser';
 import type { FeedArticle } from './types.js';
+import { sanitizeForLog } from './sanitize.js';
 
 const AWS_BLOG_PREFIX = 'https://aws.amazon.com/jp/blogs/news/';
+/** SSRF対策: 許可するフィードURLのオリジン */
+const ALLOWED_FEED_ORIGINS = new Set(['https://aws.amazon.com']);
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 const SLUG_REGEX = /^[a-z0-9-]+$/i;
 
@@ -47,6 +50,18 @@ function convertPubDate(pubDate: string): string {
  * @returns 記事リスト（publishedAt降順）
  */
 export async function parseFeed(feedUrl: string): Promise<FeedArticle[]> {
+  // SSRF対策: feedUrlのオリジンをアローリストで検証
+  let parsedFeedUrl: URL;
+  try {
+    parsedFeedUrl = new URL(feedUrl);
+  } catch {
+    throw new Error(`Invalid feedUrl: ${sanitizeForLog(feedUrl)}`);
+  }
+  const origin = `${parsedFeedUrl.protocol}//${parsedFeedUrl.hostname}`;
+  if (!ALLOWED_FEED_ORIGINS.has(origin)) {
+    throw new Error(`feedUrl origin not allowed: ${sanitizeForLog(origin)}`);
+  }
+
   // フィード取得
   let xmlText: string;
   try {
@@ -126,7 +141,7 @@ export async function parseFeed(feedUrl: string): Promise<FeedArticle[]> {
 
     // externalUrl バリデーション
     if (!link.startsWith(AWS_BLOG_PREFIX)) {
-      console.error(`Skipping item: externalUrl does not match required prefix: ${link}`);
+      console.error(`Skipping item: externalUrl does not match required prefix: ${sanitizeForLog(link)}`);
       continue;
     }
 
@@ -134,19 +149,19 @@ export async function parseFeed(feedUrl: string): Promise<FeedArticle[]> {
     let publishedAt: string;
     const rawPubDate = record['pubDate'];
     if (typeof rawPubDate !== 'string' || !rawPubDate.trim()) {
-      console.error(`Skipping item: missing or invalid <pubDate> for ${link}`);
+      console.error(`Skipping item: missing or invalid <pubDate> for ${sanitizeForLog(link)}`);
       continue;
     }
     try {
       publishedAt = convertPubDate(rawPubDate.trim());
     } catch {
-      console.error(`Skipping item: failed to convert pubDate "${rawPubDate}" for ${link}`);
+      console.error(`Skipping item: failed to convert pubDate "${sanitizeForLog(rawPubDate)}" for ${sanitizeForLog(link)}`);
       continue;
     }
 
     // publishedAt バリデーション
     if (!DATE_REGEX.test(publishedAt)) {
-      console.error(`Skipping item: publishedAt "${publishedAt}" is not YYYY-MM-DD format for ${link}`);
+      console.error(`Skipping item: publishedAt "${sanitizeForLog(publishedAt)}" is not YYYY-MM-DD format for ${sanitizeForLog(link)}`);
       continue;
     }
 
@@ -155,7 +170,7 @@ export async function parseFeed(feedUrl: string): Promise<FeedArticle[]> {
 
     // IDスラッグ バリデーション
     if (!id || !SLUG_REGEX.test(id)) {
-      console.error(`Skipping item: invalid ID slug "${id}" for ${link}`);
+      console.error(`Skipping item: invalid ID slug "${sanitizeForLog(id)}" for ${sanitizeForLog(link)}`);
       continue;
     }
 
