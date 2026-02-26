@@ -1,0 +1,1066 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:slash="http://purl.org/rss/1.0/modules/slash/" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" version="2.0">
+
+<channel>
+	<title>Hiroaki Yoshimura – Amazon Web Services ブログ</title>
+	<atom:link href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/" rel="self" type="application/rss+xml"/>
+	<link>https://aws.amazon.com/jp/blogs/news/</link>
+	<description/>
+	<lastBuildDate>Wed, 25 Feb 2026 08:16:53 +0000</lastBuildDate>
+	<language>ja</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+	<item>
+		<title>AI コーディングに潜む非効率性とその発見方法</title>
+		<link>https://aws.amazon.com/jp/blogs/news/hidden-inefficiencies-ai-coding/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Wed, 25 Feb 2026 08:10:48 +0000</pubDate>
+				<category><![CDATA[Artificial Intelligence]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">18dfb4dddb5a543353c64b1b9c631f2b13e67a1e</guid>
+
+					<description>AI コーディングエージェントの評価では、合格/不合格メトリクスだけでは見えない非効率性が存在します。Kiro チームは CORAL と呼ぶ適応学習システムを構築し、実際のユーザーセッションからトラジェクトリベースの分析を行っています。具体的な発見として、glob パターンの違いによるサイレント検索失敗（修正後に誤りを 99% 削減）や、cd コマンドの誤用（18% のセッションに影響）への自動修正対応などが挙げられます。このシステムにより、モデル再トレーニング不要で継続的な改善が実現されています。</description>
+										<content:encoded>&lt;p&gt;本記事は 2026 年 2 月 23 日に公開された Joe Hsu, Shweta Garg, Murali Krishna Ramanathan による “&lt;a href="https://kiro.dev/blog/hidden-inefficiencies-ai-coding/" target="_blank" rel="noopener"&gt;The hidden inefficiencies in AI coding (and how we find them)&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;タスクが完了しました。コードはコンパイルされ、テストはグリーンになり、全員が次へ進みます。しかし、その「合格」したタスクが、エージェントがすぐそこにあるファイルを見つけられなかったために 17 ターンもかかっていたとしたら？絶対に成功しないシェルコマンドのパターンでリトライを繰り返していたとしたら？&lt;/p&gt; 
+&lt;p&gt; ベンチマークはこれを捉えられません。合格/不合格のメトリクスは成功を確認して次へ進むだけです。私たちはより深く、エージェントが最終的にどこに到達したかだけでなく、そこに至るまでの全経路を見たいと考えました。そこで、推論と適応学習による継続的最適化のための専門システムを構築しました。社内では愛称で CORAL と呼んでいます。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-179770"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2 id="why-benchmarks-arent-enough"&gt;なぜベンチマークだけでは不十分なのか&lt;/h2&gt; 
+&lt;p&gt;AI コーディングエージェントは通常、合格率・トークン数・レイテンシといったベンチマークで評価されます。これらのメトリクスは&lt;em&gt;何が&lt;/em&gt; 起きたかを教えてくれますが、&lt;em&gt;なぜ&lt;/em&gt; 起きたかは教えてくれませんし、全体的なプロセスをどう改善すべきかも示してくれません。 &lt;/p&gt; 
+&lt;p&gt; タスクが「合格」しながらも、エージェントが壊れた検索パターンでターンを無駄にしていることがあります。また、モデルの性能が低いからではなく、ツールの説明が誤解を招くものだったために失敗することもあります。毎日何千ものエージェントインタラクションを処理している場合、手動レビューはスケールしません。 &lt;/p&gt; 
+&lt;p&gt;私たちには、本番環境から自動的に学習し、ベンチマークが見逃すパターンを発見できるシステムが必要でした。&lt;/p&gt; 
+&lt;h2 id="how-we-analyze-agent-behavior"&gt;エージェントの動作を分析する方法&lt;/h2&gt; 
+&lt;p&gt;私たちの適応学習システムは、実際の Kiro インタラクションを分析して、合格/不合格のメトリクスが見落とす非効率性を浮き彫りにします。&lt;sup&gt;1&lt;/sup&gt;&lt;/p&gt; 
+&lt;p&gt; チェスプレイヤーが自分の対局を振り返るようなものです。試合後、彼らは結果を確認するだけではありません。&lt;em&gt;どこでテンポを失ったか？どのパターンがミスにつながったか？次回はどうすべきか？&lt;/em&gt;と問いかけます。私たちのシステムは、これを Kiro のエージェントに対して自動的かつ大規模に行います。&lt;/p&gt; 
+&lt;p&gt; そのために&lt;strong&gt;軌跡ベースの学習（trajectory-based learning）&lt;/strong&gt;を使用しています。コードがコンパイルされるかどうかを確認するだけでなく、エージェントが取った一連のアクション全体、つまりすべてのツール呼び出し、すべての意思決定ポイント、すべての回復試行を検証します。5 つのクリーンなステップで合格するタスクと、17 の雑然としたステップで合格するタスクは大きく異なり、システムはその違いを識別できます。&lt;/p&gt; 
+&lt;div&gt; 
+ &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/25/flow-1.png"&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/25/flow-1.png" alt="CORAL フロー図: 本番トラフィック → 軌跡分析 → ナレッジベース → エージェント改善" width="1771" height="1238" class="alignnone size-full wp-image-179780"&gt;&lt;/a&gt; 
+&lt;/div&gt; 
+&lt;h2 id="how-it-works"&gt;仕組み&lt;/h2&gt; 
+&lt;p&gt;毎日、私たちは同意を得たユーザーの実際の Kiro セッションを何千件もサンプリングし、LLM ベースの分析を使って検証します。各軌跡に対して、エージェントが何をしたか、何が問題だったか（あるいは正しかったか）、そしてその理由を問いかけます。&lt;/p&gt; 
+&lt;p&gt;「検索結果が返ってこなかった」といった表面的な結果だけを見るのではありません。エージェントが試みたこと、どのように回復したか、どこで時間を失ったかという一連のアクション全体を追跡します。その一連の流れから、LLM が根本原因分析を行い、一般化可能な教訓を抽出します。一時的な修正ではなく、タスク全体に適用できるものです。&lt;/p&gt; 
+&lt;p&gt; その教訓は、すでに学習済みのすべての内容と照合されます。新しいものか？具体的に対処できるものか？既存のインサイトと矛盾しないか？これらをパスすれば、ツール使用・ワークフローパターン・エラー回復・行動ガイダンスといったカテゴリで整理された構造化ナレッジベースに追加されます。 &lt;/p&gt; 
+&lt;p&gt; 各インサイトはエビデンスも追跡します。あるパターンが多くの軌跡にわたって繰り返し現れると、信頼度が高まります。以前のインサイトが問題を引き起こすことが判明した場合は、修正または削除されます。ナレッジベースは静的ではなく、エージェントとツールの変化に合わせて進化します。 &lt;/p&gt; 
+&lt;p&gt; 高信頼度のインサイトが見つかると、それを具体的な修正に変換します。ツールの説明の更新、システムプロンプトの変更、またはエージェントの動作修正です。これらはモデルの再トレーニングなしに即座にリリースされます。エージェントが改善されると、実際のセッションからより多くのデータが収集され、サイクルが続きます。 &lt;/p&gt; 
+&lt;h2 id="two-real-world-examples"&gt;2 つの実例&lt;/h2&gt; 
+&lt;h3 id="discovery-1-the-silent-search-failure"&gt;発見 #1: サイレント検索失敗&lt;/h3&gt; 
+&lt;p&gt;ほとんどのメトリクスが見逃してしまうパターンを捉えた例を紹介します。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;何が起きていたか&lt;/strong&gt;: エージェントが &lt;code&gt;*.py&lt;/code&gt; のようなパターンでファイルを検索し、結果がゼロになっていました。検索はツール呼び出しとして成功とマークされていた（エラーは発生しない）ため、エージェントはファイルが単純に存在しないと判断していました。しかし、ファイルは存在していました。エージェントが見つけられなかっただけです。 &lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;理由&lt;/strong&gt;: LLM は ripgrep のようなツールから学習しており、&lt;code&gt;*.py&lt;/code&gt; はデフォルトで再帰的に検索されます。しかし Code-OSS 上に構築された Kiro の検索 API では、再帰的なマッチングには &lt;code&gt;**/*.py&lt;/code&gt; が必要です。微妙な違いですが、ツールの説明にはその点が明記されていませんでした。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;コスト&lt;/strong&gt;: grep 検索の 4 分の 1 以上がサイレントに失敗していました。検索が何も返さないとき、エージェントは諦めません。即興で対応します。ファイルを手動で読み込み、別のクエリで再試行し、ディレクトリツリーを探索します。平均して、エージェントは失敗した検索ごとに約 5 ターンの余分な作業を費やしており、本来不要だった作業をしていました。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;修正&lt;/strong&gt;: ツールの説明に 1 行追加するだけ。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-diff"&gt;- includePattern (optional): 対象ファイルの glob パターン（例: '*.ts'）
++ includePattern (optional): 対象ファイルの glob パターン（例: '**/*.ts'）。再帰検索には ** を使用してください。&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;&lt;strong&gt;結果&lt;/strong&gt;:&lt;/p&gt; 
+&lt;table border="1" style="border-collapse: collapse"&gt; 
+ &lt;tbody&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;&lt;strong&gt;メトリクス&lt;/strong&gt;&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;&lt;strong&gt;修正前&lt;/strong&gt;&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;&lt;strong&gt;修正後&lt;/strong&gt;&lt;/p&gt; &lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;誤ったパターン率&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;26.10%&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;0.30%&lt;/p&gt; &lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;影響を受けたセッション&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;約 23%&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;&amp;lt;0.3%&lt;/p&gt; &lt;/td&gt; 
+  &lt;/tr&gt; 
+ &lt;/tbody&gt; 
+&lt;/table&gt; 
+&lt;p&gt;1 行の変更で、本番環境における誤った grep パターンを&lt;strong&gt;約 99%&lt;/strong&gt;削減しました。&lt;/p&gt; 
+&lt;h3 id="discovery-2-the-cd-command-trap"&gt;発見 #2: &lt;code&gt;cd&lt;/code&gt; コマンドの罠&lt;/h3&gt; 
+&lt;p&gt;&lt;strong&gt;何が起きていたか&lt;/strong&gt;: エージェントが &lt;code&gt;cd src &amp;amp;&amp;amp; npm test&lt;/code&gt; のようなシェルコマンドを記述していました。これらはすべて失敗していました。Kiro の &lt;code&gt;executeBash&lt;/code&gt; ツールは各コマンドをワークスペースルートから実行し、入力バリデーションによって &lt;code&gt;cd&lt;/code&gt; の使用を拒否するため、&lt;code&gt;cd&lt;/code&gt; は永続的な効果を持ちません。このツールにはまさにこの目的のために &lt;code&gt;cwd&lt;/code&gt; パラメータが用意されていますが、bash 呼び出しの約 4% で、モデルはツールの説明に従う代わりにトレーニングデータから学習した慣れ親しんだシェルパターンに戻ってしまっていました。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;理由&lt;/strong&gt;: &lt;code&gt;cd dir &amp;amp;&amp;amp; command&lt;/code&gt; はシェルスクリプトの一般的なパターンです。LLM はこれを何百万回も見てきました。&lt;code&gt;cwd&lt;/code&gt; パラメータのアプローチは馴染みがないため、エージェントは学習済みのパターンに頼ってしまいました。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;コスト&lt;/strong&gt;: 全シェル呼び出しの 3.46% がこのパターンを使用しており、18% のセッションに影響を与えていました。すべての試みが失敗し、エージェントはコマンドの再試行・代替手段の探索などで平均 2.7 ターンの回復作業を費やし、セッション内で完全に回復できないこともありました。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;修正&lt;/strong&gt;: 制限をより強くプロンプトするだけでなく、自動修正を構築しました。エージェントが送信すると、&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-bash"&gt;executeBash(command="cd src &amp;amp;&amp;amp; npm test")&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;Kiro はそれを自動的に変換します。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-bash"&gt;executeBash(command="npm test", cwd="src")&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;実行後、正しいパターンを強化するための穏やかなリマインダーが表示されます。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-xml"&gt;&amp;lt;system-reminder&amp;gt;
+  作業ディレクトリがワークスペースルートに戻りました。別のディレクトリでコマンドを実行するには cwd パラメータを使用してください。
+&amp;lt;/system-reminder&amp;gt;&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;これによりエージェントは常に現在地を把握できます。作業ディレクトリを見失うことで生じる混乱や連鎖的なエラーを防ぎます。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;予測される影響&lt;/strong&gt;:&lt;/p&gt; 
+&lt;table border="1" style="border-collapse: collapse"&gt; 
+ &lt;tbody&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;&lt;strong&gt;メトリクス&lt;/strong&gt;&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;&lt;strong&gt;修正前&lt;/strong&gt;&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;&lt;strong&gt;修正後（予測）&lt;/strong&gt;&lt;/p&gt; &lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;&lt;code&gt;cd&lt;/code&gt; コマンドの誤用によるエラー率&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;100%&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;約 0%（自動修正）&lt;/p&gt; &lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;影響を受けたセッション&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;18%&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;約 0%&lt;/p&gt; &lt;/td&gt; 
+  &lt;/tr&gt; 
+ &lt;/tbody&gt; 
+&lt;/table&gt; 
+&lt;h2 id="patterns-on-our-radar"&gt;注目しているパターン&lt;/h2&gt; 
+&lt;p&gt;分析は大きな成果だけを見つけるわけではありません。積み重なると大きな影響を持つ小さなパターンを継続的に浮き彫りにします。現在積極的に調査中のものをいくつか紹介します。&lt;/p&gt; 
+&lt;h3 id="tool-interaction-patterns"&gt;ツールインタラクションパターン&lt;/h3&gt; 
+&lt;p&gt;&lt;strong&gt;フォーマット後のコンテンツドリフト。&lt;/strong&gt;エージェントがファイルを編集した後、Prettier や Black のようなフォーマッターが空白と構造を整形します。エージェントの次の編集は、ファイルが書いた時と同じ状態であると仮定しますが、実際には変化しています。私たちの分析では、エージェントがフォローアップの変更を試みる際に「oldStr が見つからない」という失敗が繰り返し発生することが判明しました。自動フォーマットされた可能性のあるファイルに対してさらなる編集を試みる前に、エージェントが変更されたセクションを再読み込みする方法を検討しています。&lt;/p&gt; 
+&lt;p&gt; &lt;strong&gt;散在するマルチファイル編集。&lt;/strong&gt;変更が複数のファイルにまたがる場合、すぐに編集に入るエージェントは他のファイルの関連コードを見落とすことがよくあります。変更を加える前にコードベース全体の変更ポイントをまずマッピングする（検索を使用して）エージェントの方が、より完全で一貫した結果を生み出すことがわかりました。クロスファイルタスクに対してこの「まず把握、次に編集（map first, edit second）」パターンを促進する方法を検討しています。 &lt;/p&gt; 
+&lt;h3 id="communication-patterns"&gt;コミュニケーションパターン&lt;/h3&gt; 
+&lt;p&gt; &lt;strong&gt;承認の行き詰まり。&lt;/strong&gt;エージェントがリクエストに対して「了解しました」や「わかりました」と応答した後、何もしない軌跡を発見しました。ユーザーは実際の作業を進めるために再度プロンプトを送る必要があります。小さなことですが、1 ターンを無駄にし、フローを妨げます。エージェントが単に承認するだけでなく、すぐに行動するよう行動ガイダンスに取り組んでいます。&lt;/p&gt; 
+&lt;p&gt; &lt;strong&gt;曖昧さのコスト。&lt;/strong&gt;最善の行動が明確化の質問をすることである場合があります。エージェントが曖昧なリクエストに対して誤った推測をし、間違ったものを構築し、作業をやり直さなければならない軌跡を発見しました。最初に 1 つの質問をするだけで、複数ターンの無駄な作業を節約できたはずです。推測するのではなく明確化を求めるようエージェントを促すタイミングと方法を調査しています。&lt;/p&gt; 
+&lt;h2 id="the-compounding-effect"&gt;複合効果&lt;/h2&gt; 
+&lt;p&gt;個々の修正は小さなものです。ツールの説明の 1 行、行動への一押し、自動修正。しかし、あなたにとってはそれらが積み重なります。5 回目ではなく 1 回目の試行で正しいファイルを見つける検索。失敗して再試行するのではなく、そのまま動作するシェルコマンド。無駄なターンが減ることで、より速い結果が得られ、エージェントが軌道を見つけるのを待つ時間が短縮されます。&lt;/p&gt; 
+&lt;p&gt;これらの問題の多くを軌跡レベルの分析で迅速に修正できると確信しています。従来の評価は合格したタスクを確認して次へ進みます。このシステムは、壊れた検索パターンで 17 ターンかかった完了タスクを見て、&lt;em&gt;次回はどうすれば 5 ターンにできるか？&lt;/em&gt;と問いかけます。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;結果を測定するだけでなく、合格/不合格のメトリクスが見逃す非効率性を発見するために、完全な実行パスを積極的に分析しています。&lt;/strong&gt;&lt;/p&gt; 
+&lt;h2 id="a-continuously-improving-developer-experience"&gt;継続的に改善される開発者体験&lt;/h2&gt; 
+&lt;p&gt;これらはすべてバックグラウンドで実行され、チームがレビューしてリリースできる修正を洗い出します。目標は、このループを将来的に完全に自動化することです。今日の Kiro エージェントは先月より優れており、来月はさらに良くなります。あなたが何かをする必要はありません。ただし、Kiro の提案にフィードバックを残したり、問題を報告したり、何かおかしいと感じたことにフラグを立てたりすると、そのシグナルが私たちの学習システムに取り込まれます。あなたの入力が Kiro をすべての人にとってよりスマートにするのに役立ちます。 &lt;/p&gt; 
+&lt;p&gt;上記の発見はほんの始まりに過ぎません。毎週新しいパターンを発見しており、学んだことを共有し続けます。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://kiro.dev/downloads/" target="_blank" rel="noopener"&gt;&lt;em&gt;Kiro を使い始めて&lt;/em&gt;&lt;/a&gt;&lt;em&gt;、継続的な改善を体験してください。&lt;/em&gt;&lt;/p&gt; 
+&lt;hr&gt; 
+&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; Kiro のインタラクションの共有を&lt;a href="https://kiro.dev/docs/privacy-and-security/data-protection/#opt-out-of-data-sharing" target="_blank" rel="noopener"&gt;オプトアウト&lt;/a&gt;することができます。&lt;a href="https://kiro.dev/docs/enterprise/concepts/#kiro-enterprise-user" target="_blank" rel="noopener"&gt;エンタープライズユーザー&lt;/a&gt;はデフォルトでオプトアウトされています。&lt;/p&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Kiro のエンタープライズ ID 連携と使用状況メトリクス</title>
+		<link>https://aws.amazon.com/jp/blogs/news/enterprise-identity-and-usage-metrics/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Fri, 20 Feb 2026 01:47:15 +0000</pubDate>
+				<category><![CDATA[Amazon Q]]></category>
+		<category><![CDATA[Amazon Q Developer]]></category>
+		<category><![CDATA[Artificial Intelligence]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">f38249bd9efd3721c1aad4fda66c0f79efe67044</guid>
+
+					<description>Kiro はエンタープライズ向けに外部 ID プロバイダー（Okta、Microsoft Entra ID）のサポートとユーザーレベルのアクティビティメトリクスを提供します。既存の ID インフラストラクチャに直接接続し、SSO ポリシーや MFA を活用可能に。管理者は日次集計使用状況データでチームのツール利用状況を可視化でき、AI がエンジニアリングにもたらす効率向上を測定できます。</description>
+										<content:encoded>&lt;p&gt;本記事は 2026 年 2 月 13 日に公開された Ranjith Ramakrishnan による “&lt;a href="https://kiro.dev/blog/enterprise-identity-and-usage-metrics/" target="_blank" rel="noopener"&gt;Enterprise identity and usage metrics&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt; Kiro が 11 月 17 日に一般提供されて以来、Rackspace、Smugmug、Netsmart などの多くの企業が、エンジニアリングチーム全体でスペック駆動開発アプローチを採用し、AI 開発においてより構造化されたアプローチをもたらし、場合によっては最大 90% の効率向上を実現しています。 &lt;/p&gt; 
+&lt;p&gt; 本日、外部 ID プロバイダーのサポートとユーザーレベルのアクティビティメトリクスにより、組織が Kiro をさらに簡単に使用できるようになりました。企業には、ID 管理の仕組みやコンプライアンス要件があり、またチームは「何がどのように使われているのか」を可視化して把握する必要があります。この分野は急速に変化しているため、企業は新しいユーザーを迅速にオンボーディングし、AI がエンジニアをどこでどのように支援しているかについての洞察を得たいと考えています。このデータがあれば、ツールとプロセスへの投資を迅速に拡大し、一貫して高い品質基準を保ちながら、はるかに速くリリースできます。 &lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-178820"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2 id="external-identity-providers-okta-and-microsoft-entra-id"&gt; 外部 ID プロバイダー: Okta と Microsoft Entra ID&lt;br&gt; &lt;/h2&gt; 
+&lt;p&gt; 組織が &lt;a class="text-primary hover:underline" target="_blank" rel="noopener noreferrer" href="https://www.okta.com/"&gt;Okta&lt;/a&gt; または &lt;a class="text-primary hover:underline" target="_blank" rel="noopener noreferrer" href="https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id"&gt;Microsoft Entra&lt;/a&gt; ID を通じて ID を管理している場合、Kiro はそのインフラストラクチャに直接接続できるようになりました。これは、&lt;a class="text-primary hover:underline" href="https://kiro.dev/" target="_blank" rel="noopener"&gt;IDE&lt;/a&gt;、&lt;a class="text-primary hover:underline" href="https://kiro.dev/cli/" target="_blank" rel="noopener"&gt;CLI&lt;/a&gt;、Web アプリなど、Kiro ポートフォリオ全体で機能します。開発者は既に持っている認証情報で認証するため、新しいログインを設定する必要はありません。 &lt;/p&gt; 
+&lt;p&gt; 管理者が既存の ID プロバイダーをオンボーディングすると、SSO ポリシー、条件付きアクセスルール、MFA 適用が設定どおりに Kiro で使用されます。Okta と Microsoft Entra から始めたのは、多くのお客様からのリクエストに基づいています。追加の &lt;a class="text-primary hover:underline" target="_blank" rel="noopener noreferrer" href="https://openid.net/developers/how-connect-works/"&gt;OIDC&lt;/a&gt; プロバイダーのサポートに取り組んでいます。まだサポートされていないプロバイダーを使用している場合は、&lt;a class="text-primary hover:underline" target="_blank" rel="noopener noreferrer" href="https://github.com/kirodotdev/Kiro/issues"&gt;お知らせください&lt;/a&gt;。優先順位の決定に役立てさせていただきます。 &lt;/p&gt; 
+&lt;p&gt; これは、Kiro を人気のあるエンタープライズツールやシステム（ID プロバイダー、チケットシステムやバージョン管理システム、デプロイツールなど）に接続する最初のステップです。 &lt;/p&gt; 
+&lt;h2 id="user-level-activity-metrics"&gt; ユーザーレベルのアクティビティメトリクス&lt;br&gt; &lt;/h2&gt; 
+&lt;p&gt; 組織の管理者は、チーム全体の利用状況を日次で集計したデータを提供するユーザーアクティビティレポートを有効にできるようになりました。レポートは、クライアントタイプ（IDE、CLI、IDE プラグイン）ごとにアクティビティを分類するため、開発者が実際に使用しているツールを可視化できます。これらの基本的なメトリクスは始まりに過ぎません。 &lt;/p&gt; 
+&lt;p&gt; 生産性の測定と使用パターンの確立は繰り返し出てくるテーマであり、今日、私たちはより豊富な分析（トレンドビュー、チームレベルの集計、エクスポート可能なダッシュボード）だけでなく、エージェント型開発を効果的に活用することが、どのように生産性向上につながるのか、その洞察を得られるようにしていきます。企業が重視するソフトウェアデリバリー指標において、どのチームが最も顕著な向上を実現しているのか？ そしてその成果を牽引する利用パターンとは何か？ 2026年の展開にご期待ください。 &lt;/p&gt; 
+&lt;h2 id="whats-next-for-enterprises"&gt; エンタープライズ向けの次のステップ&lt;br&gt; &lt;/h2&gt; 
+&lt;p&gt; これら 2 つの機能は、企業が既に依存しているシステム内で Kiro を機能させるための、より広範な取り組みの一部です。既存のツールやサービスとのさらなる統合、および開発速度を安全に向上させるために必要なガードレールを提供する追加のガバナンス制御と機能に積極的に取り組んでいます。 &lt;/p&gt; 
+&lt;p&gt; 組織での Kiro 導入を検討中の方、または既に利用中で特定のエンタープライズ機能の優先的な実装を希望される方は、&lt;a class="text-primary hover:underline" href="https://kiro.dev/enterprise/" target="_blank" rel="noopener"&gt;お知らせいただくか&lt;/a&gt;、&lt;a class="text-primary hover:underline" target="_blank" rel="noopener noreferrer" href="https://github.com/kirodotdev/Kiro"&gt;GitHub&lt;/a&gt; で Issues を開いてください。 &lt;/p&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Claude Sonnet 4.6 が Kiro で利用可能になりました</title>
+		<link>https://aws.amazon.com/jp/blogs/news/sonnet-4-6/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Thu, 19 Feb 2026 07:21:09 +0000</pubDate>
+				<category><![CDATA[Artificial Intelligence]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">18f599bd90887274c5f096fabfea99eb4a031e8d</guid>
+
+					<description>本日より Kiro IDE と CLI で Claude Sonnet 4.6 が利用可能になりました。Sonnet 4.6 は Opus 4.6 の知能に近づきながらトークン効率が高く、複雑なコードベースでの機能構築、リファクタリング、デバッグなどの反復的なワークフローを高品質に処理します。マルチモデルパイプラインでリードエージェントとサブエージェントの両方の役割を果たし、エージェント作業に最適化されています。Pro、Pro+、Power のお客様に AWS の 2 リージョンで提供され、1.3 倍のクレジット乗数でコスト効率も優れています。</description>
+										<content:encoded>&lt;p&gt;本記事は 2026 年 2 月 17 日に公開された Nima Kaviani による “&lt;a href="https://kiro.dev/blog/sonnet-4-6/" target="_blank" rel="noopener"&gt;Claude Sonnet 4.6 is now available in Kiro&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;本日より、&lt;a href="https://kiro.dev/" target="_blank" rel="noopener"&gt;Kiro IDE&lt;/a&gt; と &lt;a href="https://kiro.dev/docs/cli/" target="_blank" rel="noopener"&gt;CLI&lt;/a&gt; で Claude Sonnet 4.6 が利用可能になりました。Sonnet 4.6 は Sonnet 4.5 からの完全なアップグレードであり、ソフトウェア開発において Opus 4.6 に匹敵する知能を持ちながら、よりトークン効率が高く、ワークフロー全体でより高速で高品質なタスク完了を実現します。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-179365"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2 id="the-coding-model-youll-want-to-use-all-day"&gt;一日中使いたくなるコーディングモデル&lt;/h2&gt; 
+&lt;p&gt;Sonnet 4.6 は、複雑なコードベースを手取り足取り誘導する必要がないほど賢いモデルです。機能構築、リファクタリング、デバッグなどの反復的なワークフローを処理し、進行中にモデルをガイドしても品質を損ないません。Sonnet 4.6 は、インタラクティブな開発作業において優れた体験を提供します。&lt;/p&gt; 
+&lt;p&gt;複数のタスクを含む &lt;a href="https://kiro.dev/docs/specs/" target="_blank" rel="noopener"&gt;spec&lt;/a&gt; を進めている際、Sonnet 4.6 は長いセッション全体でコンテキストと精度を維持します。マルチモデルパイプラインにおいて、リードエージェントとサブエージェントの両方の役割を果たし、適応的な思考とコンテキスト圧縮により、作業の進め方を正確に制御できます。&lt;/p&gt; 
+&lt;h2 id="built-for-agentic-work"&gt;エージェント作業のために構築&lt;/h2&gt; 
+&lt;div&gt; 
+ &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/19/evals-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/19/evals-1.png" alt="" width="1696" height="1974" class="alignnone size-full wp-image-179372"&gt;&lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p&gt;Sonnet 4.6 は、現代の AI 開発が要求する複数ステップのオーケストレーションのために特別に構築されています。ツール呼び出しを処理し、長いセッション全体で状態を維持し、複雑な推論チェーンを管理します。これらすべてを、大量使用を実用的にする価格帯で実現します。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://kiro.dev/docs/powers/" target="_blank" rel="noopener"&gt;Kiro powers&lt;/a&gt; や &lt;a href="https://kiro.dev/docs/chat/subagents/" target="_blank" rel="noopener"&gt;カスタムサブエージェント&lt;/a&gt;を使用しているチームにとって、Sonnet 4.6 は自然に組み込まれます。パイプラインの異なる部分に異なるモデルを必要とせず、オーケストレーターとワーカーの両方の役割を果たすことができます。&lt;/p&gt; 
+&lt;h2 id="availability"&gt;利用可能性&lt;/h2&gt; 
+&lt;p&gt;Sonnet 4.6 は、Google、GitHub、AWS BuilderID、AWS IAM Identity Center でログインするすべての Kiro Pro、Pro+、Power のお客様にご利用いただけます。Sonnet 4.6 は AWS US-East-1（バージニア北部）および AWS Europe（フランクフルト）リージョンで利用可能で、Sonnet 4.5 と同様に 1.3 倍のクレジット乗数を備えており、開発作業においてコスト効率が良くなっています。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://kiro.dev/downloads/" target="_blank" rel="noopener"&gt;Kiro をダウンロード&lt;/a&gt;するか、アプリまたは CLI を再起動して新しいモデルを使用してください。&lt;/p&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>リファクタリングを正しく行う：プログラム解析により AI エージェントの安全性と信頼性を高める方法</title>
+		<link>https://aws.amazon.com/jp/blogs/news/refactoring-made-right-2/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Wed, 18 Feb 2026 03:51:15 +0000</pubDate>
+				<category><![CDATA[Amazon Q Developer]]></category>
+		<category><![CDATA[Artificial Intelligence]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">2df0d87f803599e55ecc1da532e8c72e8ad1b5b3</guid>
+
+					<description>従来の AI コーディングエージェントは、関数の名前変更やファイル移動などのリファクタリングをテキスト編集として扱うため、インポートの破損や参照エラーを引き起こしていました。Kiro は VSCode の Language Server Protocol を活用したセマンティックリネームツールとスマートリロケートツールを導入し、F2 キーを押したときと同じ IDE の実証済み機能をエージェントが利用できるようにしました。これにより、ワークスペース全体の参照、インポート、型定義を自動的に更新し、20 秒で終わるべきリファクタリングが 5 分のデバッグセッションになる問題を解決します。</description>
+										<content:encoded>&lt;p&gt;AI コーディングアシスタントに簡単なこと、例えば関数名の変更やファイルの移動を依頼すると、突然復旧作業に追われることがあります。インポートが壊れたり、参照が存在しないファイルを指したりします。5 分前にコンパイルできていたコードベースが、至る所でエラーを投げ始めます。20 秒で終わるはずのリファクタリングが、5 分間のデバッグとクリーンアップセッションに変わってしまうのです。&lt;/p&gt; 
+&lt;h2 id="why-refactoring-is-hard-for-agents"&gt;エージェントにとってリファクタリングが難しい理由&lt;/h2&gt; 
+&lt;p&gt;リファクタリングは単なる大規模な検索置換ではありません。コードベースのセマンティック構造全体にわたるグラフトラバーサル問題なのです。関数名を変更すると、変更は連鎖します。ワークスペース全体のすべての呼び出し箇所、それを参照する型定義とインターフェース、import/export 文、テスト、そして（オプションで）ドキュメントとコメント。ファイルの移動はさらに複雑な波及効果を引き起こし、すべての依存ファイルのインポートパス、バレルファイル（&lt;code&gt;index.ts&lt;/code&gt;）と再エクスポート、&lt;code&gt;tsconfig&lt;/code&gt; パスやバンドラー設定に組み込まれたモジュール解決の前提、Webpack 設定のような散在する設定ファイルなどに影響します。ここに根本的なミスマッチがあります。LLM はパターンマッチングを通じてもっともらしいコードを生成することに優れていますが、リファクタリングは&lt;em&gt;もっともらしさよりも精度&lt;/em&gt;を要求します。これは創造的なタスクではなく、シンボルの関係、言語固有のセマンティクス、プロジェクトの依存関係グラフの正確な理解を必要とする制約充足問題なのです。「正しく見える」が、深くネストさ れたモジュールの 1 つのインポートを見逃したエージェントは、単に小さなエラーを犯しただけではありません。本番環境まで表面化しないランタイム障害を導入したのです。これが、どれほど洗練されていたとしても、テキスト生成が構造的なコード変換において信頼性に欠けるツールである理由です。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-178144"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2 id="the-problem-when-agents-work-harder-not-smarter"&gt;問題：エージェントが効率的ではなく、非効率に動作するとき&lt;/h2&gt; 
+&lt;p&gt;多くの AI エージェントがリファクタリングでつまずくのは、&lt;em&gt;構造的&lt;/em&gt;な編集を&lt;em&gt;テキスト&lt;/em&gt;編集として扱うからです。開発者が直面し続けている失敗モードをいくつか紹介します。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;依頼内容：&lt;/strong&gt;「このメソッドの名前を変更して」&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;従来の失敗：&lt;/strong&gt;エージェントはメソッド定義を更新しましたが、プロジェクト全体の呼び出し箇所を見逃しました。プロンプトで参照を更新するよう明示的に依頼した場合でも、プロセスは遅くエラーが発生しやすいループになりました。古い名前を検索して置換するのです。このプロンプトを考えてみましょう。&lt;code&gt;expression.js&lt;/code&gt; の &lt;code&gt;get_loose_identifier&lt;/code&gt; を、それが何をするかをよりよく反映するように名前変更してください。このシンボルの名前変更は 4 つのファイルに伝播し、8 つの参照と 3 つのインポートに影響します。次の図の左側（従来のアプローチ）は、専用のリファクタリングツールなしでこの操作がどのように展開されるかを示しています。最初のファイル（&lt;code&gt;expression.js&lt;/code&gt;）でシンボルの名前を変更した後、エージェントはコードベースで &lt;code&gt;get_loose_identifier&lt;/code&gt; を検索し、複数の LLM 呼び出しとツール呼び出しを通じて &lt;code&gt;CallExpression.js&lt;/code&gt; と &lt;code&gt;AssignmentExpression.js&lt;/code&gt; を更新します。努力したにもかかわらず、残りの参照を見逃しています。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;Kiro の対処法：&lt;/strong&gt;開発者が IDE でこのタスクを手動で実行する方法を考えてみましょう。&lt;code&gt;get_loose_identifier&lt;/code&gt; で F2 を押し、新しい名前を入力して、Enter を押します。IDE は、コードベース全体の 8 つの参照と 3 つのインポートすべてを更新しながら、自動的に名前変更を実行します。これがまさにセマンティックリネームツールが行うことです。次の図の右側（新しいアプローチ）は、Kiro が単一のツール呼び出しで名前変更全体を適切に実行する方法を示しています。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/side-by-side.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/side-by-side.png" alt="" width="2560" height="2305" class="alignnone size-full wp-image-178149"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;依頼内容：&lt;/strong&gt;「このファイルの lint エラーを修正して」&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;従来の失敗：&lt;/strong&gt;エージェントは linter の出力をテキスト編集の ToDo リストとして扱いました。1 つのファイルでシグネチャの関数名を camelCase から snake_case に変更しましたが、他のファイルで「参照が見つからない」や「インポートが見つからない」エラーを導入しました。すべての使用箇所への変更の伝播に失敗したのです。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;Kiro の対処法：&lt;/strong&gt;ユーザーが直接名前変更を依頼しなくても、エージェントがセマンティックリネームツールから恩恵を受ける例を示します。ユーザーはエージェントに「&lt;code&gt;text_helpers.py&lt;/code&gt; の lint エラーを修正して」と依頼します。lint エラーは、&lt;code&gt;utils/text_helpers.py&lt;/code&gt; 内の &lt;code&gt;normalizeText&lt;/code&gt; と &lt;code&gt;slugifyTitle&lt;/code&gt; を snake_case に変更する必要があることを示しています。コードベースの部分的なスナップショットを以下に示します。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/lintExample-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/lintExample-1.png" alt="" width="3056" height="1848" class="alignnone size-full wp-image-178150"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;これらの修正をテキスト編集として扱うエージェントは、関数定義の名前を変更し、ローカル参照を修正するかもしれませんが、他の場所のインポートや呼び出し箇所を見逃す可能性が高く、実行時に &lt;code&gt;ImportError&lt;/code&gt;/&lt;code&gt;NameError&lt;/code&gt; を引き起こします。セマンティックリネームツールを使用することで、Kiro は定義だけでなく、&lt;code&gt;api/routes.py&lt;/code&gt; と &lt;code&gt;services/indexer.py&lt;/code&gt; のインポートと呼び出しも更新します。以下の画像の通りです。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/lintExample-after-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/lintExample-after-1.png" alt="" width="3076" height="1688" class="alignnone size-full wp-image-178151"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;依頼内容：&lt;/strong&gt;「コンポーネントを再編成して – &lt;code&gt;Button.tsx&lt;/code&gt; を &lt;code&gt;src/components/&lt;/code&gt; から &lt;code&gt;src/shared/ui/&lt;/code&gt; に移動して」&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;従来の失敗：&lt;/strong&gt;エージェントはタスクを単純なファイル操作として扱いました。ファイルの移動は成功しましたが、古い場所を指すすべてのインポート文が壊れています。エージェントはその後、検索置換操作でファイルごとにインポートを修正しようとしましたが、動的インポートを見逃しました。&lt;code&gt;import('../components/Button')&lt;/code&gt;。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;Kiro の対処法：&lt;/strong&gt;Kiro がインポートパスを自動的に更新する具体的な例を示します。図は、プロジェクト構造の部分的なスナップショットと依存するコードスニペットの一部を示しています。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/moveExample-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/moveExample-1.png" alt="" width="1454" height="608" class="alignnone size-full wp-image-178152"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;code&gt;Button.tsx&lt;/code&gt; を &lt;code&gt;src/components/&lt;/code&gt; から &lt;code&gt;src/shared/ui/&lt;/code&gt; に移動した後、Kiro は移動したファイルに関連するすべてのインポート文を自動的に更新します。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/moveExample-after-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/moveExample-after-1.png" alt="" width="1456" height="686" class="alignnone size-full wp-image-178153"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;主な利点：&lt;/strong&gt;&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt; &lt;p&gt;組み込みの言語サーバーが編集を処理するため、手動の検索置換は不要です。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;言語認識：TypeScript/JavaScript モジュール解決を理解します。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;より安全：動作するコードを壊す可能性が低くなります。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;エッジケースの処理：パスエイリアス、モノレポなどに対応します。&lt;/p&gt; &lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;これは、VSCode のエクスプローラーでファイルをドラッグアンドドロップしたときに起こることとまったく同じです。セマンティックリネームツールはエージェントベースの同等機能です！&lt;/p&gt; 
+&lt;h2 id="how-kiro-agents-refactor"&gt;Kiro エージェントのリファクタリング方法&lt;/h2&gt; 
+&lt;p&gt;IDE は、エージェント AI の台頭以前にこの問題をすでに解決していました。VSCode でシンボルの名前を変更するために F2 を押すと、IDE は推測しません。コードの構造を理解する言語サーバーに相談し、ワークスペース全体の編集を計算し、安全に適用します。VSCode のワークスペース編集機能により、単なるテキストパターンではなく、コードの構造を理解するプログラマブルなセマンティック検索置換が可能になります。Kiro エージェントは、LLM 推論だけでリファクタリングをシミュレートしようとはしません。代わりに、エージェントは上記と同じメカニズムを使用して、これらの実証済みの IDE 機能をプログラム的に公開する 2 つの新しいリファクタリングツールを登録します。エージェントがシンボルの名前を変更したりファイルを移動したりする必要がある場合、意図をインテリジェントに認識し、適切なリファクタリングツールを選択して呼び出します。エージェントはリファクタリングワークフローを調整し、IDE の言語サーバーが正確性の検証を支援します。&lt;/p&gt; 
+&lt;p&gt;これらのエージェント登録リファクタリングツールが内部でどのように機能するかを見てみましょう。&lt;/p&gt; 
+&lt;h3 id="semantic-rename-tool-renaming-done-right"&gt;セマンティックリネームツール：正しいリネームを実現&lt;/h3&gt; 
+&lt;p&gt;このツールは、VSCode のシンボル名前変更 API に直接接続します。F2 を押したときに使用するのと同じものです。&lt;code&gt;vscode.prepareRename&lt;/code&gt; を使用してシンボルが名前変更可能かどうかを検証し（例：キーワードではない）、&lt;code&gt;vscode.executeDocumentRenameProvider&lt;/code&gt; を使用してワークスペース全体で必要なすべての変更を含むワークスペース編集を生成します。TypeScript、JavaScript、TSX、JSX の場合、組み込みの VSCode 名前変更プロバイダーがすべてを処理します。Python、Go、Java などの場合、ツールはインストールされた言語拡張機能とそれらが提供する言語サーバーに依存します。&lt;/p&gt; 
+&lt;h3 id="the-smart-relocate-tool-moving-files-without-breaking-everything"&gt;スマートリロケートツール：すべてを壊さずにファイルを移動&lt;/h3&gt; 
+&lt;p&gt;このツールは、VSCode のファイル移動機能を使用して、すべての参照を自動的に更新しながらファイルを再配置します。VSCode のエクスプローラーでドラッグアンドドロップするのと同等のプログラム的な操作ですが、エージェントがあなたのために実行できます。&lt;code&gt;vscode.WorkspaceEdit.renameFile&lt;/code&gt; と &lt;code&gt;vscode.workspace.applyEdit&lt;/code&gt; を使用して、ツールは複数のファイルにわたる包括的な変更を生成し、影響を受けるインポートを更新します。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/workflow.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/workflow.png" alt="" width="4408" height="1688" class="alignnone size-full wp-image-178154"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;h2 id="why-this-matters"&gt;これが重要な理由&lt;/h2&gt; 
+&lt;p&gt;&lt;strong&gt;創造性よりも精度：&lt;/strong&gt;リファクタリングは、コードがどのように見えるべきかを LLM に想像させる必要はありません。コードが&lt;em&gt;実際に何であるか&lt;/em&gt;を理解し、外科的に変更できるツールが必要なのです。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;実証済みのインフラストラクチャを通じた信頼：&lt;/strong&gt;これらは実験的な LLM 機能ではなく、開発者が日常的にすでに依存しているリファクタリングインフラストラクチャとの直接統合です。F2 を押したときに機能すれば、エージェントが実行したときにも機能します。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;言語に依存しない：&lt;/strong&gt;重い作業は言語サーバーによって行われるため、このアプローチは技術スタックと言語全体に一般化されます。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;生産性の維持：&lt;/strong&gt;20 秒の手動リファクタリングが、5 分間の AI 生成リカバリーミッションになるべきではありません。適切なツールを使用すれば、操作は高速でアトミックなままです。&lt;/p&gt; 
+&lt;h2 id="the-bigger-picture"&gt;より大きな視点&lt;/h2&gt; 
+&lt;p&gt;構築による正確性という私たちの哲学に基づいて、&lt;a target="_blank" href="https://kiro.dev/blog/empowering-kiro-with-ide-diagnostics/" rel="noopener"&gt;IDE 診断統合&lt;/a&gt;を導いたのと同じ原則で、VSCode のリファクタリング機能の全範囲をカバーするようにこのアプローチを拡張しています。エラーが複合する前にキャッチするためにリアルタイム診断を統合したのと同様に、これらの実証済みの決定論的 IDE 機能を、新しい内部スマートリロケートおよびセマンティックリネームツールに拡張しました。&lt;/p&gt; 
+&lt;p&gt;しかし、リファクタリング機能は名前変更と再配置で止まりません。VSCode の言語サーバーは、エージェントが活用すべき豊富な自動コード変換スイートを提供します。コードブロックを再利用可能な関数に抽出するメソッド/関数の抽出、コードを簡素化する変数/関数のインライン化、すべての呼び出し箇所でメソッドパラメータを更新するシグネチャの変更、アロー関数への変換やその他の言語固有の変換は有力な候補です。&lt;/p&gt; 
+&lt;p&gt;このアプローチを取ることで、エージェントが実行される基盤に正確性、セキュリティ、信頼性を組み込むことができます。これらのツールで確立したパターンは、ツールキットへの新しい追加を導きます。LLM に脆弱なテキスト置換スクリプトを生成するよう依頼する代わりに、インテリジェントなコーディングエージェントは、開発者がすでに信頼しているこれらの実証済みの IDE 操作を活用し続けます。IDE が正しく実行する方法を知っているとき、私たちはそれに作業をさせます。エージェントがより有能になるにつれて、これはその出力をより信頼できるものにするための良いテクニックでもあります。&lt;/p&gt; 
+&lt;p&gt;違いを体験する準備はできましたか？&lt;a target="_blank" href="https://kiro.dev/downloads/" rel="noopener"&gt;Kiro を無料で始めて&lt;/a&gt;、開発ワークフローをどのように変革できるかを確認してください。&lt;a target="_blank" href="https://discord.com/invite/kirodotdev" rel="noopener"&gt;Discord&lt;/a&gt; の成長するコミュニティに参加して、フィードバックを共有し、質問をし、AI 支援コーディングで構築している他の開発者とつながりましょう。&lt;/p&gt; 
+&lt;p&gt;&lt;u&gt;謝辞&lt;/u&gt;&lt;/p&gt; 
+&lt;p&gt;エンジニアリングの洞察と貴重なフィードバックを提供してくれた Al Harris に感謝します。&lt;/p&gt; 
+&lt;p class="text-sm"&gt;本記事は 2026 年 2 月 5 日に公開された Pardis Pashakhanloo と Rajdeep Mukherjee による “&lt;a target="_blank" href="https://kiro.dev/blog/refactoring-made-right/" rel="noopener"&gt;Refactoring made right: how program analysis makes AI agents safe and reliable&lt;/a&gt;” を翻訳したものです。翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>AWS Transform custom: AI 駆動 Java モダナイゼーションで技術的負債を削減</title>
+		<link>https://aws.amazon.com/jp/blogs/news/aws-transform-custom-ai-driven-java-modernization-to-reduce-tech-debt/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Mon, 09 Feb 2026 00:03:24 +0000</pubDate>
+				<category><![CDATA[Artificial Intelligence]]></category>
+		<category><![CDATA[AWS Transform]]></category>
+		<category><![CDATA[Generative AI]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Development]]></category>
+		<category><![CDATA[DevOps]]></category>
+		<category><![CDATA[Java]]></category>
+		<category><![CDATA[Modernization]]></category>
+		<guid isPermaLink="false">b62f0690fea9ca146b82576bf5cf6d47a3f4f06c</guid>
+
+					<description>今日の急速に進化するソフトウェア環境において、Java アプリケーションの保守とモダナイゼーションは、多くの組織が直面する重要な課題です。新しい Java バージョンがリリースされ、ベストプラクティスが進化するにつれて、効率的なコード変換の必要性がますます重要になっています。この記事では、Java アップグレード用の AWS Transform custom のすぐに使える変換を活用する方法について説明します。この記事の最後までに、変換プロセスを完全に制御しながら、これらの標準化された変換を使用して Java アプリケーションを効率的にモダナイズする方法を理解できるようになります。</description>
+										<content:encoded>&lt;p&gt;本記事は 2026 年 2 月 4 日に公開された Venugopalan Vasudevan、Dinesh Balaaji Prabakaran、Sureshkumar Natarajan、Anjan Dave による “&lt;a href="https://aws.amazon.com/blogs/devops/aws-transform-custom-ai-driven-java-modernization-to-reduce-tech-debt/" target="_blank" rel="noopener"&gt;AWS Transform custom: AI-driven Java modernization to reduce tech debt&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;今日の急速に進化するソフトウェア環境において、Java アプリケーションの保守とモダナイゼーションは、多くの組織が直面する重要な課題です。新しい Java バージョンがリリースされ、ベストプラクティスが進化するにつれて、効率的なコード変換の必要性がますます重要になっています。今日の組織は、Java アプリケーションをモダナイズする際に大きな課題に直面しています。レガシーコードベースには、パフォーマンスと保守性を妨げる古いパターン、非推奨の API、非効率な実装が含まれていることがよくあります。従来の手動リファクタリングアプローチは時間がかかり、エラーが発生しやすく、大規模なコードベース全体に拡張することが困難です。さらに、開発者が新規開発とデプロイにより多くの時間を費やすにつれて、技術的負債の量は増え続け、レガシーコードの大規模な変換が必要になります。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://aws.amazon.com/transform/custom/" target="_blank" rel="noopener"&gt;AWS Transform custom&lt;/a&gt; は、インテリジェントな自動化を通じてこれらの課題に対処し、Java バージョンアップグレードなどの一般的なシナリオ向けの標準化された変換パッケージである &lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/transform-aws-customs.html" target="_blank" rel="noopener"&gt;AWS マネージド変換 (AWS-Managed Transformation)&lt;/a&gt; を提供します。これらの変換により、チームは大規模に実行できる標準化されテスト済みの変換パターンを通じて迅速な成果を達成でき、お客様に大幅な時間とコストの削減をもたらします。さらに、お客様はカスタム&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom-workflows.html#custom-create-custom-transformations" target="_blank" rel="noopener"&gt;ユーザー定義のカスタム変換&lt;/a&gt;を作成して、言語、フレームワークなどにわたるコード変換で技術的負債に対処できます。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-177995"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;p&gt;この記事では、Java アップグレード用の AWS Transform custom のすぐに使える変換を活用する方法について説明します。この記事の最後までに、変換プロセスを完全に制御しながら、これらの標準化された変換を使用して Java アプリケーションを効率的にモダナイズする方法を理解できるようになります。&lt;/p&gt; 
+&lt;h2&gt;AWS Transform custom の紹介&lt;/h2&gt; 
+&lt;p&gt;AWS Transform custom は、エージェント型 AI を使用して大規模なコードモダナイゼーションを自動化し、プログラミング言語のバージョンアップグレード、API の移行、フレームワークの更新、組織固有の変換を処理します。継続的な学習を通じて、エージェントは各実行と開発者からのフィードバックから改善を重ね、専門的な自動化技術が不要な高品質で再現性のある変換を実現します。&lt;/p&gt; 
+&lt;h2&gt;前提条件&lt;/h2&gt; 
+&lt;p&gt;AWS Transform custom で Java モダナイゼーションの旅を始める前に、必要な開発環境、ビルドツール、AWS Transform custom コマンドラインインターフェイス (CLI) がインストールされていることを確認してください。詳細な前提条件とセットアップ手順については、&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom-get-started.html#custom-prerequisites" target="_blank" rel="noopener"&gt;AWS Transform custom 利用の前提条件&lt;/a&gt;を参照してください。&lt;/p&gt; 
+&lt;h2&gt;モダナイゼーションシナリオの理解&lt;/h2&gt; 
+&lt;p&gt;&lt;a href="https://github.com/aws-samples/aws-appconfig-java-sample/tree/aws-appconfig-java-sample-gradle" target="_blank" rel="noopener"&gt;Movie Service アプリケーション&lt;/a&gt;を使用して AWS Transform custom を実演します。これは、Gradle を使用した Java 8 上に構築された Spring Boot REST API です。これは、レガシーな依存関係、古いパターン、技術的負債を伴う典型的なエンタープライズモダナイゼーションの課題を表しています。&lt;/p&gt; 
+&lt;h2&gt;AWS マネージド変換 (AWS-Managed Transformation) の活用&lt;/h2&gt; 
+&lt;p&gt;AWS Transform custom は、Java バージョンアップグレードなどの一般的なモダナイゼーションタスク向けに設計された AWS マネージド変換 (AWS-Managed Transformation) の活用に焦点を当てています。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;AWS マネージド変換 (AWS-Managed Transformation) &lt;/strong&gt;は、追加のセットアップなしですぐに使用できる、一般的なユースケース向けの事前構築された AWS 検証済みの変換です。これらの変換は、最小限の設定で即座に価値を提供し、標準的なアップグレードシナリオに最適です。&lt;/p&gt; 
+&lt;h3&gt;AWS Transform custom CLI 機能の理解&lt;/h3&gt; 
+&lt;p&gt;AWS Transform custom は、インタラクティブと自動化の両方の変換ワークフローを可能にする包括的なコマンドラインインターフェイスを提供します。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-bash"&gt;atx --version                    # ATX のバージョンを表示
+atx --help                       # 一般的なヘルプを表示
+atx custom def list              # 変換パッケージの一覧
+atx                              # インタラクティブな会話の開始
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;利用可能なすべてのコマンドの詳細については、&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom-command-reference.html" target="_blank" rel="noopener"&gt;AWS Transform custom コマンドリファレンス&lt;/a&gt;を参照してください。&lt;/p&gt; 
+&lt;p&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig1.png" alt="Screenshot of AWS Transform custom interactive mode."&gt;&lt;br&gt; &lt;em&gt;図 1: AWS Transform custom インタラクティブモード&lt;/em&gt;&lt;/p&gt; 
+&lt;h3&gt;利用可能な変換の検出&lt;/h3&gt; 
+&lt;p&gt;&lt;code&gt;atx custom def list&lt;/code&gt; を使用して、AWS マネージド変換 (AWS-Managed Transformation) と組織によって作成されたカスタム定義（ユーザー定義）変換を含む、利用可能なすべての変換を表示します。主要な AWS マネージド変換 (AWS-Managed Transformation) には、Java/Python/Node.js バージョンアップグレードと AWS SDK 移行が含まれます。&lt;/p&gt; 
+&lt;p&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig2.png" alt="Screenshot of AWS Transform interface displaying categorized lists of AWS Managed transformations and user-defined custom
+transformations."&gt;&lt;br&gt; &lt;em&gt;図 2: AWS Transform custom は利用可能な AWS マネージド変換 (AWS-Managed Transformation) とカスタム定義（ユーザー定義）変換をリスト表示&lt;/em&gt;&lt;/p&gt; 
+&lt;h3&gt;AWS マネージド変換 (AWS-Managed Transformation) の適用&lt;/h3&gt; 
+&lt;p&gt;変換を適用する前に、プロジェクトが Git で初期化されており、すべてのビルドとテストケースが Java 8 で正しく動作していることを確認してください（必要に応じて、適切なビルドコマンドオプションとエージェントへの指示を使用してテストケースをスキップできます）。Gradle プロジェクトの場合、&lt;code&gt;./gradlew build&lt;/code&gt; が正常に実行されることを確認してください。&lt;/p&gt; 
+&lt;p&gt;変換プロセスは構造化されたアプローチに従います。&lt;/p&gt; 
+&lt;ol&gt; 
+ &lt;li&gt;&lt;strong&gt;クリーンな Git 状態の確保:&lt;/strong&gt;&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;pre&gt;&lt;code class="language-bash"&gt;git status
+git add .
+git commit -m "Baseline before Java 21 transformation"
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;ol start="2"&gt; 
+ &lt;li&gt;&lt;strong&gt;変換の適用:&lt;/strong&gt; インタラクティブモードまたはダイレクトコマンドモードのいずれかを使用して変換を適用できます。このブログでは、プロセスをステップバイステップで説明するためにインタラクティブモードを使用します。&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;p&gt;&lt;strong&gt;インタラクティブモード（このブログで使用）:&lt;/strong&gt;&lt;/p&gt; 
+&lt;p&gt;まず、変換設定を含む &lt;code&gt;config.json&lt;/code&gt; ファイルを作成します。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-json"&gt;{
+  "codeRepositoryPath": "/path/to/your/aws-appconfig-java-sample-gradle",
+  "transformationName": "AWS/java-version-upgrade",
+  "buildCommand": "./gradlew clean build",
+  "validationCommands": "build and validate using \"./gradlew clean build\" after transformation to test with java 21",
+  "additionalPlanContext": "This is a Java 8 to 21 transformation of a gradle app , also include all dependency migration as well. Use java path /path/to/your/java-8/bin/java and /path/to/your/java-21/bin/java when building before and after transformation. We are using gradle wrapper gradlew, update it if needed for java 21 upgrade. Check for deprecated methods and dependencies and update them."
+}
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;config.json の &lt;code&gt;codeRepositoryPath&lt;/code&gt; をローカルプロジェクトディレクトリを指すように更新し、&lt;code&gt;additionalPlanContext&lt;/code&gt; の Java パスを Java 8 と 21 のインストールに合わせて更新します。設定ファイルとそのパラメータの詳細については、&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom-workflows.html" target="_blank" rel="noopener"&gt;設定ファイルの使用&lt;/a&gt;を参照してください。&lt;/p&gt; 
+&lt;p&gt;次に、インタラクティブモードで変換を実行します（このブログのウォークスルーで使用）。&lt;/p&gt; 
+&lt;pre&gt;&lt;code&gt;For Java version upgrade with Gradle using config.json (Interactive Mode):
+atx custom def exec -t --configuration file://config.json
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig3.png" alt="Screenshot of AWS Transform interface displaying categorized lists of AWS Managed transformations and user-defined custom transformations."&gt;&lt;br&gt; &lt;em&gt;図 3: AWS Transform custom は config.json から提供された変換設定を使用してインタラクティブモードで gradle 変換を実行&lt;/em&gt;&lt;/p&gt; 
+&lt;p&gt;ダイレクトコマンドモード（代替アプローチ）: 自動化された CI/CD パイプラインや、インタラクティブなプロンプトなしで変換を実行したい場合は、このモードを使用します。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-bash"&gt;atx custom def exec -x -t --configuration "file://config.json"
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;&lt;strong&gt;パラメータの説明:&lt;/strong&gt; &lt;/p&gt; 
+&lt;p&gt;– &lt;code&gt;--configuration&lt;/code&gt;: インタラクティブモード用の設定ファイルを指定&lt;/p&gt; 
+&lt;p&gt;– &lt;code&gt;-x&lt;/code&gt;: インタラクティブなプロンプトなしで変換を自動的に実行（ダイレクトモード）&lt;/p&gt; 
+&lt;p&gt;– &lt;code&gt;-t&lt;/code&gt;: 実行中の検証のためのテストモードを有効化（ダイレクトモード）&lt;/p&gt; 
+&lt;p&gt;&lt;code&gt;--configuration&lt;/code&gt;: file:// プレフィックス付きの設定ファイルパスを指定（ダイレクトモード）&lt;/p&gt; 
+&lt;p&gt;ATX 実行コマンド &lt;em&gt;ATX CLI を使用した Gradle プロジェクト用の AWS マネージド Java バージョンアップグレード変換の実行&lt;/em&gt;&lt;/p&gt; 
+&lt;ol start="3"&gt; 
+ &lt;li&gt;&lt;strong&gt;変換計画のレビュー:&lt;/strong&gt; AWS Transform custom は、&lt;code&gt;config.json&lt;/code&gt; で提供された設定に基づいてプロジェクトを分析し、包括的な変換計画を生成します。この計画には、以下を含むすべての提案された変更が詳細に記載されています。&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;&lt;strong&gt;Java バージョンの更新&lt;/strong&gt;: Java 8 から Java 21 設定への移行&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;API 移行パターン&lt;/strong&gt;: 非推奨 API と最新の代替手段の自動更新&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;フレームワークのモダナイゼーション&lt;/strong&gt;: Spring Boot バージョンアップグレードと互換性の更新&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;依存関係の変更&lt;/strong&gt;: Java 21 と互換性のある更新されたライブラリバージョン&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;ビルドシステムの更新&lt;/strong&gt;: Java 21 互換性のための Gradle 設定とプラグインの変更&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;コードパターンの改善&lt;/strong&gt;: 最新の Java 機能とベストプラクティスの実装&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;変換計画が予想されるすべての更新を網羅していることを確認するために、徹底的なレビューを行うことをお勧めします。&lt;code&gt;config.json&lt;/code&gt; の &lt;code&gt;additionalPlanContext&lt;/code&gt; は、依存関係の移行と Gradle ラッパーの更新を含めるように変換をガイドするのに役立ちます。調整が必要な場合は、CLI インターフェイスを通じてフィードバックを提供してください。&lt;/p&gt; 
+&lt;p&gt;さらに、プロジェクトに含まれる追加のレガシー依存関係のアップグレードなど、追加の変更をターゲットにするために変換をカスタマイズしたい場合は、変換計画をレビューする際にフィードバックとして提供できます。AWS Transform custom は、続行する前に変換計画を改善するために提供されたすべてのフィードバックを組み込みます。&lt;/p&gt; 
+&lt;ol start="4"&gt; 
+ &lt;li&gt;&lt;strong&gt;変換の適用:&lt;/strong&gt; 変換計画が要件を満たしていることを確認したら、&lt;code&gt;proceed&lt;/code&gt; と入力して Enter キーを押します。AWS Transform custom は、承認された計画に従って変換を実行します。&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;p&gt;変換プロセスは自動的に:&lt;/p&gt; 
+&lt;p&gt;– 新しいブランチを作成し、変換された変更をそこにコミット&lt;/p&gt; 
+&lt;p&gt;– Java 21 用の Gradle 設定を更新&lt;/p&gt; 
+&lt;p&gt;– Java EE から Jakarta EE パッケージへの移行（該当する場合）&lt;/p&gt; 
+&lt;p&gt;– Java 21 互換性のためのフレームワーク依存関係を更新&lt;/p&gt; 
+&lt;p&gt;– 必要なすべてのコード変更を適用&lt;/p&gt; 
+&lt;p&gt;– Java 21 互換性のためのテストケースとテストフレームワークを更新&lt;/p&gt; 
+&lt;p&gt;– 包括的な検証ビルドを実行&lt;/p&gt; 
+&lt;h3&gt;AWS マネージド変換 (AWS-Managed Transformation) の結果&lt;/h3&gt; 
+&lt;p&gt;Java バージョンアップグレード変換を適用した後、以下の変更が観察されます。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;設定の更新:&lt;/strong&gt;&lt;/p&gt; 
+&lt;p&gt;– Java バージョン: 8 → 21 &lt;/p&gt; 
+&lt;p&gt;– Spring Boot バージョンアップグレード &lt;/p&gt; 
+&lt;p&gt;– Gradle プラグインと設定の更新 &lt;/p&gt; 
+&lt;p&gt;– 依存関係バージョンのモダナイゼーション&lt;/p&gt; 
+&lt;p&gt;変更を検証するには、Java 21 に切り替えて &lt;code&gt;./gradlew build&lt;/code&gt; を実行し、変換が成功したことを確認してから、アプリケーション機能をテストします。&lt;/p&gt; 
+&lt;p&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig4.png" alt="Figure 4: displaying Updated Gradle Configuration Gradle build.gradle showing updated Java 21 configuration and modernized
+dependencies"&gt;&lt;br&gt; &lt;em&gt;図 4: 更新された Gradle 設定 – 更新された Java 21 設定とモダナイズされた依存関係を示す Gradle build.gradle&lt;/em&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig5.png" alt="Figure 5: Updated code where legacy pattern of raw types usage is transformed to generics"&gt;&lt;br&gt; &lt;em&gt;図 5: raw 型の使用というレガシーパターンがジェネリクスに変換された更新されたコード&lt;/em&gt;&lt;br&gt; &lt;br&gt; &lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig6.png" alt="Figure 6: Second example of updated code where legacy pattern of raw types usage is transformed to generics"&gt;&lt;br&gt; &lt;em&gt;図 6: raw 型の使用というレガシーパターンがジェネリクスに変換された更新されたコードの 2 番目の例&lt;/em&gt;&lt;br&gt; &lt;br&gt; &lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig7.png" alt="Figure 7: Updated dependency from javax.security to java.security and uses CertificateFactory to get X509Certificate"&gt;&lt;br&gt; &lt;em&gt;図 7: javax.security から java.security への依存関係の更新と CertificateFactory を使用した X509Certificate の取得&lt;/em&gt;&lt;br&gt; &lt;br&gt; &lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig8.png" alt="Figure 8: Updated Test cases from junit 4 to junit5"&gt;&lt;br&gt; &lt;em&gt;図 8: junit 4 から junit5 への更新されたテストケース&lt;/em&gt;&lt;/p&gt; 
+&lt;h2&gt;AWS マネージド変換 (AWS-Managed Transformation) を超えて: カスタム定義変換&lt;/h2&gt; 
+&lt;p&gt;AWS マネージド変換 (AWS-Managed Transformation) は標準的な Java モダナイゼーションシナリオに対して優れたカバレッジを提供しますが、利用可能な AWS マネージド変換 (AWS-Managed Transformation) が特定の変換要件に対応していない場合があります。このような状況では、AWS Transform custom により、ユーザーは独自の組織固有のカスタム定義変換を作成およびテストできます。&lt;/p&gt; 
+&lt;h3&gt;カスタム定義変換を作成するタイミング&lt;/h3&gt; 
+&lt;p&gt;カスタム定義変換は、独自のフレームワーク、組織固有のコーディング標準、複雑な複数ステップの移行シナリオなど、AWS マネージド変換 (AWS-Managed Transformation) が特定のニーズをカバーしていない場合に必要になります。&lt;/p&gt; 
+&lt;h3&gt;カスタム定義変換の作成&lt;/h3&gt; 
+&lt;p&gt;AWS Transform custom により、チームは変換ルールと設定ファイルを使用してカスタム変換を開発できます。これにより、組織は要件に固有の変換ロジックを定義し、サンプルコードでテストし、検証済みの変換をチーム間で共有できます。&lt;/p&gt; 
+&lt;p&gt;AWS Transform custom のインタラクティブモード（&lt;code&gt;atx&lt;/code&gt;）は、カスタム定義変換の作成に特に有益であり、会話型のインタラクションを可能にして要件を反復的に改善し、リアルタイムのフィードバックを得ることができます。カスタム定義変換は、AWS マネージド変換 (AWS-Managed Transformation) が特定のモダナイゼーションニーズを満たさない場合に、AWS Transform custom の機能を拡張する柔軟性を提供します。&lt;/p&gt; 
+&lt;h3&gt;継続的学習とナレッジアイテム&lt;/h3&gt; 
+&lt;p&gt;AWS Transform custom は、各変換実行から自動的に学習して将来の結果を改善します。特に Java アップグレードについては、サービスは成功したリファクタリング戦略、一般的な依存関係の競合、Java バージョン間のフレームワーク互換性マトリックスなどのパターンをキャプチャします。この知識は将来の変換にフィードバックされ、成功したアップグレードパスの予測がより正確になり、手動介入が減少します。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom-workflows.html#custom-continual-learning" target="_blank" rel="noopener"&gt;ナレッジアイテム&lt;/a&gt;はアカウント固有であり、AWS アカウントの境界内に留まります。ユーザーは継続的学習を有効または無効にでき、この設定を完全に制御できます。&lt;/p&gt; 
+&lt;h2&gt;まとめ&lt;/h2&gt; 
+&lt;p&gt;このブログでは、AWS マネージド変換 (AWS-Managed Transformation) を使用して AWS Transform custom が効率的な Java アプリケーションモダナイゼーションを可能にする方法を実演しました。Java 8 と Spring Boot 2.x で実行されているレガシー Movie Service アプリケーションから始めて、最新の依存関係とパターンを備えた Java 21 への変換に成功しました。&lt;/p&gt; 
+&lt;p&gt;ステップバイステップのプロセスでは、ベースラインの確立、&lt;code&gt;atx custom def list&lt;/code&gt; を使用した利用可能な変換の検出、AWS Transform custom の CLI を通じた変換の適用方法を示しました。その結果、更新された Java バージョン、Spring Boot アップグレード、拡張された switch 式やローカル変数型推論などの最新の Java 機能を備えた完全にモダナイズされたアプリケーションが得られました。これらすべてが、数週間の手動リファクタリングではなく数分で達成されました。&lt;/p&gt; 
+&lt;h3&gt;Java モダナイゼーションを超えて&lt;/h3&gt; 
+&lt;p&gt;Java モダナイゼーションを超えて、AWS Transform custom の変換機能は他のプログラミング言語とフレームワークに拡張され、多様なテクノロジースタック全体にわたる包括的なアプリケーションポートフォリオモダナイゼーションのための汎用的なソリューションとなっています。エージェントは、以下を含む多様な変換ユースケースをサポートします。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;Java、Python、Node.js のバージョンアップグレード&lt;/li&gt; 
+ &lt;li&gt;ランタイムと API の移行（AWS SDK v1→v2、Boto2→Boto3）&lt;/li&gt; 
+ &lt;li&gt;フレームワークの移行とアップグレード&lt;/li&gt; 
+ &lt;li&gt;言語の翻訳とアーキテクチャの変更&lt;/li&gt; 
+ &lt;li&gt;組織固有のカスタム定義変換&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;AWS Transform customは「定義は一度、変換はどこでも (define once, transform everywhere) 」というアプローチにより、組織全体で変換処理を一度定義し、反復可能なタスクを実行することで、変換知識の蓄積と拡大を実現します。これにより知識のサイロ化が解消され、チームやプロジェクトの範囲に関わらず一貫した品質が保証されます。&lt;/p&gt; 
+&lt;h3&gt;今すぐ始めましょう&lt;/h3&gt; 
+&lt;p&gt;AWS Transform custom で Java アプリケーションをモダナイズする準備はできましたか？開始方法は次のとおりです。&lt;/p&gt; 
+&lt;ol&gt; 
+ &lt;li&gt;インストールスクリプトを使用して&lt;strong&gt;AWS Transform custom CLI (atx) のインストール&lt;/strong&gt;し、環境を確認&lt;/li&gt; 
+ &lt;li&gt;&lt;code&gt;transform-custom:*&lt;/code&gt; 権限で &lt;strong&gt;AWS 認証情報の設定&lt;/strong&gt;&lt;/li&gt; 
+ &lt;li&gt;&lt;code&gt;atx custom def list&lt;/code&gt; を使用して、&lt;strong&gt;利用可能な AWS マネージド変換 (AWS-Managed Transformation) を探索&lt;/strong&gt;&lt;/li&gt; 
+ &lt;li&gt;ダイレクト実行モード（&lt;code&gt;atx custom def exec&lt;/code&gt;）またはインタラクティブモード（&lt;code&gt;atx&lt;/code&gt;）を使用して Java アプリケーションに&lt;strong&gt;変換の適用&lt;/strong&gt;&lt;/li&gt; 
+ &lt;li&gt;Gradle プロジェクトの場合は &lt;code&gt;./gradlew build&lt;/code&gt; を使用した包括的なテストを通じて&lt;strong&gt;結果の検証&lt;/strong&gt;&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;アプリケーションポートフォリオ全体への拡張し、&lt;/strong&gt;一貫したモダナイゼーションを実現&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;h3&gt;追加リソース&lt;/h3&gt; 
+&lt;p&gt;詳細なセットアップ手順とドキュメントについては、以下をご覧ください:&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom-get-started.html" target="_blank" rel="noopener"&gt;AWS Transform custom 入門ガイド&lt;/a&gt;&lt;/li&gt; 
+ &lt;li&gt;&lt;a href="https://aws.amazon.com/transform/custom/" target="_blank" rel="noopener"&gt;AWS Transform custom 製品ページ&lt;/a&gt;&lt;/li&gt; 
+ &lt;li&gt;&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom.html" target="_blank" rel="noopener"&gt;AWS Transform custom ドキュメント&lt;/a&gt;&lt;/li&gt; 
+ &lt;li&gt;&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom-command-reference.html" target="_blank" rel="noopener"&gt;AWS Transform custom コマンドリファレンス&lt;/a&gt;&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;今すぐモダナイゼーションの旅を始めて、大規模な AI 駆動コード変換の力を体験してください。&lt;/p&gt; 
+&lt;h3&gt;著者について&lt;/h3&gt; 
+&lt;footer&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="wp-image-11636 alignleft" src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2024/05/08/vasudeve-150x150.png" alt="Profile image for Venugopalan Vasudevan" width="142" height="142"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Venugopalan Vasudevan&lt;/h3&gt; 
+  &lt;p style="text-align: left"&gt;Venugopalan Vasudevan (Venu) は AWS のシニアスペシャリストソリューションアーキテクトであり、Amazon Q Developer、Kiro、AWS Transform に焦点を当てた生成 AI イニシアチブをリードしています。彼は、顧客が AI を活用した開発者向けソリューションやモダナイゼーションソリューションを採用・拡張し、イノベーションとビジネス成果を加速できるよう支援しています。&lt;/p&gt; 
+  &lt;p&gt;&lt;/p&gt;
+ &lt;/div&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="wp-image-11636 alignleft" src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2025/04/08/dbalaaji.jpeg" alt="Profile image for Dinesh Balaaji Prabakaran" width="142" height="142"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Dinesh Balaaji Prabakaran&lt;/h3&gt; 
+  &lt;p style="text-align: left"&gt;Dinesh は AWS のエンタープライズサポートリードであり、独立系ソフトウェアベンダー（ISV）のクラウドジャーニーをサポートすることを専門としています。AWS 生成 AI サービスの専門知識を持ち、顧客が Amazon Q Developer、Kiro、AWS Transform を活用して、AI を活用した支援によりアプリケーション開発とモダナイゼーションを加速できるよう支援しています。&lt;/p&gt; 
+  &lt;p&gt;&lt;/p&gt;
+ &lt;/div&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="wp-image-11636 alignleft" src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2025/06/12/SureshPhoto-275x300.jpg" alt="Profile image for Sureshkumar Natarajan" width="142" height="142"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Sureshkumar Natarajan&lt;/h3&gt; 
+  &lt;p style="text-align: left"&gt;Sureshkumar Natarajan は AWS のシニアテクニカルアカウントマネージャーであり、生成 AI イニシアチブに焦点を当てて、エンタープライズ顧客のクラウドジャーニーをサポートしています。彼は、組織が Amazon Q Developer、Kiro、AWS Transform を活用して新しい機能を引き出し、開発ワークフローを効率化し、変革的なビジネス成果を達成できるよう導いています。&lt;/p&gt; 
+  &lt;p&gt;&lt;/p&gt;
+ &lt;/div&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="wp-image-11636 alignleft" src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/anjancd-1-300x300.jpeg" alt="Profile image for Anjan Dave" width="142" height="142"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Anjan Dave&lt;/h3&gt; 
+  &lt;p style="text-align: left"&gt;Anjan Dave は AWS のプリンシパルソリューションアーキテクトであり、25 年以上の IT 経験を持っています。彼は、生成 AI アプリケーションのモダナイゼーション、インフラストラクチャのスケーラビリティ、開発者の生産性向上イニシアチブを専門としています。&lt;br&gt;Anjan は、グローバルプロジェクト全体で生成 AI とモダナイゼーション戦略をリードし、イベント駆動型アーキテクチャとマイクロサービスアーキテクチャを通じて HCM プロバイダーのテクノロジーロードマップに影響を与えています。彼は、ソフトウェア開発ライフサイクルに生成 AI を統合して日常的なタスクを自動化し、エンジニアリングチームが高付加価値のアーキテクチャ作業に集中できるようにすることを提唱しています。&lt;/p&gt; 
+  &lt;p&gt;&lt;/p&gt;
+ &lt;/div&gt; 
+&lt;/footer&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Kiro powers の紹介</title>
+		<link>https://aws.amazon.com/jp/blogs/news/introducing-powers/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Fri, 05 Dec 2025 06:08:45 +0000</pubDate>
+				<category><![CDATA[Amazon Q]]></category>
+		<category><![CDATA[Amazon Q Developer]]></category>
+		<category><![CDATA[Announcements]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[General]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">04ab9e5b4330a443a5ccc1953a44108b9761956d</guid>
+
+					<description>AI アシスタントは、フレームワークの専門知識への即座のアクセスを提供し、より速くリリースできるようにすべきです。しかし、今日の AI エージェントも同じ課題に直面しています。組み込みの知識がなければ、あなたと同じように推測と反復を繰り返します。Kiro powers は、幅広い開発とデプロイメントのユースケースに対して、その統一されたアプローチを提供します。MCP ツールとフレームワークの専門知識を一緒にパッケージ化し、動的に読み込みます。</description>
+										<content:encoded>&lt;p&gt;本記事は 2025 年 12 月 3 日に公開された Nikhil Swaminathan と Kartik Chivukula による “&lt;a href="https://kiro.dev/blog/introducing-powers/"&gt;Introducing Kiro powers&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;決済フローを構築する場面を想像してください。Stripe の使用経験があっても、適切な実装パターンを求めてドキュメントを探し回ることになるでしょう。ここで冪等性キーを使うべきか？ Webhook を処理する最善の方法は？ Stripe に触れたことがなければ、学習曲線はさらに急になります。AI アシスタントは、フレームワークの専門知識への即座のアクセスを提供し、より速くリリースできるようにすべきです。しかし、今日の AI エージェントも同じ課題に直面しています。組み込みの知識がなければ、開発者と同じように試行錯誤を繰り返します。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-172378"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;ol&gt; 
+ &lt;li&gt;&lt;u&gt;フレームワークのコンテキストがないと、エージェントは推測する&lt;/u&gt;: エージェントは Neon にクエリを実行できますが、サーバーレス向けのコネクションプーリングを理解しているでしょうか？ API を呼び出すことはできますが、適切なパターンとベストプラクティスを知っているでしょうか？ 組み込みの専門知識がなければ、出力が正しくなるまで、両者ともドキュメントを手動で読み、アプローチを洗練させることになります。この試行錯誤は、すべてのツール、すべてのフレームワーク、コア専門分野外のすべてのドメインで繰り返されます。Powers は、エージェント、ひいてはあなたに専門知識への即座のアクセスを提供し、不慣れなドメインで開発速度を向上させます。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;コンテキストが多すぎると、エージェントは遅くなる&lt;/u&gt;: MCP はフレームワークのコンテキスト問題を解決することを目的としていますが、独自の問題を抱えています。5 つの MCP サーバーに接続すると、エージェントは 1 行のコードを書く前に 100 以上のツール定義を読み込みます。5 つのサーバーは、最初のプロンプトの前にコンテキストウィンドウの 40% にあたる 50,000 以上のトークンを消費する可能性があります。より多くのツールはより良い結果を意味するはずですが、構造化されていないコンテキストはエージェントを圧倒し、応答の遅延と品質の低下、いわゆる&lt;a href="https://simonwillison.net/2025/Jun/18/context-rot/"&gt;コンテキストの劣化&lt;/a&gt;につながります。&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;h2&gt;既存の状況&lt;/h2&gt; 
+&lt;p&gt;AI 開発ツールは急速に進化しています。Anthropic は最近、動的ツール読み込み（Tool Search ツール）、命令をパッケージ化するための Claude Skills、サブエージェントやエージェントの動作のためのルールなどのさまざまなプリミティブを導入しました。Cursor はカスタム命令のためのルールと .cursorrules ファイルを提供します。MCP はクライアント間のツール通信の標準を提供します。これらは強力な機能ですが、別々のシステムとして存在しています。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;ツールアクセスのための &lt;u&gt;MCP サーバー&lt;/u&gt;（各クライアントで設定）&lt;/li&gt; 
+ &lt;li&gt;命令とワークフローのための &lt;u&gt;Skills&lt;/u&gt;（Claude 固有）&lt;/li&gt; 
+ &lt;li&gt;コンテキスト管理のための &lt;u&gt;動的ツール読み込み&lt;/u&gt;（別途セットアップ）&lt;/li&gt; 
+ &lt;li&gt;振る舞いのための &lt;u&gt;ルールとカスタム命令&lt;/u&gt;（&lt;code&gt;.cursorrules&lt;/code&gt; のようなクライアントごとの設定）&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;それぞれに個別の設定と管理が必要です。全体像を把握するために、ツール + 知識 + 動的読み込みという複数のプリミティブを組み合わせます。そして、Cursor、Claude Code、その他のツールを切り替えるたびに、すべてを再設定することになります。&lt;/p&gt; 
+&lt;p&gt;課題は機能の欠如ではなく、断片化です。開発者が望むのは統一されたパッケージで、「Stripe 統合をインストールすれば、エージェントは正しく使用する方法を知っている」ことです。「mcp.json で MCP サーバーを設定し、Skill または &lt;code&gt;.cursorrules&lt;/code&gt; ファイルを書き、動的読み込みを設定し、カスタム命令を追加し、各ツールごとに繰り返す」ことではありません。&lt;/p&gt; 
+&lt;h2&gt;Kiro powers の紹介&lt;/h2&gt; 
+&lt;p&gt;Kiro powers は、幅広い開発とデプロイメントのユースケースに対して、その統一されたアプローチを提供します。MCP ツールとフレームワークの専門知識を一緒にパッケージ化し、動的に読み込みます。&lt;/p&gt; 
+&lt;p&gt;Neo が『マトリックス』で武術の専門知識を即座にダウンロードしたことを覚えていますか？ それが Kiro エージェントに対して powers が行うことです。あらゆるテクノロジーの専門知識への即座のアクセスです。鍵は動的コンテキスト読み込みです。従来の MCP 実装はすべてのツールを事前に読み込みますが、powers は関連する場合にのみアクティブ化されます。「database」と言及すると、Neon power がそのツールとベストプラクティスを読み込みます。デプロイメントに切り替えると、Netlify がアクティブ化され、Neon は非アクティブ化されます。&lt;/p&gt; 
+&lt;p&gt;power は以下を含むバンドルです。&lt;/p&gt; 
+&lt;ol&gt; 
+ &lt;li&gt;&lt;code&gt;POWER.md&lt;/code&gt;: エントリーポイントのステアリングファイル。エージェントに利用可能な MCP ツールとその使用タイミングを伝えるオンボーディングマニュアル&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;MCP サーバー設定&lt;/u&gt;: MCP サーバーのツールと接続の詳細&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;追加のステアリングまたはフック&lt;/u&gt;: スラッシュコマンドを介したフックやステアリングなどのエージェントに実行させたいこと&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;p&gt;Stripe power をワンクリックでインストールします。「payment」または「checkout」と言及すると、power がアクティブ化され、Stripe の MCP ツールと &lt;code&gt;POWER.md&lt;/code&gt; ステアリングがコンテキストに読み込まれます。支払いが完了してデータベース作業に移ると、Supabase power がアクティブ化され、Stripe は非アクティブ化されます。キュレートされた powers をインストールしたり、コミュニティが構築したものを取得したり、独自のものを作成して共有したりできます。&lt;/p&gt; 
+&lt;h3&gt;powers を特徴づけるもの&lt;/h3&gt; 
+&lt;p&gt;&lt;strong&gt;1. 動的 MCP ツール読み込み&lt;/strong&gt;&lt;/p&gt; 
+&lt;p&gt;従来の MCP サーバーはすべてのツールを事前に読み込みます。Figma MCP サーバーは 12K トークンを消費する 8 つのツールを公開する可能性があります。Postman サーバーは 122 のツールを追加します。5 つのサーバーに接続すると、コードを書く前にコンテキストウィンドウの大部分を使い果たします。Powers はツールをオンデマンドで読み込みます。5 つの powers をインストールしても、ベースラインのコンテキスト使用量はほぼゼロです。「design」と言及すると、Figma power がアクティブ化され、8 つのツールを読み込みます。データベース作業に切り替えると、Supabase がアクティブ化され、Figma は非アクティブ化されます。エージェントは現在のタスクに関連するツールのみを読み込みます。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;2. Power エコシステム: パートナーからキュレート、コミュニティ、または独自構築&lt;/strong&gt;&lt;/p&gt; 
+&lt;p&gt;Powers は、キュレートされたパートナー、コミュニティ構築の powers、またはチームのプライベートツールを使用しているかどうかにかかわらず、簡単な発見とインストールのために設計されています。発見、インストール、設定は IDE または kiro.dev ウェブサイトを通じて行われます。あなたは構築に集中します。&lt;/p&gt; 
+&lt;p&gt;UI 開発（Figma）、バックエンド開発（Supabase、Stripe、Postman、Neon）、エージェント開発（Strands）、デプロイメント（Netlify、Amazon Aurora）にわたる企業と提携しています。powers パネルを開くと、インストール準備が整った多機能ツールセットが用意されています。MCP サーバーを探したり、セットアップドキュメントを読んだりする必要はありません。ローンチパートナーには、Datadog、Dynatrace、Figma、Neon、Netlify、Postman、Supabase、Stripe、Strands Agent が含まれ、さらに多くが近日公開予定です。さらに、SaaS ビルダー、AWS CDK インフラストラクチャ開発、Amazon Aurora DSQL との連携などの powers を作成したコミュニティメンバーもいます。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/12/04/partners.gif"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/12/04/partners.gif" alt="" width="800" height="408" class="alignnone size-full wp-image-172395"&gt;&lt;/a&gt;&lt;i&gt;パートナーの powers&lt;/i&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;u&gt;IDE とウェブからのワンクリックインストール&lt;/u&gt;: Kiro または kiro.dev で直接 powers を閲覧します。「Install」をクリックすると、power が自動的に登録されます。API キーや環境変数が必要な場合は、初回使用時にプロンプトが表示されます。JSON 設定ファイルも、コマンドラインセットアップも不要です。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/12/04/1-click.gif"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/12/04/1-click.gif" alt="" width="800" height="485" class="alignnone size-full wp-image-172400"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;u&gt;誰でも構築して共有できる&lt;/u&gt;: コミュニティ構築ツール用に GitHub URL から powers をインポートします。プライベート powers を持つチームは、ローカルディレクトリまたはプライベートリポジトリからインポートできます。一度構築すれば、チームと共有でき、全員が同じ専門知識とツールを手に入れます。&lt;/p&gt; 
+&lt;p&gt; &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/12/04/import.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/12/04/import.png" alt="" width="1312" height="392" class="alignnone size-full wp-image-172398"&gt;&lt;/a&gt;&lt;br&gt; &lt;i&gt;GitHub またはローカルフォルダから power をインポート。&lt;/i&gt; &lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;3. クロス互換性（近日公開）&lt;/strong&gt;&lt;/p&gt; 
+&lt;p&gt;現在、powers は Kiro IDE で動作します。私たちは、powers があらゆる AI 開発ツール（Kiro CLI、Cline、Cursor、Claude Code など）で動作する未来に向けて構築しています。Model Context Protocol はツール通信の標準を提供します。Powers は、パッケージング、アクティベーション、知識転送の標準でこれを拡張します。power を一度構築すれば、どこでも使用できます。&lt;/p&gt; 
+&lt;p&gt;これはパートナーにとって重要です。企業は各 AI ツール用に独自のコンテキストを維持したくありません。1 つのオンボーディングマニュアル、1 つの &lt;code&gt;POWER.md&lt;/code&gt; を書いて、どこでも動作させたいと考えています。Powers がその標準になります。&lt;/p&gt; 
+&lt;p&gt; &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/12/04/mcp.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/12/04/mcp.png" alt="" width="904" height="514" class="alignnone size-full wp-image-172399"&gt;&lt;/a&gt;&lt;br&gt; &lt;i&gt;MCP サーバーにより、ユーザーは Cline、Cursor などの他のツールで powers を使用できるようになります。&lt;/i&gt; &lt;/p&gt; 
+&lt;h2&gt;power の構造&lt;/h2&gt; 
+&lt;p&gt;power をよりよく理解するために、Supabase power がどのように構造化されているかを見て、powers を効果的にするものを理解しましょう。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;1. フロントマター: power のアクティベーション&lt;/strong&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;code&gt;POWER.md&lt;/code&gt; のフロントマターは、power がいつアクティブ化されるかを定義します。キーワードがアクティベーションをトリガーします。「database」または「postgres」と言及すると、Supabase power がその MCP ツールとコンテキストを読み込みます。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-yaml"&gt;---
+name: "supabase"
+displayName: "Supabase with local CLI"
+description: "Build fullstack applications with Supabase's Postgres database, authentication, storage, and real-time subscriptions"
+keywords: ["database", "postgres", "auth", "storage", "realtime", "backend", "supabase", "rls"]
+---
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;「Let’s set up the database」と言うと、Kiro はキーワードの「database」を検出し、Supabase power をアクティブ化して、その MCP ツールと &lt;code&gt;POWER.md&lt;/code&gt; をコンテキストに読み込みます。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;2. &lt;code&gt;POWER.md&lt;/code&gt; によるオンボーディング: ワークスペースのセットアップ&lt;/strong&gt;&lt;/p&gt; 
+&lt;p&gt;オンボーディングセクションは、初期セットアップを通じてエージェントをガイドし、依存関係を検証し、手動で呼び出すことができるフックまたはステアリングファイルをインストールします。これは通常、power が最初にアクティブ化されたときに一度実行されます。エージェントは次の手順を自動的に実行します。Docker が実行されているかを確認し、Supabase CLI を検証し、ワークスペースにパフォーマンスレビューフックを作成します。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-md"&gt;# Onboarding 
+
+## Step 1: Validate tools work
+
+Before using Supabase Local MCP, ensure the following are installed and running:
+- **Docker Desktop**: Supabase CLI requires Docker to run the local development stack
+  - Verify with: `docker --version`
+  - **CRITICAL**: If Docker is not installed or not running, DO NOT proceed with Supabase setup.
+- **Supabase CLI**: Install via npm, Homebrew, or other package managers
+  - Verify with: `supabase --version`
+
+## Step 2: Add hooks
+
+Add a hook to `.kiro/hooks/review-advisors.kiro.hook`
+```json
+{
+  "enabled": true,
+  "name": "Review Database Performance &amp;amp; Security",
+  "description": "Verify database follows performance/security best practices",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Execute `get_advisors` via MCP to check for performance and security concerns"
+  }
+}
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;&lt;strong&gt;3. ワークフロー固有のステアリング: オンデマンドでのコンテキスト読み込み&lt;/strong&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;code&gt;POWER.md&lt;/code&gt; には、特定のワークフロー用のステアリングファイルのマップが含まれています。RLS ポリシーに取り組んでいるときは、エージェントは &lt;code&gt;supabase-database-rls-policies.md&lt;/code&gt; を読み込みます。Edge Functions を書いているときは、&lt;code&gt;supabase-edge-functions.md&lt;/code&gt; を読み込みます。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-md"&gt;# When to Load Steering Files
+- Setting up a database → `database-setup-workflow.md`
+- Writing or formatting SQL code → `supabase-code-format-sql.md`
+- Creating or modifying RLS policies → `supabase-database-rls-policies.md`
+- Creating PostgreSQL functions → `supabase-database-functions.md`
+- Working with declarative schema (`supabase/schemas/` directory) → `supabase-declarative-database-schema.md`
+- Setting up or modifying Next.js authentication with Supabase SSR → `supabase-nextjs-supabase-auth.md`
+- Implementing realtime features (broadcast, presence, channels, subscriptions) → `supabase-use-realtime.md`
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;これによりコンテキストが集中します。すべての Supabase パターンを事前に読み込む代わりに、エージェントは現在のタスクに関連するものだけを読み込みます。&lt;/p&gt; 
+&lt;h2&gt;エージェント機能の未来: powers を通じた継続的学習&lt;/h2&gt; 
+&lt;p&gt;Neo はカンフーを一度学んで終わりではありませんでした。『マトリックス』全体を通して、必要に応じて新しい能力をダウンロードしました。ヘリコプターの操縦、武器の習得、マトリックス自体の理解。各 power は、能力で圧倒することなく、彼ができることを拡大しました。それが AI エージェントのビジョンです。Powers は単なるパッケージング形式ではありません。継続的学習のモデルです。フレームワークが進化し、チームが内部ツールを構築するにつれて、エージェントはゼロから始めることなく能力を拡張する方法が必要です。&lt;/p&gt; 
+&lt;p&gt;昨日、新しいツールを追加することは、MCP サーバーを手動で設定し、コンテキストがオーバーフローしないことを願うことを意味しました。今日、それは power をインストールすることを意味します。Supabase が更新された RLS パターンをリリースしますか？ エージェントは自動的にそれらを取得します。チームが内部デザインシステムを構築しますか？ それを power としてパッケージ化すれば、すべての開発者のエージェントがその使用方法を知ります。&lt;/p&gt; 
+&lt;p&gt;これが、エージェントが真に有用になる方法です。すべてを事前に知ることによってではなく、必要なものを必要なときに学習し、周囲のツールが進化するにつれて専門知識を継続的に拡大することによってです。その結果、AIエージェントは、人間の開発者と同じように、いつ設計システムを考え、いつデータベースを考え、いつデプロイを考えるべきかを理解するようになります。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://kiro.dev/powers/"&gt;Kiro で今日 powers を試して&lt;/a&gt;、何を構築するか教えてください。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>道に迷わないために: Kiro のチェックポイント機能の紹介</title>
+		<link>https://aws.amazon.com/jp/blogs/news/introducing-checkpointing/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Fri, 21 Nov 2025 01:32:53 +0000</pubDate>
+				<category><![CDATA[Amazon Q]]></category>
+		<category><![CDATA[Amazon Q Developer]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[General]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">74c6a308b4e57ccf2579d4b2f402d137c5a7bb0a</guid>
+
+					<description>このブログでは、Kiro のチェックポイント機能についてご紹介します。チェックポイント機能は、開発セッション中の任意の時点に Kiro の変更を巻き戻す力を与えます。Kiro がコードベースを変更すると、チャット履歴に自動的にチェックポイントマーカーが作成されます。ビデオゲームのオートセーブポイントのようなものだと考えてください。物事がうまくいかず、想定以上のダメージを受けた場合、以前のチェックポイントに戻って別のアプローチを試すことができます。</description>
+										<content:encoded>&lt;p&gt;本記事は 2025 年 11 月 17 日に公開された Jonathan Vogel と Dan Kiuna による &lt;a href="https://kiro.dev/blog/introducing-checkpointing/"&gt;“Never lose your way: Introducing checkpointing in Kiro”&lt;/a&gt; を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;開発者なら誰もが経験したことがあるでしょう。AI コーディングアシスタントと一緒に作業していて、機能開発が順調に進んでいる。エージェントが一連の変更を行い、ファイルを更新し、コードをリファクタリングし、新しい機能を追加する。そして突然、何かがうまくいかなくなる。エージェントが要件を誤解したのかもしれない。あなたのアーキテクチャに合わない前提を置いたのかもしれない。あるいは、単に別のアプローチを試したくなったのかもしれない。&lt;/p&gt; 
+&lt;p&gt;課題はコードの変更を元に戻すことだけではありません。会話のコンテキストを失うことが問題なのです。ファイルを元に戻すことはできても、AI との対話のどこにいたのかを再構築しようとすることになります。フローが途切れ、軌道に戻るには時間と精神的なエネルギーが必要になります。&lt;/p&gt; 
+&lt;p&gt;恐れることなく実験できたらどうでしょうか？ AI アシスタントに大胆なリファクタリングに取り組ませても、計画通りに進まなければ即座に巻き戻せることがわかっていたらどうでしょうか？それが、チェックポイント機能が AI 支援開発にもたらす確信です。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-169970"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2&gt;チェックポイント機能とは？&lt;/h2&gt; 
+&lt;p&gt;&lt;strong&gt;チェックポイント機能は、開発セッション中の任意の時点まで Kiro の変更を巻き戻す機能を提供します。&lt;/strong&gt;Kiro がコードベースを変更すると、チャット履歴に自動的にチェックポイントマーカーが作成されます。ビデオゲームのオートセーブポイントのようなものだと考えてください。物事がうまくいかず、想定以上のダメージを受けた場合、以前のチェックポイントに戻って別のアプローチを試すことができます。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;各チェックポイントは、そのセッション中に Kiro が行った特定の変更を記録します。&lt;/strong&gt;ワンクリックで、エージェントがそのチェックポイント以降に行ったファイルの変更を元に戻すことができ、その復元ポイントまでの会話履歴は保持されます。コンテキストを保ち、不要な変更を元に戻し、構築作業に戻ることができます。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;重要: チェックポイント機能は、現在のセッション中に Kiro が行った変更のみを元に戻します。&lt;/strong&gt;コードベース全体を保存するわけではなく、この特定のセッションで AI エージェントが変更したファイルのみを復元できます。&lt;strong&gt;注意:&lt;/strong&gt; チェックポイントを復元すると、Kiro の変更だけでなく、Kiro が触れたファイルの&lt;em&gt;完全な状態&lt;/em&gt;が元に戻ります。チェックポイント後にあなたや他のツールがそれらの同じファイルに編集を加えた場合、それらの編集も失われます。Kiro で構築しながら手動でコードを編集したり、他のシステムがファイルを変更したりしている場合は、必ずバージョン管理を使用してください。&lt;/p&gt; 
+&lt;h2&gt;チェックポイント機能が重要な理由&lt;/h2&gt; 
+&lt;p&gt;AI 支援開発は強力ですが、完璧ではありません。大規模言語モデルは本質的に確率論的です。正しい判断をすることもあれば、そうでないこともあります。重要なのは、開発者であるあなたにプロセスのコントロールを与えることです。&lt;/p&gt; 
+&lt;p&gt;チェックポイント機能がなければ、AI が生成するすべての変更にはリスクが伴います。何かがうまくいかなかった場合のクリーンアップを心配して、Kiro に複雑なリファクタリングに取り組ませることをためらうかもしれません。各変更をレビューするのに、自分でコードを書くよりも多くの時間を費やすかもしれません。進捗を失うことへの恐れが、実際にあなたの作業を遅くする可能性があります。&lt;/p&gt; 
+&lt;p&gt;チェックポイント機能はその状況を変えます。Kiro により大きな挑戦をさせる自信を与えます。別のアーキテクチャアプローチを試したいですか？やってみましょう。うまくいかなければ、開始地点からワンクリックで戻れます。新しいライブラリを試したいですか？問題ありません。必要なときにチェックポイントがあります。&lt;/p&gt; 
+&lt;h2&gt;仕組み&lt;/h2&gt; 
+&lt;p&gt;Kiro のチェックポイント機能は、必要になるまで見えないように設計されています。チェックポイントを作成したり、手動で管理したりする必要はありません。Kiro がそれを処理します。&lt;/p&gt; 
+&lt;p&gt;Kiro と作業すると、チャットインターフェースにチェックポイントラインが自動的に表示されます。タスクを開始する前にチェックポイントが作成されます。これらの視覚的なマーカーにより、開発セッションの構造を一目で簡単に確認できます。&lt;/p&gt; 
+&lt;p&gt;元に戻したいときは、任意のチェックポイントラインの「復元」ボタンをクリックするだけです。Kiro はすべてを巻き戻します。エージェントが行ったすべてのファイル変更と会話履歴を元に戻し、その正確な瞬間に戻します。メッセージを入力したがまだ送信していなかった場合、それはチャットウィンドウにあり、編集または送信する準備ができています。開発セッションのタイムトラベルのようなものです。コードの状態だけでなく、どこにいて何を考えていたかの完全なコンテキストを取り戻すことができます。&lt;/p&gt; 
+&lt;h2&gt;チェックポイント機能と仕様駆動開発&lt;/h2&gt; 
+&lt;p&gt;チェックポイント機能は、Kiro の仕様駆動開発ワークフローと自然に連携します。仕様を進めているとき、特定の要件を実装するために異なるアプローチを試したいことがあるかもしれません。チェックポイント機能は、その探索をリスクフリーにします。また、チェックポイントを使用して、仕様の主要なマイルストーンの完了をマークすることもできます。認証システムの実装が完了しましたか？それがチェックポイントです。データレイヤーが完成しましたか？これもまたチェックポイントです。これらのマーカーは、進捗の明確なマップを提供し、変更を加える必要がある場合に以前の段階を簡単に戻れるようにします。&lt;/p&gt; 
+&lt;h2&gt;実際のシナリオ&lt;/h2&gt; 
+&lt;p&gt;チェックポイント機能が輝くいくつかのシナリオを見てみましょう。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;安全な実験&lt;/strong&gt;: 特定のリファクタリングがコードのパフォーマンスを向上させるかどうか気になっています。Kiro に変更を加えさせ、ベンチマークを実行します。結果が期待通りでなければ、チェックポイントに戻ります。問題ありません。リスクなしに実験できる能力は非常に解放感があります。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;反復的な改善&lt;/strong&gt;: 適切なソリューションを見つける前に、いくつかのバリエーションを試す必要がある場合があります。チェックポイント機能を使えば、迅速に反復作業が可能です。手法を試行し、評価し、必要なら元に戻して再挑戦できます。各反復は前回の教訓を基に構築されますが、失敗した試行の残骸でコードベースが散らかることはありません。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;異なる実装の探索&lt;/strong&gt;: 新しい API エンドポイントを構築していて、REST と GraphQL のどちらを使用するか確信が持てません。まず Kiro に REST として実装するよう依頼します。コードをレビューし、テストし、感触を確かめます。しっくりこない？チェックポイントに戻り、代わりに GraphQL を試すよう Kiro に依頼します。同じ会話、異なるアプローチ、手動クリーンアップはゼロです。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;誤解からの回復&lt;/strong&gt;: Kiro に「ユーザーサービスに認証を追加して」と依頼します。Kiro は OAuth2 を実装しますが、実際には単純な API キーが必要でした。数十のファイル変更を手動で元に戻す代わりに、Kiro が開始する前のチェックポイントに戻り、要件を明確にします。Kiro は今度は正しいアプローチで再度試みます。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/18/checkpointing.gif"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/18/checkpointing.gif" alt="" width="800" height="498" class="alignnone size-full wp-image-169981"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;h2&gt;AI 支援開発における信頼の構築&lt;/h2&gt; 
+&lt;p&gt;チェックポイント機能の真の力は、変更を元に戻す能力だけではありません。それは、異なる働き方をする自信を与えることです。&lt;/p&gt; 
+&lt;p&gt;チェックポイント機能があれば、AI 支援開発をトランザクションではなく会話のように扱うことができます。アイデアを探求し、仮説をテストし、間違っていることのコストを心配することなく迅速に反復できます。セーフティネットがあることがわかっているので、Kiro により複雑なタスクを処理させることができます。&lt;/p&gt; 
+&lt;p&gt;この考え方の変化は微細ながら重要です。Kiro のあらゆる動作を細かく制御する代わりに、構築しようとしているものとその理由という大局に集中できます。「これが失敗したら」という不安に精神を消耗する代わりに、「これが成功したら」という可能性にエネルギーを注げるのです。&lt;/p&gt; 
+&lt;h2&gt;チェックポイント機能とバージョン管理&lt;/h2&gt; 
+&lt;p&gt;明確にしておきましょう: チェックポイント機能はバージョン管理の代替ではありません。開発ワークフローの一部として、Git (または好みのバージョン管理システム) を引き続き使用する必要があります。バージョン管理を長期的なプロジェクト履歴とコラボレーションツールと考え、チェックポイント機能を短期的な実験と反復ツールと考えてください。&lt;/p&gt; 
+&lt;p&gt;チェックポイント機能は、Kiro とアイデアを探求し、迅速に反復しているアクティブな開発セッション中に輝きます。満足のいくアプローチに落ち着いたら、通常どおりバージョン管理にコミットします。2 つのツールは異なる目的を果たし、一緒に使うのが最適です。&lt;/p&gt; 
+&lt;h2&gt;自分で試してみましょう&lt;/h2&gt; 
+&lt;p&gt;チェックポイント機能は現在 Kiro で利用可能です。何も設定したり、作業方法を変更したりする必要はありません。Kiro との会話を開始し、いくつかの変更を加えると、チェックポイントラインが表示されます。元に戻す必要があるときは、それらがあなたを待っています。&lt;/p&gt; 
+&lt;p&gt;私たちは、AI 支援開発のコントロールを減らすのではなく、強化するために Kiro を構築しました。チェックポイント機能は、そのビジョンの中核をなす部分です。それは、AI を開発プロセスの真のパートナーにすることです。恐れることなく探求し、実験し、反復する自由を与えるパートナーです。&lt;/p&gt; 
+&lt;p&gt;自信を持ってコーディングする準備はできましたか？&lt;a href="https://kiro.dev/downloads/"&gt;Kiro をダウンロード&lt;/a&gt;して、チェックポイント機能が AI との作業方法をどのように変えるかを確認してください。&lt;/p&gt; 
+&lt;hr&gt; 
+&lt;p&gt;&lt;em&gt;チェックポイント機能について質問がありますか、または使用方法を共有したいですか？&lt;a href="https://discord.gg/kirodotdev"&gt;Discord コミュニティ&lt;/a&gt;で会話に参加するか、&lt;a href="https://x.com/kirodotdev"&gt;X&lt;/a&gt;、&lt;a href="https://www.linkedin.com/showcase/kirodotdev"&gt;LinkedIn&lt;/a&gt;、&lt;a href="https://bsky.app/profile/kiro.dev"&gt;Bluesky&lt;/a&gt; でフォローしてください。&lt;/em&gt;&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Kiro を組織で利用するためのセキュリティとガバナンス</title>
+		<link>https://aws.amazon.com/jp/blogs/news/kiroweeeeeeek-in-japan-day-3-security-governance/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Fri, 21 Nov 2025 00:40:43 +0000</pubDate>
+				<category><![CDATA[Amazon Q Developer]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[General]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">d288b64ba16a56431233ab567ae4bc8f2a96d484</guid>
+
+					<description>本ブログは Kiroweeeeeek (X:#kiroweeeeeeek) の第 3 日目です。本ブログでは、Kiro を組織で利用するにあたって気になるセキュリティとガバナンス機能についてご紹介します。</description>
+										<content:encoded>&lt;p&gt;こんにちは。ソリューションアーキテクトの吉村です。&lt;/p&gt; 
+&lt;p&gt;本ブログは Kiroweeeeeek (X:&lt;a href="https://x.com/hashtag/kiroweeeeeeek?src=hashtag_click" target="_blank" rel="noopener noreferrer"&gt;#kiroweeeeeeek&lt;/a&gt;) の第 3 日目です。昨日のブログは菅原さんの「&lt;a href="https://aws.amazon.com/jp/blogs/news/kiroweeeeeeek-in-japan-day-2-q-dev-ide-to-kiro/" target="_blank" rel="noopener noreferrer"&gt;Amazon Q Developer の IDE プラグインから Kiro に乗り換える準備&lt;/a&gt;」という内容でした。&lt;/p&gt; 
+&lt;p&gt;本ブログでは、Kiro を組織で利用するにあたって気になるセキュリティとガバナンス機能についてご紹介します。Kiro の一般提供に関しての総合的な情報は「&lt;a href="https://aws.amazon.com/jp/blogs/news/general-availability/" target="_blank" rel="noopener noreferrer"&gt;Kiro が一般提供開始: IDE とターミナルでチームと共に開発&lt;/a&gt;」をご確認ください。&lt;/p&gt; 
+&lt;h2&gt;Kiro の組織利用を開始&lt;/h2&gt; 
+&lt;p&gt;Kiro では、一般提供開始に伴い &lt;a href="https://docs.aws.amazon.com/ja_jp/singlesignon/latest/userguide/what-is.html" target="_blank" rel="noopener noreferrer"&gt;AWS IAM Identity Center&lt;/a&gt; を用いた認証方式を利用できる、&lt;a href="https://kiro.dev/enterprise/" target="_blank" rel="noopener noreferrer"&gt;Kiro for enterprise&lt;/a&gt; の提供を開始しました。IAM Identity Center を利用することで、プレビュー時の個別にクレジットカードを登録する方法とは違い、AWS に組織として請求を 1 本化し、請求を可視化することが可能です。&lt;/p&gt; 
+&lt;p&gt;マネジメントコンソールからアクセスできる Kiro コンソールを利用することで、以下のようなことが行えます。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;&lt;strong&gt;リージョン管理&lt;/strong&gt;：IAM Identity Center インスタンスを管理するリージョンとは別に、Kiro プロファイルを作成するリージョンをマネジメントコンソールで選択することができます。サポートリージョンについては後述します。&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;サブスクリプション管理&lt;/strong&gt;：Kiro コンソールを利用して、IAM Identity Center で管理しているユーザーに対するサブスクリプションの作成・管理・設定を行うことができます。&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;グループ管理&lt;/strong&gt;：グループは IAM Identity Center で管理しているユーザーの集合です。グループに対して Kiro をサブスクライブすると、グループに所属するユーザー全てに対してワンアクションで個別のサブスクリプションを開始することが出来、サブスクリプションの管理を簡素化することができます。&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;Kiro コンソールからサブスクリプションが開始された、IAM Identity Center ユーザーは、「Sign in with your organization identity」から IDE にログイン、もしくはコマンドラインで &lt;code&gt;kiro-cli login&lt;/code&gt; コマンドを利用して IAM Identity Center の認証情報を用いて Kiro CLI にログインし、Kiro の利用を開始することができます。 &lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/kiro-ide-login-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/kiro-ide-login-1.png" alt="" width="3024" height="1889" class="alignnone size-full wp-image-170300"&gt;&lt;/a&gt;&lt;br&gt; &lt;em&gt;IDE のログイン&lt;/em&gt;&lt;/p&gt; 
+&lt;p&gt; &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/kiro-cli-login.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/kiro-cli-login.png" alt="" width="3024" height="1894" class="alignnone size-full wp-image-170245"&gt;&lt;/a&gt;&lt;br&gt; &lt;em&gt;Kiro CLI のログイン&lt;/em&gt;&lt;/p&gt; 
+&lt;p&gt;詳細については、「&lt;a href="https://kiro.dev/docs/enterprise/concepts/#aws-iam-identity-center" target="_blank" rel="noopener noreferrer"&gt;Concepts – IDE – Docs – Kiro&lt;/a&gt;」をご確認ください。&lt;/p&gt; 
+&lt;p&gt;ここまで、IAM Identity Center を利用した Kiro for enterprise について説明しました。ここからは、Kiro for enterprise で気になるセキュリティとガバナンスに焦点を当てていきます。&lt;/p&gt; 
+&lt;h2&gt;Kiro プロファイル&lt;/h2&gt; 
+&lt;p&gt;Kiro for enterprise を利用する場合、IAM Identity Center インスタンスの作成されたリージョンとは別に、Kiro プロファイルを作成するリージョンを選択します。現在（2025 年 11 月 21 日）では、バージニア北部とフランクフルトリージョンをご選択いただけます。Kiro による推論の実行、データの保存は Kiro プロファイルを作成したリージョンにて行われます。&lt;/p&gt; 
+&lt;p&gt;IAM Identity Center インスタンスのリージョンと、Kiro プロファイルのリージョンは異なっていても問題ありません。例えば、IAM Identity Center は東京リージョンを利用しつつ、Kiro プロファイルをバージニア北部リージョンで作成いただくことも可能です。そのため、既に IAM Identity Center をご利用中のお客様も、すぐに Kiro for enterprise を開始いただけます。&lt;/p&gt; 
+&lt;p&gt;Kiro プロファイルとサポートリージョンの詳細は「&lt;a href="https://kiro.dev/docs/enterprise/supported-regions/#supported-kiro-console-and-kiro-profile-regions" target="_blank" rel="noopener noreferrer"&gt;Supported regions – IDE – Docs – Kiro&lt;/a&gt;」をご確認ください。&lt;/p&gt; 
+&lt;h3&gt;サブスクリプションと請求&lt;/h3&gt; 
+&lt;p&gt;Kiro のサブスクリプションは、Kiro プロファイルを作成したリージョンで行い、請求は Kiro プロファイルが作成された AWS アカウントに対して行われます。IAM Identity Center グループに対してサブスクリプションを設定した場合など、1 ユーザーに対して複数のサブスクリプションが設定されたような状態になる場合があります。Kiro for enterprise では、同一の Kiro プロファイル内であれば、ユーザーに割り当てられた最も高い Tier のサブスクリプション価格のみが請求されます。例えば、Pro と Pro+ をサブスクリプションしている場合、最も Tier の高い Pro+ の料金のみが請求されます。同一の Kiro プロファイル内で 2 回サブスクライブされたとしても二重課金は生じません。&lt;/p&gt; 
+&lt;p&gt;一方、異なるリージョンに別の Kiro プロファイルを作成しているような場合は注意が必要です。1 人のユーザーが異なるリージョンの Kiro プロファイルそれぞれで Kiro をサブスクライブしている場合、それぞれのサブスクリプションに対して請求が行われます。例えば、バージニア北部リージョンの Kiro プロファイルで Pro、フランクフルトリージョンの Kiro プロファイルで Pro+ をそれぞれサブスクライブした場合、2 つのサブスクリプションの合算した料金が請求されるため、二重課金となります。&lt;/p&gt; 
+&lt;p&gt;請求に関する詳細については、「&lt;a href="https://kiro.dev/docs/enterprise/billing/" target="_blank" rel="noopener noreferrer"&gt;Enterprise billing – IDE – Docs – Kiro&lt;/a&gt;」をご確認ください。&lt;/p&gt; 
+&lt;h2&gt;プライバシーとセキュリティ&lt;/h2&gt; 
+&lt;p&gt;このセクションでは、テレメトリやユーザーによって入力されるデータ、Kiro が生成するコンテンツ等の取り扱いについて概説します。本セクションの内容は、記事執筆当時 (2025 年 11月 21 日) の情報に基づいており、最新の情報は「&lt;a href="https://kiro.dev/docs/privacy-and-security/data-protection/" target="_blank" rel="noopener noreferrer"&gt;Data protection – IDE – Docs – Kiro&lt;/a&gt;」よりご確認ください。&lt;/p&gt; 
+&lt;h3&gt;データの保存と処理&lt;/h3&gt; 
+&lt;p&gt;Kiro の Free Tier ユーザーと個人サブスクライバー（Google, GitHub, AWS Builder ID でログイン）の場合、プロンプトや Kiro が生成する返答などのコンテンツは、バージニア北部リージョンに保存されます。Kiro for enterprise ユーザーの場合、Kiro プロファイルが作成されたリージョンにコンテンツが保存されます。&lt;/p&gt; 
+&lt;p&gt;Kiro は Amazon Bedrock を利用しています。クロスリージョン推論を利用して、高需要時にトラフィックを複数のリージョン分散し、パフォーマンスと信頼性を向上させます。そのため、推論時にクロスリージョン推論がサポートされているリージョンでデータが処理される可能性があります。ただし、データが保存されるリージョンについて影響はありません。&lt;/p&gt; 
+&lt;h3&gt;データの暗号化&lt;/h3&gt; 
+&lt;p&gt;Kiro では、データの転送中、保存時にそのデータを暗号化します。データの転送中は、TLS 1.2 以上の接続を使用して通信が保護されます。また、データの保存時は、AWS 所有の &lt;a href="https://docs.aws.amazon.com/kms/" target="_blank" rel="noopener noreferrer"&gt;AWS Key Management Service (KMS)&lt;/a&gt; 暗号化キーによってデータは暗号化されます。Kiro for enterprise をご利用のお客様は、KMS のお客様管理キーを作成して利用するオプションもございます。この暗号化キーは対称鍵のみサポートしております。&lt;/p&gt; 
+&lt;h3&gt;サービス改善&lt;/h3&gt; 
+&lt;p&gt;Kiro の Free Tier ユーザーと個人サブスクライバー（Google, GitHub, AWS Builder ID でログイン）の場合、デフォルトで、特定のコンテンツやテレメトリをサービス改善のために使用する場合があります。Kiro への質問、提供されるその他の入力、Kiro が生成する応答やコードなどのコンテンツを、サービス改善のために使用する可能性があります。また、使用状況データ、エラー、レイテンシー、クラッシュレポート、その他のメトリクスといったテレメトリをサービスの改善のために収集します。これらのデータ共有をオプトアウトすることができ、お客様のコンテンツをサービスの改善を使用されないように設定することが可能です。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;Kiro for enterprise をご利用のお客様は、AWS によってテレメトリとコンテンツ収集から自動的にオプトアウトされ、サービスの改善に利用されません。ユーザーアクティビティレポートのテレメトリ収集設定は、Kiro コンソールで管理者によって制御され、ユーザーが直接設定、修正することはできません。&lt;/strong&gt;&lt;/p&gt; 
+&lt;h3&gt;コードリファレンス&lt;/h3&gt; 
+&lt;p&gt;Kiro は、一部オープンソースプロジェクトから学習を行っています。時折 Kiro が提案するコードが、公開されたコードに似ている場合があります。コードリファレンスログを使用することで、公開されているコードに似たコード推奨事項への参照を表示することができます。コードリファレンスは設定から ON/OFF を切り替えることができます。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/21/スクリーンショット-2025-11-21-9.30.22.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/21/スクリーンショット-2025-11-21-9.30.22.png" alt="" width="2462" height="1196" class="alignnone size-full wp-image-170402"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;Kiro for enterprise の管理者は、すべてのユーザーに対してリファレンス付きのコード提案を受け取らないようにオプトアウトすることができます。この設定は管理者によって制御され、ユーザーが直接設定、修正することはできません。&lt;/p&gt; 
+&lt;p&gt;コードリファレンスの詳細は「&lt;a href="https://kiro.dev/docs/privacy-and-security/code-references/"&gt;Code references – IDE – Docs – Kiro&lt;/a&gt;」をご確認ください。また、Kiro の出力に伴う補償については、&lt;a href="https://aws.amazon.com/service-terms/"&gt;サービス規約の 50.10&lt;/a&gt; をご確認ください。&lt;/p&gt; 
+&lt;h2&gt;利用状況と統制&lt;/h2&gt; 
+&lt;h3&gt;利用状況の確認&lt;/h3&gt; 
+&lt;p&gt;Kiro コンソールのセッティングにて、Kiro usage dashboard を有効化することができます。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/usage.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/usage.png" alt="" width="2463" height="617" class="alignnone size-full wp-image-170253"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;この設定を有効にすることで、Tier ごとの総サブスクリプション数、アクティブなサブスクリプション数、保留中のサブスクリプション数、アクティブなユーザー数、クレジットの消費量を Kiro コンソールのダッシュボードで可視化できます。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/dashboard.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/dashboard.png" alt="" width="2044" height="883" class="alignnone size-full wp-image-170256"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;Kiro のダッシュボードとメトリクスの詳細は「&lt;a href="https://kiro.dev/docs/cli/enterprise/monitor-and-track/dashboard/#view-the-dashboard" target="_blank" rel="noopener noreferrer"&gt;Viewing Kiro usage on the dashboard – CLI – Docs – Kiro&lt;/a&gt;」をご確認ください。&lt;/p&gt; 
+&lt;h3&gt;Overage と MCP の統制&lt;/h3&gt; 
+&lt;p&gt;Kiro では、月のクレジット制限を超えて Kiro を利用可能にする Overage（超過料金）がサポートされています。Kiro の月の制限に達した場合、Overage が有効化されていると、0.04 USD/クレジットで制限を超えて Kiro の機能を引き続き利用することができます。デフォルトで Overage は無効化されています。&lt;/p&gt; 
+&lt;p&gt;Kiro for enterprise をご利用の場合、管理者は Kiro コンソールを利用して、Kiro プロファイルに対して Overage 機能をオプトインすることができます。また、MCP（Model Context Protocol）の利用可否もこちらの設定画面で ON/OFF を切り替えることが可能です。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/overage.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/overage.png" alt="" width="1667" height="348" class="alignnone size-full wp-image-170254"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;h2&gt;ネットワーク設定&lt;/h2&gt; 
+&lt;h3&gt;ファイアウォールとプロキシ&lt;/h3&gt; 
+&lt;p&gt;組織のネットワークセキュリティによって、ファイアウォールやプロキシ経由で Kiro へ接続を行う必要が生じる場合があります。このような場合に、ホワイトリストに登録していただく必要のあるエンドポイントを以下の表にまとめます。&lt;/p&gt; 
+&lt;table style="width: 100%;border-collapse: collapse" border="1"&gt; 
+ &lt;thead&gt; 
+  &lt;tr&gt; 
+   &lt;th style="padding: 8px"&gt;URL&lt;/th&gt; 
+   &lt;th style="padding: 8px"&gt;目的&lt;/th&gt; 
+  &lt;/tr&gt; 
+ &lt;/thead&gt; 
+ &lt;tbody&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;&amp;lt;idc-directory-id-or-alias&amp;gt;.awsapps.com&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;oidc.&amp;lt;sso-region&amp;gt;.amazonaws.com&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;*.sso.&amp;lt;sso-region&amp;gt;.amazonaws.com&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;*.sso-portal.&amp;lt;sso-region&amp;gt;.amazonaws.com&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;*.aws.dev&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;*.awsstatic.com&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;*.console.aws.a2z.com&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;*.sso.amazonaws.com&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;https://aws-toolkit-language-servers.amazonaws.com/*&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;Kiro, 言語処理&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;https://aws-language-servers.us-east-1.amazonaws.com/*&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;Kiro, 言語処理&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;https://client-telemetry.us-east-1.amazonaws.com&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;Kiro, テレメトリ&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;cognito-identity.us-east-1.amazonaws.com&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;Kiro, テレメトリ&lt;/td&gt; 
+  &lt;/tr&gt; 
+ &lt;/tbody&gt; 
+&lt;/table&gt; 
+&lt;p&gt;ここで、&lt;code&gt;idc-directory-id-or-alias&lt;/code&gt; は、IAM Identity Center のディレクトリ ID もしくはエイリアス、&lt;code&gt;sso-region&lt;/code&gt; は、IAM Identity Center インスタンスが作成されているリージョンに読み替えます。&lt;/p&gt; 
+&lt;p&gt;詳細は「&lt;a href="https://kiro.dev/docs/privacy-and-security/firewalls/" target="_blank" rel="noopener noreferrer"&gt;Configuring a firewall, proxy server, or data perimeter for Kiro – IDE – Docs – Kiro&lt;/a&gt;」をご確認ください。&lt;/p&gt; 
+&lt;h3&gt;プライベートネットワークアクセス&lt;/h3&gt; 
+&lt;p&gt;Kiro では、インターフェース型 VPC エンドポイントを提供しているため、PrivateLink を利用して Kiro へプライベート接続できます。マネジメントコンソールや AWS CLI を利用して、以下のサービス名で VPC エンドポイントを作成することができます。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;com.amazonaws.us-east-1.q&lt;/li&gt; 
+ &lt;li&gt;com.amazonaws.eu-central-1.q&lt;/li&gt; 
+ &lt;li&gt;com.amazonaws.us-east-1.codewhisperer&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;これにより、インターネット経由でデータを送受信できないような制約下でも、プライベートネットワークを介して、Kiro をご利用頂くことが可能です。&lt;/p&gt; 
+&lt;p&gt;詳細は「&lt;a href="https://kiro.dev/docs/privacy-and-security/vpc-endpoints/" target="_blank" rel="noopener noreferrer"&gt;Kiro and interface endpoints (AWS PrivateLink) – IDE – Docs – Kiro&lt;/a&gt;」をご確認ください。&lt;/p&gt; 
+&lt;h2&gt;まとめ&lt;/h2&gt; 
+&lt;p&gt;このブログでは、Kiro を組織で利用するために利用可能な Kiro for enterprise とそれを取り巻くセキュリティとガバナンスに関する内容について触れてきました。皆様の組織全体で Kiro を利用して、新しいものを生み出すための一助になれば幸いです！&lt;/p&gt; 
+&lt;p&gt;引き続き X で &lt;a href="https://x.com/hashtag/kiroweeeeeeek?src=hashtag_click" target="_blank" rel="noopener noreferrer"&gt;#kiroweeeeeeek&lt;/a&gt; をつけて様々な角度からの投稿をお待ちしています！&lt;/p&gt; 
+&lt;h2&gt;著者&lt;/h2&gt; 
+&lt;footer&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="wp-image-11636 alignleft" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/IMG_2169.jpg" alt="" width="150" height="150"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;&lt;strong&gt;Hiroaki Yoshimura&lt;/strong&gt;&lt;/h3&gt; 
+  &lt;p style="text-align: left"&gt;AWS Japan のパブリックセクターのソリューションアーキテクトです。主に医療機関をはじめとしたヘルスケア業界のお客様のソリューション構築の支援を行なっています。Go や TypeScript などの静的型付け言語が好きです。&lt;/p&gt; 
+  &lt;p&gt;&lt;/p&gt;
+ &lt;/div&gt; 
+&lt;/footer&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>エージェントステアリングと MCP を使って Kiro に新しいスキルを教える方法</title>
+		<link>https://aws.amazon.com/jp/blogs/news/teaching-kiro-new-tricks-with-agent-steering-and-mcp/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Thu, 30 Oct 2025 08:01:32 +0000</pubDate>
+				<category><![CDATA[Amazon Q]]></category>
+		<category><![CDATA[Amazon Q Developer]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[General]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">0002d8c0411931dbb5dffb8c1530a4a6d32bd346</guid>
+
+					<description>この記事では、AI エージェントおよび開発環境である Kiro に、MathJSON というライブラリを理解させる方法を探ります。</description>
+										<content:encoded>&lt;p&gt;本記事は 2025 年 10 月 23 日に公開された Brian Beach による &lt;a href="https://kiro.dev/blog/teaching-kiro-new-tricks-with-agent-steering-and-mcp/" rel="noopener" target="_blank"&gt;“Teaching Kiro new tricks with agent steering and MCP”&lt;/a&gt; を翻訳したものです。&lt;/p&gt; 
+&lt;h2&gt;はじめに&lt;/h2&gt; 
+&lt;p&gt;過去 3 年間、私は数百の顧客がソフトウェア開発に AI ツールを採用するのを支援してきました。これらの顧客の多くは、独自のライブラリ、ツール、さらにはドメイン固有言語（DSL）を開発しています。ワークフロー自動化言語、設定構文、ルールエンジンなど、これらのカスタマイズはビジネス運営の基盤となっています。しかし、AI コーディングアシスタントにこれらの独自ライブラリを理解させ、連携させたい場合はどうすればよいでしょうか？&lt;/p&gt; 
+&lt;p&gt;この記事では、AI エージェントおよび開発環境である &lt;a href="https://kiro.dev/"&gt;Kiro&lt;/a&gt; に、MathJSON というライブラリを理解させる方法を探ります。MathJSON はこのデモンストレーションのために作成された架空のライブラリですが、企業が日常的に使用するワークフロー言語、設定システム、専門的な表記法の代理として機能します。この記事全体を通して、&lt;a href="https://kiro.dev/docs/steering/"&gt;ステアリング&lt;/a&gt;と &lt;a href="https://kiro.dev/docs/mcp/"&gt;Model Context Protocol（MCP）&lt;/a&gt;について説明し、これらを組み合わせて Kiro に新しいスキルを教える方法を紹介します。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-168126"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2&gt;MathJSON との出会い&lt;/h2&gt; 
+&lt;p&gt;この記事では、MathJSON を使用します。これは、適切な数学用語を使用する JSON ベースの数式表現言語です。MathJSON はこの記事のために作成されたものであり、実際のアプリケーションでの使用は推奨しないことに注意してください。以下が興味深い点です。&lt;/p&gt; 
+&lt;h3&gt;主な特徴&lt;/h3&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;構造化された数式表現のための &lt;strong&gt;JSON ベースの構文&lt;/strong&gt;&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;適切な数学用語&lt;/strong&gt; (加数、被減数、被乗数など)&lt;/li&gt; 
+ &lt;li&gt;複雑な計算のための&lt;strong&gt;ネストされた式&lt;/strong&gt;&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;豊富な関数ライブラリ&lt;/strong&gt; (三角関数、対数、定数)&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;ファイル拡張子&lt;/strong&gt;: &lt;code&gt;.math&lt;/code&gt;&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h3&gt;式の例&lt;/h3&gt; 
+&lt;pre&gt;&lt;code class="lang-json"&gt;{
+  "multiplication": {
+    "multiplicand": {"pi": {}},
+    "multiplier": {
+      "pow": {
+        "base": {"variable": "env:RADIUS"},
+        "exponent": 2
+      }
+    }
+  }
+}&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;この例は、環境変数として渡された半径に対する円の面積を計算します。&lt;code&gt;pi * radius^2&lt;/code&gt;&lt;/p&gt; 
+&lt;h2&gt;ステアリングファイルで Kiro をガイドする&lt;/h2&gt; 
+&lt;p&gt;ステアリングは、マークダウンファイルを通じてプロジェクトに関する永続的な知識を Kiro に提供します。これらのファイルは &lt;code&gt;.kiro/steering/&lt;/code&gt; に保存され、ワークスペース内のすべてのインタラクションにコンテキストと指示を提供します。ステアリングファイルには、コーディング標準、プロジェクト構造などが含まれます。&lt;/p&gt; 
+&lt;p&gt;最初に思いつくのは、MathJSON のドキュメントをステアリングフォルダに追加することかもしれません。私はまさにそれを行い、&lt;code&gt;function_reference.md&lt;/code&gt; ファイルをステアリングフォルダに追加しました。これは良いスタートですが、いくつかの問題があります。第一に、ドキュメントは人間向けに書かれています。その結果、冗長で繰り返しが多くなります。第二に、Kiro が従うべき具体的なベストプラクティスが欠けています。第三に、プロジェクトフォルダにコピーされたドキュメントは必然的に古くなります。これらの問題とその対処方法を見ていきましょう。&lt;/p&gt; 
+&lt;h2&gt;ステアリングファイルの洗練&lt;/h2&gt; 
+&lt;p&gt;克服したい最初の問題は、ドキュメントの冗長性です。&lt;em&gt;当然ながら、適切なドキュメントが存在することを前提としています。もしない場合は、Kiro が生成を手伝ってくれます。&lt;/em&gt;人間向けに作成されたドキュメントは、ステアリングファイルに含めるには冗長すぎることがよくあります。MathJSON はこの記事のために作成したシンプルなプロジェクトですが、それでも 6 つのマークダウンファイルにわたって 3500 行以上のドキュメントがあります。これは、Kiro とのすべての会話に追加するには情報が多すぎます。&lt;/p&gt; 
+&lt;p&gt;幸いなことに、Kiro はステアリングファイルを洗練してくれます。Kiro でステアリングファイルを開き、&lt;strong&gt;Refine&lt;/strong&gt; ボタンを選択するだけです。Kiro はファイルを読み取り、最適化してくれます。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/10/29/1-3.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/10/29/1-3.png" alt="" width="1140" height="550" class="alignnone size-full wp-image-168141"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;Kiro が行った変更の 1 つを見てみましょう。元のドキュメントでは、加算は次のように説明されています。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="lang-md"&gt;## 算術演算
+
+### 加算
+適切な数学用語を使用して2つの数値の加算を実行します。
+
+**構文:**
+```json
+{
+  "addition": {
+    "addend1": ,
+    "addend2": 
+  }
+}
+```
+
+**パラメータ:**
+- `addend1` (number|expression): 加算する最初の数値
+- `addend2` (number|expression): 加算する2番目の数値
+
+**戻り値:** 2つの加数の合計
+
+**数式:** addend1 + addend2 = sum
+
+**例:**
+```json
+// 単純な加算
+{
+  "addition": {
+    "addend1": 15,
+    "addend2": 25
+  }
+}
+// 結果: 40
+
+// ネストされた式を使用した加算
+{
+  "addition": {
+    "addend1": {
+      "multiplication": {
+        "multiplicand": 3,
+        "multiplier": 4
+      }
+    },
+    "addend2": 8
+  }
+}
+// 結果: 20 (12 + 8)
+```&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;Kiro はこれを洗練し、1 行に置き換えました。ネストされた式などの詳細は、洗練されたファイルで一度だけカバーされ、各操作の例で繰り返されることはありません。したがって、ここで繰り返す必要はありません。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="lang-md"&gt;### 算術演算
+- `addition`: `{addend1, addend2}` - 基本的な加算&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;全体として、これは素晴らしいスタートです。ステアリングファイルは 3,500 行から 102 行に削減されました。他に何もしない場合でも、refine オプションを使用してステアリングファイルを最適化してください。ただし、さらに改善を続けることができます。&lt;/p&gt; 
+&lt;h2&gt;ベストプラクティスの定義&lt;/h2&gt; 
+&lt;p&gt;克服したい次の問題は、ドキュメントの具体性です。ユーザードキュメントは広範囲にわたる傾向があります。ライブラリや言語を使用できるすべての方法をカバーすることに焦点を当てています。しかし、ステアリングファイルは指針を持つべきです。Kiro が MathJSON を&lt;strong&gt;どのように使用できるか&lt;/strong&gt;を伝えるのではなく、Kiro が&lt;strong&gt;どのように使用すべきか&lt;/strong&gt;を正確に伝えたいのです。&lt;/p&gt; 
+&lt;p&gt;Kiro は前のセクションでドキュメントを洗練したときにベストプラクティスの定義を開始しました。しかし、追加のルールを加えます。具体的には、Kiro が書くすべてのコードを検証およびテストすることを望んでいます。そこで、いくつかの新しいベストプラクティスを追加します。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="lang-md"&gt;5. **リテラルよりも定数**: 精度のために`3.14159`の代わりに`{"pi": {}}`を使用
+6. **コードを検証**: `mathjson`がローカルにインストールされていると仮定します。`*.math`ファイルを作成または編集するときは、リントとテストを行います。&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;ステアリングファイルには、コマンドラインツールの使用方法に関する指示がすでに含まれていることに注意してください。それを繰り返すのではなく、Kiro にいつ使用するかを指示しています。ステアリングファイルは形になり始めていますが、時間の経過とともにどのように最新の状態を保つのでしょうか？&lt;/p&gt; 
+&lt;h2&gt;知識を最新の状態に保つ&lt;/h2&gt; 
+&lt;p&gt;克服したい最初の問題は、ドキュメントの鮮度です。時間の経過とともに、MathJSON は進化し、変化していきます。たとえば、最近三角関数のサポートを追加しました。ステアリングファイルで維持しなければならないコピーではなく、Kiro が元のドキュメントにアクセスできることを望んでいます。ここで Model Context Protocol（MCP）の出番です。&lt;/p&gt; 
+&lt;p&gt;MathJSON の場合、GitHub リポジトリが信頼できる情報源です。したがって、GitHub 用の MCP サーバーを設定しました。これで、Kiro は必要なときに最新のドキュメントを読むことができます。GitHub は単なる例であることに注意してください。GitLab、Confluence などにドキュメントを保管している場合、それらにも MCP サーバーがある可能性があります。&lt;/p&gt; 
+&lt;p&gt;Kiro が GitHub のドキュメントに直接アクセスできるようになったので、ステアリングファイルを削除したくなるかもしれません。しかし、実際には両方が必要であることがわかりました。Kiro に &lt;code&gt;2 つの数値を足し算する関数を作成&lt;/code&gt; するように依頼したとします。そのプロンプトには、MathJSON を使用することや、MathJSON のドキュメントが GitHub に保存されていることを示すものは何もありません。Kiro は MathJSON ではなく Python で関数を書く可能性が高いです。ステアリングファイルは、Kiro が点と点を結ぶのに役立ちます。&lt;/p&gt; 
+&lt;p&gt;次の例では、MathJSON を使用していることと、ドキュメントが GitHub で利用可能であることを Kiro に伝えるためにステアリングファイルを更新したことがわかります。さらに、GitHub の MCP サーバーを使用してドキュメントにアクセスするように Kiro に指示しました。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="lang-md"&gt;# MathJSON DSL 概要
+このプロジェクトは、数式のためのドメイン固有言語である MathJSON を使用しています。MathJSON は、JSON 構文を使用して数式を表現および操作する構造化された方法を提供します。
+
+## 主要なドキュメント参照
+
+完全な MathJSON ドキュメントは、YOUR_ORG_NAME/mathjson リポジトリで利用できます。これらのファイルにアクセスするには、GitHub MCP サーバーを使用してください。
+- **メインドキュメント**: owner="sampleorg", repo="mathjson", path="README.md"で`mcp_github_get_file_contents`を使用
+- **関数リファレンス**: owner="sampleorg", repo="mathjson", path="function_reference.md"で`mcp_github_get_file_contents`を使用
+- **構文リファレンス**: owner="sampleorg", repo="mathjson", path="syntax_reference.md"で`mcp_github_get_file_contents`を使用
+- **例**: owner="sampleorg", repo="mathjson", path="examples.md"で`mcp_github_get_file_contents`を使用
+- **環境変数**: owner="sampleorg", repo="mathjson", path="ENVIRONMENT_VARIABLES.md"で`mcp_github_get_file_contents`を使用
+- **トラブルシューティング**: owner="sampleorg", repo="mathjson", path="TROUBLESHOOTING_VARIABLES.md"で`mcp_github_get_file_contents`を使用&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;特定のファイルへの参照を提供していることに注意してください。これはパフォーマンスの最適化です。リポジトリへの参照だけを提供した場合、Kiro はリポジトリを探索してファイルを読むのに時間がかかりすぎます。また、GitHub は理想的なドキュメントリポジトリではないことも指摘しておきたいと思います。Kiro は、ドキュメントをトピックにチャンク化し、それらのチャンクをベクトルデータベースに保存することで恩恵を受けるでしょう。これにより、Kiro は必要なドキュメントの部分だけにアクセスできます。ただし、この記事は少し長くなっているので、そのトピックは別の記事に残しておきます。&lt;/p&gt; 
+&lt;h2&gt;Kiro に知識の更新を依頼する&lt;/h2&gt; 
+&lt;p&gt;この時点で、私のステアリングファイルは主にドキュメントへのポインタとして機能しています。ただし、ベストプラクティスセクションとともに、ステアリングファイルにいくつかの高レベルのドキュメントがまだあります。さらに重要なことに、定期的にステアリングファイルを更新するように Kiro に依頼しています。Kiro が間違いを犯したり、問題に遭遇したりするたびに、問題がまだコンテキストにある間に更新を行うように Kiro に依頼します。&lt;/p&gt; 
+&lt;p&gt;次の例では、Kiro が環境変数のフォーマットの問題に取り組んでいるのがわかります。リンターが問題を特定すると、Kiro は MCP サーバーを使用してドキュメントを読み、エラーを修正します。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/10/29/2-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/10/29/2-1.png" alt="" width="1242" height="824" class="alignnone size-full wp-image-168147"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;Kiro がこれらの問題に取り組むにつれて、新しいスキルを学びます。ただし、その新しい知識は会話の期間中のみ保持されます。したがって、Kiro は将来のセッションで同じ間違いを犯す可能性があります。これは、ステアリングファイルを更新するように Kiro に依頼する絶好の機会です。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/10/29/3-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/10/29/3-1.png" alt="" width="1424" height="434" class="alignnone size-full wp-image-168148"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;MathJSON の環境変数の構文について学んだ後、Kiro はステアリングファイルに次のセクションを追加しました。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="lang-md"&gt;## 環境変数のベストプラクティス
+
+### 変数構文
+- 環境変数には`{"variable": "env:VARIABLE_NAME"}`構文を使用
+- 変数名は文字またはアンダースコアで始まり、英数字とアンダースコアのみを含む必要があります
+- `PRINCIPAL`、`ANNUAL_RATE`、`LOAN_TERM_YEARS`のような説明的な名前を使用&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;時間の経過とともに、Kiro はガイダンスを洗練し続け、私の DSL に関する知識を拡大し、書くコードを改善していきます。&lt;/p&gt; 
+&lt;h2&gt;すべてをまとめる&lt;/h2&gt; 
+&lt;p&gt;数回の反復の後、Kiro は MathJSON を作成する準備ができています。住宅ローンの過払いをモデル化する関数を作成するように Kiro に依頼します。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="lang-md"&gt;元金、金利、過払い額を入力として受け取り、ローンの期間中の節約額を返す住宅ローン過払いをモデル化する関数を作成してください。&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;Kiro は私のために MathJSON を生成する準備ができました。以下は、住宅ローン過払い計算のために Kiro が生成した MathJSON です。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="lang-json"&gt;{
+  "multiplication": {
+    "multiplicand": {"variable": "env:OVERPAYMENT_AMOUNT"},
+    "multiplier": {
+      "subtraction": {
+        "minuend": {
+          "multiplication": {
+            "multiplicand": {"variable": "env:LOAN_TERM_YEARS"},
+            "multiplier": 12
+          }
+        },
+        "subtrahend": {
+          "division": {
+            "dividend": {
+              "log": {
+                "value": {
+                  "subtraction": {
+                    "minuend": 1,
+                    "subtrahend": {
+                      "division": {
+                        "dividend": {
+                          "multiplication": {
+                            "multiplicand": {"variable": "env:OVERPAYMENT_AMOUNT"},
+                            "multiplier": {
+                              "division": {
+                                "dividend": {"variable": "env:ANNUAL_RATE"},
+                                "divisor": 12
+                              }
+                            }
+                          }
+                        },
+                        "divisor": {"variable": "env:PRINCIPAL"}
+                      }
+                    }
+                  }
+                },
+                "base": {
+                  "addition": {
+                    "addend1": 1,
+                    "addend2": {
+                      "division": {
+                        "dividend": {"variable": "env:ANNUAL_RATE"},
+                        "divisor": 12
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "divisor": {
+              "log": {
+                "value": {
+                  "addition": {
+                    "addend1": 1,
+                    "addend2": {
+                      "division": {
+                        "dividend": {"variable": "env:ANNUAL_RATE"},
+                        "divisor": 12
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;そしてもちろん、Kiro はステアリングファイルで定義されたベストプラクティスに従って、書いたコードをリントおよびテストし、コードが構文的に正しいことを検証します。&lt;/p&gt; 
+&lt;h2&gt;結論&lt;/h2&gt; 
+&lt;p&gt;MathJSON のようなカスタムライブラリを理解し、それと連携するように Kiro を教えることは、ステアリングファイルと Model Context Protocol を組み合わせる力を示しています。この記事で概説されたアプローチ（ドキュメントの洗練、明確なベストプラクティスの確立、最新の知識のための MCP の活用）に従うことで、カスタムライブラリ、言語、ツールと連携するように Kiro へ教えることができます。&lt;a href="https://kiro.dev/downloads/"&gt;Kiro を始めましょう&lt;/a&gt;。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>9 月 15 日まで無料で Kiro を使用</title>
+		<link>https://aws.amazon.com/jp/blogs/news/free-until-september-15/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Mon, 01 Sep 2025 00:49:38 +0000</pubDate>
+				<category><![CDATA[Amazon Q]]></category>
+		<category><![CDATA[Amazon Q Developer]]></category>
+		<category><![CDATA[Announcements]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[General]]></category>
+		<guid isPermaLink="false">c575360bb5235893ceda84999ca494a6c8f9c9c9</guid>
+
+					<description>8 月 22 日の価格更新に続き、9 月 1 日を超えて 9 月 15 日まで、Kiro の無料使用を延長いたします。 9 月 15 日まで引き続き Kiro を無料で使用できることとなります。9 月分の請求については全額返金いたしますので、引き続き無料で Kiro をご利用いただけます。使用制限は、通常のサブスクリプションサイクルの一部として、9月1日にプランの完全な制限にリセットされます。</description>
+										<content:encoded>&lt;p&gt;最新の金額については「&lt;a href="https://aws.amazon.com/jp/blogs/news/new-pricing-plans-and-auto/"&gt;新しい料金プランと新エージェント「Auto」の発表&lt;/a&gt;」をご確認ください。&lt;/p&gt; 
+&lt;p&gt;本記事は米国時間 2025 年 8 月 28 日に公開された &lt;a href="https://kiro.dev/blog/free-until-september-15/"&gt;Use Kiro for free until September 15&lt;/a&gt; を翻訳したものです。Kiro の最新情報は、&lt;a href="https://kiro.dev/"&gt;Kiro の公式ドキュメント&lt;/a&gt;をご覧ください。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="/blog/important-pricing-updates/"&gt;8 月 22 日の価格更新&lt;/a&gt;に続き、9 月 1 日を超えて 9 月 15 日まで、Kiro の無料使用を延長いたします。&lt;/p&gt; 
+&lt;p&gt;9 月 15 日まで引き続き Kiro を無料で使用できることとなります。9 月分の請求については全額返金いたしますので、引き続き無料で Kiro をご利用いただけます。使用制限は、通常のサブスクリプションサイクルの一部として、9 月 1 日にご利用制限がプランの上限までリセットされます。 &lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-164294"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;p&gt;さらに、お客様がご利用中の有料プランに関係なく、超過料金を有効にして、9 月 15 日まで追加で 1,000 回の vibe リクエストと 200 回の spec リクエストを無料でご利用いただけます。詳細については、以下の FAQ をご覧ください。&lt;/p&gt; 
+&lt;p&gt;また、すべての払い戻しが処理されています。そして、今週初めにシステムの改善を行うため、制限をリセットしました。これにより、有意義な仕事ができるようになることを願っています。&lt;/p&gt; 
+&lt;p&gt;お客様のフィードバックに耳を傾けており、Kiro の価格モデルをどのように進化させるかを決定する上で非常に貴重な情報となっています。お客様のご意見に基づき、今後数週間で価格変更を発表し、9 月 15 日以降に新しい価格を展開する予定です。新しい価格変更を展開する前に、お客様が適切に計画できるよう、今後の変更についてお知らせいたします。&lt;/p&gt; 
+&lt;p&gt;これらの変更は、価格モデルにお客様のフィードバックを反映させながら、現在の体験をより長く皆様にお楽しみいただくために行っています。改めて皆様のサポートに感謝いたします。&lt;a href="https://discord.gg/kirodotdev"&gt;Discord コミュニティ&lt;/a&gt;にご参加いただき、引き続きフィードバックをお寄せください。&lt;/p&gt; 
+&lt;h2&gt;FAQ&lt;/h2&gt; 
+&lt;h3&gt;お客様への返金はいつ、どのように行われますか？&lt;/h3&gt; 
+&lt;p&gt;Kiro のアクティブなサブスクリプションをお持ちの場合、9 月 1 日に 9 月分の使用料がクレジットカードに請求されます。9 月 15 日までに金額を返金いたします。&lt;/p&gt; 
+&lt;h3&gt;超過料金も返金されますか？&lt;/h3&gt; 
+&lt;p&gt;8 月にすでに超過料金が発生している場合は、それらも返金いたします。&lt;a href="https://kiro.dev/docs/billing/overages/"&gt;超過料金&lt;/a&gt;は 9 月中、一時的に 1,000 回の vibe リクエストと 200 回の spec リクエストに制限されます。超過料金がクレジットカードに請求された場合、9 月末に返金いたします。&lt;/p&gt; 
+&lt;h3&gt;お客様の使用制限はいつ、どのようにリセットされますか？&lt;/h3&gt; 
+&lt;p&gt;月間プランの制限は 9 月 1 日にリセットされます。&lt;/p&gt; 
+&lt;h3&gt;今日サブスクリプションを購入した場合、9 月 15 日まで無料ですか？&lt;/h3&gt; 
+&lt;p&gt;9 月 14 日までにサブスクリプションを購入された場合、9 月 14 日まで無料でご利用いただけます。クレジットカードに請求されますが、9 月 15 日までに返金いたします。9 月 15 日まで、購入されたプランの月間制限の上限までご利用いただけます。&lt;/p&gt; 
+&lt;h3&gt;9 月は Kiro を無料で使用できますか？&lt;/h3&gt; 
+&lt;p&gt;すでに有料プランをご利用の場合、月間制限は 9 月 1 日にリセットされ、9 月 15 日まで完全な月間制限内で引き続き Kiro を無料でご利用いただけます。&lt;/p&gt; 
+&lt;p&gt;9 月 14 日までに有料プランを購入される場合、有効なクレジットカードを提供していただく必要があり、購入されたプランの価格と適用される税金および手数料が請求されます。その後、購入から数日以内の 9 月 15 日までに返金いたします。アップグレードした完全な月間プラン制限内で無料で Kiro をご利用いただけます。未使用のリクエストは翌月や更新されたプランに繰り越されません。お客様のニーズにより適合するよう既存の価格プランの調整を行っており、今後数週間で更新を展開する準備が整い次第、サブスクリプションをキャンセルしない限り、新しいプランに移行していただきます。9 月後半により詳細をお伝えいたします。&lt;/p&gt; 
+&lt;h3&gt;9 月中に超過料金を無料で有効にできますか？&lt;/h3&gt; 
+&lt;p&gt;はい、超過料金を有効にできます。&lt;a href="/docs/billing/overages/"&gt;超過料金&lt;/a&gt;は 9 月 15 日まで一時的に 1,000 回の vibe リクエストと 200 回の spec リクエストに制限されます。9 月 15 日までに発生した超過料金がクレジットカードに請求された場合、9 月末に返金いたします。&lt;/p&gt; 
+&lt;h3&gt;今後数週間でどのような価格更新が期待できますか？&lt;/h3&gt; 
+&lt;p&gt;一般的な開発タスクで Kiro を使用する際に優れた効果を得られるよう、spec リクエストと vibe リクエストの動作方法を変更することを検討しています。価格を展開する前に更新をお伝えし、変更がお客様に適しているかどうかを判断していただく機会を提供いたします。&lt;/p&gt; 
+&lt;h3&gt;日割り請求はどのように機能しますか？&lt;/h3&gt; 
+&lt;p&gt;月が 30 日ある場合、20 日目にサインアップすると、その月の残り 10 日分が請求され、それに応じて月間制限をご利用いただけます。例えば、9 月 5 日に Kiro Plus にサブスクライブした場合、9 月は 30 日あるため、25/30 × $20（Kiro Plus のコスト）= $16.67 が請求され、25/30 × 225 = 187 回の vibe リクエストと 25/30 × 125 = 104 回の spec リクエストをご利用いただけます。&lt;/p&gt; 
+&lt;h3&gt;Kiro ハッカソンに参加していますが、これらの変更は私にどのような影響を与えますか？&lt;/h3&gt; 
+&lt;p&gt;&lt;a href="https://kiro.devpost.com/"&gt;ハッカソン&lt;/a&gt;の提出期限は 9 月 15 日であり、この発表で説明されているのと同じ条件で、その日まで無料で Kiro をご利用いただけます。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+	</channel>
+</rss>
