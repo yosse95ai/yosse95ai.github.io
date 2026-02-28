@@ -101,6 +101,7 @@ async function main(): Promise<void> {
     execSync(`git checkout -b ${newBranchName}`, { encoding: 'utf-8' });
     execSync(`git add ${ARTICLES_PATH} ${CACHE_PATH}`, { encoding: 'utf-8' });
     execSync(`git commit -m "chore: update AWS blog articles (${today})"`, { encoding: 'utf-8' });
+    execSync(`git push origin ${newBranchName}`, { encoding: 'utf-8' });
     execSync(
       `gh pr create --title "chore: update AWS blog articles" --body "自動更新: 新規AWSブログ記事を追加" --head ${newBranchName} --base master`,
       { encoding: 'utf-8' },
