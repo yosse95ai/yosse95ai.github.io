@@ -47,6 +47,8 @@ public/
 | `gallery` | `data/gallery/img.json` | id, src, alt |
 | `skills` | `data/skills/skills.json` | id, name, category, icon, url |
 | `career` | `data/career/career.json` | id, organization, role, startDate, endDate（nullable）, description（nullable, optional）|
+| `oss` | `data/oss/contributions.json` | id, repo, url, description |
+| `speaking` | `data/speaking/speaking.json` | id, title, event, date, url（nullable）, description（nullable, optional）|
 
 ## スタイリング規約
 - Tailwind CSS v4 ユーティリティクラスを基本とする
@@ -59,5 +61,6 @@ public/
 - Hero: `col-span-8`、SNSリンク: `col-span-4`
 - CareerTimeline: `col-span-4`、Skills: `col-span-8`
 - Blog一覧: `col-span-12`（横スクロール）
+- Activity（OSS Contributions + Speaking）: `col-span-12`
 
 モバイル: 全カード縦積み

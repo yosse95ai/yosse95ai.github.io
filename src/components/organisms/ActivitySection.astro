@@ -1,21 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
 import OssItemSimple from '../molecules/OssItemSimple.astro';
-import OssItemOgp from '../molecules/OssItemOgp.astro';
-import TalkCard from '../molecules/TalkCard.astro';
-
-export interface Props {
-  /** OSS の表示タイプ: 'simple' | 'ogp' */
-  ossType?: 'simple' | 'ogp';
-}
-
-const { ossType = 'simple' } = Astro.props;
+import SpeakingCard from '../molecules/SpeakingCard.astro';
 
 const allOss = await getCollection('oss');
-const allTalks = await getCollection('talks');
+const allSpeaking = await getCollection('speaking');
 
 // date 降順（最新が先）
-const sortedTalks = allTalks.sort((a, b) => b.data.date.localeCompare(a.data.date));
+const sortedSpeaking = allSpeaking.sort((a, b) => b.data.date.localeCompare(a.data.date));
 ---
 
 <section
@@ -28,26 +20,26 @@ const sortedTalks = allTalks.sort((a, b) => b.data.date.localeCompare(a.data.dat
 
   <!-- OSS Contributions -->
   <div class="flex flex-col gap-3">
-    <h3 class="text-xs font-mono" style="color: var(--color-text-secondary);">OSS Contributions</h3>
+    <h3 class="text-sm font-mono" style="color: var(--color-text-muted);">OSS Contributions</h3>
     <div class="flex flex-col gap-3">
       {allOss.map((item) => (
-        ossType === 'ogp'
-          ? <OssItemOgp url={item.data.url} />
-          : <OssItemSimple repo={item.data.repo} url={item.data.url} description={item.data.description} />
+        <OssItemSimple repo={item.data.repo} url={item.data.url} description={item.data.description} />
       ))}
     </div>
   </div>
 
-  <!-- Talks -->
+  <!-- Speaking -->
   <div class="flex flex-col gap-3">
-    <h3 class="text-xs font-mono" style="color: var(--color-text-secondary);">Talks</h3>
+    <h3 class="text-sm font-mono" style="color: var(--color-text-muted);">Speaking</h3>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {sortedTalks.map((talk) => (
-        <TalkCard
-          title={talk.data.title}
-          event={talk.data.event}
-          date={talk.data.date}
-          url={talk.data.url}
+      {sortedSpeaking.map((item) => (
+        <SpeakingCard
+          id={item.id}
+          title={item.data.title}
+          event={item.data.event}
+          date={item.data.date}
+          url={item.data.url}
+          description={item.data.description}
         />
       ))}
     </div>

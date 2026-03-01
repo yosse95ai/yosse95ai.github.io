@@ -66,15 +66,16 @@ const oss = defineCollection({
 });
 
 // 登壇履歴コレクション
-const talks = defineCollection({
-  loader: file('./src/data/talks/talks.json'),
+const speaking = defineCollection({
+  loader: file('./src/data/speaking/speaking.json'),
   schema: z.object({
     id: z.string(),
     title: z.string(),
     event: z.string(),
     date: z.string(),
     url: z.string().url().nullable(),
+    description: z.string().nullable().optional(),
   }),
 });
 
-export const collections = { blogAws, blogOther, gallery, skills, career, oss, talks };
+export const collections = { blogAws, blogOther, gallery, skills, career, oss, speaking };

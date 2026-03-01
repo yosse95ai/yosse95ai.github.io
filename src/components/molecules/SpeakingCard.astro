@@ -7,15 +7,30 @@ export interface Props {
   event: string;
   date: string;
   url: string | null;
+  id: string;
+  description?: string | null;
 }
 
-const { title, event, date, url } = Astro.props;
+const { title, event, date, url, id, description } = Astro.props;
 
 const isYouTube = url
   ? url.includes('youtube.com') || url.includes('youtu.be')
   : false;
 
 const ogp = isYouTube ? await fetchOgp(url!) : null;
+
+/** 文字列から決定論的な hue（0〜359）を生成 */
+function stringToHue(str: string): number {
+  let hash = 0;
+  for (const char of str) {
+    hash = (hash << 5) - hash + char.charCodeAt(0);
+    hash |= 0;
+  }
+  return Math.abs(hash) % 360;
+}
+
+const hue = stringToHue(id);
+const gradient = `linear-gradient(135deg, oklch(0.35 0.13 ${hue}) 0%, oklch(0.55 0.11 ${hue + 3}) 35%, oklch(0.78 0.08 ${hue + 5}) 50%, oklch(0.50 0.12 ${hue + 2}) 65%, oklch(0.32 0.11 ${hue}) 100%)`;
 ---
 
 {isYouTube && ogp ? (
@@ -39,15 +54,20 @@ const ogp = isYouTube ? await fetchOgp(url!) : null;
     <!-- グラデーションプレースホルダー -->
     <div
       class="aspect-[1200/630] w-full"
-      style="background: linear-gradient(135deg, oklch(0.55 0.15 145), oklch(0.45 0.18 160));"
+      style={`background: ${gradient};`}
     />
 
     <!-- テキスト -->
     <div class="flex flex-col gap-1 p-3 flex-1">
-      <span class="text-xs font-mono" style="color: var(--color-text-muted);">{date} — {event}</span>
-      <p class="text-sm font-semibold leading-tight line-clamp-3" style="color: var(--color-text);">
+      <span class="text-sm font-mono" style="color: var(--color-text-muted);">{date} — {event}</span>
+      <p class="text-base font-semibold leading-tight line-clamp-3" style="color: var(--color-text);">
         {title}
       </p>
+      {description && (
+        <p class="text-sm leading-relaxed line-clamp-3 mt-1" style="color: var(--color-text-muted);">
+          {description}
+        </p>
+      )}
     </div>
   </a>
 )}
