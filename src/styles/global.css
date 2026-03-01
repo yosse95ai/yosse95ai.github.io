@@ -3,7 +3,6 @@
 
 @import "tailwindcss";
 @plugin "daisyui";
-@source "../**/*.{astro,ts,tsx}";
 
 /* DaisyUI デフォルトテーマの primary を緑系に上書き */
 @plugin "daisyui/theme" {
@@ -13,17 +12,17 @@
   --color-primary-content: oklch(0.98 0.005 145);
 }
 
+@source "../**/*.{astro,ts,tsx}";
+
 @theme {
   /* フォント */
   --font-sans: 'Inter', 'Noto Sans JP', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  /* OKLCHカラーパレット */
+  /* OKLCHカラーパレット（プロジェクト固有トークン） */
   --color-bg:        oklch(0.15 0.008 150);
   --color-text:      oklch(0.20 0.010 250);
   --color-text-muted: oklch(0.45 0.010 250);
-  --color-primary:   oklch(0.55 0.15 145);
-  --color-primary-content: oklch(0.98 0.005 145);
   --color-secondary: oklch(0.60 0.08 150);
   --color-border:    oklch(0.88 0.008 150);
   --color-shadow:    oklch(0.70 0.010 150 / 0.15);
