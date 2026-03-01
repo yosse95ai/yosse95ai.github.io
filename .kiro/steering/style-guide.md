@@ -131,3 +131,44 @@ fileMatchPattern: ['**/*.astro', '**/*.css']
 ```
 fix: #N 変更内容の説明
 ```
+
+## DaisyUI テーマカラーの上書き規約
+
+DaisyUI v5 は `@layer base` 内の `[data-theme=light]` セレクタで CSS 変数を定義する。
+`@theme`（`:where(:root)`）や `@layer base` 内の独自定義は、DaisyUI の定義より先に処理されるため**後から上書きされる**。
+
+### ❌ 効果がない方法
+
+```css
+/* @theme は :where(:root) → 詳細度が低く DaisyUI に負ける */
+@theme {
+  --color-primary: oklch(0.55 0.15 145);
+}
+
+/* @layer base 内でも DaisyUI が後から同じセレクタで上書きするため負ける */
+@layer base {
+  [data-theme=light] {
+    --color-primary: oklch(0.55 0.15 145);
+  }
+}
+
+/* @plugin "daisyui/theme" での上書きも効果なし */
+@plugin "daisyui/theme" {
+  name: "light";
+  --color-primary: oklch(0.55 0.15 145);
+}
+```
+
+### ✅ 正しい方法：`@layer` の外に書く
+
+`@layer` 外のスタイルは `@layer` 内より**常に優先される**。
+
+```css
+/* global.css — @layer の外（@theme・@layer base より後）に配置 */
+:root, [data-theme=light] {
+  --color-primary: oklch(0.55 0.15 145);
+  --color-primary-content: oklch(0.98 0.005 145);
+}
+```
+
+DaisyUI のデフォルト値を変えたい CSS 変数はすべてこの形式で上書きする。
