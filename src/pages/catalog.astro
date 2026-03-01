@@ -20,6 +20,7 @@ import CareerTimeline from '../components/organisms/CareerTimeline.astro';
 import SkillsGrid from '../components/organisms/SkillsGrid.astro';
 import BlogList from '../components/organisms/BlogList.astro';
 import PhotoGrid from '../components/organisms/PhotoGrid.astro';
+import '../styles/global.css';
 
 if (import.meta.env.PROD) {
   return Astro.redirect('/');
@@ -47,7 +48,6 @@ const skillsByCategory = Object.fromEntries(
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>コンポーネントカタログ</title>
-    <style>@import '../styles/global.css';</style>
   </head>
   <body class="p-8 space-y-12" style="background: oklch(0.98 0.005 120); color: oklch(0.20 0.010 250);">
 
@@ -271,28 +271,6 @@ const skillsByCategory = Object.fromEntries(
     <!-- ===== Organisms: BlogList ===== -->
     <section class="space-y-4">
       <h2 class="text-xl font-semibold">BlogList</h2>
-
-      <!-- Before/After: セクションラベル文字サイズ -->
-      <div class="border rounded-2xl p-4 space-y-4" style="border-color: oklch(0.88 0.008 150);">
-        <p class="text-xs font-mono uppercase tracking-wider" style="color: oklch(0.55 0.15 145);">G: BlogList セクションラベル（"AWS Blog" / "Other"）</p>
-        <div class="grid grid-cols-2 gap-6">
-          <div class="space-y-2">
-            <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">Before: text-xs font-mono</p>
-            <div class="rounded-xl p-4" style="background: oklch(0.96 0.006 120);">
-              <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">AWS Blog</p>
-              <p class="text-xs font-mono mt-2" style="color: oklch(0.55 0.010 250);">Other</p>
-            </div>
-          </div>
-          <div class="space-y-2">
-            <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">After: text-sm font-mono</p>
-            <div class="rounded-xl p-4" style="background: oklch(0.96 0.006 120);">
-              <p class="text-sm font-mono" style="color: oklch(0.55 0.010 250);">AWS Blog</p>
-              <p class="text-sm font-mono mt-2" style="color: oklch(0.55 0.010 250);">Other</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <BlogList />
     </section>
 
