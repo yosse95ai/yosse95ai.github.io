@@ -1,71 +1,69 @@
+---
+inclusion: always
+---
+
 # 技術スタック
 
-## フレームワーク・言語
-- Astro 5.x（SSG）
-- TypeScript（strict mode）
+## コア技術
+- **Astro 5.x**（SSG）+ **TypeScript**（strict mode）
+- **Tailwind CSS v4**（`@tailwindcss/vite` 経由）+ **DaisyUI v5**（Tailwind v4ネイティブ）
+- カラー定義: OKLCH（`global.css` の `@theme` ブロックで `--color-*` カスタムプロパティ）
 
-## スタイリング
-- Tailwind CSS v4（`@tailwindcss/vite` プラグイン経由）
-- DaisyUI v5（Tailwind v4ネイティブ）
-- カラー空間: OKLCH（`--color-*` カスタムプロパティで定義）
+## TypeScript ルール
+- `any` 型禁止。不必要な `unknown` 型も避ける
+- strict mode 準拠。TypeScript ベストプラクティスに従う
 
-## アニメーション
-- CSS transition + `astro:page-load` イベントによるページロード時フェードイン（`inView()` は View Transitions との互換性問題のため不使用）
-- Astro `<ClientRouter />` によるCSS View Transitions
+## スタイリング規約
+- Tailwind ユーティリティクラスを基本とする
+- DaisyUI コンポーネントクラス（`btn`, `badge`, `card` 等）を積極活用
+- レスポンシブはモバイルファースト（Tailwind ブレークポイント）
 
 ## アイコン
-- `astro-icon` + `@iconify-json/devicon` + `@iconify-json/simple-icons`
-- 固定カラーを持つカスタムアイコン（Kiro・Dify等）は `src/components/atoms/` に専用コンポーネント（`KiroIcon.astro`・`DifyIcon.astro`）としてSVGを直接インライン展開する
-  - `astro-icon` はIconify形式でfill色を正規化するため、ブランドカラーが失われる場合はこの方式を採用する
-  - `src/icons/` ディレクトリは使用しない
+- 通常: `astro-icon` + `@iconify-json/devicon` / `@iconify-json/simple-icons`
+- ブランドカラーが必要なカスタムアイコン（Kiro・Dify 等）: `src/components/atoms/` に専用 `.astro` コンポーネントとして SVG をインライン展開
+  - `astro-icon` は fill 色を正規化するためブランドカラーが失われる場合にこの方式を採用
+  - `src/icons/` ディレクトリは**使用しない**
+
+## アニメーション
+- CSS transition + `astro:page-load` イベントでページロード時フェードイン
+- `inView()` は View Transitions との互換性問題のため**使用しない**
+- Astro `<ClientRouter />` による CSS View Transitions
 
 ## コンテンツ管理
-- Astro Content Collections（Content Layer API）
-- ローダー: `file()`（JSONファイル）
+- Astro Content Collections（Content Layer API）、ローダー: `file()`（JSON）
 - コレクション: `blogAws` / `blogOther` / `gallery` / `skills` / `career`
 
-## OGP取得
-- ビルド時に `src/lib/fetchOgp.ts` で外部URLからOGPメタタグをfetch・静的埋め込み
-- `blog` コレクションは `externalUrl` のみ管理、title/description/ogpImage/publishedAtは自動取得
-- `article:published_time` メタタグから投稿日を取得し、取得できない場合は `null`
-
-## デプロイ
-- GitHub Pages（`https://yosse95ai.github.io`）
-- GitHub Actions（`withastro/action@v3` + `actions/deploy-pages@v4`）
-- `master` ブランチへのプッシュでトリガー
-
-## よく使うコマンド
-```bash
-npm run dev      # 開発サーバー起動
-npm run build    # 本番ビルド
-npm run preview  # ビルド結果のプレビュー
-npm run test     # ユニットテスト実行（Vitest）
-```
-
-## Node バージョン
-`.nvmrc` で管理。`nvm use` で切り替え。
-
-## Gitルール
-`git push` は勝手に行わない。
+## OGP 取得
+- ビルド時に `src/lib/fetchOgp.ts` で外部 URL から OGP メタタグを fetch・静的埋め込み
+- `blog` コレクションは `externalUrl` のみ保持。title / description / ogpImage / publishedAt は自動取得
+- `article:published_time` メタタグから投稿日を取得。取得不可の場合は `null`
 
 ## テスト
-- フレームワーク: Vitest
-- テストファイルは `src/tests/` に配置（`*.test.ts`）
-- `src/lib/` の TypeScript ユーティリティには対応するテストを作成する
-- ユニットテストの必要性がある場合はTDDを行う。Red-Green-Refactorメソッドにのっとる。
+- フレームワーク: **Vitest**
+- テストファイル配置: `src/tests/*.test.ts`
+- `src/lib/` の TypeScript ユーティリティには対応するテストを必ず作成する
+- TDD（Red → Green → Refactor）を採用
 
-### テスト実行コマンド
-`cd` は使用不可。テストはプロジェクトルートから以下のコマンドで実行する。
-
+### テスト実行（プロジェクトルートから）
 ```bash
 npx vitest run          # 全テスト（ワンショット）
 npx vitest run <path>   # 特定ファイルのみ
 ```
+- `cd` コマンドは使用不可
+- `npm run test -- --run` は `--run` が二重になるため**使わない**
 
-`npm run test -- --run` は `--run` が二重になりエラーになるため使わない。
+## デプロイ
+- GitHub Pages（`https://yosse95ai.github.io`）
+- GitHub Actions: `withastro/action@v5` + `actions/deploy-pages@v4`
+- `master` ブランチへの push でトリガー
+- **`git push` は自律的に実行しない**（必ずユーザー確認を取る）
 
-## typescript
-### DONOT's
-- any型は使わない。
-- 不必要にunknown方を使わない。
-- TypeScriptのベストプラクティスに従うこと。
+## 開発コマンド
+```bash
+npm run dev      # 開発サーバー起動
+npm run build    # 本番ビルド
+npm run preview  # ビルド結果プレビュー
+```
+
+## Node バージョン
+`.nvmrc` で管理。`nvm use` で切り替え。
