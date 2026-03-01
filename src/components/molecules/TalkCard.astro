@@ -1,0 +1,53 @@
+---
+import OgpCard from './OgpCard.astro';
+import { fetchOgp } from '../../lib/fetchOgp';
+
+export interface Props {
+  title: string;
+  event: string;
+  date: string;
+  url: string | null;
+}
+
+const { title, event, date, url } = Astro.props;
+
+const isYouTube = url
+  ? url.includes('youtube.com') || url.includes('youtu.be')
+  : false;
+
+const ogp = isYouTube ? await fetchOgp(url!) : null;
+---
+
+{isYouTube && ogp ? (
+  <OgpCard
+    externalUrl={url!}
+    title={ogp.title}
+    description={ogp.description}
+    ogpImage={ogp.ogpImage}
+  />
+) : (
+  <a
+    href={url ?? undefined}
+    target={url ? '_blank' : undefined}
+    rel={url ? 'noopener noreferrer' : undefined}
+    class:list={[
+      'group flex flex-col rounded-2xl overflow-hidden border no-underline',
+      url ? 'transition-shadow hover:shadow-lg cursor-pointer' : 'cursor-default',
+    ]}
+    style="background: var(--color-surface); border-color: var(--color-border); box-shadow: 0 1px 4px var(--color-shadow-sm);"
+  >
+    <!-- グラデーションプレースホルダー -->
+    <div
+      class="aspect-[1200/630] w-full"
+      style="background: linear-gradient(135deg, oklch(0.55 0.15 145), oklch(0.45 0.18 160));"
+    />
+
+    <!-- テキスト -->
+    <div class="flex flex-col gap-1 p-3 flex-1">
+      <span class="text-xs font-mono" style="color: var(--color-text-muted);">{date} — {event}</span>
+      <p class="text-sm font-semibold leading-tight line-clamp-3" style="color: var(--color-text);">
+        {title}
+      </p>
+    </div>
+  </a>
+)}
