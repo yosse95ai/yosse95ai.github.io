@@ -54,4 +54,27 @@ const career = defineCollection({
   }),
 });
 
-export const collections = { blogAws, blogOther, gallery, skills, career };
+// OSS コントリビューションコレクション
+const oss = defineCollection({
+  loader: file('./src/data/oss/contributions.json'),
+  schema: z.object({
+    id: z.string(),
+    repo: z.string(),
+    url: z.string().url(),
+    description: z.string(),
+  }),
+});
+
+// 登壇履歴コレクション
+const talks = defineCollection({
+  loader: file('./src/data/talks/talks.json'),
+  schema: z.object({
+    id: z.string(),
+    title: z.string(),
+    event: z.string(),
+    date: z.string(),
+    url: z.string().url().nullable(),
+  }),
+});
+
+export const collections = { blogAws, blogOther, gallery, skills, career, oss, talks };
