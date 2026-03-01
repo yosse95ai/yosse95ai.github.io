@@ -11,7 +11,7 @@ const { organization, role, startDate, endDate, isLast = false } = Astro.props;
 
 function formatDate(ym: string): string {
   const [year, month] = ym.split('-');
-  return `${year}年${parseInt(month)}月`;
+  return `${year} 年 ${parseInt(month)} 月`;
 }
 
 const start = formatDate(startDate);
