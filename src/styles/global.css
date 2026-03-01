@@ -34,13 +34,13 @@
   --color-shadow-md:        oklch(0.70 0.010 150 / 0.20);
 }
 
-@layer base {
-  /* DaisyUI の [data-theme=light] による青上書きを打ち消す */
-  [data-theme=light], :root:not([data-theme]) {
-    --color-primary: oklch(0.55 0.15 145);
-    --color-primary-content: oklch(0.98 0.005 145);
-  }
+/* @layer 外に書くことで DaisyUI の @layer base より常に勝つ */
+:root, [data-theme=light] {
+  --color-primary: oklch(0.55 0.15 145);
+  --color-primary-content: oklch(0.98 0.005 145);
+}
 
+@layer base {
   html {
     font-family: var(--font-sans);
     background-color: var(--color-bg);
