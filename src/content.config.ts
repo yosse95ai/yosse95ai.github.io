@@ -54,4 +54,28 @@ const career = defineCollection({
   }),
 });
 
-export const collections = { blogAws, blogOther, gallery, skills, career };
+// OSS コントリビューションコレクション
+const oss = defineCollection({
+  loader: file('./src/data/oss/contributions.json'),
+  schema: z.object({
+    id: z.string(),
+    repo: z.string(),
+    url: z.string().url(),
+    description: z.string(),
+  }),
+});
+
+// 登壇履歴コレクション
+const speaking = defineCollection({
+  loader: file('./src/data/speaking/speaking.json'),
+  schema: z.object({
+    id: z.string(),
+    title: z.string(),
+    event: z.string(),
+    date: z.string(),
+    url: z.string().url().nullable(),
+    description: z.string().nullable().optional(),
+  }),
+});
+
+export const collections = { blogAws, blogOther, gallery, skills, career, oss, speaking };

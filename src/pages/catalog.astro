@@ -14,6 +14,9 @@ import SocialLink from '../components/molecules/SocialLink.astro';
 import TimelineItem from '../components/molecules/TimelineItem.astro';
 import { fetchOgp } from '../lib/fetchOgp';
 import { getCollection } from 'astro:content';
+import ActivitySection from '../components/organisms/ActivitySection.astro';
+import OssItemSimple from '../components/molecules/OssItemSimple.astro';
+import SpeakingCard from '../components/molecules/SpeakingCard.astro';
 import Header from '../components/organisms/Header.astro';
 import HeroSection from '../components/organisms/HeroSection.astro';
 import CareerTimeline from '../components/organisms/CareerTimeline.astro';
@@ -255,9 +258,7 @@ const skillsByCategory = Object.fromEntries(
     <!-- ===== Organisms: CareerTimeline ===== -->
     <section class="space-y-4">
       <h2 class="text-xl font-semibold">CareerTimeline</h2>
-      <div class="max-w-sm">
-        <CareerTimeline />
-      </div>
+      <CareerTimeline />
     </section>
 
     <!-- ===== Organisms: SkillsGrid ===== -->
@@ -278,6 +279,62 @@ const skillsByCategory = Object.fromEntries(
     <section class="space-y-4">
       <h2 class="text-xl font-semibold">PhotoGrid</h2>
       <PhotoGrid />
+    </section>
+
+    <!-- ===== Molecules: OssItemSimple ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">OssItemSimple</h2>
+      <OssItemSimple
+        repo="aws-samples/dify-self-hosted-on-aws"
+        url="https://github.com/aws-samples/dify-self-hosted-on-aws"
+        description="AWS 上に Dify をセルフホストするための CDK テンプレート。コントリビューターとして機能追加・改善に参加。"
+      />
+    </section>
+
+    <!-- ===== Molecules: SpeakingCard ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">SpeakingCard</h2>
+      <div class="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2" style="scrollbar-width: thin; scrollbar-color: var(--color-border) transparent;">
+        <div class="shrink-0 w-72 space-y-2">
+          <p class="text-xs font-mono" style="color: var(--color-text-muted);">url なし（グラデーションプレースホルダー）</p>
+          <SpeakingCard
+            id="aws-innovate-fy24q3"
+            title="フロントエンドエンジニアのための次世代開発者体験 〜 爆速 Web/モバイルアプリケーション開発 〜"
+            event="FY24 Q3 AWS Innovate MMB T4-5"
+            date="2024"
+            url={null}
+            description="2024 年 9 月 26 日に開催された AWS Innovate にて、Amplify Gen 2 を用いてアプリケーション開発を加速させるというテーマで登壇しました。"
+          />
+        </div>
+        <div class="shrink-0 w-72 space-y-2">
+          <p class="text-xs font-mono" style="color: var(--color-text-muted);">url あり（イベントページリンク）</p>
+          <SpeakingCard
+            id="hospital-show-2024"
+            title="AWS ではじめる生成 AI 活用 〜 セキュアに医療情報を取り扱う 〜"
+            event="2024 年 国際モダンホスピタルショウ"
+            date="2024"
+            url="https://www.cbnews.jp/news/entry/20240821194911"
+            description="2024 年 7 月に開催された、国際モダンホスピタルショウ 2024 にて、AWS の生成 AI サービスである Amazon Bedrock とヘルスケアにおける生成 AI 活用事例をテーマに登壇しました。"
+          />
+        </div>
+        <div class="shrink-0 w-72 space-y-2">
+          <p class="text-xs font-mono" style="color: var(--color-text-muted);">url あり（PDF リンク）</p>
+          <SpeakingCard
+            id="radiology-2025"
+            title="クラウド環境を用いた AI/ML 開発を体感"
+            event="2025 年 放射線学会 ハンズオンセミナー"
+            date="2025"
+            url="https://www.jsrt.or.jp/gmeeting/soukai81/files/2025/03/f10b04999721383c06e48c220c1f012e.pdf"
+            description="2025 年 4 月 12 日に開催された、放射線学会のハンズオンセミナーにて、クラウド環境を用いた AI/ML 開発と題して、放射線科医や医師、ヘルステックベンダー向けに 2 時間の生成 AI に関する座学と実践ハンズオンを開催しました。"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Organisms: ActivitySection ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">ActivitySection</h2>
+      <ActivitySection />
     </section>
 
   </body>

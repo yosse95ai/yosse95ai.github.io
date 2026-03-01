@@ -1,0 +1,8 @@
+[
+  {
+    "id": "dify-self-hosted-on-aws",
+    "repo": "aws-samples/dify-self-hosted-on-aws",
+    "url": "https://github.com/aws-samples/dify-self-hosted-on-aws",
+    "description": "AWS 上での Dify セルフホスト環境を実際に活用する中で発見した不具合を OSS にフィードバックし、バグ修正 PR をマージ済み。メンテナー。"
+  }
+]

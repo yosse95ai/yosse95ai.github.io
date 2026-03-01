@@ -31,7 +31,7 @@ inclusion: always
 
 ## コンテンツ管理
 - Astro Content Collections（Content Layer API）、ローダー: `file()`（JSON）
-- コレクション: `blogAws` / `blogOther` / `gallery` / `skills` / `career`
+- コレクション: `blogAws` / `blogOther` / `gallery` / `skills` / `career` / `oss` / `speaking`
 
 ## OGP 取得
 - ビルド時に `src/lib/fetchOgp.ts` で外部 URL から OGP メタタグを fetch・静的埋め込み

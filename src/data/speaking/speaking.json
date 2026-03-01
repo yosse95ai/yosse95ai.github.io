@@ -1,0 +1,26 @@
+[
+  {
+    "id": "radiology-2025",
+    "title": "クラウド環境を用いた AI/ML 開発を体感",
+    "event": "2025 年 放射線学会 ハンズオンセミナー",
+    "date": "2025",
+    "url": "https://www.jsrt.or.jp/gmeeting/soukai81/files/2025/03/f10b04999721383c06e48c220c1f012e.pdf",
+    "description": "2025 年 4 月 12 日に開催された、放射線学会のハンズオンセミナーにて、クラウド環境を用いた AI/ML 開発と題して、放射線科医や医師、ヘルステックベンダー向けに 2 時間の生成 AI に関する座学と実践ハンズオンを開催しました。"
+  },
+  {
+    "id": "hospital-show-2024",
+    "title": "AWS ではじめる生成 AI 活用 〜 セキュアに医療情報を取り扱う 〜",
+    "event": "2024 年 国際モダンホスピタルショウ",
+    "date": "2024",
+    "url": "https://www.cbnews.jp/news/entry/20240821194911",
+    "description": "2024 年 7 月に開催された、国際モダンホスピタルショウ 2024 にて、AWS の生成 AI サービスである Amazon Bedrock とヘルスケアにおける生成 AI 活用事例をテーマに登壇しました。"
+  },
+  {
+    "id": "aws-innovate-fy24q3",
+    "title": "フロントエンドエンジニアのための次世代開発者体験 〜 爆速 Web/モバイルアプリケーション開発 〜",
+    "event": "FY24 Q3 AWS Innovate MMB T4-5",
+    "date": "2024",
+    "url": "https://aws.amazon.com/jp/events/aws-innovate/apj/migrate-modernize-build/",
+    "description": "2024 年 9 月 26 日に開催された AWS Innovate にて、Amplify Gen 2 を用いてアプリケーション開発を加速させるというテーマで登壇しました。"
+  }
+]
