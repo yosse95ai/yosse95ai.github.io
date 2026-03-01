@@ -25,10 +25,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run test
-      - uses: withastro/action@v3
-        with:
-          node-version: '22'
-          build-cmd: npm run build
+      - uses: withastro/action@v5
 
   deploy:
     needs: build
