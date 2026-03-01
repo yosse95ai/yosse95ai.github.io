@@ -14,6 +14,10 @@ import SocialLink from '../components/molecules/SocialLink.astro';
 import TimelineItem from '../components/molecules/TimelineItem.astro';
 import { fetchOgp } from '../lib/fetchOgp';
 import { getCollection } from 'astro:content';
+import ActivitySection from '../components/organisms/ActivitySection.astro';
+import OssItemSimple from '../components/molecules/OssItemSimple.astro';
+import OssItemOgp from '../components/molecules/OssItemOgp.astro';
+import TalkCard from '../components/molecules/TalkCard.astro';
 import Header from '../components/organisms/Header.astro';
 import HeroSection from '../components/organisms/HeroSection.astro';
 import CareerTimeline from '../components/organisms/CareerTimeline.astro';
@@ -278,6 +282,70 @@ const skillsByCategory = Object.fromEntries(
     <section class="space-y-4">
       <h2 class="text-xl font-semibold">PhotoGrid</h2>
       <PhotoGrid />
+    </section>
+
+    <!-- ===== Molecules: OssItem 比較 ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">OssItem（タイプ比較）</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-2">
+          <p class="text-xs font-mono" style="color: var(--color-text-muted);">タイプ A: シンプルカード</p>
+          <OssItemSimple
+            repo="aws-samples/dify-self-hosted-on-aws"
+            url="https://github.com/aws-samples/dify-self-hosted-on-aws"
+            description="AWS 上に Dify をセルフホストするための CDK テンプレート。コントリビューターとして機能追加・改善に参加。"
+          />
+        </div>
+        <div class="space-y-2">
+          <p class="text-xs font-mono" style="color: var(--color-text-muted);">タイプ B: OGP カード</p>
+          <OssItemOgp url="https://github.com/aws-samples/dify-self-hosted-on-aws" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Molecules: TalkCard ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">TalkCard</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="space-y-2">
+          <p class="text-xs font-mono" style="color: var(--color-text-muted);">url なし（グラデーションプレースホルダー）</p>
+          <TalkCard
+            title="フロントエンドエンジニアのための次世代開発者体験 〜 爆速 Web/モバイルアプリケーション開発 〜"
+            event="FY24 Q3 AWS Innovate MMB T4-5"
+            date="2024"
+            url={null}
+          />
+        </div>
+        <div class="space-y-2">
+          <p class="text-xs font-mono" style="color: var(--color-text-muted);">url あり（イベントページリンク）</p>
+          <TalkCard
+            title="AWS ではじめる生成 AI 活用 〜 セキュアに医療情報を取り扱う 〜"
+            event="2024 年 国際モダンホスピタルショウ"
+            date="2024"
+            url="https://www.cbnews.jp/news/entry/20240821194911"
+          />
+        </div>
+        <div class="space-y-2">
+          <p class="text-xs font-mono" style="color: var(--color-text-muted);">url あり（PDF リンク）</p>
+          <TalkCard
+            title="クラウド環境を用いた AI/ML 開発を体感"
+            event="2025 年 放射線学会 ハンズオンセミナー"
+            date="2025"
+            url="https://www.jsrt.or.jp/gmeeting/soukai81/files/2025/03/f10b04999721383c06e48c220c1f012e.pdf"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Organisms: ActivitySection ===== -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">ActivitySection（タイプ A: シンプル OSS）</h2>
+      <ActivitySection ossType="simple" />
+    </section>
+
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">ActivitySection（タイプ B: OGP OSS）</h2>
+      <ActivitySection ossType="ogp" />
     </section>
 
   </body>
