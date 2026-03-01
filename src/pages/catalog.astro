@@ -20,6 +20,7 @@ import CareerTimeline from '../components/organisms/CareerTimeline.astro';
 import SkillsGrid from '../components/organisms/SkillsGrid.astro';
 import BlogList from '../components/organisms/BlogList.astro';
 import PhotoGrid from '../components/organisms/PhotoGrid.astro';
+import '../styles/global.css';
 
 if (import.meta.env.PROD) {
   return Astro.redirect('/');
@@ -47,7 +48,6 @@ const skillsByCategory = Object.fromEntries(
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>コンポーネントカタログ</title>
-    <style>@import '../styles/global.css';</style>
   </head>
   <body class="p-8 space-y-12" style="background: oklch(0.98 0.005 120); color: oklch(0.20 0.010 250);">
 

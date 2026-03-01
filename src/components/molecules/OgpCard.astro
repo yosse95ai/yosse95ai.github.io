@@ -16,10 +16,10 @@ const hostname = new URL(externalUrl).hostname.replace(/^www\./, '');
   target="_blank"
   rel="noopener noreferrer"
   class="group flex flex-col rounded-2xl overflow-hidden border transition-shadow hover:shadow-lg no-underline"
-  style="background: oklch(0.96 0.006 120); border-color: oklch(0.88 0.008 150); box-shadow: 0 1px 4px oklch(0.70 0.010 150 / 0.10);"
+  style="background: var(--color-surface); border-color: var(--color-border); box-shadow: 0 1px 4px var(--color-shadow-sm);"
 >
   <!-- OGP画像 -->
-  <div class="aspect-[1200/630] w-full overflow-hidden bg-[oklch(0.92_0.006_120)]">
+  <div class="aspect-[1200/630] w-full overflow-hidden bg-[var(--color-surface-subtle)]">
     {ogpImage ? (
       <img
         src={ogpImage}
@@ -29,7 +29,7 @@ const hostname = new URL(externalUrl).hostname.replace(/^www\./, '');
         decoding="async"
       />
     ) : (
-      <div class="w-full h-full flex items-center justify-center text-[oklch(0.65_0.008_150)]">
+      <div class="w-full h-full flex items-center justify-center text-[var(--color-text-secondary)]">
         <span class="text-sm">No Image</span>
       </div>
     )}
@@ -37,12 +37,12 @@ const hostname = new URL(externalUrl).hostname.replace(/^www\./, '');
 
   <!-- テキスト -->
   <div class="flex flex-col gap-0.5 p-3 flex-1">
-    <span class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">{hostname}</span>
-    <p class="text-sm font-semibold leading-tight line-clamp-2" style="color: oklch(0.20 0.010 250);">
+    <span class="text-xs font-mono" style="color: var(--color-text-muted);">{hostname}</span>
+    <p class="text-sm font-semibold leading-tight line-clamp-2" style="color: var(--color-text);">
       {title}
     </p>
     {description && (
-      <p class="text-xs leading-snug line-clamp-3 mt-0" style="color: oklch(0.45 0.010 250); margin-top: 2px;">
+      <p class="text-xs leading-snug line-clamp-3 mt-0" style="color: var(--color-text-muted); margin-top: 2px;">
         {description}
       </p>
     )}

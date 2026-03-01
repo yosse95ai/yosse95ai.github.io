@@ -28,7 +28,7 @@ const categoryColor: Record<string, string> = {
   href={url}
   target="_blank"
   rel="noopener noreferrer"
-  class="group flex items-center gap-2.5 rounded-xl px-3 py-2 transition-all duration-200 hover:bg-[oklch(0.92_0.008_145)] hover:scale-[1.03] hover:shadow-sm no-underline"
+  class="group flex items-center gap-2.5 rounded-xl px-3 py-2 transition-all duration-200 hover:bg-[var(--color-surface-hover)] hover:scale-[1.03] hover:shadow-sm no-underline"
   title={name}
 >
   {isKiro ? (
@@ -49,7 +49,7 @@ const categoryColor: Record<string, string> = {
       {name.charAt(0)}
     </span>
   ) : null}
-  <span class="text-sm font-medium whitespace-nowrap" style="color: oklch(0.25 0.010 250);">
+  <span class="text-sm font-medium whitespace-nowrap" style="color: var(--color-text-strong);">
     {name}
   </span>
 </a>

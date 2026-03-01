@@ -10,7 +10,7 @@ export interface Props {
 
 const {
   title = 'hiroaki.dev',
-  description = 'AWSのSolutions Architectとして活動するソフトウェアエンジニアのポートフォリオサイトです。',
+  description = 'AWS の Solutions Architect として活動するソフトウェアエンジニアのポートフォリオサイトです。',
 } = Astro.props;
 
 const siteUrl = 'https://yosse95ai.github.io';
@@ -47,7 +47,7 @@ const ogImage = `${siteUrl}/images/icon.jpg`;
     </main>
     <footer
       class="mt-16 border-t py-6 text-center text-xs"
-      style="border-color: oklch(0.88 0.008 150); color: oklch(0.60 0.010 250);"
+      style="border-color: var(--color-border); color: var(--color-text-secondary);"
     >
       © {new Date().getFullYear()} Hiroaki Yoshimura
     </footer>

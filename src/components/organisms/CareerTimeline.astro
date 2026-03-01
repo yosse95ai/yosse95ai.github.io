@@ -14,15 +14,15 @@ const allCareer = await getCollection('career');
 const sorted = allCareer.sort(
   (a, b) => b.data.startDate.localeCompare(a.data.startDate)
 );
-const items = showAll ? sorted : sorted.slice(0, 3);
+const items = showAll ? sorted : sorted.slice(0, 4);
 const hasMore = !showAll;
 ---
 
 <section
   class="rounded-3xl p-6 flex flex-col gap-4 w-full"
-  style="background: oklch(0.96 0.006 120); box-shadow: 0 1px 4px oklch(0.70 0.010 150 / 0.10);"
+  style="background: var(--color-surface); box-shadow: 0 1px 4px var(--color-shadow-sm);"
 >
-  <h2 class="text-sm font-semibold uppercase tracking-wider" style="color: oklch(0.55 0.15 145);">
+  <h2 class="text-sm font-semibold uppercase tracking-wider" style="color: var(--color-primary);">
     Career
   </h2>
 
@@ -42,7 +42,7 @@ const hasMore = !showAll;
     <a
       href="/history"
       class="inline-flex items-center gap-1 text-xs font-medium transition-all duration-200 hover:gap-2 no-underline self-start"
-      style="color: oklch(0.55 0.15 145);"
+      style="color: var(--color-primary);"
     >
       全てを見る
       <span aria-hidden="true">→</span>

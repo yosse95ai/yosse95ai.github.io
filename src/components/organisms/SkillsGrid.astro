@@ -22,16 +22,16 @@ const skillsByCategory = Object.fromEntries(
 
 <section
   class="rounded-3xl p-6 flex flex-col gap-5 w-full"
-  style="background: oklch(0.96 0.006 120); box-shadow: 0 1px 4px oklch(0.70 0.010 150 / 0.10);"
+  style="background: var(--color-surface); box-shadow: 0 1px 4px var(--color-shadow-sm);"
 >
-  <h2 class="text-sm font-semibold uppercase tracking-wider" style="color: oklch(0.55 0.15 145);">
+  <h2 class="text-sm font-semibold uppercase tracking-wider" style="color: var(--color-primary);">
     Skills
   </h2>
 
   <div class="flex flex-col gap-4">
     {categories.map(({ key, label }) => (
       <div>
-        <p class="text-xs font-mono mb-2" style="color: oklch(0.60 0.010 250);">{label}</p>
+        <p class="text-sm font-mono mb-2" style="color: var(--color-text-secondary);">{label}</p>
         <div class="flex flex-wrap gap-1">
           {skillsByCategory[key].map(skill => (
             <SkillItem

@@ -11,7 +11,7 @@ const { organization, role, startDate, endDate, isLast = false } = Astro.props;
 
 function formatDate(ym: string): string {
   const [year, month] = ym.split('-');
-  return `${year}年${parseInt(month)}月`;
+  return `${year} 年 ${parseInt(month)} 月`;
 }
 
 const start = formatDate(startDate);
@@ -23,22 +23,22 @@ const end = endDate ? formatDate(endDate) : '現在';
   <div class="flex flex-col items-center">
     <div
       class="w-3 h-3 rounded-full shrink-0 mt-1"
-      style="background: oklch(0.55 0.15 145);"
+      style="background: var(--color-primary);"
     />
     {!isLast && (
-      <div class="w-px flex-1 mt-1" style="background: oklch(0.88 0.008 150);"></div>
+      <div class="w-px flex-1 mt-1" style="background: var(--color-border);"></div>
     )}
   </div>
 
   <!-- コンテンツ -->
   <div class="pb-6 flex-1">
-    <p class="text-xs font-mono mb-1" style="color: oklch(0.55 0.15 145);">
+    <p class="text-sm font-mono mb-1" style="color: var(--color-primary);">
       {start} — {end}
     </p>
-    <p class="font-semibold text-sm leading-snug" style="color: oklch(0.20 0.010 250);">
+    <p class="font-semibold text-base leading-snug" style="color: var(--color-text);">
       {organization}
     </p>
-    <p class="text-sm mt-0.5" style="color: oklch(0.45 0.010 250);">
+    <p class="text-sm mt-0.5" style="color: var(--color-text-muted);">
       {role}
     </p>
   </div>

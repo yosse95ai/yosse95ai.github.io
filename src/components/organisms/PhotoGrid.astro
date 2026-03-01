@@ -9,7 +9,7 @@ const images = await getCollection('gallery');
     {images.map((img, i) => (
       <div
         class="break-inside-avoid overflow-hidden rounded-2xl photo-item"
-        style={`box-shadow: 0 1px 4px oklch(0.70 0.010 150 / 0.12); animation-delay: ${i * 60}ms;`}
+        style={`box-shadow: 0 1px 4px var(--color-shadow-sm); animation-delay: ${i * 60}ms;`}
       >
         <img
           src={img.data.src}
