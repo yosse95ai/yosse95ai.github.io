@@ -31,7 +31,7 @@
 
 ## デプロイ
 - GitHub Pages（`https://yosse95ai.github.io`）
-- GitHub Actions（`withastro/action@v3` + `actions/deploy-pages@v4`）
+- GitHub Actions（`withastro/action@v5` + `actions/deploy-pages@v4`）
 - `master` ブランチへのプッシュでトリガー
 
 ## よく使うコマンド
