@@ -5,6 +5,14 @@
 @plugin "daisyui";
 @source "../**/*.{astro,ts,tsx}";
 
+/* DaisyUI デフォルトテーマの primary を緑系に上書き */
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: oklch(0.55 0.15 145);
+  --color-primary-content: oklch(0.98 0.005 145);
+}
+
 @theme {
   /* フォント */
   --font-sans: 'Inter', 'Noto Sans JP', ui-sans-serif, system-ui, sans-serif;
@@ -19,6 +27,19 @@
   --color-secondary: oklch(0.60 0.08 150);
   --color-border:    oklch(0.88 0.008 150);
   --color-shadow:    oklch(0.70 0.010 150 / 0.15);
+
+  /* 追加トークン */
+  --color-surface:          oklch(0.96 0.006 120);
+  --color-surface-hover:    oklch(0.92 0.008 145);
+  --color-surface-subtle:   oklch(0.92 0.006 120);
+  --color-text-body:        oklch(0.35 0.010 250);
+  --color-text-strong:      oklch(0.25 0.010 250);
+  --color-text-secondary:   oklch(0.60 0.010 250);
+  --color-header-bg:        oklch(0.98 0.005 120 / 0.85);
+  --color-nav-active-bg:    oklch(0.92 0.010 145);
+  --color-nav-active-text:  oklch(0.40 0.15 145);
+  --color-shadow-sm:        oklch(0.70 0.010 150 / 0.10);
+  --color-shadow-md:        oklch(0.70 0.010 150 / 0.20);
 }
 
 @layer base {

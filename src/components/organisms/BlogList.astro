@@ -51,18 +51,18 @@ const sortedOtherCards = sortByDate(otherCards);
 
 <section
   class="rounded-3xl p-6 flex flex-col gap-6"
-  style="background: oklch(0.96 0.006 120); box-shadow: 0 1px 4px oklch(0.70 0.010 150 / 0.10);"
+  style="background: var(--color-surface); box-shadow: 0 1px 4px var(--color-shadow-sm);"
 >
-  <h2 class="text-sm font-semibold uppercase tracking-wider" style="color: oklch(0.55 0.15 145);">
+  <h2 class="text-sm font-semibold uppercase tracking-wider" style="color: var(--color-primary);">
     Blog
   </h2>
 
   <!-- AWS Blog -->
   <div class="flex flex-col gap-3">
-    <p class="text-sm font-mono" style="color: oklch(0.55 0.010 250);">AWS Blog</p>
+    <p class="text-sm font-mono" style="color: var(--color-text-muted);">AWS Blog</p>
     <div
       class="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2"
-      style="scrollbar-width: thin; scrollbar-color: oklch(0.88 0.008 150) transparent;"
+      style="scrollbar-width: thin; scrollbar-color: var(--color-border) transparent;"
     >
       {sortedAwsCards.map(card => (
         <div class="shrink-0 w-72">
@@ -78,14 +78,14 @@ const sortedOtherCards = sortByDate(otherCards);
   </div>
 
   <!-- 区切り線 -->
-  <hr style="border-color: oklch(0.88 0.008 150);" />
+  <hr style="border-color: var(--color-border);" />
 
   <!-- Other Blog -->
   <div class="flex flex-col gap-3">
-    <p class="text-sm font-mono" style="color: oklch(0.55 0.010 250);">Other</p>
+    <p class="text-sm font-mono" style="color: var(--color-text-muted);">Other</p>
     <div
       class="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2"
-      style="scrollbar-width: thin; scrollbar-color: oklch(0.88 0.008 150) transparent;"
+      style="scrollbar-width: thin; scrollbar-color: var(--color-border) transparent;"
     >
       {sortedOtherCards.map(card => (
         <div class="shrink-0 w-72">
