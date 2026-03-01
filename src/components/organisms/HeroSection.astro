@@ -22,7 +22,7 @@ const current = allCareer.find(c => c.data.endDate === null);
     />
     <div>
       {current && (
-        <p class="text-xs font-mono mb-0.5" style="color: oklch(0.55 0.15 145);">
+        <p class="text-sm font-mono mb-0.5" style="color: oklch(0.55 0.15 145);">
           {current.data.role}
         </p>
       )}
@@ -38,11 +38,9 @@ const current = allCareer.find(c => c.data.endDate === null);
   </div>
 
   <!-- 自己紹介 -->
-  <div class="space-y-3">
-    {current?.data.description && (
-      <p class="text-sm leading-relaxed" style="color: oklch(0.35 0.010 250);">
-        {current.data.description}
-      </p>
-    )}
-  </div>
+  {current?.data.description && (
+    <p class="text-sm leading-relaxed" style="color: oklch(0.35 0.010 250);">
+      {current.data.description}
+    </p>
+  )}
 </section>
