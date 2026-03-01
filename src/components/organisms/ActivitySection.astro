@@ -31,16 +31,18 @@ const sortedSpeaking = allSpeaking.sort((a, b) => b.data.date.localeCompare(a.da
   <!-- Speaking -->
   <div class="flex flex-col gap-3">
     <h3 class="text-sm font-mono" style="color: var(--color-text-muted);">Speaking</h3>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2" style="scrollbar-width: thin; scrollbar-color: var(--color-border) transparent;">
       {sortedSpeaking.map((item) => (
-        <SpeakingCard
-          id={item.id}
-          title={item.data.title}
-          event={item.data.event}
-          date={item.data.date}
-          url={item.data.url}
-          description={item.data.description}
-        />
+        <div class="shrink-0 w-72">
+          <SpeakingCard
+            id={item.id}
+            title={item.data.title}
+            event={item.data.event}
+            date={item.data.date}
+            url={item.data.url}
+            description={item.data.description}
+          />
+        </div>
       ))}
     </div>
   </div>
