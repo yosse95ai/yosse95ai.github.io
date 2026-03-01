@@ -3,15 +3,6 @@
 
 @import "tailwindcss";
 @plugin "daisyui";
-
-/* DaisyUI デフォルトテーマの primary を緑系に上書き */
-@plugin "daisyui/theme" {
-  name: "light";
-  default: true;
-  --color-primary: oklch(0.55 0.15 145);
-  --color-primary-content: oklch(0.98 0.005 145);
-}
-
 @source "../**/*.{astro,ts,tsx}";
 
 @theme {
@@ -20,6 +11,8 @@
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
   /* OKLCHカラーパレット（プロジェクト固有トークン） */
+  --color-primary:         oklch(0.55 0.15 145);
+  --color-primary-content: oklch(0.98 0.005 145);
   --color-bg:        oklch(0.15 0.008 150);
   --color-text:      oklch(0.20 0.010 250);
   --color-text-muted: oklch(0.45 0.010 250);
@@ -42,6 +35,12 @@
 }
 
 @layer base {
+  /* DaisyUI の [data-theme=light] による青上書きを打ち消す */
+  [data-theme=light], :root:not([data-theme]) {
+    --color-primary: oklch(0.55 0.15 145);
+    --color-primary-content: oklch(0.98 0.005 145);
+  }
+
   html {
     font-family: var(--font-sans);
     background-color: var(--color-bg);
