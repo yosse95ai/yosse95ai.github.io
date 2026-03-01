@@ -14,7 +14,7 @@ const allCareer = await getCollection('career');
 const sorted = allCareer.sort(
   (a, b) => b.data.startDate.localeCompare(a.data.startDate)
 );
-const items = showAll ? sorted : sorted.slice(0, 3);
+const items = showAll ? sorted : sorted.slice(0, 4);
 const hasMore = !showAll;
 ---
 
