@@ -13,7 +13,7 @@
   /* OKLCHカラーパレット（プロジェクト固有トークン） */
   --color-primary:         oklch(0.55 0.15 145);
   --color-primary-content: oklch(0.98 0.005 145);
-  --color-bg:        oklch(0.15 0.008 150);
+  --color-bg:        oklch(0.10 0.04 195);
   --color-text:      oklch(0.20 0.010 250);
   --color-text-muted: oklch(0.45 0.010 250);
   --color-secondary: oklch(0.60 0.08 150);
