@@ -7,8 +7,14 @@ import { fetchOgp } from '../../lib/fetchOgp';
 export interface Props {
   /** 表示件数上限。未指定時は全件表示 */
   limit?: number;
+  /**
+   * カードのレイアウトモード
+   * - "scroll" : 横スクロール（デフォルト / ホーム画面）
+   * - "grid"   : レスポンシブグリッド（ヒストリーページ）
+   */
+  layout?: 'scroll' | 'grid';
 }
-const { limit } = Astro.props;
+const { limit, layout = 'scroll' } = Astro.props;
 
 const [awsArticles, otherArticles] = await Promise.all([
   getCollection('blogAws'),
@@ -71,11 +77,13 @@ const displayedOtherCards = limit !== undefined ? sortedOtherCards.slice(0, limi
   <div class="flex flex-col gap-3">
     <p class="text-sm font-mono" style="color: var(--color-text-muted);">AWS Blog</p>
     <div
-      class="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2"
+      class={layout === 'grid'
+        ? 'flex gap-4 overflow-x-auto pb-2 -mx-2 px-2 md:!grid md:overflow-x-visible md:pb-0 md:mx-0 md:px-0 md:grid-cols-4'
+        : 'flex gap-4 overflow-x-auto pb-2 -mx-2 px-2'}
       style="scrollbar-width: thin; scrollbar-color: var(--color-border) transparent;"
     >
       {displayedAwsCards.map(card => (
-        <div class="shrink-0 w-72">
+        <div class={layout === 'grid' ? 'shrink-0 w-72 md:shrink md:w-auto' : 'shrink-0 w-72'}>
           <OgpCard
             externalUrl={card.externalUrl}
             title={card.title}
@@ -84,7 +92,7 @@ const displayedOtherCards = limit !== undefined ? sortedOtherCards.slice(0, limi
           />
         </div>
       ))}
-      {limit !== undefined && <SeeAllButton href="/history#blog" />}
+      {limit !== undefined && layout !== 'grid' && <SeeAllButton href="/history#blog" />}
     </div>
   </div>
 
@@ -95,11 +103,13 @@ const displayedOtherCards = limit !== undefined ? sortedOtherCards.slice(0, limi
   <div class="flex flex-col gap-3">
     <p class="text-sm font-mono" style="color: var(--color-text-muted);">Other</p>
     <div
-      class="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2"
+      class={layout === 'grid'
+        ? 'flex gap-4 overflow-x-auto pb-2 -mx-2 px-2 md:!grid md:overflow-x-visible md:pb-0 md:mx-0 md:px-0 md:grid-cols-4'
+        : 'flex gap-4 overflow-x-auto pb-2 -mx-2 px-2'}
       style="scrollbar-width: thin; scrollbar-color: var(--color-border) transparent;"
     >
       {displayedOtherCards.map(card => (
-        <div class="shrink-0 w-72">
+        <div class={layout === 'grid' ? 'shrink-0 w-72 md:shrink md:w-auto' : 'shrink-0 w-72'}>
           <OgpCard
             externalUrl={card.externalUrl}
             title={card.title}
@@ -108,7 +118,7 @@ const displayedOtherCards = limit !== undefined ? sortedOtherCards.slice(0, limi
           />
         </div>
       ))}
-      {limit !== undefined && <SeeAllButton href="/history#blog" />}
+      {limit !== undefined && layout !== 'grid' && <SeeAllButton href="/history#blog" />}
     </div>
   </div>
 </section>

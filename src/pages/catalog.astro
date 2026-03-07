@@ -310,8 +310,7 @@ const skillsByCategory = Object.fromEntries(
           <div class="space-y-2">
             <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">After: layout="grid"（PC幅でグリッドタイル）</p>
             <div class="rounded-xl overflow-hidden" style="background: oklch(0.96 0.006 120);">
-              {/* layout prop はタスク 7 で実装予定。現時点は layout="grid" を渡した状態（未実装のため横スクロールのまま） */}
-              <BlogList />
+              <BlogList layout="grid" />
             </div>
           </div>
         </div>

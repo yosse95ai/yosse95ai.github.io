@@ -48,18 +48,18 @@
   - ユーザーの承認を得てから次のタスクへ進む
   - _Requirements: 3.4, 3.5, 3.6_
 
-- [ ] 7. `BlogList.astro` に `layout` prop とレスポンシブグリッドを追加する
-  - [ ] 7.1 Props インターフェースに `layout?: 'scroll' | 'grid'` を追加し、`layout="grid"` 時に Tailwind クラスを切り替える
+- [x] 7. `BlogList.astro` に `layout` prop とレスポンシブグリッドを追加する
+  - [x] 7.1 Props インターフェースに `layout?: 'scroll' | 'grid'` を追加し、`layout="grid"` 時に Tailwind クラスを切り替える
     - スマホ（〜767px）: 横スクロール（既存と同じ `flex overflow-x-auto`）
     - PC（768px〜）: `md:grid md:[grid-template-columns:repeat(auto-fill,minmax(288px,1fr))]`
     - _Requirements: 3.4, 3.5, 3.6_
 
-- [ ] 8. `src/pages/index.astro` を更新する
-  - [ ] 8.1 `<BlogList />` を `<BlogList limit={5} />` に変更する
+- [x] 8. `src/pages/index.astro` を更新する
+  - [x] 8.1 `<BlogList />` を `<BlogList limit={5} />` に変更する
     - _Requirements: 1.3_
 
-- [ ] 9. `src/pages/history.astro` を更新する
-  - [ ] 9.1 `id="blog"` ラッパー付きで `<BlogList layout="grid" />` を追加する
+- [x] 9. `src/pages/history.astro` を更新する
+  - [x] 9.1 `id="blog"` ラッパー付きで `<BlogList layout="grid" />` を追加する
     - 既存の `CareerTimeline` / `ActivitySection` の順序を変えない
     - _Requirements: 3.1, 3.2, 3.3_
 
@@ -67,7 +67,7 @@
     - `id="blog"` 要素が存在することを確認する
     - _Requirements: 3.2_
 
-- [ ] 10. 最終チェックポイント — 全テストをパスさせる
+- [x] 10. 最終チェックポイント — 全テストをパスさせる
   - 全テストが通ることを確認する。疑問点があればユーザーに確認する。
 
 ## Notes
