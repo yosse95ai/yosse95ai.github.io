@@ -45,7 +45,7 @@
 
 1. THE History_Page SHALL `BlogList` コンポーネントを `limit` なしで配置し、全件を表示する
 2. THE History_Page SHALL ブログセクションに `id="blog"` 属性を付与し、アンカーリンクで直接遷移できるようにする
-3. THE History_Page SHALL 既存の `CareerTimeline` および `ActivitySection` の配置順序を変更しない
+3. THE History_Page SHALL `CareerTimeline` → `ActivitySection` → `BlogList` の順序で配置する
 4. WHEN 画面幅が 768px 未満の場合, THE History_Page の BlogList SHALL 横スクロール形式でカードを表示する
-5. WHEN 画面幅が 768px 以上の場合, THE History_Page の BlogList SHALL グリッドタイル形式（`auto-fill` による折り返し）でカードを表示する
+5. WHEN 画面幅が 768px 以上の場合, THE History_Page の BlogList SHALL 4 列固定のグリッドタイル形式でカードを表示する
 6. THE History_Page の BlogList SHALL PC グリッド表示時にカード幅を親コンテナに合わせて伸縮させる

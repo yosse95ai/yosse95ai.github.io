@@ -74,7 +74,7 @@ export interface Props {
 
 ```
 スマホ（〜767px）: 横スクロール（既存と同じ flex + overflow-x-auto）
-PC（768px〜）   : CSS Grid（auto-fill、minmax(288px, 1fr)）
+PC（768px〜）   : CSS Grid（4 列固定）
 ```
 
 Tailwind クラス例:
@@ -82,8 +82,8 @@ Tailwind クラス例:
 <!-- layout="grid" の場合 -->
 <div class="
   flex gap-4 overflow-x-auto pb-2 -mx-2 px-2
-  md:grid md:overflow-x-visible md:pb-0 md:mx-0 md:px-0
-  md:[grid-template-columns:repeat(auto-fill,minmax(288px,1fr))]
+  md:!grid md:overflow-x-visible md:pb-0 md:mx-0 md:px-0
+  md:grid-cols-4
 ">
 ```
 
