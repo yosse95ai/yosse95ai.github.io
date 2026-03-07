@@ -1,7 +1,14 @@
 ---
 import OgpCard from '../molecules/OgpCard.astro';
+import SeeAllButton from '../molecules/SeeAllButton.astro';
 import { getCollection } from 'astro:content';
 import { fetchOgp } from '../../lib/fetchOgp';
+
+export interface Props {
+  /** 表示件数上限。未指定時は全件表示 */
+  limit?: number;
+}
+const { limit } = Astro.props;
 
 const [awsArticles, otherArticles] = await Promise.all([
   getCollection('blogAws'),
@@ -47,6 +54,9 @@ const sortByDate = <T extends { publishedAt: string | null }>(cards: T[]) =>
 
 const sortedAwsCards = sortByDate(awsCards);
 const sortedOtherCards = sortByDate(otherCards);
+
+const displayedAwsCards   = limit !== undefined ? sortedAwsCards.slice(0, limit)   : sortedAwsCards;
+const displayedOtherCards = limit !== undefined ? sortedOtherCards.slice(0, limit) : sortedOtherCards;
 ---
 
 <section
@@ -64,7 +74,7 @@ const sortedOtherCards = sortByDate(otherCards);
       class="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2"
       style="scrollbar-width: thin; scrollbar-color: var(--color-border) transparent;"
     >
-      {sortedAwsCards.map(card => (
+      {displayedAwsCards.map(card => (
         <div class="shrink-0 w-72">
           <OgpCard
             externalUrl={card.externalUrl}
@@ -74,6 +84,7 @@ const sortedOtherCards = sortByDate(otherCards);
           />
         </div>
       ))}
+      {limit !== undefined && <SeeAllButton href="/history#blog" />}
     </div>
   </div>
 
@@ -87,7 +98,7 @@ const sortedOtherCards = sortByDate(otherCards);
       class="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2"
       style="scrollbar-width: thin; scrollbar-color: var(--color-border) transparent;"
     >
-      {sortedOtherCards.map(card => (
+      {displayedOtherCards.map(card => (
         <div class="shrink-0 w-72">
           <OgpCard
             externalUrl={card.externalUrl}
@@ -97,6 +108,7 @@ const sortedOtherCards = sortByDate(otherCards);
           />
         </div>
       ))}
+      {limit !== undefined && <SeeAllButton href="/history#blog" />}
     </div>
   </div>
 </section>
