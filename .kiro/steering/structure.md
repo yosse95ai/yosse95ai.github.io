@@ -60,7 +60,7 @@ public/
 デスクトップ: 12カラムグリッド
 - Hero: `col-span-8`、SNSリンク: `col-span-4`
 - CareerTimeline: `col-span-4`、Skills: `col-span-8`
-- Blog一覧: `col-span-12`（横スクロール）
+- Blog一覧: `col-span-12`（横スクロール、各カテゴリ最新 5 件 + 「全てを見る」ボタン）
 - Activity（OSS Contributions + Speaking）: `col-span-12`
 
 モバイル: 全カード縦積み

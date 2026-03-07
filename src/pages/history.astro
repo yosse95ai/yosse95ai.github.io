@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../components/templates/BaseLayout.astro';
 import CareerTimeline from '../components/organisms/CareerTimeline.astro';
+import BlogList from '../components/organisms/BlogList.astro';
 import ActivitySection from '../components/organisms/ActivitySection.astro';
 ---
 
@@ -12,5 +13,8 @@ import ActivitySection from '../components/organisms/ActivitySection.astro';
     <h1 class="text-2xl font-bold" style="color: var(--color-primary);">History</h1>
     <CareerTimeline showAll={true} />
     <ActivitySection />
+    <div id="blog">
+      <BlogList layout="grid" />
+    </div>
   </div>
 </BaseLayout>
