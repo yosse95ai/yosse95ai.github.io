@@ -18,6 +18,7 @@ import ActivitySection from '../components/organisms/ActivitySection.astro';
 import OssItemSimple from '../components/molecules/OssItemSimple.astro';
 import SpeakingCard from '../components/molecules/SpeakingCard.astro';
 import Header from '../components/organisms/Header.astro';
+import LogoSvg from '../components/atoms/LogoSvg.astro';
 import HeroSection from '../components/organisms/HeroSection.astro';
 import CareerTimeline from '../components/organisms/CareerTimeline.astro';
 import SkillsGrid from '../components/organisms/SkillsGrid.astro';
@@ -244,6 +245,57 @@ const skillsByCategory = Object.fromEntries(
       <p class="text-xs" style="color: oklch(0.55 0.010 250);">※ ページ上部に sticky 表示されているものが実物です</p>
       <div class="border rounded-2xl overflow-hidden" style="border-color: oklch(0.88 0.008 150);">
         <Header />
+      </div>
+
+      <!-- ロゴ変更 Before/After -->
+      <div class="border rounded-2xl p-4 space-y-4" style="border-color: oklch(0.88 0.008 150);">
+        <p class="text-xs font-mono uppercase tracking-wider" style="color: oklch(0.55 0.15 145);">
+          Header / ロゴ: テキスト → SVG ロゴ
+        </p>
+        <div class="grid grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">Before: テキスト "hiro.dev"</p>
+            <div class="rounded-xl p-4 flex items-center" style="background: oklch(0.96 0.006 120);">
+              <a
+                href="/"
+                class="font-mono text-lg font-semibold no-underline"
+                style="color: var(--color-primary);"
+              >
+                hiro.dev
+              </a>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">After: SVG ロゴ（currentColor = primary）</p>
+            <div class="rounded-xl p-4 flex items-center" style="background: oklch(0.96 0.006 120);">
+              <a href="/" class="no-underline" style="color: var(--color-primary);">
+                <LogoSvg height={21} />
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- サイズバリエーション -->
+        <div class="space-y-2">
+          <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">サイズバリエーション</p>
+          <div class="flex items-end gap-8 flex-wrap rounded-xl p-4" style="background: oklch(0.96 0.006 120);">
+            <div class="flex flex-col items-start gap-1">
+              <LogoSvg height={14} class="text-[var(--color-primary)]" />
+              <span class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">h=14</span>
+            </div>
+            <div class="flex flex-col items-start gap-1">
+              <LogoSvg height={21} class="text-[var(--color-primary)]" />
+              <span class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">h=21（デフォルト）</span>
+            </div>
+            <div class="flex flex-col items-start gap-1">
+              <LogoSvg height={28} class="text-[var(--color-primary)]" />
+              <span class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">h=28</span>
+            </div>
+            <div class="flex flex-col items-start gap-1">
+              <LogoSvg height={36} class="text-[var(--color-primary)]" />
+              <span class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">h=36</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 

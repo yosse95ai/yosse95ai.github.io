@@ -1,4 +1,6 @@
 ---
+import LogoSvg from '../atoms/LogoSvg.astro';
+
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/gallery', label: 'Gallery' },
@@ -17,10 +19,11 @@ const currentPath = Astro.url.pathname;
       <!-- ロゴ -->
       <a
         href="/"
-        class="font-mono text-lg font-semibold no-underline"
+        class="no-underline"
         style="color: var(--color-primary);"
+        aria-label="ホームへ戻る"
       >
-        hiroaki.dev
+        <LogoSvg height={21} />
       </a>
 
       <!-- ナビゲーション -->
