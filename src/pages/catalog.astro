@@ -4,7 +4,6 @@
  * 本番環境ではトップページへリダイレクト
  */
 import Badge from '../components/atoms/Badge.astro';
-import Tag from '../components/atoms/Tag.astro';
 import Icon from '../components/atoms/Icon.astro';
 import KiroIcon from '../components/atoms/KiroIcon.astro';
 import DifyIcon from '../components/atoms/DifyIcon.astro';
@@ -67,15 +66,6 @@ const skillsByCategory = Object.fromEntries(
         <Badge variant="ghost">ghost</Badge>
         <Badge variant="primary" size="md">primary md</Badge>
         <Badge variant="secondary" size="md">secondary md</Badge>
-      </div>
-    </section>
-
-    <!-- ===== Tag ===== -->
-    <section class="space-y-4">
-      <h2 class="text-xl font-semibold">Tag</h2>
-      <div class="flex flex-wrap gap-3 items-center">
-        <Tag type="aws" />
-        <Tag type="other" />
       </div>
     </section>
 
