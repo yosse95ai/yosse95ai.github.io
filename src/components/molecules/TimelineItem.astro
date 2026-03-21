@@ -5,10 +5,11 @@ export interface Props {
   startDate: string;   // "YYYY-MM"
   endDate: string | null;
   description?: string | null;
+  isFirst?: boolean;
   isLast?: boolean;
 }
 
-const { organization, role, startDate, endDate, description, isLast = false } = Astro.props;
+const { organization, role, startDate, endDate, description, isFirst = false, isLast = false } = Astro.props;
 
 function formatDate(ym: string): string {
   const [year, month] = ym.split('-');
@@ -22,29 +23,34 @@ const end = endDate ? formatDate(endDate) : '現在';
 <div class="relative flex gap-4">
   <!-- タイムラインライン -->
   <div class="relative flex flex-col items-center">
-    <div
-      class="w-3 h-3 rounded-full shrink-0 mt-1 z-10"
-      style="background: var(--color-primary);"
-    />
-    {!isLast && (
-      <div class="absolute top-4 bottom-0 w-px" style="background: var(--color-border);"></div>
+    {isFirst && !isLast && (
+      <div class="absolute left-[5px] top-4 bottom-0 w-px bg-primary"></div>
     )}
+    {!isFirst && !isLast && (
+      <div class="absolute left-[5px] top-0 bottom-0 w-px bg-primary"></div>
+    )}
+    {isLast && !isFirst && (
+      <div class="absolute left-[5px] top-0 bottom-[calc(100%-0.375rem)] w-px bg-primary"></div>
+    )}
+    <div
+      class="w-3 h-3 rounded-full shrink-0 mt-1 z-10 bg-primary"
+    />
   </div>
 
   <!-- コンテンツ -->
   <div class="pb-6 flex-1">
-    <p class="text-sm md:text-base font-mono mb-1" style="color: var(--color-primary);">
+    <p class="text-sm md:text-base font-mono mb-1 text-primary">
       {start} — {end}
     </p>
 
     <p class="font-semibold text-base md:text-lg leading-snug text-base-100">
       {organization}
     </p>
-    <p class="text-sm md:text-base mt-0.5" style="color: var(--color-text-muted);">
+    <p class="text-sm md:text-base mt-0.5 text-text-muted">
       {role}
     </p>
     {description && (
-      <p class="text-sm md:text-base mt-2 leading-relaxed" style="color: var(--color-text-body);">
+      <p class="text-sm md:text-base mt-2 leading-relaxed text-text-body">
         {description}
       </p>
     )}

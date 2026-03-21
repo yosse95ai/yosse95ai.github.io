@@ -15,11 +15,10 @@ const hostname = new URL(externalUrl).hostname.replace(/^www\./, '');
   href={externalUrl}
   target="_blank"
   rel="noopener noreferrer"
-  class="group flex flex-col rounded-2xl overflow-hidden border transition-shadow hover:shadow-lg no-underline"
-  style="background: var(--color-surface); border-color: var(--color-border); box-shadow: 0 1px 4px var(--color-shadow-sm);"
+  class="group flex flex-col rounded-2xl overflow-hidden border border-border bg-surface shadow-[0_1px_4px_var(--color-shadow-sm)] transition-shadow hover:shadow-lg no-underline"
 >
   <!-- OGP画像 -->
-  <div class="aspect-[1200/630] w-full overflow-hidden bg-[var(--color-surface-subtle)]">
+  <div class="aspect-[1200/630] w-full overflow-hidden bg-surface-subtle">
     {ogpImage ? (
       <img
         src={ogpImage}
@@ -29,7 +28,7 @@ const hostname = new URL(externalUrl).hostname.replace(/^www\./, '');
         decoding="async"
       />
     ) : (
-      <div class="w-full h-full flex items-center justify-center text-[var(--color-text-secondary)]">
+      <div class="w-full h-full flex items-center justify-center text-text-secondary">
         <span class="text-sm">No Image</span>
       </div>
     )}
@@ -37,12 +36,12 @@ const hostname = new URL(externalUrl).hostname.replace(/^www\./, '');
 
   <!-- テキスト -->
   <div class="flex flex-col gap-0.5 p-3 flex-1">
-    <span class="text-xs font-mono" style="color: var(--color-text-muted);">{hostname}</span>
+    <span class="text-xs font-mono text-text-muted">{hostname}</span>
     <p class="text-sm font-semibold leading-tight line-clamp-2 text-base-100">
       {title}
     </p>
     {description && (
-      <p class="text-xs leading-snug line-clamp-3 mt-0" style="color: var(--color-text-muted); margin-top: 2px;">
+      <p class="text-xs leading-snug line-clamp-3 mt-[2px] text-text-muted">
         {description}
       </p>
     )}

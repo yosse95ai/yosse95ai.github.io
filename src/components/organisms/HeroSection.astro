@@ -9,8 +9,7 @@ const current = allCareer.find(c => c.data.endDate === null);
 ---
 
 <section
-  class="rounded-3xl p-8 flex flex-col gap-6 w-full"
-  style="background: var(--color-surface); box-shadow: 0 1px 4px var(--color-shadow-sm);"
+  class="rounded-3xl p-8 flex flex-col gap-6 w-full bg-surface shadow-[0_1px_4px_var(--color-shadow-sm)]"
 >
   <!-- プロフィール写真 + 名前 -->
   <div class="flex items-center gap-4">
@@ -19,12 +18,11 @@ const current = allCareer.find(c => c.data.endDate === null);
       alt="プロフィール写真"
       width={144}
       height={144}
-      class="rounded-2xl object-cover shrink-0 w-[72px] h-[72px]"
-      style="box-shadow: 0 2px 8px var(--color-shadow-md);"
+      class="rounded-2xl object-cover shrink-0 w-[72px] h-[72px] shadow-[0_2px_8px_var(--color-shadow-md)]"
     />
     <div>
       {current && (
-        <p class="text-sm md:text-base font-mono mb-0.5" style="color: var(--color-primary);">
+        <p class="text-sm md:text-base font-mono mb-0.5 text-primary">
           {current.data.role}
         </p>
       )}
@@ -32,7 +30,7 @@ const current = allCareer.find(c => c.data.endDate === null);
         Hiroaki Yoshimura
       </h1>
       {current && (
-        <p class="text-sm md:text-base" style="color: var(--color-text-muted);">
+        <p class="text-sm md:text-base text-text-muted">
           {current.data.organization}
         </p>
       )}
@@ -41,7 +39,7 @@ const current = allCareer.find(c => c.data.endDate === null);
 
   <!-- 自己紹介 -->
   {current?.data.description && (
-    <p class="text-sm md:text-base leading-relaxed" style="color: var(--color-text-body);">
+    <p class="text-sm md:text-base leading-relaxed text-text-body">
       {current.data.description}
     </p>
   )}

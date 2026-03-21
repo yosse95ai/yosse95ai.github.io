@@ -49,7 +49,7 @@ const gradient = `linear-gradient(135deg, oklch(0.35 0.13 ${hue}) 0%, oklch(0.55
       'group flex flex-col rounded-2xl overflow-hidden border no-underline',
       url ? 'transition-shadow hover:shadow-lg cursor-pointer' : 'cursor-default',
     ]}
-    style="background: var(--color-surface); border-color: var(--color-border); box-shadow: 0 1px 4px var(--color-shadow-sm);"
+    class:list={['bg-surface border-border shadow-[0_1px_4px_var(--color-shadow-sm)]']}
   >
     <!-- グラデーションプレースホルダー -->
     <div
@@ -59,12 +59,12 @@ const gradient = `linear-gradient(135deg, oklch(0.35 0.13 ${hue}) 0%, oklch(0.55
 
     <!-- テキスト -->
     <div class="flex flex-col gap-1 p-3 flex-1">
-      <span class="text-sm font-mono" style="color: var(--color-text-muted);">{date} — {event}</span>
+      <span class="text-sm font-mono text-text-muted">{date} — {event}</span>
       <p class="text-base font-semibold leading-tight line-clamp-2 text-base-100">
         {title}
       </p>
       {description && (
-        <p class="text-sm leading-relaxed line-clamp-3 mt-1" style="color: var(--color-text-muted);">
+        <p class="text-sm leading-relaxed line-clamp-3 mt-1 text-text-muted">
           {description}
         </p>
       )}

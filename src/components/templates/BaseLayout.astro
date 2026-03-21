@@ -1,5 +1,6 @@
 ---
 import Header from '../organisms/Header.astro';
+import ParticlesFloating from '../atoms/ParticlesFloating.astro';
 import { ClientRouter } from 'astro:transitions';
 import '../../styles/global.css';
 
@@ -41,13 +42,13 @@ const ogImage = `${siteUrl}/images/icon.jpg`;
     <ClientRouter />
   </head>
   <body>
+    <ParticlesFloating count={80} />
     <Header />
     <main>
       <slot />
     </main>
     <footer
-      class="mt-16 border-t py-6 text-center text-xs"
-      style="border-color: var(--color-border); color: var(--color-text-secondary);"
+      class="mt-16 border-t border-border py-6 text-center text-xs text-secondary"
     >
       © {new Date().getFullYear()} Hiroaki Yoshimura
     </footer>

@@ -1,0 +1,89 @@
+---
+/**
+ * Floating Dots パーティクル
+ * 緑と白のドットがランダム風に浮遊するアニメーション
+ * HTML + CSS のみ、JS 不使用
+ */
+export interface Props {
+  /** パーティクル数（デフォルト: 30） */
+  count?: number;
+}
+
+const { count = 30 } = Astro.props;
+
+// シード付き擬似乱数（ビルド時に決定論的だがランダムに見える配置）
+function seededRandom(seed: number): () => number {
+  let s = seed;
+  return () => {
+    s = (s * 48271 + 12345) % 2147483647;
+    return (s - 1) / 2147483646;
+  };
+}
+const rand = seededRandom(7);
+
+// 緑 30%、白 70% の比率でパーティクルを生成
+const particles = Array.from({ length: count }, (_, i) => {
+  const isGreen = i < Math.round(count * 0.4);
+  return {
+    id: i,
+    isGreen,
+    left: `${(rand() * 98 + 1).toFixed(2)}%`,
+    top: `${(rand() * 98 + 1).toFixed(2)}%`,
+    delay: `${(rand() * 10).toFixed(2)}s`,
+    duration: `${(5 + rand() * 9).toFixed(2)}s`,
+    offsetX: `${(-40 + rand() * 80).toFixed(0)}px`,
+    offsetY: `${(-40 + rand() * 80).toFixed(0)}px`,
+    size: `${(3 + rand() * 3).toFixed(1)}px`,
+    opacity: (0.3 + rand() * 0.5).toFixed(2),
+  };
+});
+---
+
+<div class="particles-floating">
+  {particles.map((p) => (
+    <span
+      class:list={['particle', p.isGreen ? 'particle--green' : 'particle--white']}
+      style={`left:${p.left};top:${p.top};width:${p.size};height:${p.size};opacity:${p.opacity};--delay:${p.delay};--dur:${p.duration};--ox:${p.offsetX};--oy:${p.offsetY};`}
+    />
+  ))}
+</div>
+
+<style>
+  .particles-floating {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: float var(--dur, 8s) var(--delay, 0s) ease-in-out infinite alternate;
+  }
+
+  .particle--white {
+    background: oklch(0.95 0.005 150 / 0.7);
+    box-shadow: 0 0 6px 2px oklch(0.95 0.005 150 / 0.4);
+  }
+
+  .particle--green {
+    background: var(--color-primary);
+    box-shadow: 0 0 8px 3px oklch(0.55 0.15 145 / 0.5);
+  }
+
+  @keyframes float {
+    0% {
+      transform: translate(0, 0);
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate(var(--ox, 20px), var(--oy, 20px));
+      opacity: 0.4;
+    }
+  }
+</style>

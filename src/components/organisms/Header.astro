@@ -11,16 +11,14 @@ const currentPath = Astro.url.pathname;
 ---
 
 <header
-  class="sticky top-0 z-50 w-full border-b backdrop-blur-sm"
-  style="background: var(--color-header-bg); border-color: var(--color-border);"
+  class="sticky top-0 z-50 w-full border-b border-border bg-header-bg backdrop-blur-sm"
 >
   <div class="px-4 sm:px-6">
     <div class="flex h-14 items-center justify-between">
       <!-- ロゴ -->
       <a
         href="/"
-        class="no-underline"
-        style="color: var(--color-primary);"
+        class="no-underline text-primary"
         aria-label="ホームへ戻る"
       >
         <LogoSvg height={21} />
@@ -37,10 +35,12 @@ const currentPath = Astro.url.pathname;
               <li>
                 <a
                   href={href}
-                  class="rounded-lg px-3 py-1.5 text-sm md:text-base font-medium transition-colors no-underline"
-                  style={isActive
-                    ? 'background: var(--color-nav-active-bg); color: var(--color-nav-active-text);'
-                    : 'color: var(--color-text-muted);'}
+                  class:list={[
+                    'rounded-lg px-3 py-1.5 text-sm md:text-base font-medium transition-colors no-underline',
+                    isActive
+                      ? 'bg-nav-active-bg text-nav-active-text'
+                      : 'text-text-muted',
+                  ]}
                   aria-current={isActive ? 'page' : undefined}
                 >
                   {label}

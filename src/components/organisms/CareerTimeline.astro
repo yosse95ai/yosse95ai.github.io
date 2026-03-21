@@ -24,10 +24,9 @@ function formatDate(ym: string): string {
 ---
 
 <section
-  class="rounded-3xl p-6 flex flex-col gap-4 w-full"
-  style="background: var(--color-surface); box-shadow: 0 1px 4px var(--color-shadow-sm);"
+  class="rounded-3xl p-6 flex flex-col gap-4 w-full bg-surface shadow-[0_1px_4px_var(--color-shadow-sm)]"
 >
-  <h2 class="text-sm md:text-base font-semibold uppercase tracking-wider" style="color: var(--color-primary);">
+  <h2 class="text-sm md:text-base font-semibold uppercase tracking-wider text-primary">
     Career
   </h2>
 
@@ -45,31 +44,31 @@ function formatDate(ym: string): string {
               {/* 日付行（col-span-3） */}
               <div class="relative flex gap-4 col-span-3 pb-1">
                 {isFirst && !isLast && (
-                  <div class="absolute left-[5px] top-4 bottom-0 w-px" style="background: var(--color-border);"></div>
+                  <div class="absolute left-[5px] top-4 bottom-0 w-px bg-primary"></div>
                 )}
                 {!isFirst && !isLast && (
-                  <div class="absolute left-[5px] top-0 bottom-0 w-px" style="background: var(--color-border);"></div>
+                  <div class="absolute left-[5px] top-0 bottom-0 w-px bg-primary"></div>
                 )}
                 {isLast && !isFirst && (
-                  <div class="absolute left-[5px] top-0 bottom-[calc(100%-0.375rem)] w-px" style="background: var(--color-border);"></div>
+                  <div class="absolute left-[5px] top-0 bottom-[calc(100%-0.375rem)] w-px bg-primary"></div>
                 )}
-                <div class="w-3 h-3 rounded-full shrink-0 mt-1 z-10" style="background: var(--color-primary);"></div>
-                <p class="text-sm md:text-base font-mono" style="color: var(--color-primary);">{start} — {end}</p>
+                <div class="w-3 h-3 rounded-full shrink-0 mt-1 z-10 bg-primary"></div>
+                <p class="text-sm md:text-base font-mono text-primary">{start} — {end}</p>
               </div>
               {/* 左カラム: org + role */}
               <div class={`pl-7 pr-4 pb-6 ${!isLast ? 'relative' : ''}`}>
                 {!isLast && (
-                  <div class="absolute left-[5px] top-0 bottom-0 w-px" style="background: var(--color-border);"></div>
+                  <div class="absolute left-[5px] top-0 bottom-0 w-px bg-primary"></div>
                 )}
                 <p class="font-semibold text-base md:text-lg leading-snug text-base-100">{item.data.organization}</p>
-                <p class="text-sm md:text-base mt-0.5" style="color: var(--color-text-muted);">{item.data.role}</p>
+                <p class="text-sm md:text-base mt-0.5 text-text-muted">{item.data.role}</p>
               </div>
               {/* セパレーター */}
-              <div style="background: var(--color-border);"></div>
+              <div class="bg-border"></div>
               {/* 右カラム: description */}
               <div class="pl-4 pb-6 flex items-start">
                 {item.data.description && (
-                  <p class="text-sm md:text-base leading-relaxed" style="color: var(--color-text-body);">{item.data.description}</p>
+                  <p class="text-sm md:text-base leading-relaxed text-text-body">{item.data.description}</p>
                 )}
               </div>
             </>
@@ -86,6 +85,7 @@ function formatDate(ym: string): string {
             startDate={item.data.startDate}
             endDate={item.data.endDate ?? null}
             description={item.data.description}
+            isFirst={i === 0}
             isLast={i === items.length - 1}
           />
         ))}
@@ -99,6 +99,7 @@ function formatDate(ym: string): string {
           role={item.data.role}
           startDate={item.data.startDate}
           endDate={item.data.endDate ?? null}
+          isFirst={i === 0}
           isLast={i === items.length - 1}
         />
       ))}
@@ -108,8 +109,7 @@ function formatDate(ym: string): string {
   {hasMore && (
     <a
       href="/history"
-      class="inline-flex items-center gap-1 text-xs md:text-sm font-medium transition-all duration-200 hover:gap-2 no-underline self-start"
-      style="color: var(--color-primary);"
+      class="inline-flex items-center gap-1 text-xs md:text-sm font-medium transition-all duration-200 hover:gap-2 no-underline self-start text-primary"
     >
       全てを見る
       <span aria-hidden="true">→</span>
