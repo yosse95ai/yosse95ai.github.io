@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
+import iconSrc from '../../assets/icon.jpg';
 
 const allCareer = await getCollection('career');
 // endDate が null = 現職
@@ -12,12 +14,12 @@ const current = allCareer.find(c => c.data.endDate === null);
 >
   <!-- プロフィール写真 + 名前 -->
   <div class="flex items-center gap-4">
-    <img
-      src="/images/icon.jpg"
+    <Image
+      src={iconSrc}
       alt="プロフィール写真"
-      width="72"
-      height="72"
-      class="rounded-2xl object-cover shrink-0"
+      width={144}
+      height={144}
+      class="rounded-2xl object-cover shrink-0 w-[72px] h-[72px]"
       style="box-shadow: 0 2px 8px var(--color-shadow-md);"
     />
     <div>
