@@ -37,6 +37,30 @@ fileMatchPattern: ['**/*.astro', '**/*.css']
 | `--font-sans` | `Inter`, `Noto Sans JP`, system-ui | 本文・UI全般 |
 | `--font-mono` | `JetBrains Mono`, ui-monospace | コードブロック |
 
+### テキストサイズガイドライン（レスポンシブ）
+
+モバイルファーストで定義し、PC（`md:` 768px 以上）で1段階大きくする。
+
+| レベル | 役割 | モバイル | PC（`md:`） | 使用例 |
+|---|---|---|---|---|
+| **heading-page** | ページ見出し | `text-2xl` | `md:text-3xl` | history.astro h1, gallery.astro h1 |
+| **heading-hero** | Hero 名前 | `text-2xl` | `md:text-3xl` | HeroSection h1 |
+| **heading-section** | セクション見出し | `text-sm uppercase tracking-wider` | `md:text-base` | 各セクション h2 |
+| **title-card** | カード内タイトル | `text-base` | `md:text-lg` | TimelineItem org, OssItemSimple name |
+| **body** | 本文テキスト | `text-sm` | `md:text-base` | HeroSection description, TimelineItem role |
+| **body-small** | 補助テキスト | `text-xs` | `md:text-sm` | Tag label |
+| **label** | ラベル・カテゴリ名 | `text-sm` | `md:text-base` | BlogList カテゴリ, SkillsGrid カテゴリ |
+| **label-small** | 小ラベル | `text-xs` | `md:text-sm` | CareerTimeline「全てを見る」 |
+| **nav** | ナビゲーション | `text-sm` | `md:text-base` | Header ナビリンク |
+| **skill** | スキル名 | `text-sm` | `text-sm`（変更なし） | SkillItem name |
+| **social** | SNS ラベル | `text-sm` | `md:text-base` | SocialLink label |
+| **button** | ボタンテキスト | `text-sm` | `md:text-base` | SeeAllButton |
+| **footer** | フッター | `text-xs` | `text-xs`（変更なし） | BaseLayout footer |
+| **meta** | メタ情報（日付等） | `text-sm font-mono` | `md:text-base` | TimelineItem date, HeroSection role |
+| **meta-small** | 小メタ情報 | `text-xs font-mono` | `md:text-sm` | OgpCard hostname |
+
+**適用対象外（固定幅カード内）**: OgpCard / SpeakingCard / OssItemSimple のカード内テキストは、固定幅（`w-72`）での収まりを優先し、レスポンシブサイズ変更を適用しない。
+
 ## Tailwind CSS v4 規約
 
 - ユーティリティクラスを基本とする

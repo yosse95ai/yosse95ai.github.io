@@ -32,13 +32,13 @@ const end = endDate ? formatDate(endDate) : '現在';
 
   <!-- コンテンツ -->
   <div class="pb-6 flex-1">
-    <p class="text-sm font-mono mb-1" style="color: var(--color-primary);">
+    <p class="text-sm md:text-base font-mono mb-1" style="color: var(--color-primary);">
       {start} — {end}
     </p>
-    <p class="font-semibold text-base leading-snug text-base-100">
+    <p class="font-semibold text-base md:text-lg leading-snug text-base-100">
       {organization}
     </p>
-    <p class="text-sm mt-0.5" style="color: var(--color-text-muted);">
+    <p class="text-sm md:text-base mt-0.5" style="color: var(--color-text-muted);">
       {role}
     </p>
   </div>

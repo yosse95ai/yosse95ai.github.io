@@ -69,13 +69,13 @@ const displayedOtherCards = limit !== undefined ? sortedOtherCards.slice(0, limi
   class="rounded-3xl p-6 flex flex-col gap-6"
   style="background: var(--color-surface); box-shadow: 0 1px 4px var(--color-shadow-sm);"
 >
-  <h2 class="text-sm font-semibold uppercase tracking-wider" style="color: var(--color-primary);">
+  <h2 class="text-sm md:text-base font-semibold uppercase tracking-wider" style="color: var(--color-primary);">
     Blog
   </h2>
 
   <!-- AWS Blog -->
   <div class="flex flex-col gap-3">
-    <p class="text-sm font-mono" style="color: var(--color-text-muted);">AWS Blog</p>
+    <p class="text-sm md:text-base font-mono" style="color: var(--color-text-muted);">AWS Blog</p>
     <div
       class={layout === 'grid'
         ? 'flex gap-4 overflow-x-auto pb-2 -mx-2 px-2 md:!grid md:overflow-x-visible md:pb-0 md:mx-0 md:px-0 md:grid-cols-4'
@@ -101,7 +101,7 @@ const displayedOtherCards = limit !== undefined ? sortedOtherCards.slice(0, limi
 
   <!-- Other Blog -->
   <div class="flex flex-col gap-3">
-    <p class="text-sm font-mono" style="color: var(--color-text-muted);">Other</p>
+    <p class="text-sm md:text-base font-mono" style="color: var(--color-text-muted);">Other</p>
     <div
       class={layout === 'grid'
         ? 'flex gap-4 overflow-x-auto pb-2 -mx-2 px-2 md:!grid md:overflow-x-visible md:pb-0 md:mx-0 md:px-0 md:grid-cols-4'

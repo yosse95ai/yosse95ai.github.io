@@ -22,15 +22,15 @@ const current = allCareer.find(c => c.data.endDate === null);
     />
     <div>
       {current && (
-        <p class="text-sm font-mono mb-0.5" style="color: var(--color-primary);">
+        <p class="text-sm md:text-base font-mono mb-0.5" style="color: var(--color-primary);">
           {current.data.role}
         </p>
       )}
-      <h1 class="text-2xl font-bold leading-tight text-base-100">
+      <h1 class="text-2xl md:text-3xl font-bold leading-tight text-base-100">
         Hiroaki Yoshimura
       </h1>
       {current && (
-        <p class="text-sm" style="color: var(--color-text-muted);">
+        <p class="text-sm md:text-base" style="color: var(--color-text-muted);">
           {current.data.organization}
         </p>
       )}
@@ -39,7 +39,7 @@ const current = allCareer.find(c => c.data.endDate === null);
 
   <!-- 自己紹介 -->
   {current?.data.description && (
-    <p class="text-sm leading-relaxed" style="color: var(--color-text-body);">
+    <p class="text-sm md:text-base leading-relaxed" style="color: var(--color-text-body);">
       {current.data.description}
     </p>
   )}

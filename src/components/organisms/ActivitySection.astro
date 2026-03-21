@@ -14,13 +14,13 @@ const sortedSpeaking = allSpeaking.sort((a, b) => b.data.date.localeCompare(a.da
   class="rounded-3xl p-6 flex flex-col gap-6 w-full"
   style="background: var(--color-surface); box-shadow: 0 1px 4px var(--color-shadow-sm);"
 >
-  <h2 class="text-sm font-semibold uppercase tracking-wider" style="color: var(--color-primary);">
+  <h2 class="text-sm md:text-base font-semibold uppercase tracking-wider" style="color: var(--color-primary);">
     Activity
   </h2>
 
   <!-- OSS Contributions -->
   <div class="flex flex-col gap-3">
-    <h3 class="text-sm font-mono" style="color: var(--color-text-muted);">OSS Contributions</h3>
+    <h3 class="text-sm md:text-base font-mono" style="color: var(--color-text-muted);">OSS Contributions</h3>
     <div class="flex flex-col gap-3">
       {allOss.map((item) => (
         <OssItemSimple repo={item.data.repo} url={item.data.url} description={item.data.description} />
@@ -30,7 +30,7 @@ const sortedSpeaking = allSpeaking.sort((a, b) => b.data.date.localeCompare(a.da
 
   <!-- Speaking -->
   <div class="flex flex-col gap-3">
-    <h3 class="text-sm font-mono" style="color: var(--color-text-muted);">Speaking</h3>
+    <h3 class="text-sm md:text-base font-mono" style="color: var(--color-text-muted);">Speaking</h3>
     <div class="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2" style="scrollbar-width: thin; scrollbar-color: var(--color-border) transparent;">
       {sortedSpeaking.map((item) => (
         <div class="shrink-0 w-72">
