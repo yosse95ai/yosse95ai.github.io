@@ -52,7 +52,7 @@ const skillsByCategory = Object.fromEntries(
     <meta name="viewport" content="width=device-width" />
     <title>コンポーネントカタログ</title>
   </head>
-  <body class="p-8 space-y-12" style="background: oklch(0.98 0.005 120); color: oklch(0.20 0.010 250);">
+  <body class="p-8 space-y-12" data-theme="night">
 
     <h1 class="text-3xl font-bold border-b pb-4" style="border-color: oklch(0.88 0.008 150);">
       🧩 コンポーネントカタログ
@@ -61,7 +61,7 @@ const skillsByCategory = Object.fromEntries(
     <!-- ===== Badge ===== -->
     <section class="space-y-4">
       <h2 class="text-xl font-semibold">Badge</h2>
-      <div class="flex flex-wrap gap-3 items-center">
+      <div class="flex flex-wrap gap-3 items-center rounded-xl p-4 bg-base-content">
         <Badge variant="primary">primary</Badge>
         <Badge variant="secondary">secondary</Badge>
         <Badge variant="ghost">ghost</Badge>
@@ -176,7 +176,7 @@ const skillsByCategory = Object.fromEntries(
     <!-- ===== Molecules: SkillItem ===== -->
     <section class="space-y-4">
       <h2 class="text-xl font-semibold">SkillItem</h2>
-      <div class="flex flex-wrap gap-1 max-w-2xl">
+      <div class="flex flex-wrap gap-1 max-w-2xl rounded-xl p-4 bg-base-content">
         {allSkills.map(skill => (
           <SkillItem
             name={skill.data.name}

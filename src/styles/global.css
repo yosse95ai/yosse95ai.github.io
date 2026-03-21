@@ -3,6 +3,13 @@
 
 @import "tailwindcss";
 @plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "night";
+  default: true;
+  --color-primary: oklch(0.55 0.15 145);
+  --color-primary-content: oklch(0.98 0.005 145);
+  --color-secondary: oklch(0.60 0.08 150);
+}
 @source "../**/*.{astro,ts,tsx}";
 
 @theme {
@@ -11,12 +18,9 @@
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
   /* OKLCHカラーパレット（プロジェクト固有トークン） */
-  --color-primary:         oklch(0.55 0.15 145);
-  --color-primary-content: oklch(0.98 0.005 145);
-  --color-bg:        oklch(0.10 0.04 195);
-  --color-text:      oklch(0.20 0.010 250);
+  /* NOTE: --color-primary, --color-primary-content, --color-secondary は
+     @plugin "daisyui/theme" で管理するためここには定義しない */
   --color-text-muted: oklch(0.45 0.010 250);
-  --color-secondary: oklch(0.60 0.08 150);
   --color-border:    oklch(0.88 0.008 150);
   --color-shadow:    oklch(0.70 0.010 150 / 0.15);
 
@@ -34,24 +38,14 @@
   --color-shadow-md:        oklch(0.70 0.010 150 / 0.20);
 }
 
-/* @layer 外に書くことで DaisyUI の @layer base より常に勝つ */
-:root, [data-theme=light] {
-  --color-primary: oklch(0.55 0.15 145);
-  --color-primary-content: oklch(0.98 0.005 145);
-}
-
 @layer base {
   html {
     font-family: var(--font-sans);
-    background-color: var(--color-bg);
-    color: var(--color-text);
     scroll-behavior: smooth;
   }
 
   body {
     min-height: 100dvh;
-    background-color: var(--color-bg);
-    color: var(--color-text);
   }
 
   p {
