@@ -18,8 +18,6 @@
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
   /* OKLCHカラーパレット（プロジェクト固有トークン） */
-  /* NOTE: --color-primary, --color-primary-content, --color-secondary は
-     @plugin "daisyui/theme" で管理するためここには定義しない */
   --color-text-muted: oklch(0.45 0.010 250);
   --color-border:    oklch(0.88 0.008 150);
   --color-shadow:    oklch(0.70 0.010 150 / 0.15);
