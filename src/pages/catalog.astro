@@ -215,6 +215,23 @@ const skillsByCategory = Object.fromEntries(
       </div>
     </section>
 
+    <!-- ===== CareerTimeline: showAll 比較（#27） ===== -->
+    <div class="border rounded-2xl p-4 space-y-4" style="border-color: oklch(0.88 0.008 150);">
+      <p class="text-xs font-mono uppercase tracking-wider" style="color: oklch(0.55 0.15 145);">
+        CareerTimeline: showAll=false（Home）vs showAll=true（History）
+      </p>
+      <div class="flex flex-col gap-6">
+        <div class="space-y-2">
+          <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">showAll=false（Home ページ相当）</p>
+          <CareerTimeline />
+        </div>
+        <div class="space-y-2">
+          <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">showAll=true（History ページ相当 — CSS Grid + description）</p>
+          <CareerTimeline showAll={true} />
+        </div>
+      </div>
+    </div>
+
     <!-- ===== タイポグラフィ ===== -->
     <section class="space-y-4">
       <h2 class="text-xl font-semibold">タイポグラフィ</h2>
