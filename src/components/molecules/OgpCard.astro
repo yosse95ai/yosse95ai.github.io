@@ -18,8 +18,8 @@ const hostname = new URL(externalUrl).hostname.replace(/^www\./, '');
   class="group flex flex-col rounded-2xl overflow-hidden border border-border bg-surface shadow-[0_1px_4px_var(--color-shadow-sm)] transition-shadow hover:shadow-lg no-underline"
 >
   <!-- OGP画像 -->
-  <div class="aspect-[1200/630] w-full overflow-hidden bg-surface-subtle">
-    {ogpImage ? (
+  {ogpImage ? (
+    <div class="aspect-[1200/630] w-full overflow-hidden skeleton skeleton-img">
       <img
         src={ogpImage}
         alt={title}
@@ -27,12 +27,14 @@ const hostname = new URL(externalUrl).hostname.replace(/^www\./, '');
         loading="lazy"
         decoding="async"
       />
-    ) : (
+    </div>
+  ) : (
+    <div class="aspect-[1200/630] w-full overflow-hidden bg-surface-subtle">
       <div class="w-full h-full flex items-center justify-center text-text-secondary">
         <span class="text-sm">No Image</span>
       </div>
-    )}
-  </div>
+    </div>
+  )}
 
   <!-- テキスト -->
   <div class="flex flex-col gap-0.5 p-3 flex-1">

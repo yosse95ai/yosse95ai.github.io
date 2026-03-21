@@ -13,13 +13,15 @@ const current = allCareer.find(c => c.data.endDate === null);
 >
   <!-- プロフィール写真 + 名前 -->
   <div class="flex items-center gap-4">
-    <Image
-      src={iconSrc}
-      alt="プロフィール写真"
-      width={144}
-      height={144}
-      class="rounded-2xl object-cover shrink-0 w-[72px] h-[72px] shadow-[0_2px_8px_var(--color-shadow-md)]"
-    />
+    <div class="skeleton skeleton-img rounded-2xl shrink-0 w-[72px] h-[72px] shadow-[0_2px_8px_var(--color-shadow-md)]">
+      <Image
+        src={iconSrc}
+        alt="プロフィール写真"
+        width={144}
+        height={144}
+        class="rounded-2xl object-cover w-full h-full"
+      />
+    </div>
     <div>
       {current && (
         <p class="text-sm md:text-base font-mono mb-0.5 text-primary">

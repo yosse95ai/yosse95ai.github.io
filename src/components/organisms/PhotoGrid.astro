@@ -26,7 +26,7 @@ function resolveImage(src: string): ImageMetadata | undefined {
       const imageSrc = resolveImage(img.data.src);
       return imageSrc && (
         <div
-          class="break-inside-avoid overflow-hidden rounded-2xl photo-item"
+          class="break-inside-avoid overflow-hidden rounded-2xl photo-item skeleton skeleton-img"
           style={`box-shadow: 0 1px 4px var(--color-shadow-sm); animation-delay: ${i * 60}ms;`}
         >
           <Image
@@ -49,6 +49,11 @@ function resolveImage(src: string): ImageMetadata | undefined {
     opacity: 0;
     transform: translateY(16px);
     animation: photo-fadein 0.45s ease forwards;
+  }
+
+  .photo-item.skeleton-img > img {
+    /* スケルトン中も高さを確保 */
+    min-height: 120px;
   }
 
   @keyframes photo-fadein {

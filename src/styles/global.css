@@ -50,3 +50,80 @@
     margin: 0;
   }
 }
+
+/* スケルトンローディング（DaisyUI skeleton ベース + シマー + ボーダービーム） */
+.skeleton-img {
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton.skeleton-img {
+  background: var(--color-bg);
+}
+
+/* シマー */
+.skeleton-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 25%,
+    oklch(0.98 0.002 150 / 0.5) 50%,
+    transparent 75%
+  );
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+}
+
+/* ボーダービーム */
+.skeleton-img::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--skeleton-angle, 0deg),
+    transparent 0%,
+    transparent 70%,
+    oklch(0.98 0.005 150 / 0.9) 85%,
+    oklch(1 0 0 / 1) 90%,
+    oklch(0.98 0.005 150 / 0.9) 95%,
+    transparent 100%
+  );
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: skeleton-border-spin 2s linear infinite;
+}
+
+.skeleton-img[data-loaded]::before,
+.skeleton-img[data-loaded]::after {
+  display: none;
+}
+
+.skeleton-img > img {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.skeleton-img[data-loaded] > img {
+  opacity: 1;
+}
+
+@property --skeleton-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes skeleton-border-spin {
+  to { --skeleton-angle: 360deg; }
+}
+
+@keyframes skeleton-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}

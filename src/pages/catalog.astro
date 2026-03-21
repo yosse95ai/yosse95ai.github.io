@@ -345,5 +345,30 @@ const skillsByCategory = Object.fromEntries(
       <ActivitySection />
     </section>
 
+    <script>
+      function initSkeletons() {
+        document.querySelectorAll('.skeleton-img').forEach((wrapper) => {
+          const img = wrapper.querySelector('img');
+          if (!img) return;
+
+          if (img.complete && img.naturalWidth > 0) {
+            wrapper.setAttribute('data-loaded', '');
+            return;
+          }
+
+          img.addEventListener('load', () => {
+            wrapper.setAttribute('data-loaded', '');
+          }, { once: true });
+
+          img.addEventListener('error', () => {
+            wrapper.setAttribute('data-loaded', '');
+          }, { once: true });
+        });
+      }
+
+      initSkeletons();
+      document.addEventListener('astro:page-load', initSkeletons);
+    </script>
+
   </body>
 </html>
