@@ -1,26 +1,46 @@
 ---
+import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 
 const images = await getCollection('gallery');
+
+// src/assets/gallery/ の画像を一括読み込み
+const galleryImages = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/gallery/*.{jpg,JPG,jpeg,png}',
+  { eager: true },
+);
+
+// img.json の src（例: "/images/gallery/naru1.jpg"）からファイル名を抽出してマッチング
+function resolveImage(src: string): ImageMetadata | undefined {
+  const filename = src.split('/').pop()!;
+  const entry = Object.entries(galleryImages).find(([path]) =>
+    path.endsWith(`/${filename}`),
+  );
+  return entry?.[1].default;
+}
 ---
 
 <section class="p-4 sm:p-6">
   <div class="columns-2 sm:columns-3 lg:columns-4 gap-3 space-y-3">
-    {images.map((img, i) => (
-      <div
-        class="break-inside-avoid overflow-hidden rounded-2xl photo-item"
-        style={`box-shadow: 0 1px 4px var(--color-shadow-sm); animation-delay: ${i * 60}ms;`}
-      >
-        <img
-          src={img.data.src}
-          alt={img.data.alt}
-          class="w-full h-auto block select-none pointer-events-none"
-          loading="lazy"
-          decoding="async"
-          draggable="false"
-        />
-      </div>
-    ))}
+    {images.map((img, i) => {
+      const imageSrc = resolveImage(img.data.src);
+      return imageSrc && (
+        <div
+          class="break-inside-avoid overflow-hidden rounded-2xl photo-item"
+          style={`box-shadow: 0 1px 4px var(--color-shadow-sm); animation-delay: ${i * 60}ms;`}
+        >
+          <Image
+            src={imageSrc}
+            alt={img.data.alt}
+            width={600}
+            class="w-full h-auto block select-none pointer-events-none"
+            loading="lazy"
+            decoding="async"
+            draggable="false"
+          />
+        </div>
+      );
+    })}
   </div>
 </section>
 
