@@ -19,7 +19,7 @@ const hostname = new URL(externalUrl).hostname.replace(/^www\./, '');
 >
   <!-- OGP画像 -->
   {ogpImage ? (
-    <div class="aspect-[1200/630] w-full overflow-hidden skeleton skeleton-img">
+    <div class="aspect-[1200/630] w-full overflow-hidden rounded-b-none skeleton skeleton-img">
       <img
         src={ogpImage}
         alt={title}
