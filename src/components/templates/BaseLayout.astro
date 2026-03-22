@@ -78,5 +78,14 @@ const ogImage = `${siteUrl}/images/icon.jpg`;
       initSkeletons();
       document.addEventListener('astro:page-load', initSkeletons);
     </script>
+
+    {/* Cloudflare Web Analytics — 本番のみ */}
+    {import.meta.env.PROD && (
+      <script
+        defer
+        src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon='{"token": "16015c0c8c9c476f8a7680967d572bd5"}'
+      />
+    )}
   </body>
 </html>
