@@ -7,6 +7,5 @@ dist/
 node_modules/
 
 # EC2 remote push
-scripts/ec2-sync
-scripts/ec2-push
+.kiro/skills/git-remote/
 .ec2-remote
