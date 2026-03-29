@@ -8,6 +8,7 @@ function extractLinks(xml: string): Set<string> {
   const parser = new XMLParser({
     ignoreAttributes: false,
     cdataPropName: '__cdata',
+    processEntities: false,
   });
 
   const parsed = parser.parse(xml) as Record<string, unknown>;

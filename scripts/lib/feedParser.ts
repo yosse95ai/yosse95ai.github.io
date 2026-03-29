@@ -87,6 +87,7 @@ export async function parseFeed(feedUrl: string): Promise<FeedArticle[]> {
     const parser = new XMLParser({
       ignoreAttributes: false,
       cdataPropName: '__cdata',
+      processEntities: false,
     });
     parsed = parser.parse(xmlText);
   } catch (err) {
