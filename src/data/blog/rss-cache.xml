@@ -5,7 +5,7 @@
 	<atom:link href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/" rel="self" type="application/rss+xml"/>
 	<link>https://aws.amazon.com/jp/blogs/news/</link>
 	<description/>
-	<lastBuildDate>Fri, 03 Apr 2026 09:26:54 +0000</lastBuildDate>
+	<lastBuildDate>Mon, 06 Apr 2026 08:58:22 +0000</lastBuildDate>
 	<language>ja</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -13,6 +13,34 @@
 	1	</sy:updateFrequency>
 	
 	<item>
+		<title>Kiro に MiniMax M2.5 と GLM-5 が追加されました</title>
+		<link>https://aws.amazon.com/jp/blogs/news/minimax-m25-and-glm-5/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Mon, 06 Apr 2026 08:58:22 +0000</pubDate>
+				<category><![CDATA[Artificial Intelligence]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">269d02c683e3e8c937789a4980094a45ec336ec8</guid>
+
+					<description>Kiro に新たに MiniMax M2.5 と GLM-5 の 2 つのオープンウェイトモデルが追加されました。MiniMax M2.5 はクレジット乗数 0.25x の低コストモデルで、SWE-Bench Verified 80.2% を達成し、マルチステップ実装や長時間エージェントセッションに最適です。GLM-5 は 200K コンテキストウィンドウを持つ大規模 MoE モデルで、リポジトリ規模の複雑なアーキテクチャ変更や長期エージェントワークフローに強みを発揮します。両モデルは IDE と CLI から即座に利用可能です。</description>
+										<content:encoded>&lt;p&gt;本記事は 2026 年 4 月 2 日に公開された Nima Kaviani による “&lt;a href="https://kiro.dev/blog/minimax-m25-and-glm-5/" target="_blank" rel="noopener"&gt;MiniMax M2.5 and GLM-5 are now in Kiro&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;Kiro のオープンウェイトモデルへのネイティブサポートを拡充してきました。最近では MiniMax M2.5 に続き、GLM-5 も Kiro IDE および CLI から直接利用できるようになりました。Kiro はすでにコスト・コンテキスト長・速度のバランスが異なる多様なモデルをサポートしています。今回の 2 つの追加により、その幅がさらに広がり、開発者やチームが目の前の作業に応じてモデルを選択できる余地が増えました。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-182440"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2 id="the-models"&gt;モデルの詳細&lt;/h2&gt; 
+&lt;p&gt;&lt;a href="https://kiro.dev/docs/models/" target="_blank" rel="noopener"&gt;各モデル&lt;/a&gt;が持つ特徴と、得意とする用途について詳しく見ていきましょう。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;MiniMax M2.5&lt;/strong&gt;（クレジット乗数 0.25x）— クエリごとに 100 億パラメーターを活性化するスパース MoE (Mixture of Experts) モデルです。わずか 4 分の 1 のクレジットコストで、SWE-Bench Verified において 80.2% のスコアを記録しており、Claude Sonnet を超えた初のオープンウェイトモデルとして、Claude Opus 4.6（80.8%）に次ぐ位置につけています。Kiro の中でも最もコスト効率の高いモデルの一つです。MiniMax M2.1 と比較して複雑なエージェントタスクを 37% 高速に完了します。コードを書く前に機能を分解して構造をマッピングするため、マルチステップの実装作業や長時間のエージェントセッションに優れています。また、10 以上の言語（Go、C、C++、TypeScript、Rust、Kotlin、Python、Java、JavaScript など）にわたる強力な多言語サポートを提供し、Web、Android、iOS、Windows にまたがるフルスタックプロジェクトにも対応しています。継続的なコーディングセッションや反復的な実装作業に対して、高速かつコスト効率の高いモデルをお求めであれば、MiniMax M2.5 は有力な選択肢です。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;GLM-5&lt;/strong&gt;（クレジット乗数 0.5x）— 200K コンテキストウィンドウを備えた大規模 MoE モデルです。GLM-5 は長期的なエージェントワークフローに最適化されています。リポジトリ規模のコンテキストを処理し、大規模なコードベースにわたるマルチステップのツール使用において一貫性を維持することに優れています。クロスファイルのマイグレーション、フルスタックの機能開発、あるいはモデルが全体像を把握する必要があるレガシーリファクタリングなどのユースケースが該当します。深いコンテキストが求められる複雑なアーキテクチャ変更に取り組んでいる場合は、GLM-5 を試してみる価値があります。&lt;/p&gt; 
+&lt;h2 id="try-them-out-in-the-ide-and-cli"&gt;IDE と CLI で試してみましょう&lt;/h2&gt; 
+&lt;p&gt;これらのモデルは現在、&lt;a href="https://kiro.dev/docs/models/#how-to-switch-models" target="_blank" rel="noopener"&gt;IDE のモデルセレクター&lt;/a&gt;および &lt;a href="https://kiro.dev/docs/cli/models/#how-to-switch-models" target="_blank" rel="noopener"&gt;Kiro CLI&lt;/a&gt; から実験的サポートとして利用できます。MiniMax M2.5 は AWS US-East-1（バージニア北部）および AWS EU-Central-1（フランクフルト）リージョンで利用可能です。GLM-5 の推論は AWS US-East-1（バージニア北部）リージョンで実行されます。&lt;/p&gt; 
+&lt;p&gt;また、Kiro にすでに搭載されているオープンウェイトモデルへのアクセスも拡大しました。MiniMax M2.1、Qwen3 Coder Next、Deepseek V3.2 は、IAM Identity Center（IdC）経由で認証しているユーザーを含む全ユーザーが利用できるようになりました。推論をワークロードに近づけるため、MiniMax M2.1 と Qwen3 Coder Next は AWS US-East-1（バージニア北部）に加えて AWS EU-Central-1（フランクフルト）リージョンでも利用可能です。&lt;/p&gt; 
+&lt;p&gt;設定不要、ルーティング不要、追加セットアップ不要でモデルを選んですぐに作業を始められます。モデルを切り替えたり、特定のプロジェクトタイプにデフォルトを設定したり、Auto に任せたりと、ワークフローに合わせてご利用ください。エンタープライズチームの場合、管理者は &lt;a href="https://aws.amazon.com/jp/blogs/news/enterprise-governance-mcp-and-models/" target="_blank" rel="noopener"&gt;モデルガバナンス&lt;/a&gt;を使用して、利用可能なモデルをコンプライアンスおよびデータレジデンシーの要件に合わせることができます。いつものように、ぜひ試してみて、&lt;a target="_blank" rel="noopener noreferrer" href="https://discord.gg/kirodotdev"&gt;使い心地をお聞かせください&lt;/a&gt;。どのモデルが好評で、どのような課題が残っているかを注視しています。次にサポートしてほしいモデルがあれば、&lt;a target="_blank" rel="noopener noreferrer" href="https://github.com/kirodotdev/Kiro/issues/new?template=feature_request.yml"&gt;ぜひご要望をお寄せください&lt;/a&gt;。&lt;/p&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村 が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
 		<title>Kiro のエンタープライズガバナンス: MCP サーバーとモデルを管理する</title>
 		<link>https://aws.amazon.com/jp/blogs/news/enterprise-governance-mcp-and-models/</link>
 		
@@ -882,227 +910,6 @@ Add a hook to `.kiro/hooks/review-advisors.kiro.hook`
   &lt;p&gt;&lt;/p&gt;
  &lt;/div&gt; 
 &lt;/footer&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>エージェントステアリングと MCP を使って Kiro に新しいスキルを教える方法</title>
-		<link>https://aws.amazon.com/jp/blogs/news/teaching-kiro-new-tricks-with-agent-steering-and-mcp/</link>
-		
-		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
-		<pubDate>Thu, 30 Oct 2025 08:01:32 +0000</pubDate>
-				<category><![CDATA[Amazon Q]]></category>
-		<category><![CDATA[Amazon Q Developer]]></category>
-		<category><![CDATA[Developer Tools]]></category>
-		<category><![CDATA[General]]></category>
-		<category><![CDATA[Kiro]]></category>
-		<guid isPermaLink="false">0002d8c0411931dbb5dffb8c1530a4a6d32bd346</guid>
-
-					<description>この記事では、AI エージェントおよび開発環境である Kiro に、MathJSON というライブラリを理解させる方法を探ります。</description>
-										<content:encoded>&lt;p&gt;本記事は 2025 年 10 月 23 日に公開された Brian Beach による &lt;a href="https://kiro.dev/blog/teaching-kiro-new-tricks-with-agent-steering-and-mcp/" rel="noopener" target="_blank"&gt;“Teaching Kiro new tricks with agent steering and MCP”&lt;/a&gt; を翻訳したものです。&lt;/p&gt; 
-&lt;h2&gt;はじめに&lt;/h2&gt; 
-&lt;p&gt;過去 3 年間、私は数百の顧客がソフトウェア開発に AI ツールを採用するのを支援してきました。これらの顧客の多くは、独自のライブラリ、ツール、さらにはドメイン固有言語（DSL）を開発しています。ワークフロー自動化言語、設定構文、ルールエンジンなど、これらのカスタマイズはビジネス運営の基盤となっています。しかし、AI コーディングアシスタントにこれらの独自ライブラリを理解させ、連携させたい場合はどうすればよいでしょうか？&lt;/p&gt; 
-&lt;p&gt;この記事では、AI エージェントおよび開発環境である &lt;a href="https://kiro.dev/"&gt;Kiro&lt;/a&gt; に、MathJSON というライブラリを理解させる方法を探ります。MathJSON はこのデモンストレーションのために作成された架空のライブラリですが、企業が日常的に使用するワークフロー言語、設定システム、専門的な表記法の代理として機能します。この記事全体を通して、&lt;a href="https://kiro.dev/docs/steering/"&gt;ステアリング&lt;/a&gt;と &lt;a href="https://kiro.dev/docs/mcp/"&gt;Model Context Protocol（MCP）&lt;/a&gt;について説明し、これらを組み合わせて Kiro に新しいスキルを教える方法を紹介します。&lt;/p&gt; 
-&lt;p&gt;&lt;span id="more-168126"&gt;&lt;/span&gt;&lt;/p&gt; 
-&lt;h2&gt;MathJSON との出会い&lt;/h2&gt; 
-&lt;p&gt;この記事では、MathJSON を使用します。これは、適切な数学用語を使用する JSON ベースの数式表現言語です。MathJSON はこの記事のために作成されたものであり、実際のアプリケーションでの使用は推奨しないことに注意してください。以下が興味深い点です。&lt;/p&gt; 
-&lt;h3&gt;主な特徴&lt;/h3&gt; 
-&lt;ul&gt; 
- &lt;li&gt;構造化された数式表現のための &lt;strong&gt;JSON ベースの構文&lt;/strong&gt;&lt;/li&gt; 
- &lt;li&gt;&lt;strong&gt;適切な数学用語&lt;/strong&gt; (加数、被減数、被乗数など)&lt;/li&gt; 
- &lt;li&gt;複雑な計算のための&lt;strong&gt;ネストされた式&lt;/strong&gt;&lt;/li&gt; 
- &lt;li&gt;&lt;strong&gt;豊富な関数ライブラリ&lt;/strong&gt; (三角関数、対数、定数)&lt;/li&gt; 
- &lt;li&gt;&lt;strong&gt;ファイル拡張子&lt;/strong&gt;: &lt;code&gt;.math&lt;/code&gt;&lt;/li&gt; 
-&lt;/ul&gt; 
-&lt;h3&gt;式の例&lt;/h3&gt; 
-&lt;pre&gt;&lt;code class="lang-json"&gt;{
-  "multiplication": {
-    "multiplicand": {"pi": {}},
-    "multiplier": {
-      "pow": {
-        "base": {"variable": "env:RADIUS"},
-        "exponent": 2
-      }
-    }
-  }
-}&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;この例は、環境変数として渡された半径に対する円の面積を計算します。&lt;code&gt;pi * radius^2&lt;/code&gt;&lt;/p&gt; 
-&lt;h2&gt;ステアリングファイルで Kiro をガイドする&lt;/h2&gt; 
-&lt;p&gt;ステアリングは、マークダウンファイルを通じてプロジェクトに関する永続的な知識を Kiro に提供します。これらのファイルは &lt;code&gt;.kiro/steering/&lt;/code&gt; に保存され、ワークスペース内のすべてのインタラクションにコンテキストと指示を提供します。ステアリングファイルには、コーディング標準、プロジェクト構造などが含まれます。&lt;/p&gt; 
-&lt;p&gt;最初に思いつくのは、MathJSON のドキュメントをステアリングフォルダに追加することかもしれません。私はまさにそれを行い、&lt;code&gt;function_reference.md&lt;/code&gt; ファイルをステアリングフォルダに追加しました。これは良いスタートですが、いくつかの問題があります。第一に、ドキュメントは人間向けに書かれています。その結果、冗長で繰り返しが多くなります。第二に、Kiro が従うべき具体的なベストプラクティスが欠けています。第三に、プロジェクトフォルダにコピーされたドキュメントは必然的に古くなります。これらの問題とその対処方法を見ていきましょう。&lt;/p&gt; 
-&lt;h2&gt;ステアリングファイルの洗練&lt;/h2&gt; 
-&lt;p&gt;克服したい最初の問題は、ドキュメントの冗長性です。&lt;em&gt;当然ながら、適切なドキュメントが存在することを前提としています。もしない場合は、Kiro が生成を手伝ってくれます。&lt;/em&gt;人間向けに作成されたドキュメントは、ステアリングファイルに含めるには冗長すぎることがよくあります。MathJSON はこの記事のために作成したシンプルなプロジェクトですが、それでも 6 つのマークダウンファイルにわたって 3500 行以上のドキュメントがあります。これは、Kiro とのすべての会話に追加するには情報が多すぎます。&lt;/p&gt; 
-&lt;p&gt;幸いなことに、Kiro はステアリングファイルを洗練してくれます。Kiro でステアリングファイルを開き、&lt;strong&gt;Refine&lt;/strong&gt; ボタンを選択するだけです。Kiro はファイルを読み取り、最適化してくれます。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/10/29/1-3.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/10/29/1-3.png" alt="" width="1140" height="550" class="alignnone size-full wp-image-168141"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;Kiro が行った変更の 1 つを見てみましょう。元のドキュメントでは、加算は次のように説明されています。&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="lang-md"&gt;## 算術演算
-
-### 加算
-適切な数学用語を使用して2つの数値の加算を実行します。
-
-**構文:**
-```json
-{
-  "addition": {
-    "addend1": ,
-    "addend2": 
-  }
-}
-```
-
-**パラメータ:**
-- `addend1` (number|expression): 加算する最初の数値
-- `addend2` (number|expression): 加算する2番目の数値
-
-**戻り値:** 2つの加数の合計
-
-**数式:** addend1 + addend2 = sum
-
-**例:**
-```json
-// 単純な加算
-{
-  "addition": {
-    "addend1": 15,
-    "addend2": 25
-  }
-}
-// 結果: 40
-
-// ネストされた式を使用した加算
-{
-  "addition": {
-    "addend1": {
-      "multiplication": {
-        "multiplicand": 3,
-        "multiplier": 4
-      }
-    },
-    "addend2": 8
-  }
-}
-// 結果: 20 (12 + 8)
-```&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;Kiro はこれを洗練し、1 行に置き換えました。ネストされた式などの詳細は、洗練されたファイルで一度だけカバーされ、各操作の例で繰り返されることはありません。したがって、ここで繰り返す必要はありません。&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="lang-md"&gt;### 算術演算
-- `addition`: `{addend1, addend2}` - 基本的な加算&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;全体として、これは素晴らしいスタートです。ステアリングファイルは 3,500 行から 102 行に削減されました。他に何もしない場合でも、refine オプションを使用してステアリングファイルを最適化してください。ただし、さらに改善を続けることができます。&lt;/p&gt; 
-&lt;h2&gt;ベストプラクティスの定義&lt;/h2&gt; 
-&lt;p&gt;克服したい次の問題は、ドキュメントの具体性です。ユーザードキュメントは広範囲にわたる傾向があります。ライブラリや言語を使用できるすべての方法をカバーすることに焦点を当てています。しかし、ステアリングファイルは指針を持つべきです。Kiro が MathJSON を&lt;strong&gt;どのように使用できるか&lt;/strong&gt;を伝えるのではなく、Kiro が&lt;strong&gt;どのように使用すべきか&lt;/strong&gt;を正確に伝えたいのです。&lt;/p&gt; 
-&lt;p&gt;Kiro は前のセクションでドキュメントを洗練したときにベストプラクティスの定義を開始しました。しかし、追加のルールを加えます。具体的には、Kiro が書くすべてのコードを検証およびテストすることを望んでいます。そこで、いくつかの新しいベストプラクティスを追加します。&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="lang-md"&gt;5. **リテラルよりも定数**: 精度のために`3.14159`の代わりに`{"pi": {}}`を使用
-6. **コードを検証**: `mathjson`がローカルにインストールされていると仮定します。`*.math`ファイルを作成または編集するときは、リントとテストを行います。&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;ステアリングファイルには、コマンドラインツールの使用方法に関する指示がすでに含まれていることに注意してください。それを繰り返すのではなく、Kiro にいつ使用するかを指示しています。ステアリングファイルは形になり始めていますが、時間の経過とともにどのように最新の状態を保つのでしょうか？&lt;/p&gt; 
-&lt;h2&gt;知識を最新の状態に保つ&lt;/h2&gt; 
-&lt;p&gt;克服したい最初の問題は、ドキュメントの鮮度です。時間の経過とともに、MathJSON は進化し、変化していきます。たとえば、最近三角関数のサポートを追加しました。ステアリングファイルで維持しなければならないコピーではなく、Kiro が元のドキュメントにアクセスできることを望んでいます。ここで Model Context Protocol（MCP）の出番です。&lt;/p&gt; 
-&lt;p&gt;MathJSON の場合、GitHub リポジトリが信頼できる情報源です。したがって、GitHub 用の MCP サーバーを設定しました。これで、Kiro は必要なときに最新のドキュメントを読むことができます。GitHub は単なる例であることに注意してください。GitLab、Confluence などにドキュメントを保管している場合、それらにも MCP サーバーがある可能性があります。&lt;/p&gt; 
-&lt;p&gt;Kiro が GitHub のドキュメントに直接アクセスできるようになったので、ステアリングファイルを削除したくなるかもしれません。しかし、実際には両方が必要であることがわかりました。Kiro に &lt;code&gt;2 つの数値を足し算する関数を作成&lt;/code&gt; するように依頼したとします。そのプロンプトには、MathJSON を使用することや、MathJSON のドキュメントが GitHub に保存されていることを示すものは何もありません。Kiro は MathJSON ではなく Python で関数を書く可能性が高いです。ステアリングファイルは、Kiro が点と点を結ぶのに役立ちます。&lt;/p&gt; 
-&lt;p&gt;次の例では、MathJSON を使用していることと、ドキュメントが GitHub で利用可能であることを Kiro に伝えるためにステアリングファイルを更新したことがわかります。さらに、GitHub の MCP サーバーを使用してドキュメントにアクセスするように Kiro に指示しました。&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="lang-md"&gt;# MathJSON DSL 概要
-このプロジェクトは、数式のためのドメイン固有言語である MathJSON を使用しています。MathJSON は、JSON 構文を使用して数式を表現および操作する構造化された方法を提供します。
-
-## 主要なドキュメント参照
-
-完全な MathJSON ドキュメントは、YOUR_ORG_NAME/mathjson リポジトリで利用できます。これらのファイルにアクセスするには、GitHub MCP サーバーを使用してください。
-- **メインドキュメント**: owner="sampleorg", repo="mathjson", path="README.md"で`mcp_github_get_file_contents`を使用
-- **関数リファレンス**: owner="sampleorg", repo="mathjson", path="function_reference.md"で`mcp_github_get_file_contents`を使用
-- **構文リファレンス**: owner="sampleorg", repo="mathjson", path="syntax_reference.md"で`mcp_github_get_file_contents`を使用
-- **例**: owner="sampleorg", repo="mathjson", path="examples.md"で`mcp_github_get_file_contents`を使用
-- **環境変数**: owner="sampleorg", repo="mathjson", path="ENVIRONMENT_VARIABLES.md"で`mcp_github_get_file_contents`を使用
-- **トラブルシューティング**: owner="sampleorg", repo="mathjson", path="TROUBLESHOOTING_VARIABLES.md"で`mcp_github_get_file_contents`を使用&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;特定のファイルへの参照を提供していることに注意してください。これはパフォーマンスの最適化です。リポジトリへの参照だけを提供した場合、Kiro はリポジトリを探索してファイルを読むのに時間がかかりすぎます。また、GitHub は理想的なドキュメントリポジトリではないことも指摘しておきたいと思います。Kiro は、ドキュメントをトピックにチャンク化し、それらのチャンクをベクトルデータベースに保存することで恩恵を受けるでしょう。これにより、Kiro は必要なドキュメントの部分だけにアクセスできます。ただし、この記事は少し長くなっているので、そのトピックは別の記事に残しておきます。&lt;/p&gt; 
-&lt;h2&gt;Kiro に知識の更新を依頼する&lt;/h2&gt; 
-&lt;p&gt;この時点で、私のステアリングファイルは主にドキュメントへのポインタとして機能しています。ただし、ベストプラクティスセクションとともに、ステアリングファイルにいくつかの高レベルのドキュメントがまだあります。さらに重要なことに、定期的にステアリングファイルを更新するように Kiro に依頼しています。Kiro が間違いを犯したり、問題に遭遇したりするたびに、問題がまだコンテキストにある間に更新を行うように Kiro に依頼します。&lt;/p&gt; 
-&lt;p&gt;次の例では、Kiro が環境変数のフォーマットの問題に取り組んでいるのがわかります。リンターが問題を特定すると、Kiro は MCP サーバーを使用してドキュメントを読み、エラーを修正します。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/10/29/2-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/10/29/2-1.png" alt="" width="1242" height="824" class="alignnone size-full wp-image-168147"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;Kiro がこれらの問題に取り組むにつれて、新しいスキルを学びます。ただし、その新しい知識は会話の期間中のみ保持されます。したがって、Kiro は将来のセッションで同じ間違いを犯す可能性があります。これは、ステアリングファイルを更新するように Kiro に依頼する絶好の機会です。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/10/29/3-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/10/29/3-1.png" alt="" width="1424" height="434" class="alignnone size-full wp-image-168148"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;MathJSON の環境変数の構文について学んだ後、Kiro はステアリングファイルに次のセクションを追加しました。&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="lang-md"&gt;## 環境変数のベストプラクティス
-
-### 変数構文
-- 環境変数には`{"variable": "env:VARIABLE_NAME"}`構文を使用
-- 変数名は文字またはアンダースコアで始まり、英数字とアンダースコアのみを含む必要があります
-- `PRINCIPAL`、`ANNUAL_RATE`、`LOAN_TERM_YEARS`のような説明的な名前を使用&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;時間の経過とともに、Kiro はガイダンスを洗練し続け、私の DSL に関する知識を拡大し、書くコードを改善していきます。&lt;/p&gt; 
-&lt;h2&gt;すべてをまとめる&lt;/h2&gt; 
-&lt;p&gt;数回の反復の後、Kiro は MathJSON を作成する準備ができています。住宅ローンの過払いをモデル化する関数を作成するように Kiro に依頼します。&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="lang-md"&gt;元金、金利、過払い額を入力として受け取り、ローンの期間中の節約額を返す住宅ローン過払いをモデル化する関数を作成してください。&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;Kiro は私のために MathJSON を生成する準備ができました。以下は、住宅ローン過払い計算のために Kiro が生成した MathJSON です。&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="lang-json"&gt;{
-  "multiplication": {
-    "multiplicand": {"variable": "env:OVERPAYMENT_AMOUNT"},
-    "multiplier": {
-      "subtraction": {
-        "minuend": {
-          "multiplication": {
-            "multiplicand": {"variable": "env:LOAN_TERM_YEARS"},
-            "multiplier": 12
-          }
-        },
-        "subtrahend": {
-          "division": {
-            "dividend": {
-              "log": {
-                "value": {
-                  "subtraction": {
-                    "minuend": 1,
-                    "subtrahend": {
-                      "division": {
-                        "dividend": {
-                          "multiplication": {
-                            "multiplicand": {"variable": "env:OVERPAYMENT_AMOUNT"},
-                            "multiplier": {
-                              "division": {
-                                "dividend": {"variable": "env:ANNUAL_RATE"},
-                                "divisor": 12
-                              }
-                            }
-                          }
-                        },
-                        "divisor": {"variable": "env:PRINCIPAL"}
-                      }
-                    }
-                  }
-                },
-                "base": {
-                  "addition": {
-                    "addend1": 1,
-                    "addend2": {
-                      "division": {
-                        "dividend": {"variable": "env:ANNUAL_RATE"},
-                        "divisor": 12
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "divisor": {
-              "log": {
-                "value": {
-                  "addition": {
-                    "addend1": 1,
-                    "addend2": {
-                      "division": {
-                        "dividend": {"variable": "env:ANNUAL_RATE"},
-                        "divisor": 12
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;そしてもちろん、Kiro はステアリングファイルで定義されたベストプラクティスに従って、書いたコードをリントおよびテストし、コードが構文的に正しいことを検証します。&lt;/p&gt; 
-&lt;h2&gt;結論&lt;/h2&gt; 
-&lt;p&gt;MathJSON のようなカスタムライブラリを理解し、それと連携するように Kiro を教えることは、ステアリングファイルと Model Context Protocol を組み合わせる力を示しています。この記事で概説されたアプローチ（ドキュメントの洗練、明確なベストプラクティスの確立、最新の知識のための MCP の活用）に従うことで、カスタムライブラリ、言語、ツールと連携するように Kiro へ教えることができます。&lt;a href="https://kiro.dev/downloads/"&gt;Kiro を始めましょう&lt;/a&gt;。&lt;/p&gt;</content:encoded>
 					
 		
 		
