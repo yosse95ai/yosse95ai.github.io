@@ -5,7 +5,7 @@
 	<atom:link href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/" rel="self" type="application/rss+xml"/>
 	<link>https://aws.amazon.com/jp/blogs/news/</link>
 	<description/>
-	<lastBuildDate>Mon, 06 Apr 2026 08:58:22 +0000</lastBuildDate>
+	<lastBuildDate>Mon, 20 Apr 2026 00:38:05 +0000</lastBuildDate>
 	<language>ja</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -13,6 +13,33 @@
 	1	</sy:updateFrequency>
 	
 	<item>
+		<title>Opus 4.7 が Kiro で利用可能になりました</title>
+		<link>https://aws.amazon.com/jp/blogs/news/opus-4-7/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Mon, 20 Apr 2026 00:38:05 +0000</pubDate>
+				<category><![CDATA[Artificial Intelligence]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">a50f1fdbf291b26df4b13d00f03a84e6220eef72</guid>
+
+					<description>Anthropic の最新モデル Claude Opus 4.7 が Kiro IDE および CLI に順次展開されました。Opus 4.6 の直接アップグレード版として、複雑で長時間にわたるタスクでのコーディング性能が向上し、複数ファイル・ツールにまたがるマルチステップ実装や自己検証機能を備えています。Kiro のスペック駆動開発との親和性も高く、大規模コードベースでの高忠実度な実装を実現します。</description>
+										<content:encoded>&lt;p&gt;本記事は 2026 年 4 月 17 日に公開された Nima Kaviani による “&lt;a href="https://kiro.dev/blog/opus-4-7/" target="_blank" rel="noopener"&gt;Opus 4.7 is now available in Kiro&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;本日より、Claude Opus 4.7 が Kiro IDE および CLI に順次展開されています。Opus 4.7 は Anthropic の最新かつ最も高性能な Opus モデルであり、Opus 4.6 の直接的なアップグレード版として、複雑で長時間にわたるタスクにおけるコーディング性能が向上しています。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-183181"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;div&gt; 
+ &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/04/17/benchmarks.png"&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/04/17/benchmarks.png" alt="Opus 4.7 と他モデルの 14 ベンチマーク比較表" width="2523" height="2560" class="alignnone size-full wp-image-183182"&gt;&lt;/a&gt; 
+&lt;/div&gt; 
+&lt;p&gt;Opus 4.7 は前バージョンよりも多くの本番タスクを解決し、長いセッションにわたって複雑な指示をより正確に遵守します。複数のファイルやツールにまたがるマルチステップの実装を処理し、結果を返す前に自身の出力を検証し、より確実な実行力によって、依頼された内容により忠実に応えます。&lt;/p&gt; 
+&lt;p&gt;これらの改善は Kiro の&lt;a href="https://kiro.dev/docs/specs/#what-are-specs" target="_blank" rel="noopener"&gt;仕様駆動開発&lt;/a&gt;にも活かされています。Opus 4.7 は、より大規模なコードベースや広範な変更において、詳細なスペックを高い忠実度で実装に落とし込む最適なモデルと位置づけています。計画、ツール使用、実行、レビューを行き来するワークフローにおいても、一貫性を保ち、方向性のずれを最小限に抑えます。&lt;/p&gt; 
+&lt;p&gt;Opus 4.7 は、AWS IAM Identity Center でログインしている Kiro Pro、Pro+、Power の一部のお客様を対象に、AWS US-East-1（バージニア北部）および AWS Europe（フランクフルト）リージョンにて&lt;a href="https://kiro.dev/docs/privacy-and-security/data-protection/#global-cross-region-inference-for-experimental-features" target="_blank" rel="noopener"&gt;実験的サポート&lt;/a&gt;として段階的に展開されており、クロスリージョン推論サポートと広範な提供が続く予定です。1M トークンのフルコンテキストウィンドウ、Opus 4.6 と同じ 2.2 倍のクレジット乗数を備えています。&lt;/p&gt; 
+&lt;p&gt;&lt;a target="_blank" rel="noopener noreferrer" href="https://kiro.dev/downloads/"&gt;Kiro をダウンロード&lt;/a&gt;するか、アプリまたは CLI を再起動して最新の利用可能なモデルをご確認ください。&lt;/p&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村 が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
 		<title>Kiro に MiniMax M2.5 と GLM-5 が追加されました</title>
 		<link>https://aws.amazon.com/jp/blogs/news/minimax-m25-and-glm-5/</link>
 		
@@ -65,7 +92,7 @@
 &lt;p&gt;これはエンタープライズのお客様から最も一貫して寄せられたリクエストの 1 つでした。個々の開発者の裁量に任せるのではなく、ポリシーを通じて MCP サーバーへのアクセスを管理する方法を管理者に提供してほしいというものです。組織は、セキュリティチームが求めるガバナンス体制を維持しながら、MCP の導入を迅速に進めたいと考えていました。&lt;/p&gt; 
 &lt;h2 id="how-it-works-the-mcp-registry"&gt;仕組み: MCP レジストリ&lt;/h2&gt; 
 &lt;p&gt;Kiro の MCP ガバナンスは管理者に 2 つの管理機能を提供します。MCP を無効にする MCP のオン/オフトグルと、管理者が Kiro 用の承認済み MCP サーバーの JSON 許可リストを設定できる MCP レジストリです。どちらの管理機能も、エンタープライズユーザー向けに作成される &lt;a href="https://kiro.dev/docs/cli/enterprise/subscribe/" target="_blank" rel="noopener"&gt;Kiro プロファイル&lt;/a&gt;の一部であり、そのアカウントのすべてのサブスクライバーに対してアカウントレベルで設定できます。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/03/19/shared-settings.png"&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/03/19/shared-settings.png" alt="" width="2560" height="606" class="alignnone size-full wp-image-181465"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/03/19/shared-settings.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/03/19/shared-settings.png" alt="" width="2560" height="606" class="alignnone size-full wp-image-181465"&gt;&lt;/a&gt;&lt;/p&gt; 
 &lt;p&gt;レジストリ自体は JSON ファイルで、Amazon S3、nginx、内部 Web サーバーなど任意の HTTPS エンドポイントに作成してホストします。Kiro 管理コンソールのプロファイルに URL を追加すると、Kiro が確定的な方法で残りの処理を行います。すべての Kiro クライアントは起動時にレジストリを取得し、24 時間ごとに再同期します。ローカルにインストールされた MCP サーバーがレジストリに存在しなくなった場合、Kiro はそれを終了させ、開発者が再追加できないようにします。レジストリがサーバーの新しいバージョンを指定している場合、Kiro はそのサーバーを更新後のバージョンで自動的に再起動します。&lt;/p&gt; 
 &lt;p&gt;開発者が Kiro CLI で &lt;code&gt;/mcp add&lt;/code&gt; を実行すると、レジストリのサーバーのみが表示されます。レジストリで定義されたサーバーパラメーター（URL、パッケージ識別子、ランタイム引数）は読み取り専用です。開発者は独自の環境変数（認証キーやローカルパス用）と HTTP ヘッダーを追加できますが、リストにないサーバーには接続できません。&lt;/p&gt; 
 &lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/03/19/logic.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/03/19/logic.png" alt="" width="1878" height="848" class="alignnone size-full wp-image-181461"&gt;&lt;/a&gt;&lt;/p&gt; 
@@ -757,159 +784,6 @@ Add a hook to `.kiro/hooks/review-advisors.kiro.hook`
 &lt;p&gt;自信を持ってコーディングする準備はできましたか？&lt;a href="https://kiro.dev/downloads/"&gt;Kiro をダウンロード&lt;/a&gt;して、チェックポイント機能が AI との作業方法をどのように変えるかを確認してください。&lt;/p&gt; 
 &lt;hr&gt; 
 &lt;p&gt;&lt;em&gt;チェックポイント機能について質問がありますか、または使用方法を共有したいですか？&lt;a href="https://discord.gg/kirodotdev"&gt;Discord コミュニティ&lt;/a&gt;で会話に参加するか、&lt;a href="https://x.com/kirodotdev"&gt;X&lt;/a&gt;、&lt;a href="https://www.linkedin.com/showcase/kirodotdev"&gt;LinkedIn&lt;/a&gt;、&lt;a href="https://bsky.app/profile/kiro.dev"&gt;Bluesky&lt;/a&gt; でフォローしてください。&lt;/em&gt;&lt;/p&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>Kiro を組織で利用するためのセキュリティとガバナンス</title>
-		<link>https://aws.amazon.com/jp/blogs/news/kiroweeeeeeek-in-japan-day-3-security-governance/</link>
-		
-		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
-		<pubDate>Fri, 21 Nov 2025 00:40:43 +0000</pubDate>
-				<category><![CDATA[Amazon Q Developer]]></category>
-		<category><![CDATA[Developer Tools]]></category>
-		<category><![CDATA[General]]></category>
-		<category><![CDATA[Kiro]]></category>
-		<guid isPermaLink="false">d288b64ba16a56431233ab567ae4bc8f2a96d484</guid>
-
-					<description>本ブログは Kiroweeeeeek (X:#kiroweeeeeeek) の第 3 日目です。本ブログでは、Kiro を組織で利用するにあたって気になるセキュリティとガバナンス機能についてご紹介します。</description>
-										<content:encoded>&lt;p&gt;こんにちは。ソリューションアーキテクトの吉村です。&lt;/p&gt; 
-&lt;p&gt;本ブログは Kiroweeeeeek (X:&lt;a href="https://x.com/hashtag/kiroweeeeeeek?src=hashtag_click" target="_blank" rel="noopener noreferrer"&gt;#kiroweeeeeeek&lt;/a&gt;) の第 3 日目です。昨日のブログは菅原さんの「&lt;a href="https://aws.amazon.com/jp/blogs/news/kiroweeeeeeek-in-japan-day-2-q-dev-ide-to-kiro/" target="_blank" rel="noopener noreferrer"&gt;Amazon Q Developer の IDE プラグインから Kiro に乗り換える準備&lt;/a&gt;」という内容でした。&lt;/p&gt; 
-&lt;p&gt;本ブログでは、Kiro を組織で利用するにあたって気になるセキュリティとガバナンス機能についてご紹介します。Kiro の一般提供に関しての総合的な情報は「&lt;a href="https://aws.amazon.com/jp/blogs/news/general-availability/" target="_blank" rel="noopener noreferrer"&gt;Kiro が一般提供開始: IDE とターミナルでチームと共に開発&lt;/a&gt;」をご確認ください。&lt;/p&gt; 
-&lt;h2&gt;Kiro の組織利用を開始&lt;/h2&gt; 
-&lt;p&gt;Kiro では、一般提供開始に伴い &lt;a href="https://docs.aws.amazon.com/ja_jp/singlesignon/latest/userguide/what-is.html" target="_blank" rel="noopener noreferrer"&gt;AWS IAM Identity Center&lt;/a&gt; を用いた認証方式を利用できる、&lt;a href="https://kiro.dev/enterprise/" target="_blank" rel="noopener noreferrer"&gt;Kiro for enterprise&lt;/a&gt; の提供を開始しました。IAM Identity Center を利用することで、プレビュー時の個別にクレジットカードを登録する方法とは違い、AWS に組織として請求を 1 本化し、請求を可視化することが可能です。&lt;/p&gt; 
-&lt;p&gt;マネジメントコンソールからアクセスできる Kiro コンソールを利用することで、以下のようなことが行えます。&lt;/p&gt; 
-&lt;ul&gt; 
- &lt;li&gt;&lt;strong&gt;リージョン管理&lt;/strong&gt;：IAM Identity Center インスタンスを管理するリージョンとは別に、Kiro プロファイルを作成するリージョンをマネジメントコンソールで選択することができます。サポートリージョンについては後述します。&lt;/li&gt; 
- &lt;li&gt;&lt;strong&gt;サブスクリプション管理&lt;/strong&gt;：Kiro コンソールを利用して、IAM Identity Center で管理しているユーザーに対するサブスクリプションの作成・管理・設定を行うことができます。&lt;/li&gt; 
- &lt;li&gt;&lt;strong&gt;グループ管理&lt;/strong&gt;：グループは IAM Identity Center で管理しているユーザーの集合です。グループに対して Kiro をサブスクライブすると、グループに所属するユーザー全てに対してワンアクションで個別のサブスクリプションを開始することが出来、サブスクリプションの管理を簡素化することができます。&lt;/li&gt; 
-&lt;/ul&gt; 
-&lt;p&gt;Kiro コンソールからサブスクリプションが開始された、IAM Identity Center ユーザーは、「Sign in with your organization identity」から IDE にログイン、もしくはコマンドラインで &lt;code&gt;kiro-cli login&lt;/code&gt; コマンドを利用して IAM Identity Center の認証情報を用いて Kiro CLI にログインし、Kiro の利用を開始することができます。 &lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/kiro-ide-login-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/kiro-ide-login-1.png" alt="" width="3024" height="1889" class="alignnone size-full wp-image-170300"&gt;&lt;/a&gt;&lt;br&gt; &lt;em&gt;IDE のログイン&lt;/em&gt;&lt;/p&gt; 
-&lt;p&gt; &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/kiro-cli-login.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/kiro-cli-login.png" alt="" width="3024" height="1894" class="alignnone size-full wp-image-170245"&gt;&lt;/a&gt;&lt;br&gt; &lt;em&gt;Kiro CLI のログイン&lt;/em&gt;&lt;/p&gt; 
-&lt;p&gt;詳細については、「&lt;a href="https://kiro.dev/docs/enterprise/concepts/#aws-iam-identity-center" target="_blank" rel="noopener noreferrer"&gt;Concepts – IDE – Docs – Kiro&lt;/a&gt;」をご確認ください。&lt;/p&gt; 
-&lt;p&gt;ここまで、IAM Identity Center を利用した Kiro for enterprise について説明しました。ここからは、Kiro for enterprise で気になるセキュリティとガバナンスに焦点を当てていきます。&lt;/p&gt; 
-&lt;h2&gt;Kiro プロファイル&lt;/h2&gt; 
-&lt;p&gt;Kiro for enterprise を利用する場合、IAM Identity Center インスタンスの作成されたリージョンとは別に、Kiro プロファイルを作成するリージョンを選択します。現在（2025 年 11 月 21 日）では、バージニア北部とフランクフルトリージョンをご選択いただけます。Kiro による推論の実行、データの保存は Kiro プロファイルを作成したリージョンにて行われます。&lt;/p&gt; 
-&lt;p&gt;IAM Identity Center インスタンスのリージョンと、Kiro プロファイルのリージョンは異なっていても問題ありません。例えば、IAM Identity Center は東京リージョンを利用しつつ、Kiro プロファイルをバージニア北部リージョンで作成いただくことも可能です。そのため、既に IAM Identity Center をご利用中のお客様も、すぐに Kiro for enterprise を開始いただけます。&lt;/p&gt; 
-&lt;p&gt;Kiro プロファイルとサポートリージョンの詳細は「&lt;a href="https://kiro.dev/docs/enterprise/supported-regions/#supported-kiro-console-and-kiro-profile-regions" target="_blank" rel="noopener noreferrer"&gt;Supported regions – IDE – Docs – Kiro&lt;/a&gt;」をご確認ください。&lt;/p&gt; 
-&lt;h3&gt;サブスクリプションと請求&lt;/h3&gt; 
-&lt;p&gt;Kiro のサブスクリプションは、Kiro プロファイルを作成したリージョンで行い、請求は Kiro プロファイルが作成された AWS アカウントに対して行われます。IAM Identity Center グループに対してサブスクリプションを設定した場合など、1 ユーザーに対して複数のサブスクリプションが設定されたような状態になる場合があります。Kiro for enterprise では、同一の Kiro プロファイル内であれば、ユーザーに割り当てられた最も高い Tier のサブスクリプション価格のみが請求されます。例えば、Pro と Pro+ をサブスクリプションしている場合、最も Tier の高い Pro+ の料金のみが請求されます。同一の Kiro プロファイル内で 2 回サブスクライブされたとしても二重課金は生じません。&lt;/p&gt; 
-&lt;p&gt;一方、異なるリージョンに別の Kiro プロファイルを作成しているような場合は注意が必要です。1 人のユーザーが異なるリージョンの Kiro プロファイルそれぞれで Kiro をサブスクライブしている場合、それぞれのサブスクリプションに対して請求が行われます。例えば、バージニア北部リージョンの Kiro プロファイルで Pro、フランクフルトリージョンの Kiro プロファイルで Pro+ をそれぞれサブスクライブした場合、2 つのサブスクリプションの合算した料金が請求されるため、二重課金となります。&lt;/p&gt; 
-&lt;p&gt;請求に関する詳細については、「&lt;a href="https://kiro.dev/docs/enterprise/billing/" target="_blank" rel="noopener noreferrer"&gt;Enterprise billing – IDE – Docs – Kiro&lt;/a&gt;」をご確認ください。&lt;/p&gt; 
-&lt;h2&gt;プライバシーとセキュリティ&lt;/h2&gt; 
-&lt;p&gt;このセクションでは、テレメトリやユーザーによって入力されるデータ、Kiro が生成するコンテンツ等の取り扱いについて概説します。本セクションの内容は、記事執筆当時 (2025 年 11月 21 日) の情報に基づいており、最新の情報は「&lt;a href="https://kiro.dev/docs/privacy-and-security/data-protection/" target="_blank" rel="noopener noreferrer"&gt;Data protection – IDE – Docs – Kiro&lt;/a&gt;」よりご確認ください。&lt;/p&gt; 
-&lt;h3&gt;データの保存と処理&lt;/h3&gt; 
-&lt;p&gt;Kiro の Free Tier ユーザーと個人サブスクライバー（Google, GitHub, AWS Builder ID でログイン）の場合、プロンプトや Kiro が生成する返答などのコンテンツは、バージニア北部リージョンに保存されます。Kiro for enterprise ユーザーの場合、Kiro プロファイルが作成されたリージョンにコンテンツが保存されます。&lt;/p&gt; 
-&lt;p&gt;Kiro は Amazon Bedrock を利用しています。クロスリージョン推論を利用して、高需要時にトラフィックを複数のリージョン分散し、パフォーマンスと信頼性を向上させます。そのため、推論時にクロスリージョン推論がサポートされているリージョンでデータが処理される可能性があります。ただし、データが保存されるリージョンについて影響はありません。&lt;/p&gt; 
-&lt;h3&gt;データの暗号化&lt;/h3&gt; 
-&lt;p&gt;Kiro では、データの転送中、保存時にそのデータを暗号化します。データの転送中は、TLS 1.2 以上の接続を使用して通信が保護されます。また、データの保存時は、AWS 所有の &lt;a href="https://docs.aws.amazon.com/kms/" target="_blank" rel="noopener noreferrer"&gt;AWS Key Management Service (KMS)&lt;/a&gt; 暗号化キーによってデータは暗号化されます。Kiro for enterprise をご利用のお客様は、KMS のお客様管理キーを作成して利用するオプションもございます。この暗号化キーは対称鍵のみサポートしております。&lt;/p&gt; 
-&lt;h3&gt;サービス改善&lt;/h3&gt; 
-&lt;p&gt;Kiro の Free Tier ユーザーと個人サブスクライバー（Google, GitHub, AWS Builder ID でログイン）の場合、デフォルトで、特定のコンテンツやテレメトリをサービス改善のために使用する場合があります。Kiro への質問、提供されるその他の入力、Kiro が生成する応答やコードなどのコンテンツを、サービス改善のために使用する可能性があります。また、使用状況データ、エラー、レイテンシー、クラッシュレポート、その他のメトリクスといったテレメトリをサービスの改善のために収集します。これらのデータ共有をオプトアウトすることができ、お客様のコンテンツをサービスの改善を使用されないように設定することが可能です。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;Kiro for enterprise をご利用のお客様は、AWS によってテレメトリとコンテンツ収集から自動的にオプトアウトされ、サービスの改善に利用されません。ユーザーアクティビティレポートのテレメトリ収集設定は、Kiro コンソールで管理者によって制御され、ユーザーが直接設定、修正することはできません。&lt;/strong&gt;&lt;/p&gt; 
-&lt;h3&gt;コードリファレンス&lt;/h3&gt; 
-&lt;p&gt;Kiro は、一部オープンソースプロジェクトから学習を行っています。時折 Kiro が提案するコードが、公開されたコードに似ている場合があります。コードリファレンスログを使用することで、公開されているコードに似たコード推奨事項への参照を表示することができます。コードリファレンスは設定から ON/OFF を切り替えることができます。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/21/スクリーンショット-2025-11-21-9.30.22.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/21/スクリーンショット-2025-11-21-9.30.22.png" alt="" width="2462" height="1196" class="alignnone size-full wp-image-170402"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;Kiro for enterprise の管理者は、すべてのユーザーに対してリファレンス付きのコード提案を受け取らないようにオプトアウトすることができます。この設定は管理者によって制御され、ユーザーが直接設定、修正することはできません。&lt;/p&gt; 
-&lt;p&gt;コードリファレンスの詳細は「&lt;a href="https://kiro.dev/docs/privacy-and-security/code-references/"&gt;Code references – IDE – Docs – Kiro&lt;/a&gt;」をご確認ください。また、Kiro の出力に伴う補償については、&lt;a href="https://aws.amazon.com/service-terms/"&gt;サービス規約の 50.10&lt;/a&gt; をご確認ください。&lt;/p&gt; 
-&lt;h2&gt;利用状況と統制&lt;/h2&gt; 
-&lt;h3&gt;利用状況の確認&lt;/h3&gt; 
-&lt;p&gt;Kiro コンソールのセッティングにて、Kiro usage dashboard を有効化することができます。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/usage.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/usage.png" alt="" width="2463" height="617" class="alignnone size-full wp-image-170253"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;この設定を有効にすることで、Tier ごとの総サブスクリプション数、アクティブなサブスクリプション数、保留中のサブスクリプション数、アクティブなユーザー数、クレジットの消費量を Kiro コンソールのダッシュボードで可視化できます。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/dashboard.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/dashboard.png" alt="" width="2044" height="883" class="alignnone size-full wp-image-170256"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;Kiro のダッシュボードとメトリクスの詳細は「&lt;a href="https://kiro.dev/docs/cli/enterprise/monitor-and-track/dashboard/#view-the-dashboard" target="_blank" rel="noopener noreferrer"&gt;Viewing Kiro usage on the dashboard – CLI – Docs – Kiro&lt;/a&gt;」をご確認ください。&lt;/p&gt; 
-&lt;h3&gt;Overage と MCP の統制&lt;/h3&gt; 
-&lt;p&gt;Kiro では、月のクレジット制限を超えて Kiro を利用可能にする Overage（超過料金）がサポートされています。Kiro の月の制限に達した場合、Overage が有効化されていると、0.04 USD/クレジットで制限を超えて Kiro の機能を引き続き利用することができます。デフォルトで Overage は無効化されています。&lt;/p&gt; 
-&lt;p&gt;Kiro for enterprise をご利用の場合、管理者は Kiro コンソールを利用して、Kiro プロファイルに対して Overage 機能をオプトインすることができます。また、MCP（Model Context Protocol）の利用可否もこちらの設定画面で ON/OFF を切り替えることが可能です。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/overage.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/overage.png" alt="" width="1667" height="348" class="alignnone size-full wp-image-170254"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;h2&gt;ネットワーク設定&lt;/h2&gt; 
-&lt;h3&gt;ファイアウォールとプロキシ&lt;/h3&gt; 
-&lt;p&gt;組織のネットワークセキュリティによって、ファイアウォールやプロキシ経由で Kiro へ接続を行う必要が生じる場合があります。このような場合に、ホワイトリストに登録していただく必要のあるエンドポイントを以下の表にまとめます。&lt;/p&gt; 
-&lt;table style="width: 100%;border-collapse: collapse" border="1"&gt; 
- &lt;thead&gt; 
-  &lt;tr&gt; 
-   &lt;th style="padding: 8px"&gt;URL&lt;/th&gt; 
-   &lt;th style="padding: 8px"&gt;目的&lt;/th&gt; 
-  &lt;/tr&gt; 
- &lt;/thead&gt; 
- &lt;tbody&gt; 
-  &lt;tr&gt; 
-   &lt;td style="padding: 0 8px"&gt;&amp;lt;idc-directory-id-or-alias&amp;gt;.awsapps.com&lt;/td&gt; 
-   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
-  &lt;/tr&gt; 
-  &lt;tr&gt; 
-   &lt;td style="padding: 0 8px"&gt;oidc.&amp;lt;sso-region&amp;gt;.amazonaws.com&lt;/td&gt; 
-   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
-  &lt;/tr&gt; 
-  &lt;tr&gt; 
-   &lt;td style="padding: 0 8px"&gt;*.sso.&amp;lt;sso-region&amp;gt;.amazonaws.com&lt;/td&gt; 
-   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
-  &lt;/tr&gt; 
-  &lt;tr&gt; 
-   &lt;td style="padding: 0 8px"&gt;*.sso-portal.&amp;lt;sso-region&amp;gt;.amazonaws.com&lt;/td&gt; 
-   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
-  &lt;/tr&gt; 
-  &lt;tr&gt; 
-   &lt;td style="padding: 0 8px"&gt;*.aws.dev&lt;/td&gt; 
-   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
-  &lt;/tr&gt; 
-  &lt;tr&gt; 
-   &lt;td style="padding: 0 8px"&gt;*.awsstatic.com&lt;/td&gt; 
-   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
-  &lt;/tr&gt; 
-  &lt;tr&gt; 
-   &lt;td style="padding: 0 8px"&gt;*.console.aws.a2z.com&lt;/td&gt; 
-   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
-  &lt;/tr&gt; 
-  &lt;tr&gt; 
-   &lt;td style="padding: 0 8px"&gt;*.sso.amazonaws.com&lt;/td&gt; 
-   &lt;td style="padding: 0 8px"&gt;認証&lt;/td&gt; 
-  &lt;/tr&gt; 
-  &lt;tr&gt; 
-   &lt;td style="padding: 0 8px"&gt;https://aws-toolkit-language-servers.amazonaws.com/*&lt;/td&gt; 
-   &lt;td style="padding: 0 8px"&gt;Kiro, 言語処理&lt;/td&gt; 
-  &lt;/tr&gt; 
-  &lt;tr&gt; 
-   &lt;td style="padding: 0 8px"&gt;https://aws-language-servers.us-east-1.amazonaws.com/*&lt;/td&gt; 
-   &lt;td style="padding: 0 8px"&gt;Kiro, 言語処理&lt;/td&gt; 
-  &lt;/tr&gt; 
-  &lt;tr&gt; 
-   &lt;td style="padding: 0 8px"&gt;https://client-telemetry.us-east-1.amazonaws.com&lt;/td&gt; 
-   &lt;td style="padding: 0 8px"&gt;Kiro, テレメトリ&lt;/td&gt; 
-  &lt;/tr&gt; 
-  &lt;tr&gt; 
-   &lt;td style="padding: 0 8px"&gt;cognito-identity.us-east-1.amazonaws.com&lt;/td&gt; 
-   &lt;td style="padding: 0 8px"&gt;Kiro, テレメトリ&lt;/td&gt; 
-  &lt;/tr&gt; 
- &lt;/tbody&gt; 
-&lt;/table&gt; 
-&lt;p&gt;ここで、&lt;code&gt;idc-directory-id-or-alias&lt;/code&gt; は、IAM Identity Center のディレクトリ ID もしくはエイリアス、&lt;code&gt;sso-region&lt;/code&gt; は、IAM Identity Center インスタンスが作成されているリージョンに読み替えます。&lt;/p&gt; 
-&lt;p&gt;詳細は「&lt;a href="https://kiro.dev/docs/privacy-and-security/firewalls/" target="_blank" rel="noopener noreferrer"&gt;Configuring a firewall, proxy server, or data perimeter for Kiro – IDE – Docs – Kiro&lt;/a&gt;」をご確認ください。&lt;/p&gt; 
-&lt;h3&gt;プライベートネットワークアクセス&lt;/h3&gt; 
-&lt;p&gt;Kiro では、インターフェース型 VPC エンドポイントを提供しているため、PrivateLink を利用して Kiro へプライベート接続できます。マネジメントコンソールや AWS CLI を利用して、以下のサービス名で VPC エンドポイントを作成することができます。&lt;/p&gt; 
-&lt;ul&gt; 
- &lt;li&gt;com.amazonaws.us-east-1.q&lt;/li&gt; 
- &lt;li&gt;com.amazonaws.eu-central-1.q&lt;/li&gt; 
- &lt;li&gt;com.amazonaws.us-east-1.codewhisperer&lt;/li&gt; 
-&lt;/ul&gt; 
-&lt;p&gt;これにより、インターネット経由でデータを送受信できないような制約下でも、プライベートネットワークを介して、Kiro をご利用頂くことが可能です。&lt;/p&gt; 
-&lt;p&gt;詳細は「&lt;a href="https://kiro.dev/docs/privacy-and-security/vpc-endpoints/" target="_blank" rel="noopener noreferrer"&gt;Kiro and interface endpoints (AWS PrivateLink) – IDE – Docs – Kiro&lt;/a&gt;」をご確認ください。&lt;/p&gt; 
-&lt;h2&gt;まとめ&lt;/h2&gt; 
-&lt;p&gt;このブログでは、Kiro を組織で利用するために利用可能な Kiro for enterprise とそれを取り巻くセキュリティとガバナンスに関する内容について触れてきました。皆様の組織全体で Kiro を利用して、新しいものを生み出すための一助になれば幸いです！&lt;/p&gt; 
-&lt;p&gt;引き続き X で &lt;a href="https://x.com/hashtag/kiroweeeeeeek?src=hashtag_click" target="_blank" rel="noopener noreferrer"&gt;#kiroweeeeeeek&lt;/a&gt; をつけて様々な角度からの投稿をお待ちしています！&lt;/p&gt; 
-&lt;h2&gt;著者&lt;/h2&gt; 
-&lt;footer&gt; 
- &lt;div class="blog-author-box"&gt; 
-  &lt;div class="blog-author-image"&gt; 
-   &lt;img loading="lazy" class="wp-image-11636 alignleft" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/IMG_2169.jpg" alt="" width="150" height="150"&gt; 
-  &lt;/div&gt; 
-  &lt;h3 class="lb-h4"&gt;&lt;strong&gt;Hiroaki Yoshimura&lt;/strong&gt;&lt;/h3&gt; 
-  &lt;p style="text-align: left"&gt;AWS Japan のパブリックセクターのソリューションアーキテクトです。主に医療機関をはじめとしたヘルスケア業界のお客様のソリューション構築の支援を行なっています。Go や TypeScript などの静的型付け言語が好きです。&lt;/p&gt; 
-  &lt;p&gt;&lt;/p&gt;
- &lt;/div&gt; 
-&lt;/footer&gt;</content:encoded>
 					
 		
 		
