@@ -5,7 +5,7 @@
 	<atom:link href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/" rel="self" type="application/rss+xml"/>
 	<link>https://aws.amazon.com/jp/blogs/news/</link>
 	<description/>
-	<lastBuildDate>Mon, 20 Apr 2026 00:38:05 +0000</lastBuildDate>
+	<lastBuildDate>Thu, 11 Jun 2026 05:33:33 +0000</lastBuildDate>
 	<language>ja</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -13,6 +13,44 @@
 	1	</sy:updateFrequency>
 	
 	<item>
+		<title>Kiro の Spec が速く、そしてスマートになりました</title>
+		<link>https://aws.amazon.com/jp/blogs/news/faster-smarter-specs/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Thu, 11 Jun 2026 05:33:33 +0000</pubDate>
+				<category><![CDATA[Artificial Intelligence]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">bc10418c80ba105b0b35451e071b77a2641f1f4d</guid>
+
+					<description>Kiro IDE に 3 つの新機能が追加されました。並列タスク実行では、Spec 内の独立したタスクを依存グラフに基づいて同時実行し、実装時間を大幅に短縮します。クイックプランモードでは、事前の確認質問を通じて要件・設計・タスクを一括生成し、Spec 作成を高速化します。要件分析では、ニューロシンボリック AI を活用して要件の曖昧さや矛盾を自動検出し、実装前に問題を解消できます。</description>
+										<content:encoded>&lt;p&gt;本記事は 2026 年 5 月 12 日に公開された Ankit Sharma による “&lt;a href="https://kiro.dev/blog/faster-smarter-specs/" target="_blank" rel="noopener"&gt;Specs just got faster (and smarter)&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;仕様駆動開発を導入したとき、Spec フローは最初こそ少し時間がかかるかもしれないが、最終的にはより高品質な実装をもたらすと考えていました。しかし時間が経つにつれ、「構造と品質は遅さを意味する」という前提自体を問い直すようになりました。&lt;/p&gt; 
+&lt;p&gt;たとえば、10 個のタスクを持つ Feature Spec があるとします。そのうち 6 つは独立しています。異なるエンドポイント、異なるファイル、共有状態なし。それでも Kiro は順番に 1 つずつ実行します。あるいは、スコープ・制約・エッジケースをすでに明確に把握している機能であれば、現在のステップごとの承認フローは問題の規模に対してプロセスが多すぎると感じることもあります。逆のケースも起こります。一見シンプルに見える機能のプロンプトに、多くの未記述の前提や曖昧さが含まれており、実装を間違った方向に導いてしまうことがあります。事前の小さな確認が、実装時間（とトークン！）を大幅に節約できます。本日、Kiro IDE にこれらの問題を解決する改善を導入します。Spec フローをより速く開始し、より速く実装し、最初から正しい解決策を得られるようになります。必要なところではスピードを、重要なところでは深さを得られるようになりました。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-184981"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2 id="run-tasks-in-parallel"&gt;タスクの並列実行&lt;/h2&gt; 
+&lt;p&gt;Spec で「Run all Tasks」をクリックすると、Kiro はタスクリストを分析し、同時に実行できるタスクを特定するようになりました。タスクリストの多くは真に逐次的ではありません。依存関係があります。タスク 2 とタスク 3 がどちらもタスク 1 に依存しているとしても、互いには依存していないことがあります。順番に実行するのは時間の無駄です。Kiro はタスクリストから依存グラフを構築し、同じファイルに書き込むタスク、以前のタスクのコードをテストするタスク、真に独立しているタスクを識別します。同じファイルを扱うタスクは並列実行されません。セットアップやインフラ作業が最初に実行されます。テストはそれが検証するコードの後に実行されます。それ以外はすべて同時に実行され、同時実行されるウェーブ (wave) にグループ化されます。各タスクは独立したコンテキストで実行されるため、タスク間で状態が漏洩することはありません。タスクが失敗しても、他のタスクは実行を続けます。どれが成功し、どれが注意を要するかを確認できます。以前の作業に依存するタスクは引き続き順番を待ちます。並列実行のために設定は不要です。「Run all Tasks」をクリックすれば、Kiro が残りを処理します。独立したタスクが複数ある Spec では、すぐに違いを実感できるでしょう。私たちの経験では、大きな Spec の実装時間が 1 時間超から約 4 分の 1 に短縮されるケースも見られています。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/05/13/parallel-tasks.png"&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/05/13/parallel-tasks.png" alt="並列タスク実行：独立したタスクがウェーブ (wave) にグループ化されて同時実行される依存グラフ" width="2560" height="1381" class="alignnone size-full wp-image-184985"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;h2 id="fast-track-specs-with-quick-plan-mode"&gt;Quick Plan モードで Spec を高速化&lt;/h2&gt; 
+&lt;p&gt;標準の Spec フローには 3 つのフェーズがあります。要件、設計、タスクです。次のフェーズに進む前にそれぞれを承認します。これは未知の領域を探索するときに価値を発揮します。しかし、スコープを明確に把握している、よく理解された機能の場合、Quick Plan モードを使うと正確さを犠牲にせず速く進められます。&lt;/p&gt; 
+&lt;p&gt;プロンプトに基づいて、Kiro は事前に確認事項（スコープ、制約、エッジケース）を質問し、要件・設計・タスクを一度に自動生成します。質問する前に、Kiro はワークスペースをスキャンして言語・フレームワーク・プロジェクト構造を検出し、質問をあなたのスタックに特化したものにします。質問は 4 つの軸を対象とします。スコープと制約、説明の曖昧さ、実装の分岐点、機能の方向性に関する決定です。タスクリストが完成したら、すぐにビルドに取りかかれます。成果物は引き続き作成・保存され、エージェントが実行時に使用します。後から確認・編集することも可能です。タスクの変更を依頼した場合は、タスクのみが再生成されます。設計を調整した場合は、設計とタスクが再構築されます。スコープを変更した場合は、要件からパイプライン全体が再実行されます。Kiro は影響を受ける部分のみを再生成します。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/05/13/quick-plan.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/05/13/quick-plan.png" alt="Quick Plan ：アイデアからタスクリストまでをワンパスで生成する 5 ステップのワークフロー図" width="2560" height="1381" class="alignnone size-full wp-image-184986"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;Kiro は実装中、spec の成果物を信頼できる唯一の情報源 (single source of truth) として使用します。これにより、Kiro が行うすべての判断は、文書化された要件や設計上の選択に基づいて追跡できるようになります。Quick Plan は同じ成果に向かうより速いパスであり、構造をスキップするショートカットではありません。&lt;/p&gt; 
+&lt;h2 id="requirements-analysis-catch-what-a-read-through-misses"&gt;要件分析：ひと通り読むだけでは見逃すものを捕捉する&lt;/h2&gt; 
+&lt;p&gt;要件には、一目では気づきにくい微妙な問題が含まれることがあります。たとえば、個々に見ると問題なさそうな2つの要件が、組み合わせてみると同時には満たせない場合があります。 また、読む人によって解釈が分かれ、異なる実装につながってしまう曖昧な表現が含まれていることもあります。 さらに、誰もが「当然そうだろう」と思い込んでいるものの、実際には明文化されていない前提が、後になって問題になることもあります。&lt;/p&gt; 
+&lt;p&gt;Kiro がプロンプトに基づいて要件を生成した後、「Analyze Requirements」を選択すると、ニューロシンボリック AI (Neurosymbolic AI) を活用した深い分析を開始できます。ニューロシンボリック AI は LLM と自動推論を組み合わせ、どちらか単独では実現できないことを達成します。Kiro は曖昧さや矛盾を発見次第（修正案とともに）提示します。それにより、確信を持って設計・実装フェーズに進めます。&lt;/p&gt; 
+&lt;p&gt;&lt;u&gt;曖昧さの検出。&lt;/u&gt;Kiro は各要件の複数の解釈をサンプリングし、異なる開発者が異なる意味に取り得る箇所を見つけます。「レコードを削除する」とは、物理削除を意味するのか、論理削除を意味するのか？Kiro が真の曖昧さを発見した場合、「どちらの意味を意図していましたか？」といった、シンプルな 2 択の質問として提示します。&lt;/p&gt; 
+&lt;p&gt;&lt;u&gt;論理分析。&lt;/u&gt;Kiro は自動推論を使って、要件が整合しているか（2 つの要件が矛盾していないか）を検証し、要件が何も言及していないギャップを見つけます。これは LLM が矛盾の可能性を推測するのではなく、数学的論理を使ってどんな実装も両方のルールを同時に満たせないことを証明するものです。&lt;/p&gt; 
+&lt;p&gt;内部の仕組みを詳しく知りたい場合は、&lt;a href="https://kiro.dev/blog/deep-spec-analysis/" target="_blank" rel="noopener"&gt;要件分析の詳細解説&lt;/a&gt;をご覧ください。&lt;/p&gt; 
+&lt;h2 id="speed-where-it-helps-depth-where-it-matters"&gt;必要なところではスピードを、重要なところでは深さを&lt;/h2&gt; 
+&lt;p&gt;この 3 つの新機能により、Spec はより速くスマートになります。Quick Plan モードは生成を高速化します。並列タスク実行は実装を高速化します。要件分析は、ひと通り読むだけでは見逃す問題を捕捉します。構造はソフトウェアをより良くするものであり、プロセスを遅くするものであってはなりません。今やその両方を実現します。&lt;/p&gt; 
+&lt;p&gt;Quick Plan、並列タスク実行、要件分析は現在利用可能です。&lt;a href="https://kiro.dev/docs/specs/" target="_blank" rel="noopener"&gt;Kiro Spec を使い始める&lt;/a&gt;。&lt;/p&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
 		<title>Opus 4.7 が Kiro で利用可能になりました</title>
 		<link>https://aws.amazon.com/jp/blogs/news/opus-4-7/</link>
 		
@@ -28,7 +66,7 @@
 &lt;p&gt;本日より、Claude Opus 4.7 が Kiro IDE および CLI に順次展開されています。Opus 4.7 は Anthropic の最新かつ最も高性能な Opus モデルであり、Opus 4.6 の直接的なアップグレード版として、複雑で長時間にわたるタスクにおけるコーディング性能が向上しています。&lt;/p&gt; 
 &lt;p&gt;&lt;span id="more-183181"&gt;&lt;/span&gt;&lt;/p&gt; 
 &lt;div&gt; 
- &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/04/17/benchmarks.png"&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/04/17/benchmarks.png" alt="Opus 4.7 と他モデルの 14 ベンチマーク比較表" width="2523" height="2560" class="alignnone size-full wp-image-183182"&gt;&lt;/a&gt; 
+ &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/04/17/benchmarks.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/04/17/benchmarks.png" alt="Opus 4.7 と他モデルの 14 ベンチマーク比較表" width="2523" height="2560" class="alignnone size-full wp-image-183182"&gt;&lt;/a&gt; 
 &lt;/div&gt; 
 &lt;p&gt;Opus 4.7 は前バージョンよりも多くの本番タスクを解決し、長いセッションにわたって複雑な指示をより正確に遵守します。複数のファイルやツールにまたがるマルチステップの実装を処理し、結果を返す前に自身の出力を検証し、より確実な実行力によって、依頼された内容により忠実に応えます。&lt;/p&gt; 
 &lt;p&gt;これらの改善は Kiro の&lt;a href="https://kiro.dev/docs/specs/#what-are-specs" target="_blank" rel="noopener"&gt;仕様駆動開発&lt;/a&gt;にも活かされています。Opus 4.7 は、より大規模なコードベースや広範な変更において、詳細なスペックを高い忠実度で実装に落とし込む最適なモデルと位置づけています。計画、ツール使用、実行、レビューを行き来するワークフローにおいても、一貫性を保ち、方向性のずれを最小限に抑えます。&lt;/p&gt; 
@@ -727,63 +765,6 @@ Add a hook to `.kiro/hooks/review-advisors.kiro.hook`
 &lt;p&gt;昨日、新しいツールを追加することは、MCP サーバーを手動で設定し、コンテキストがオーバーフローしないことを願うことを意味しました。今日、それは power をインストールすることを意味します。Supabase が更新された RLS パターンをリリースしますか？ エージェントは自動的にそれらを取得します。チームが内部デザインシステムを構築しますか？ それを power としてパッケージ化すれば、すべての開発者のエージェントがその使用方法を知ります。&lt;/p&gt; 
 &lt;p&gt;これが、エージェントが真に有用になる方法です。すべてを事前に知ることによってではなく、必要なものを必要なときに学習し、周囲のツールが進化するにつれて専門知識を継続的に拡大することによってです。その結果、AIエージェントは、人間の開発者と同じように、いつ設計システムを考え、いつデータベースを考え、いつデプロイを考えるべきかを理解するようになります。&lt;/p&gt; 
 &lt;p&gt;&lt;a href="https://kiro.dev/powers/"&gt;Kiro で今日 powers を試して&lt;/a&gt;、何を構築するか教えてください。&lt;/p&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>道に迷わないために: Kiro のチェックポイント機能の紹介</title>
-		<link>https://aws.amazon.com/jp/blogs/news/introducing-checkpointing/</link>
-		
-		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
-		<pubDate>Fri, 21 Nov 2025 01:32:53 +0000</pubDate>
-				<category><![CDATA[Amazon Q]]></category>
-		<category><![CDATA[Amazon Q Developer]]></category>
-		<category><![CDATA[Developer Tools]]></category>
-		<category><![CDATA[General]]></category>
-		<category><![CDATA[Kiro]]></category>
-		<guid isPermaLink="false">74c6a308b4e57ccf2579d4b2f402d137c5a7bb0a</guid>
-
-					<description>このブログでは、Kiro のチェックポイント機能についてご紹介します。チェックポイント機能は、開発セッション中の任意の時点に Kiro の変更を巻き戻す力を与えます。Kiro がコードベースを変更すると、チャット履歴に自動的にチェックポイントマーカーが作成されます。ビデオゲームのオートセーブポイントのようなものだと考えてください。物事がうまくいかず、想定以上のダメージを受けた場合、以前のチェックポイントに戻って別のアプローチを試すことができます。</description>
-										<content:encoded>&lt;p&gt;本記事は 2025 年 11 月 17 日に公開された Jonathan Vogel と Dan Kiuna による &lt;a href="https://kiro.dev/blog/introducing-checkpointing/"&gt;“Never lose your way: Introducing checkpointing in Kiro”&lt;/a&gt; を翻訳したものです。&lt;/p&gt; 
-&lt;p&gt;開発者なら誰もが経験したことがあるでしょう。AI コーディングアシスタントと一緒に作業していて、機能開発が順調に進んでいる。エージェントが一連の変更を行い、ファイルを更新し、コードをリファクタリングし、新しい機能を追加する。そして突然、何かがうまくいかなくなる。エージェントが要件を誤解したのかもしれない。あなたのアーキテクチャに合わない前提を置いたのかもしれない。あるいは、単に別のアプローチを試したくなったのかもしれない。&lt;/p&gt; 
-&lt;p&gt;課題はコードの変更を元に戻すことだけではありません。会話のコンテキストを失うことが問題なのです。ファイルを元に戻すことはできても、AI との対話のどこにいたのかを再構築しようとすることになります。フローが途切れ、軌道に戻るには時間と精神的なエネルギーが必要になります。&lt;/p&gt; 
-&lt;p&gt;恐れることなく実験できたらどうでしょうか？ AI アシスタントに大胆なリファクタリングに取り組ませても、計画通りに進まなければ即座に巻き戻せることがわかっていたらどうでしょうか？それが、チェックポイント機能が AI 支援開発にもたらす確信です。&lt;/p&gt; 
-&lt;p&gt;&lt;span id="more-169970"&gt;&lt;/span&gt;&lt;/p&gt; 
-&lt;h2&gt;チェックポイント機能とは？&lt;/h2&gt; 
-&lt;p&gt;&lt;strong&gt;チェックポイント機能は、開発セッション中の任意の時点まで Kiro の変更を巻き戻す機能を提供します。&lt;/strong&gt;Kiro がコードベースを変更すると、チャット履歴に自動的にチェックポイントマーカーが作成されます。ビデオゲームのオートセーブポイントのようなものだと考えてください。物事がうまくいかず、想定以上のダメージを受けた場合、以前のチェックポイントに戻って別のアプローチを試すことができます。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;各チェックポイントは、そのセッション中に Kiro が行った特定の変更を記録します。&lt;/strong&gt;ワンクリックで、エージェントがそのチェックポイント以降に行ったファイルの変更を元に戻すことができ、その復元ポイントまでの会話履歴は保持されます。コンテキストを保ち、不要な変更を元に戻し、構築作業に戻ることができます。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;重要: チェックポイント機能は、現在のセッション中に Kiro が行った変更のみを元に戻します。&lt;/strong&gt;コードベース全体を保存するわけではなく、この特定のセッションで AI エージェントが変更したファイルのみを復元できます。&lt;strong&gt;注意:&lt;/strong&gt; チェックポイントを復元すると、Kiro の変更だけでなく、Kiro が触れたファイルの&lt;em&gt;完全な状態&lt;/em&gt;が元に戻ります。チェックポイント後にあなたや他のツールがそれらの同じファイルに編集を加えた場合、それらの編集も失われます。Kiro で構築しながら手動でコードを編集したり、他のシステムがファイルを変更したりしている場合は、必ずバージョン管理を使用してください。&lt;/p&gt; 
-&lt;h2&gt;チェックポイント機能が重要な理由&lt;/h2&gt; 
-&lt;p&gt;AI 支援開発は強力ですが、完璧ではありません。大規模言語モデルは本質的に確率論的です。正しい判断をすることもあれば、そうでないこともあります。重要なのは、開発者であるあなたにプロセスのコントロールを与えることです。&lt;/p&gt; 
-&lt;p&gt;チェックポイント機能がなければ、AI が生成するすべての変更にはリスクが伴います。何かがうまくいかなかった場合のクリーンアップを心配して、Kiro に複雑なリファクタリングに取り組ませることをためらうかもしれません。各変更をレビューするのに、自分でコードを書くよりも多くの時間を費やすかもしれません。進捗を失うことへの恐れが、実際にあなたの作業を遅くする可能性があります。&lt;/p&gt; 
-&lt;p&gt;チェックポイント機能はその状況を変えます。Kiro により大きな挑戦をさせる自信を与えます。別のアーキテクチャアプローチを試したいですか？やってみましょう。うまくいかなければ、開始地点からワンクリックで戻れます。新しいライブラリを試したいですか？問題ありません。必要なときにチェックポイントがあります。&lt;/p&gt; 
-&lt;h2&gt;仕組み&lt;/h2&gt; 
-&lt;p&gt;Kiro のチェックポイント機能は、必要になるまで見えないように設計されています。チェックポイントを作成したり、手動で管理したりする必要はありません。Kiro がそれを処理します。&lt;/p&gt; 
-&lt;p&gt;Kiro と作業すると、チャットインターフェースにチェックポイントラインが自動的に表示されます。タスクを開始する前にチェックポイントが作成されます。これらの視覚的なマーカーにより、開発セッションの構造を一目で簡単に確認できます。&lt;/p&gt; 
-&lt;p&gt;元に戻したいときは、任意のチェックポイントラインの「復元」ボタンをクリックするだけです。Kiro はすべてを巻き戻します。エージェントが行ったすべてのファイル変更と会話履歴を元に戻し、その正確な瞬間に戻します。メッセージを入力したがまだ送信していなかった場合、それはチャットウィンドウにあり、編集または送信する準備ができています。開発セッションのタイムトラベルのようなものです。コードの状態だけでなく、どこにいて何を考えていたかの完全なコンテキストを取り戻すことができます。&lt;/p&gt; 
-&lt;h2&gt;チェックポイント機能と仕様駆動開発&lt;/h2&gt; 
-&lt;p&gt;チェックポイント機能は、Kiro の仕様駆動開発ワークフローと自然に連携します。仕様を進めているとき、特定の要件を実装するために異なるアプローチを試したいことがあるかもしれません。チェックポイント機能は、その探索をリスクフリーにします。また、チェックポイントを使用して、仕様の主要なマイルストーンの完了をマークすることもできます。認証システムの実装が完了しましたか？それがチェックポイントです。データレイヤーが完成しましたか？これもまたチェックポイントです。これらのマーカーは、進捗の明確なマップを提供し、変更を加える必要がある場合に以前の段階を簡単に戻れるようにします。&lt;/p&gt; 
-&lt;h2&gt;実際のシナリオ&lt;/h2&gt; 
-&lt;p&gt;チェックポイント機能が輝くいくつかのシナリオを見てみましょう。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;安全な実験&lt;/strong&gt;: 特定のリファクタリングがコードのパフォーマンスを向上させるかどうか気になっています。Kiro に変更を加えさせ、ベンチマークを実行します。結果が期待通りでなければ、チェックポイントに戻ります。問題ありません。リスクなしに実験できる能力は非常に解放感があります。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;反復的な改善&lt;/strong&gt;: 適切なソリューションを見つける前に、いくつかのバリエーションを試す必要がある場合があります。チェックポイント機能を使えば、迅速に反復作業が可能です。手法を試行し、評価し、必要なら元に戻して再挑戦できます。各反復は前回の教訓を基に構築されますが、失敗した試行の残骸でコードベースが散らかることはありません。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;異なる実装の探索&lt;/strong&gt;: 新しい API エンドポイントを構築していて、REST と GraphQL のどちらを使用するか確信が持てません。まず Kiro に REST として実装するよう依頼します。コードをレビューし、テストし、感触を確かめます。しっくりこない？チェックポイントに戻り、代わりに GraphQL を試すよう Kiro に依頼します。同じ会話、異なるアプローチ、手動クリーンアップはゼロです。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;誤解からの回復&lt;/strong&gt;: Kiro に「ユーザーサービスに認証を追加して」と依頼します。Kiro は OAuth2 を実装しますが、実際には単純な API キーが必要でした。数十のファイル変更を手動で元に戻す代わりに、Kiro が開始する前のチェックポイントに戻り、要件を明確にします。Kiro は今度は正しいアプローチで再度試みます。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/18/checkpointing.gif"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/18/checkpointing.gif" alt="" width="800" height="498" class="alignnone size-full wp-image-169981"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;h2&gt;AI 支援開発における信頼の構築&lt;/h2&gt; 
-&lt;p&gt;チェックポイント機能の真の力は、変更を元に戻す能力だけではありません。それは、異なる働き方をする自信を与えることです。&lt;/p&gt; 
-&lt;p&gt;チェックポイント機能があれば、AI 支援開発をトランザクションではなく会話のように扱うことができます。アイデアを探求し、仮説をテストし、間違っていることのコストを心配することなく迅速に反復できます。セーフティネットがあることがわかっているので、Kiro により複雑なタスクを処理させることができます。&lt;/p&gt; 
-&lt;p&gt;この考え方の変化は微細ながら重要です。Kiro のあらゆる動作を細かく制御する代わりに、構築しようとしているものとその理由という大局に集中できます。「これが失敗したら」という不安に精神を消耗する代わりに、「これが成功したら」という可能性にエネルギーを注げるのです。&lt;/p&gt; 
-&lt;h2&gt;チェックポイント機能とバージョン管理&lt;/h2&gt; 
-&lt;p&gt;明確にしておきましょう: チェックポイント機能はバージョン管理の代替ではありません。開発ワークフローの一部として、Git (または好みのバージョン管理システム) を引き続き使用する必要があります。バージョン管理を長期的なプロジェクト履歴とコラボレーションツールと考え、チェックポイント機能を短期的な実験と反復ツールと考えてください。&lt;/p&gt; 
-&lt;p&gt;チェックポイント機能は、Kiro とアイデアを探求し、迅速に反復しているアクティブな開発セッション中に輝きます。満足のいくアプローチに落ち着いたら、通常どおりバージョン管理にコミットします。2 つのツールは異なる目的を果たし、一緒に使うのが最適です。&lt;/p&gt; 
-&lt;h2&gt;自分で試してみましょう&lt;/h2&gt; 
-&lt;p&gt;チェックポイント機能は現在 Kiro で利用可能です。何も設定したり、作業方法を変更したりする必要はありません。Kiro との会話を開始し、いくつかの変更を加えると、チェックポイントラインが表示されます。元に戻す必要があるときは、それらがあなたを待っています。&lt;/p&gt; 
-&lt;p&gt;私たちは、AI 支援開発のコントロールを減らすのではなく、強化するために Kiro を構築しました。チェックポイント機能は、そのビジョンの中核をなす部分です。それは、AI を開発プロセスの真のパートナーにすることです。恐れることなく探求し、実験し、反復する自由を与えるパートナーです。&lt;/p&gt; 
-&lt;p&gt;自信を持ってコーディングする準備はできましたか？&lt;a href="https://kiro.dev/downloads/"&gt;Kiro をダウンロード&lt;/a&gt;して、チェックポイント機能が AI との作業方法をどのように変えるかを確認してください。&lt;/p&gt; 
-&lt;hr&gt; 
-&lt;p&gt;&lt;em&gt;チェックポイント機能について質問がありますか、または使用方法を共有したいですか？&lt;a href="https://discord.gg/kirodotdev"&gt;Discord コミュニティ&lt;/a&gt;で会話に参加するか、&lt;a href="https://x.com/kirodotdev"&gt;X&lt;/a&gt;、&lt;a href="https://www.linkedin.com/showcase/kirodotdev"&gt;LinkedIn&lt;/a&gt;、&lt;a href="https://bsky.app/profile/kiro.dev"&gt;Bluesky&lt;/a&gt; でフォローしてください。&lt;/em&gt;&lt;/p&gt;</content:encoded>
 					
 		
 		
