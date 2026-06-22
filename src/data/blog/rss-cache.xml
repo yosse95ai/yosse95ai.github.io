@@ -5,7 +5,7 @@
 	<atom:link href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/" rel="self" type="application/rss+xml"/>
 	<link>https://aws.amazon.com/jp/blogs/news/</link>
 	<description/>
-	<lastBuildDate>Mon, 15 Jun 2026 23:20:19 +0000</lastBuildDate>
+	<lastBuildDate>Thu, 18 Jun 2026 03:05:28 +0000</lastBuildDate>
 	<language>ja</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -13,6 +13,42 @@
 	1	</sy:updateFrequency>
 	
 	<item>
+		<title>Kiro for iOS のご紹介</title>
+		<link>https://aws.amazon.com/jp/blogs/news/introducing-kiro-for-ios/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Thu, 18 Jun 2026 03:05:28 +0000</pubDate>
+				<category><![CDATA[Artificial Intelligence]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">224fbd1cacbdfa1474e822a1bdfcc2f2e4aa208f</guid>
+
+					<description>Kiro のネイティブ iOS アプリが登場しました。スマートフォンから直接、クラウド上で動作する Kiro セッションの起動、監視、軌道修正、対話が可能になり、chat / spec / autonomous の 3 モードに対応します。差分はネイティブカードで読みやすく描画され、Web セッションと ID・設定・モデルがそのまま同期されます。ノート PC を開かずとも、移動中や待ち時間にエージェントへ作業を委譲し、後から PR として確認できます。</description>
+										<content:encoded>&lt;p&gt;本記事は 2026 年 6 月 17 日に公開された Kyle Seaman による “&lt;a href="https://kiro.dev/blog/introducing-kiro-for-ios/" target="_blank" rel="noopener"&gt;Introducing Kiro for iOS&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;2026 年 6 月 17 日、本格的な開発業務に対応するネイティブ iOS アプリとして Kiro を提供開始します。これにより、開発者へ自分のスマートフォンから直接、Kiro セッションの起動、監視、軌道修正、対話を行える新たなインターフェースをご提供します。つまり、ノート PC を起動していなくても、セッションを開始し、完了したら戻って確認し、差分をレビューし、変更を承認するといった作業を、作業から離れずに行えるようになります。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-187906"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;p&gt;リモートセッションが Kiro を使う標準的な方法になるにつれて、スマートフォンは仕事とつながり続ける自然な場所になります。Web セッションの延長線上にあるものとお考えください。短い確認を入れるだけでセッションを前に進められ、不要な手戻りを防ぎ、適切なコンテキストでエージェントが作業を進められるよう支援できます。選択できるモードは chat、spec、autonomous の 3 つです。質問するために短時間のチャットセッションを開く、要件を同期し続けるために仕様 (spec) 駆動のワークフローを継続する、タスクを完全に委譲するために autonomous セッションを開始するなど、いずれの場合も、電車の中やランチが届くのを待っている間に、ノート PC を一度も開くことなく行えるようになりました。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/hero.png"&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/hero.png" alt="" width="1600" height="1280" class="alignnone size-full wp-image-187908"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;h2 id="cloud-sessions-that-never-stop"&gt;止まらないクラウドセッション&lt;/h2&gt; 
+&lt;p&gt;アプリを開くと、Kiro はクラウドセッションのライブな状態を読み込み、アクティブなスレッド、承認、プロジェクトのコンテキストを横断して作業できるようにします。エージェントの応答はリアルタイムにストリーミング表示され、ツールの実行状況もインラインで表示されます。また、autonomous モードでは、計画からコードレビューまでの実行ステータスが、人間の介入なしに表示されます。エージェントはクラウド上で独立して動作するため、起動状態を保つデスクトップ、接続用の VPN、夜通し動かしておくマシンを必要とせず、常時稼働かつ常時アクセス可能です。&lt;/p&gt; 
+&lt;h2 id="diffs-built-for-mobile"&gt;モバイルのために設計された差分表示&lt;/h2&gt; 
+&lt;p&gt;差分はファイルヘッダー付きのネイティブな差分カード（追加 / 削除）として描画されるため、小さな画面でもコードが読みやすく、全体をすばやく見渡せます。PR とコードレビューのステータスは、すべてのセッション行で一目で確認できます。レスポンシブな Web レイアウトはスマートフォンでコードを読むのに適した形ではないと分かっているからこそ、私たちはネイティブで作りました。&lt;/p&gt; 
+&lt;h2 id="start-work-check-back-later"&gt;作業を開始して、後で確認する&lt;/h2&gt; 
+&lt;p&gt;Kiro では、作業を委譲し、その場を離れ、PR として戻ってくることができるようになりました。仕様駆動のワークフローを継続すれば、Kiro が中断したところから引き継ぎます。あるいは、スマートフォンまたは Web から autonomous セッションを起動すれば、Kiro はクラウドサンドボックス内で独立して動作し、ファイルを調査してテストを実行します。Kiro が入力を必要とすると、いったん停止します。あなたはどこからでも応答して方向性を選べば、中断した地点から作業が再開されます。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/context.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/context.png" alt="" width="1294" height="864" class="alignnone size-full wp-image-187909"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;h2 id="same-agent-same-context"&gt;同じエージェント、同じコンテキスト&lt;/h2&gt; 
+&lt;p&gt;Kiro Web で開始したセッションは、同じ ID、同じ設定、同じモデルで自動的に表示されます。Google、GitHub、IAM、または Builder ID でサインインすれば、リポジトリ、認証情報、サンドボックスの状態がそのまま保持され、更新内容はリアルタイムでスマートフォンに表示されます。&lt;/p&gt; 
+&lt;p&gt;単一のビューから、異なるリポジトリをまたいで動作する複数のセッションを管理し、プルリクエストを監視し、セッション単位でフロンティアモデルとオープンウェイトモデルから選択できます。すべてが Kiro から自動的に同期されるため、接点をまたいでも失われるものはありません。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/sessions.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/sessions.png" alt="" width="1294" height="864" class="alignnone size-full wp-image-187910"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;新しいアイデアがふと浮かんだら、chat、spec、autonomous のいずれかのモードを選び、GitHub からリポジトリを接続し、モデルを選択してメッセージを送信するだけで、その場で直接セッションを作成できます。別のコンテキストウィンドウを持つ別アプリではなく、あなたについてくる 1 つのエージェントです。&lt;/p&gt; 
+&lt;h2 id="get-started-"&gt;はじめる&lt;/h2&gt; 
+&lt;p&gt;Kiro の iOS は、Kiro Pro、Pro+、Pro Max、Power のお客様向けに提供いたします。&lt;a href="https://kiro.dev/mobile/#notify" target="_blank" rel="noopener"&gt;早期アクセスをリクエスト&lt;/a&gt;いただければ、順番にご案内します。Kiro CLI、Web、IDE で利用しているものと同じ ID でサインインでき、セッション、モデル設定、接続済みリポジトリが自動的に同期されます。iOS 26 以降が必要です。&lt;/p&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村 が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
 		<title>Kiro Pro Max の紹介 (月額 $100): クレジットは多く、コストの迷いは少なく</title>
 		<link>https://aws.amazon.com/jp/blogs/news/kiro-pro-max/</link>
 		
@@ -65,7 +101,7 @@
 &lt;p&gt;&lt;span id="more-184981"&gt;&lt;/span&gt;&lt;/p&gt; 
 &lt;h2 id="run-tasks-in-parallel"&gt;タスクの並列実行&lt;/h2&gt; 
 &lt;p&gt;Spec で「Run all Tasks」をクリックすると、Kiro はタスクリストを分析し、同時に実行できるタスクを特定するようになりました。タスクリストの多くは真に逐次的ではありません。依存関係があります。タスク 2 とタスク 3 がどちらもタスク 1 に依存しているとしても、互いには依存していないことがあります。順番に実行するのは時間の無駄です。Kiro はタスクリストから依存グラフを構築し、同じファイルに書き込むタスク、以前のタスクのコードをテストするタスク、真に独立しているタスクを識別します。同じファイルを扱うタスクは並列実行されません。セットアップやインフラ作業が最初に実行されます。テストはそれが検証するコードの後に実行されます。それ以外はすべて同時に実行され、同時実行されるウェーブ (wave) にグループ化されます。各タスクは独立したコンテキストで実行されるため、タスク間で状態が漏洩することはありません。タスクが失敗しても、他のタスクは実行を続けます。どれが成功し、どれが注意を要するかを確認できます。以前の作業に依存するタスクは引き続き順番を待ちます。並列実行のために設定は不要です。「Run all Tasks」をクリックすれば、Kiro が残りを処理します。独立したタスクが複数ある Spec では、すぐに違いを実感できるでしょう。私たちの経験では、大きな Spec の実装時間が 1 時間超から約 4 分の 1 に短縮されるケースも見られています。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/05/13/parallel-tasks.png"&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/05/13/parallel-tasks.png" alt="並列タスク実行：独立したタスクがウェーブ (wave) にグループ化されて同時実行される依存グラフ" width="2560" height="1381" class="alignnone size-full wp-image-184985"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/05/13/parallel-tasks.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/05/13/parallel-tasks.png" alt="並列タスク実行：独立したタスクがウェーブ (wave) にグループ化されて同時実行される依存グラフ" width="2560" height="1381" class="alignnone size-full wp-image-184985"&gt;&lt;/a&gt;&lt;/p&gt; 
 &lt;h2 id="fast-track-specs-with-quick-plan-mode"&gt;Quick Plan モードで Spec を高速化&lt;/h2&gt; 
 &lt;p&gt;標準の Spec フローには 3 つのフェーズがあります。要件、設計、タスクです。次のフェーズに進む前にそれぞれを承認します。これは未知の領域を探索するときに価値を発揮します。しかし、スコープを明確に把握している、よく理解された機能の場合、Quick Plan モードを使うと正確さを犠牲にせず速く進められます。&lt;/p&gt; 
 &lt;p&gt;プロンプトに基づいて、Kiro は事前に確認事項（スコープ、制約、エッジケース）を質問し、要件・設計・タスクを一度に自動生成します。質問する前に、Kiro はワークスペースをスキャンして言語・フレームワーク・プロジェクト構造を検出し、質問をあなたのスタックに特化したものにします。質問は 4 つの軸を対象とします。スコープと制約、説明の曖昧さ、実装の分岐点、機能の方向性に関する決定です。タスクリストが完成したら、すぐにビルドに取りかかれます。成果物は引き続き作成・保存され、エージェントが実行時に使用します。後から確認・編集することも可能です。タスクの変更を依頼した場合は、タスクのみが再生成されます。設計を調整した場合は、設計とタスクが再構築されます。スコープを変更した場合は、要件からパイプライン全体が再実行されます。Kiro は影響を受ける部分のみを再生成します。&lt;/p&gt; 
@@ -480,205 +516,6 @@
 &lt;p&gt;&lt;u&gt;謝辞&lt;/u&gt;&lt;/p&gt; 
 &lt;p&gt;エンジニアリングの洞察と貴重なフィードバックを提供してくれた Al Harris に感謝します。&lt;/p&gt; 
 &lt;p class="text-sm"&gt;本記事は 2026 年 2 月 5 日に公開された Pardis Pashakhanloo と Rajdeep Mukherjee による “&lt;a target="_blank" href="https://kiro.dev/blog/refactoring-made-right/" rel="noopener"&gt;Refactoring made right: how program analysis makes AI agents safe and reliable&lt;/a&gt;” を翻訳したものです。翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>AWS Transform custom: AI 駆動 Java モダナイゼーションで技術的負債を削減</title>
-		<link>https://aws.amazon.com/jp/blogs/news/aws-transform-custom-ai-driven-java-modernization-to-reduce-tech-debt/</link>
-		
-		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
-		<pubDate>Mon, 09 Feb 2026 00:03:24 +0000</pubDate>
-				<category><![CDATA[Artificial Intelligence]]></category>
-		<category><![CDATA[AWS Transform]]></category>
-		<category><![CDATA[Generative AI]]></category>
-		<category><![CDATA[Developer Tools]]></category>
-		<category><![CDATA[Development]]></category>
-		<category><![CDATA[DevOps]]></category>
-		<category><![CDATA[Java]]></category>
-		<category><![CDATA[Modernization]]></category>
-		<guid isPermaLink="false">b62f0690fea9ca146b82576bf5cf6d47a3f4f06c</guid>
-
-					<description>今日の急速に進化するソフトウェア環境において、Java アプリケーションの保守とモダナイゼーションは、多くの組織が直面する重要な課題です。新しい Java バージョンがリリースされ、ベストプラクティスが進化するにつれて、効率的なコード変換の必要性がますます重要になっています。この記事では、Java アップグレード用の AWS Transform custom のすぐに使える変換を活用する方法について説明します。この記事の最後までに、変換プロセスを完全に制御しながら、これらの標準化された変換を使用して Java アプリケーションを効率的にモダナイズする方法を理解できるようになります。</description>
-										<content:encoded>&lt;p&gt;本記事は 2026 年 2 月 4 日に公開された Venugopalan Vasudevan、Dinesh Balaaji Prabakaran、Sureshkumar Natarajan、Anjan Dave による “&lt;a href="https://aws.amazon.com/blogs/devops/aws-transform-custom-ai-driven-java-modernization-to-reduce-tech-debt/" target="_blank" rel="noopener"&gt;AWS Transform custom: AI-driven Java modernization to reduce tech debt&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
-&lt;p&gt;今日の急速に進化するソフトウェア環境において、Java アプリケーションの保守とモダナイゼーションは、多くの組織が直面する重要な課題です。新しい Java バージョンがリリースされ、ベストプラクティスが進化するにつれて、効率的なコード変換の必要性がますます重要になっています。今日の組織は、Java アプリケーションをモダナイズする際に大きな課題に直面しています。レガシーコードベースには、パフォーマンスと保守性を妨げる古いパターン、非推奨の API、非効率な実装が含まれていることがよくあります。従来の手動リファクタリングアプローチは時間がかかり、エラーが発生しやすく、大規模なコードベース全体に拡張することが困難です。さらに、開発者が新規開発とデプロイにより多くの時間を費やすにつれて、技術的負債の量は増え続け、レガシーコードの大規模な変換が必要になります。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://aws.amazon.com/transform/custom/" target="_blank" rel="noopener"&gt;AWS Transform custom&lt;/a&gt; は、インテリジェントな自動化を通じてこれらの課題に対処し、Java バージョンアップグレードなどの一般的なシナリオ向けの標準化された変換パッケージである &lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/transform-aws-customs.html" target="_blank" rel="noopener"&gt;AWS マネージド変換 (AWS-Managed Transformation)&lt;/a&gt; を提供します。これらの変換により、チームは大規模に実行できる標準化されテスト済みの変換パターンを通じて迅速な成果を達成でき、お客様に大幅な時間とコストの削減をもたらします。さらに、お客様はカスタム&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom-workflows.html#custom-create-custom-transformations" target="_blank" rel="noopener"&gt;ユーザー定義のカスタム変換&lt;/a&gt;を作成して、言語、フレームワークなどにわたるコード変換で技術的負債に対処できます。&lt;/p&gt; 
-&lt;p&gt;&lt;span id="more-177995"&gt;&lt;/span&gt;&lt;/p&gt; 
-&lt;p&gt;この記事では、Java アップグレード用の AWS Transform custom のすぐに使える変換を活用する方法について説明します。この記事の最後までに、変換プロセスを完全に制御しながら、これらの標準化された変換を使用して Java アプリケーションを効率的にモダナイズする方法を理解できるようになります。&lt;/p&gt; 
-&lt;h2&gt;AWS Transform custom の紹介&lt;/h2&gt; 
-&lt;p&gt;AWS Transform custom は、エージェント型 AI を使用して大規模なコードモダナイゼーションを自動化し、プログラミング言語のバージョンアップグレード、API の移行、フレームワークの更新、組織固有の変換を処理します。継続的な学習を通じて、エージェントは各実行と開発者からのフィードバックから改善を重ね、専門的な自動化技術が不要な高品質で再現性のある変換を実現します。&lt;/p&gt; 
-&lt;h2&gt;前提条件&lt;/h2&gt; 
-&lt;p&gt;AWS Transform custom で Java モダナイゼーションの旅を始める前に、必要な開発環境、ビルドツール、AWS Transform custom コマンドラインインターフェイス (CLI) がインストールされていることを確認してください。詳細な前提条件とセットアップ手順については、&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom-get-started.html#custom-prerequisites" target="_blank" rel="noopener"&gt;AWS Transform custom 利用の前提条件&lt;/a&gt;を参照してください。&lt;/p&gt; 
-&lt;h2&gt;モダナイゼーションシナリオの理解&lt;/h2&gt; 
-&lt;p&gt;&lt;a href="https://github.com/aws-samples/aws-appconfig-java-sample/tree/aws-appconfig-java-sample-gradle" target="_blank" rel="noopener"&gt;Movie Service アプリケーション&lt;/a&gt;を使用して AWS Transform custom を実演します。これは、Gradle を使用した Java 8 上に構築された Spring Boot REST API です。これは、レガシーな依存関係、古いパターン、技術的負債を伴う典型的なエンタープライズモダナイゼーションの課題を表しています。&lt;/p&gt; 
-&lt;h2&gt;AWS マネージド変換 (AWS-Managed Transformation) の活用&lt;/h2&gt; 
-&lt;p&gt;AWS Transform custom は、Java バージョンアップグレードなどの一般的なモダナイゼーションタスク向けに設計された AWS マネージド変換 (AWS-Managed Transformation) の活用に焦点を当てています。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;AWS マネージド変換 (AWS-Managed Transformation) &lt;/strong&gt;は、追加のセットアップなしですぐに使用できる、一般的なユースケース向けの事前構築された AWS 検証済みの変換です。これらの変換は、最小限の設定で即座に価値を提供し、標準的なアップグレードシナリオに最適です。&lt;/p&gt; 
-&lt;h3&gt;AWS Transform custom CLI 機能の理解&lt;/h3&gt; 
-&lt;p&gt;AWS Transform custom は、インタラクティブと自動化の両方の変換ワークフローを可能にする包括的なコマンドラインインターフェイスを提供します。&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="language-bash"&gt;atx --version                    # ATX のバージョンを表示
-atx --help                       # 一般的なヘルプを表示
-atx custom def list              # 変換パッケージの一覧
-atx                              # インタラクティブな会話の開始
-&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;利用可能なすべてのコマンドの詳細については、&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom-command-reference.html" target="_blank" rel="noopener"&gt;AWS Transform custom コマンドリファレンス&lt;/a&gt;を参照してください。&lt;/p&gt; 
-&lt;p&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig1.png" alt="Screenshot of AWS Transform custom interactive mode."&gt;&lt;br&gt; &lt;em&gt;図 1: AWS Transform custom インタラクティブモード&lt;/em&gt;&lt;/p&gt; 
-&lt;h3&gt;利用可能な変換の検出&lt;/h3&gt; 
-&lt;p&gt;&lt;code&gt;atx custom def list&lt;/code&gt; を使用して、AWS マネージド変換 (AWS-Managed Transformation) と組織によって作成されたカスタム定義（ユーザー定義）変換を含む、利用可能なすべての変換を表示します。主要な AWS マネージド変換 (AWS-Managed Transformation) には、Java/Python/Node.js バージョンアップグレードと AWS SDK 移行が含まれます。&lt;/p&gt; 
-&lt;p&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig2.png" alt="Screenshot of AWS Transform interface displaying categorized lists of AWS Managed transformations and user-defined custom
-transformations."&gt;&lt;br&gt; &lt;em&gt;図 2: AWS Transform custom は利用可能な AWS マネージド変換 (AWS-Managed Transformation) とカスタム定義（ユーザー定義）変換をリスト表示&lt;/em&gt;&lt;/p&gt; 
-&lt;h3&gt;AWS マネージド変換 (AWS-Managed Transformation) の適用&lt;/h3&gt; 
-&lt;p&gt;変換を適用する前に、プロジェクトが Git で初期化されており、すべてのビルドとテストケースが Java 8 で正しく動作していることを確認してください（必要に応じて、適切なビルドコマンドオプションとエージェントへの指示を使用してテストケースをスキップできます）。Gradle プロジェクトの場合、&lt;code&gt;./gradlew build&lt;/code&gt; が正常に実行されることを確認してください。&lt;/p&gt; 
-&lt;p&gt;変換プロセスは構造化されたアプローチに従います。&lt;/p&gt; 
-&lt;ol&gt; 
- &lt;li&gt;&lt;strong&gt;クリーンな Git 状態の確保:&lt;/strong&gt;&lt;/li&gt; 
-&lt;/ol&gt; 
-&lt;pre&gt;&lt;code class="language-bash"&gt;git status
-git add .
-git commit -m "Baseline before Java 21 transformation"
-&lt;/code&gt;&lt;/pre&gt; 
-&lt;ol start="2"&gt; 
- &lt;li&gt;&lt;strong&gt;変換の適用:&lt;/strong&gt; インタラクティブモードまたはダイレクトコマンドモードのいずれかを使用して変換を適用できます。このブログでは、プロセスをステップバイステップで説明するためにインタラクティブモードを使用します。&lt;/li&gt; 
-&lt;/ol&gt; 
-&lt;p&gt;&lt;strong&gt;インタラクティブモード（このブログで使用）:&lt;/strong&gt;&lt;/p&gt; 
-&lt;p&gt;まず、変換設定を含む &lt;code&gt;config.json&lt;/code&gt; ファイルを作成します。&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="language-json"&gt;{
-  "codeRepositoryPath": "/path/to/your/aws-appconfig-java-sample-gradle",
-  "transformationName": "AWS/java-version-upgrade",
-  "buildCommand": "./gradlew clean build",
-  "validationCommands": "build and validate using \"./gradlew clean build\" after transformation to test with java 21",
-  "additionalPlanContext": "This is a Java 8 to 21 transformation of a gradle app , also include all dependency migration as well. Use java path /path/to/your/java-8/bin/java and /path/to/your/java-21/bin/java when building before and after transformation. We are using gradle wrapper gradlew, update it if needed for java 21 upgrade. Check for deprecated methods and dependencies and update them."
-}
-&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;config.json の &lt;code&gt;codeRepositoryPath&lt;/code&gt; をローカルプロジェクトディレクトリを指すように更新し、&lt;code&gt;additionalPlanContext&lt;/code&gt; の Java パスを Java 8 と 21 のインストールに合わせて更新します。設定ファイルとそのパラメータの詳細については、&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom-workflows.html" target="_blank" rel="noopener"&gt;設定ファイルの使用&lt;/a&gt;を参照してください。&lt;/p&gt; 
-&lt;p&gt;次に、インタラクティブモードで変換を実行します（このブログのウォークスルーで使用）。&lt;/p&gt; 
-&lt;pre&gt;&lt;code&gt;For Java version upgrade with Gradle using config.json (Interactive Mode):
-atx custom def exec -t --configuration file://config.json
-&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig3.png" alt="Screenshot of AWS Transform interface displaying categorized lists of AWS Managed transformations and user-defined custom transformations."&gt;&lt;br&gt; &lt;em&gt;図 3: AWS Transform custom は config.json から提供された変換設定を使用してインタラクティブモードで gradle 変換を実行&lt;/em&gt;&lt;/p&gt; 
-&lt;p&gt;ダイレクトコマンドモード（代替アプローチ）: 自動化された CI/CD パイプラインや、インタラクティブなプロンプトなしで変換を実行したい場合は、このモードを使用します。&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="language-bash"&gt;atx custom def exec -x -t --configuration "file://config.json"
-&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;&lt;strong&gt;パラメータの説明:&lt;/strong&gt; &lt;/p&gt; 
-&lt;p&gt;– &lt;code&gt;--configuration&lt;/code&gt;: インタラクティブモード用の設定ファイルを指定&lt;/p&gt; 
-&lt;p&gt;– &lt;code&gt;-x&lt;/code&gt;: インタラクティブなプロンプトなしで変換を自動的に実行（ダイレクトモード）&lt;/p&gt; 
-&lt;p&gt;– &lt;code&gt;-t&lt;/code&gt;: 実行中の検証のためのテストモードを有効化（ダイレクトモード）&lt;/p&gt; 
-&lt;p&gt;&lt;code&gt;--configuration&lt;/code&gt;: file:// プレフィックス付きの設定ファイルパスを指定（ダイレクトモード）&lt;/p&gt; 
-&lt;p&gt;ATX 実行コマンド &lt;em&gt;ATX CLI を使用した Gradle プロジェクト用の AWS マネージド Java バージョンアップグレード変換の実行&lt;/em&gt;&lt;/p&gt; 
-&lt;ol start="3"&gt; 
- &lt;li&gt;&lt;strong&gt;変換計画のレビュー:&lt;/strong&gt; AWS Transform custom は、&lt;code&gt;config.json&lt;/code&gt; で提供された設定に基づいてプロジェクトを分析し、包括的な変換計画を生成します。この計画には、以下を含むすべての提案された変更が詳細に記載されています。&lt;/li&gt; 
-&lt;/ol&gt; 
-&lt;ul&gt; 
- &lt;li&gt;&lt;strong&gt;Java バージョンの更新&lt;/strong&gt;: Java 8 から Java 21 設定への移行&lt;/li&gt; 
- &lt;li&gt;&lt;strong&gt;API 移行パターン&lt;/strong&gt;: 非推奨 API と最新の代替手段の自動更新&lt;/li&gt; 
- &lt;li&gt;&lt;strong&gt;フレームワークのモダナイゼーション&lt;/strong&gt;: Spring Boot バージョンアップグレードと互換性の更新&lt;/li&gt; 
- &lt;li&gt;&lt;strong&gt;依存関係の変更&lt;/strong&gt;: Java 21 と互換性のある更新されたライブラリバージョン&lt;/li&gt; 
- &lt;li&gt;&lt;strong&gt;ビルドシステムの更新&lt;/strong&gt;: Java 21 互換性のための Gradle 設定とプラグインの変更&lt;/li&gt; 
- &lt;li&gt;&lt;strong&gt;コードパターンの改善&lt;/strong&gt;: 最新の Java 機能とベストプラクティスの実装&lt;/li&gt; 
-&lt;/ul&gt; 
-&lt;p&gt;変換計画が予想されるすべての更新を網羅していることを確認するために、徹底的なレビューを行うことをお勧めします。&lt;code&gt;config.json&lt;/code&gt; の &lt;code&gt;additionalPlanContext&lt;/code&gt; は、依存関係の移行と Gradle ラッパーの更新を含めるように変換をガイドするのに役立ちます。調整が必要な場合は、CLI インターフェイスを通じてフィードバックを提供してください。&lt;/p&gt; 
-&lt;p&gt;さらに、プロジェクトに含まれる追加のレガシー依存関係のアップグレードなど、追加の変更をターゲットにするために変換をカスタマイズしたい場合は、変換計画をレビューする際にフィードバックとして提供できます。AWS Transform custom は、続行する前に変換計画を改善するために提供されたすべてのフィードバックを組み込みます。&lt;/p&gt; 
-&lt;ol start="4"&gt; 
- &lt;li&gt;&lt;strong&gt;変換の適用:&lt;/strong&gt; 変換計画が要件を満たしていることを確認したら、&lt;code&gt;proceed&lt;/code&gt; と入力して Enter キーを押します。AWS Transform custom は、承認された計画に従って変換を実行します。&lt;/li&gt; 
-&lt;/ol&gt; 
-&lt;p&gt;変換プロセスは自動的に:&lt;/p&gt; 
-&lt;p&gt;– 新しいブランチを作成し、変換された変更をそこにコミット&lt;/p&gt; 
-&lt;p&gt;– Java 21 用の Gradle 設定を更新&lt;/p&gt; 
-&lt;p&gt;– Java EE から Jakarta EE パッケージへの移行（該当する場合）&lt;/p&gt; 
-&lt;p&gt;– Java 21 互換性のためのフレームワーク依存関係を更新&lt;/p&gt; 
-&lt;p&gt;– 必要なすべてのコード変更を適用&lt;/p&gt; 
-&lt;p&gt;– Java 21 互換性のためのテストケースとテストフレームワークを更新&lt;/p&gt; 
-&lt;p&gt;– 包括的な検証ビルドを実行&lt;/p&gt; 
-&lt;h3&gt;AWS マネージド変換 (AWS-Managed Transformation) の結果&lt;/h3&gt; 
-&lt;p&gt;Java バージョンアップグレード変換を適用した後、以下の変更が観察されます。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;設定の更新:&lt;/strong&gt;&lt;/p&gt; 
-&lt;p&gt;– Java バージョン: 8 → 21 &lt;/p&gt; 
-&lt;p&gt;– Spring Boot バージョンアップグレード &lt;/p&gt; 
-&lt;p&gt;– Gradle プラグインと設定の更新 &lt;/p&gt; 
-&lt;p&gt;– 依存関係バージョンのモダナイゼーション&lt;/p&gt; 
-&lt;p&gt;変更を検証するには、Java 21 に切り替えて &lt;code&gt;./gradlew build&lt;/code&gt; を実行し、変換が成功したことを確認してから、アプリケーション機能をテストします。&lt;/p&gt; 
-&lt;p&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig4.png" alt="Figure 4: displaying Updated Gradle Configuration Gradle build.gradle showing updated Java 21 configuration and modernized
-dependencies"&gt;&lt;br&gt; &lt;em&gt;図 4: 更新された Gradle 設定 – 更新された Java 21 設定とモダナイズされた依存関係を示す Gradle build.gradle&lt;/em&gt;&lt;/p&gt; 
-&lt;p&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig5.png" alt="Figure 5: Updated code where legacy pattern of raw types usage is transformed to generics"&gt;&lt;br&gt; &lt;em&gt;図 5: raw 型の使用というレガシーパターンがジェネリクスに変換された更新されたコード&lt;/em&gt;&lt;br&gt; &lt;br&gt; &lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig6.png" alt="Figure 6: Second example of updated code where legacy pattern of raw types usage is transformed to generics"&gt;&lt;br&gt; &lt;em&gt;図 6: raw 型の使用というレガシーパターンがジェネリクスに変換された更新されたコードの 2 番目の例&lt;/em&gt;&lt;br&gt; &lt;br&gt; &lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig7.png" alt="Figure 7: Updated dependency from javax.security to java.security and uses CertificateFactory to get X509Certificate"&gt;&lt;br&gt; &lt;em&gt;図 7: javax.security から java.security への依存関係の更新と CertificateFactory を使用した X509Certificate の取得&lt;/em&gt;&lt;br&gt; &lt;br&gt; &lt;img src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/atx_custom_java_fig8.png" alt="Figure 8: Updated Test cases from junit 4 to junit5"&gt;&lt;br&gt; &lt;em&gt;図 8: junit 4 から junit5 への更新されたテストケース&lt;/em&gt;&lt;/p&gt; 
-&lt;h2&gt;AWS マネージド変換 (AWS-Managed Transformation) を超えて: カスタム定義変換&lt;/h2&gt; 
-&lt;p&gt;AWS マネージド変換 (AWS-Managed Transformation) は標準的な Java モダナイゼーションシナリオに対して優れたカバレッジを提供しますが、利用可能な AWS マネージド変換 (AWS-Managed Transformation) が特定の変換要件に対応していない場合があります。このような状況では、AWS Transform custom により、ユーザーは独自の組織固有のカスタム定義変換を作成およびテストできます。&lt;/p&gt; 
-&lt;h3&gt;カスタム定義変換を作成するタイミング&lt;/h3&gt; 
-&lt;p&gt;カスタム定義変換は、独自のフレームワーク、組織固有のコーディング標準、複雑な複数ステップの移行シナリオなど、AWS マネージド変換 (AWS-Managed Transformation) が特定のニーズをカバーしていない場合に必要になります。&lt;/p&gt; 
-&lt;h3&gt;カスタム定義変換の作成&lt;/h3&gt; 
-&lt;p&gt;AWS Transform custom により、チームは変換ルールと設定ファイルを使用してカスタム変換を開発できます。これにより、組織は要件に固有の変換ロジックを定義し、サンプルコードでテストし、検証済みの変換をチーム間で共有できます。&lt;/p&gt; 
-&lt;p&gt;AWS Transform custom のインタラクティブモード（&lt;code&gt;atx&lt;/code&gt;）は、カスタム定義変換の作成に特に有益であり、会話型のインタラクションを可能にして要件を反復的に改善し、リアルタイムのフィードバックを得ることができます。カスタム定義変換は、AWS マネージド変換 (AWS-Managed Transformation) が特定のモダナイゼーションニーズを満たさない場合に、AWS Transform custom の機能を拡張する柔軟性を提供します。&lt;/p&gt; 
-&lt;h3&gt;継続的学習とナレッジアイテム&lt;/h3&gt; 
-&lt;p&gt;AWS Transform custom は、各変換実行から自動的に学習して将来の結果を改善します。特に Java アップグレードについては、サービスは成功したリファクタリング戦略、一般的な依存関係の競合、Java バージョン間のフレームワーク互換性マトリックスなどのパターンをキャプチャします。この知識は将来の変換にフィードバックされ、成功したアップグレードパスの予測がより正確になり、手動介入が減少します。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom-workflows.html#custom-continual-learning" target="_blank" rel="noopener"&gt;ナレッジアイテム&lt;/a&gt;はアカウント固有であり、AWS アカウントの境界内に留まります。ユーザーは継続的学習を有効または無効にでき、この設定を完全に制御できます。&lt;/p&gt; 
-&lt;h2&gt;まとめ&lt;/h2&gt; 
-&lt;p&gt;このブログでは、AWS マネージド変換 (AWS-Managed Transformation) を使用して AWS Transform custom が効率的な Java アプリケーションモダナイゼーションを可能にする方法を実演しました。Java 8 と Spring Boot 2.x で実行されているレガシー Movie Service アプリケーションから始めて、最新の依存関係とパターンを備えた Java 21 への変換に成功しました。&lt;/p&gt; 
-&lt;p&gt;ステップバイステップのプロセスでは、ベースラインの確立、&lt;code&gt;atx custom def list&lt;/code&gt; を使用した利用可能な変換の検出、AWS Transform custom の CLI を通じた変換の適用方法を示しました。その結果、更新された Java バージョン、Spring Boot アップグレード、拡張された switch 式やローカル変数型推論などの最新の Java 機能を備えた完全にモダナイズされたアプリケーションが得られました。これらすべてが、数週間の手動リファクタリングではなく数分で達成されました。&lt;/p&gt; 
-&lt;h3&gt;Java モダナイゼーションを超えて&lt;/h3&gt; 
-&lt;p&gt;Java モダナイゼーションを超えて、AWS Transform custom の変換機能は他のプログラミング言語とフレームワークに拡張され、多様なテクノロジースタック全体にわたる包括的なアプリケーションポートフォリオモダナイゼーションのための汎用的なソリューションとなっています。エージェントは、以下を含む多様な変換ユースケースをサポートします。&lt;/p&gt; 
-&lt;ul&gt; 
- &lt;li&gt;Java、Python、Node.js のバージョンアップグレード&lt;/li&gt; 
- &lt;li&gt;ランタイムと API の移行（AWS SDK v1→v2、Boto2→Boto3）&lt;/li&gt; 
- &lt;li&gt;フレームワークの移行とアップグレード&lt;/li&gt; 
- &lt;li&gt;言語の翻訳とアーキテクチャの変更&lt;/li&gt; 
- &lt;li&gt;組織固有のカスタム定義変換&lt;/li&gt; 
-&lt;/ul&gt; 
-&lt;p&gt;AWS Transform customは「定義は一度、変換はどこでも (define once, transform everywhere) 」というアプローチにより、組織全体で変換処理を一度定義し、反復可能なタスクを実行することで、変換知識の蓄積と拡大を実現します。これにより知識のサイロ化が解消され、チームやプロジェクトの範囲に関わらず一貫した品質が保証されます。&lt;/p&gt; 
-&lt;h3&gt;今すぐ始めましょう&lt;/h3&gt; 
-&lt;p&gt;AWS Transform custom で Java アプリケーションをモダナイズする準備はできましたか？開始方法は次のとおりです。&lt;/p&gt; 
-&lt;ol&gt; 
- &lt;li&gt;インストールスクリプトを使用して&lt;strong&gt;AWS Transform custom CLI (atx) のインストール&lt;/strong&gt;し、環境を確認&lt;/li&gt; 
- &lt;li&gt;&lt;code&gt;transform-custom:*&lt;/code&gt; 権限で &lt;strong&gt;AWS 認証情報の設定&lt;/strong&gt;&lt;/li&gt; 
- &lt;li&gt;&lt;code&gt;atx custom def list&lt;/code&gt; を使用して、&lt;strong&gt;利用可能な AWS マネージド変換 (AWS-Managed Transformation) を探索&lt;/strong&gt;&lt;/li&gt; 
- &lt;li&gt;ダイレクト実行モード（&lt;code&gt;atx custom def exec&lt;/code&gt;）またはインタラクティブモード（&lt;code&gt;atx&lt;/code&gt;）を使用して Java アプリケーションに&lt;strong&gt;変換の適用&lt;/strong&gt;&lt;/li&gt; 
- &lt;li&gt;Gradle プロジェクトの場合は &lt;code&gt;./gradlew build&lt;/code&gt; を使用した包括的なテストを通じて&lt;strong&gt;結果の検証&lt;/strong&gt;&lt;/li&gt; 
- &lt;li&gt;&lt;strong&gt;アプリケーションポートフォリオ全体への拡張し、&lt;/strong&gt;一貫したモダナイゼーションを実現&lt;/li&gt; 
-&lt;/ol&gt; 
-&lt;h3&gt;追加リソース&lt;/h3&gt; 
-&lt;p&gt;詳細なセットアップ手順とドキュメントについては、以下をご覧ください:&lt;/p&gt; 
-&lt;ul&gt; 
- &lt;li&gt;&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom-get-started.html" target="_blank" rel="noopener"&gt;AWS Transform custom 入門ガイド&lt;/a&gt;&lt;/li&gt; 
- &lt;li&gt;&lt;a href="https://aws.amazon.com/transform/custom/" target="_blank" rel="noopener"&gt;AWS Transform custom 製品ページ&lt;/a&gt;&lt;/li&gt; 
- &lt;li&gt;&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom.html" target="_blank" rel="noopener"&gt;AWS Transform custom ドキュメント&lt;/a&gt;&lt;/li&gt; 
- &lt;li&gt;&lt;a href="https://docs.aws.amazon.com/transform/latest/userguide/custom-command-reference.html" target="_blank" rel="noopener"&gt;AWS Transform custom コマンドリファレンス&lt;/a&gt;&lt;/li&gt; 
-&lt;/ul&gt; 
-&lt;p&gt;今すぐモダナイゼーションの旅を始めて、大規模な AI 駆動コード変換の力を体験してください。&lt;/p&gt; 
-&lt;h3&gt;著者について&lt;/h3&gt; 
-&lt;footer&gt; 
- &lt;div class="blog-author-box"&gt; 
-  &lt;div class="blog-author-image"&gt; 
-   &lt;img loading="lazy" class="wp-image-11636 alignleft" src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2024/05/08/vasudeve-150x150.png" alt="Profile image for Venugopalan Vasudevan" width="142" height="142"&gt; 
-  &lt;/div&gt; 
-  &lt;h3 class="lb-h4"&gt;Venugopalan Vasudevan&lt;/h3&gt; 
-  &lt;p style="text-align: left"&gt;Venugopalan Vasudevan (Venu) は AWS のシニアスペシャリストソリューションアーキテクトであり、Amazon Q Developer、Kiro、AWS Transform に焦点を当てた生成 AI イニシアチブをリードしています。彼は、顧客が AI を活用した開発者向けソリューションやモダナイゼーションソリューションを採用・拡張し、イノベーションとビジネス成果を加速できるよう支援しています。&lt;/p&gt; 
-  &lt;p&gt;&lt;/p&gt;
- &lt;/div&gt; 
- &lt;div class="blog-author-box"&gt; 
-  &lt;div class="blog-author-image"&gt; 
-   &lt;img loading="lazy" class="wp-image-11636 alignleft" src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2025/04/08/dbalaaji.jpeg" alt="Profile image for Dinesh Balaaji Prabakaran" width="142" height="142"&gt; 
-  &lt;/div&gt; 
-  &lt;h3 class="lb-h4"&gt;Dinesh Balaaji Prabakaran&lt;/h3&gt; 
-  &lt;p style="text-align: left"&gt;Dinesh は AWS のエンタープライズサポートリードであり、独立系ソフトウェアベンダー（ISV）のクラウドジャーニーをサポートすることを専門としています。AWS 生成 AI サービスの専門知識を持ち、顧客が Amazon Q Developer、Kiro、AWS Transform を活用して、AI を活用した支援によりアプリケーション開発とモダナイゼーションを加速できるよう支援しています。&lt;/p&gt; 
-  &lt;p&gt;&lt;/p&gt;
- &lt;/div&gt; 
- &lt;div class="blog-author-box"&gt; 
-  &lt;div class="blog-author-image"&gt; 
-   &lt;img loading="lazy" class="wp-image-11636 alignleft" src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2025/06/12/SureshPhoto-275x300.jpg" alt="Profile image for Sureshkumar Natarajan" width="142" height="142"&gt; 
-  &lt;/div&gt; 
-  &lt;h3 class="lb-h4"&gt;Sureshkumar Natarajan&lt;/h3&gt; 
-  &lt;p style="text-align: left"&gt;Sureshkumar Natarajan は AWS のシニアテクニカルアカウントマネージャーであり、生成 AI イニシアチブに焦点を当てて、エンタープライズ顧客のクラウドジャーニーをサポートしています。彼は、組織が Amazon Q Developer、Kiro、AWS Transform を活用して新しい機能を引き出し、開発ワークフローを効率化し、変革的なビジネス成果を達成できるよう導いています。&lt;/p&gt; 
-  &lt;p&gt;&lt;/p&gt;
- &lt;/div&gt; 
- &lt;div class="blog-author-box"&gt; 
-  &lt;div class="blog-author-image"&gt; 
-   &lt;img loading="lazy" class="wp-image-11636 alignleft" src="https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2026/01/23/anjancd-1-300x300.jpeg" alt="Profile image for Anjan Dave" width="142" height="142"&gt; 
-  &lt;/div&gt; 
-  &lt;h3 class="lb-h4"&gt;Anjan Dave&lt;/h3&gt; 
-  &lt;p style="text-align: left"&gt;Anjan Dave は AWS のプリンシパルソリューションアーキテクトであり、25 年以上の IT 経験を持っています。彼は、生成 AI アプリケーションのモダナイゼーション、インフラストラクチャのスケーラビリティ、開発者の生産性向上イニシアチブを専門としています。&lt;br&gt;Anjan は、グローバルプロジェクト全体で生成 AI とモダナイゼーション戦略をリードし、イベント駆動型アーキテクチャとマイクロサービスアーキテクチャを通じて HCM プロバイダーのテクノロジーロードマップに影響を与えています。彼は、ソフトウェア開発ライフサイクルに生成 AI を統合して日常的なタスクを自動化し、エンジニアリングチームが高付加価値のアーキテクチャ作業に集中できるようにすることを提唱しています。&lt;/p&gt; 
-  &lt;p&gt;&lt;/p&gt;
- &lt;/div&gt; 
-&lt;/footer&gt; 
-&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
 					
 		
 		
