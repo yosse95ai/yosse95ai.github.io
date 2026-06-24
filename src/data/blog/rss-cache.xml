@@ -5,7 +5,7 @@
 	<atom:link href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/" rel="self" type="application/rss+xml"/>
 	<link>https://aws.amazon.com/jp/blogs/news/</link>
 	<description/>
-	<lastBuildDate>Thu, 18 Jun 2026 03:05:28 +0000</lastBuildDate>
+	<lastBuildDate>Tue, 23 Jun 2026 06:54:35 +0000</lastBuildDate>
 	<language>ja</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -13,6 +13,41 @@
 	1	</sy:updateFrequency>
 	
 	<item>
+		<title>Kiro Web の Automations 機能のご紹介</title>
+		<link>https://aws.amazon.com/jp/blogs/news/introducing-automations/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Tue, 23 Jun 2026 06:28:00 +0000</pubDate>
+				<category><![CDATA[Artificial Intelligence]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">78a594658a50933be0b270dd0432f61e5c705791</guid>
+
+					<description>Kiro Web に、繰り返し発生するタスクを自動化するクラウドで動作する Automations 機能を追加しました。スケジュールを設定すると、Kiro が自律エージェントとしてサンドボックス上でタスクを実行し、変更を含むプルリクエストを自動的に開きます。ドキュメント更新、テスト生成、TODO 整理など、定期的な作業をまかせられます。</description>
+										<content:encoded>&lt;p&gt;本記事は 2026 年 6 月 18 日に公開された Kyle Seaman、Alex Jia による “&lt;a href="https://kiro.dev/blog/introducing-automations/" target="_blank" rel="noopener"&gt;Introducing automations in Kiro Web&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;仕事の中には、決まった間隔で繰り返しやってくるものがあります。依存関係は週を追うごとに最新の状態から取り残されていき、ドキュメントはマージのたびに少しずつ遅れをとり、サービス間の API コントラクトは静かに食い違いを広げ、やがてステージングで何かが壊れます。同じことが巡ってくるたびに、同じファイルを開き、同じ diff を読み、同じような修正を書くことになります。&lt;/p&gt; 
+&lt;p&gt;本日（2026 年 6 月 18 日）、Kiro Web にクラウドで動作する &lt;a href="https://app.kiro.dev/automations" target="_blank" rel="noopener noreferrer"&gt;Automations&lt;/a&gt; 機能を追加しました。これにより、こうした繰り返しタスクの自動化を Kiro に任せられるようになります。Automations は自律型エージェントによって管理されます。Kiro は実行ごとにサンドボックス内で autonomous セッションを作成し、完了すると自動的にプルリクエストをオープンします。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-188472"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2 id="how-it-works"&gt;仕組み&lt;/h2&gt; 
+&lt;p&gt;Kiro Web の &lt;a href="https://app.kiro.dev/automations" target="_blank" rel="noopener noreferrer"&gt;Automations&lt;/a&gt; に移動し、繰り返しタスクに名前を付けて、対象のリポジトリを GitHub または GitLab（あるいはその両方）から選びます。あとは実行したい内容を記述し、スケジュールを設定するだけです。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/23/create.png"&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/23/create.png" alt="" width="1950" height="1776" class="alignnone size-full wp-image-188509"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;1 つの automation につき最大 5 つのスケジュールを追加できます。Daily や Weekly のような組み込みオプションから選ぶか、より細かい指定をしたい場合は cron 式を記述します。スケジュールの実行時刻になると、Kiro はクラウドサンドボックスを立ち上げ、リポジトリをクローンし、作業を実行して、変更内容を含むプルリクエストをオープンします。各実行は独立したサンドボックスを持つセッションであり、他のセッションやローカル環境から隔離されています。&lt;/p&gt; 
+&lt;p&gt;Automations がプルリクエストをオープンするので、作業が完了したらレビューするだけです。&lt;/p&gt; 
+&lt;p&gt;作成した automation はいつでも編集できます。スケジュールを変更したり、リポジトリを更新したり、実行内容を書き直したりできます。変更は次回のスケジュール実行に適用されます。automation を削除せずに無効化することもでき、準備ができたら再度有効化できます。&lt;/p&gt; 
+&lt;h2 id="what-you-can-automate"&gt;自動化できること&lt;/h2&gt; 
+&lt;p&gt;main ブランチで変更されたコードと既存のドキュメントの間にあるギャップを見つけます。Kiro は毎朝、古くなった部分をチェックし、更新が必要なものがあれば PR をオープンします。&lt;/p&gt; 
+&lt;p&gt;今週変更されたファイルのうち、対応するテストカバレッジがないものを確認します。Kiro は毎日、テストでカバーされていないパスを探し、見つかった場合は自動生成したテストを含む PR をオープンします。&lt;/p&gt; 
+&lt;p&gt;コードベースに長く居座っている古い TODO や FIXME をスキャンします。毎週月曜日、Kiro が対応できるものを片付け、レビュー用に PR をオープンします。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/23/list.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/23/list.png" alt="" width="2204" height="1354" class="alignnone size-full wp-image-188510"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;h2 id="getting-started"&gt;今すぐ始めましょう&lt;/h2&gt; 
+&lt;p&gt;すでに繰り返し発生している作業があれば今すぐ試してみてください。毎週月曜日に実行しているチェック、数日おきに見つけている食い違い、後回しにし続けている依存関係の整理などです。Kiro Web の &lt;a href="https://app.kiro.dev/automations" target="_blank" rel="noopener noreferrer"&gt;Automations&lt;/a&gt; に移動して 1 つ設定し、走らせてみましょう。最初の実行は、次回のスケジュール時刻に開始されます。使い心地は、アプリ内の Feedback アイコンまたは &lt;a href="https://github.com/kirodotdev/Kiro/issues/new/choose" target="_blank" rel="noopener noreferrer"&gt;GitHub&lt;/a&gt; からお知らせください。&lt;/p&gt; 
+&lt;p&gt;Automations は現在、Pro、Pro+、Pro Max、Power プランのサブスクライバー向けに、Kiro Web で利用可能です。組織で AWS IAM Identity Center を使用している場合、automation を作成する前に管理者が Kiro Web へのアクセスを有効化する必要があります。&lt;/p&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
 		<title>Kiro for iOS のご紹介</title>
 		<link>https://aws.amazon.com/jp/blogs/news/introducing-kiro-for-ios/</link>
 		
@@ -28,7 +63,7 @@
 &lt;p&gt;2026 年 6 月 17 日、本格的な開発業務に対応するネイティブ iOS アプリとして Kiro を提供開始します。これにより、開発者へ自分のスマートフォンから直接、Kiro セッションの起動、監視、軌道修正、対話を行える新たなインターフェースをご提供します。つまり、ノート PC を起動していなくても、セッションを開始し、完了したら戻って確認し、差分をレビューし、変更を承認するといった作業を、作業から離れずに行えるようになります。&lt;/p&gt; 
 &lt;p&gt;&lt;span id="more-187906"&gt;&lt;/span&gt;&lt;/p&gt; 
 &lt;p&gt;リモートセッションが Kiro を使う標準的な方法になるにつれて、スマートフォンは仕事とつながり続ける自然な場所になります。Web セッションの延長線上にあるものとお考えください。短い確認を入れるだけでセッションを前に進められ、不要な手戻りを防ぎ、適切なコンテキストでエージェントが作業を進められるよう支援できます。選択できるモードは chat、spec、autonomous の 3 つです。質問するために短時間のチャットセッションを開く、要件を同期し続けるために仕様 (spec) 駆動のワークフローを継続する、タスクを完全に委譲するために autonomous セッションを開始するなど、いずれの場合も、電車の中やランチが届くのを待っている間に、ノート PC を一度も開くことなく行えるようになりました。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/hero.png"&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/hero.png" alt="" width="1600" height="1280" class="alignnone size-full wp-image-187908"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/hero.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/hero.png" alt="" width="1600" height="1280" class="alignnone size-full wp-image-187908"&gt;&lt;/a&gt;&lt;/p&gt; 
 &lt;h2 id="cloud-sessions-that-never-stop"&gt;止まらないクラウドセッション&lt;/h2&gt; 
 &lt;p&gt;アプリを開くと、Kiro はクラウドセッションのライブな状態を読み込み、アクティブなスレッド、承認、プロジェクトのコンテキストを横断して作業できるようにします。エージェントの応答はリアルタイムにストリーミング表示され、ツールの実行状況もインラインで表示されます。また、autonomous モードでは、計画からコードレビューまでの実行ステータスが、人間の介入なしに表示されます。エージェントはクラウド上で独立して動作するため、起動状態を保つデスクトップ、接続用の VPN、夜通し動かしておくマシンを必要とせず、常時稼働かつ常時アクセス可能です。&lt;/p&gt; 
 &lt;h2 id="diffs-built-for-mobile"&gt;モバイルのために設計された差分表示&lt;/h2&gt; 
@@ -448,74 +483,6 @@
 &lt;p&gt;Sonnet 4.6 は、Google、GitHub、AWS BuilderID、AWS IAM Identity Center でログインするすべての Kiro Pro、Pro+、Power のお客様にご利用いただけます。Sonnet 4.6 は AWS US-East-1（バージニア北部）および AWS Europe（フランクフルト）リージョンで利用可能で、Sonnet 4.5 と同様に 1.3 倍のクレジット乗数を備えており、開発作業においてコスト効率が良くなっています。&lt;/p&gt; 
 &lt;p&gt;&lt;a href="https://kiro.dev/downloads/" target="_blank" rel="noopener"&gt;Kiro をダウンロード&lt;/a&gt;するか、アプリまたは CLI を再起動して新しいモデルを使用してください。&lt;/p&gt; 
 &lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>リファクタリングを正しく行う：プログラム解析により AI エージェントの安全性と信頼性を高める方法</title>
-		<link>https://aws.amazon.com/jp/blogs/news/refactoring-made-right-2/</link>
-		
-		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
-		<pubDate>Wed, 18 Feb 2026 03:51:15 +0000</pubDate>
-				<category><![CDATA[Amazon Q Developer]]></category>
-		<category><![CDATA[Artificial Intelligence]]></category>
-		<category><![CDATA[Developer Tools]]></category>
-		<category><![CDATA[Kiro]]></category>
-		<guid isPermaLink="false">2df0d87f803599e55ecc1da532e8c72e8ad1b5b3</guid>
-
-					<description>従来の AI コーディングエージェントは、関数の名前変更やファイル移動などのリファクタリングをテキスト編集として扱うため、インポートの破損や参照エラーを引き起こしていました。Kiro は VSCode の Language Server Protocol を活用したセマンティックリネームツールとスマートリロケートツールを導入し、F2 キーを押したときと同じ IDE の実証済み機能をエージェントが利用できるようにしました。これにより、ワークスペース全体の参照、インポート、型定義を自動的に更新し、20 秒で終わるべきリファクタリングが 5 分のデバッグセッションになる問題を解決します。</description>
-										<content:encoded>&lt;p&gt;AI コーディングアシスタントに簡単なこと、例えば関数名の変更やファイルの移動を依頼すると、突然復旧作業に追われることがあります。インポートが壊れたり、参照が存在しないファイルを指したりします。5 分前にコンパイルできていたコードベースが、至る所でエラーを投げ始めます。20 秒で終わるはずのリファクタリングが、5 分間のデバッグとクリーンアップセッションに変わってしまうのです。&lt;/p&gt; 
-&lt;h2 id="why-refactoring-is-hard-for-agents"&gt;エージェントにとってリファクタリングが難しい理由&lt;/h2&gt; 
-&lt;p&gt;リファクタリングは単なる大規模な検索置換ではありません。コードベースのセマンティック構造全体にわたるグラフトラバーサル問題なのです。関数名を変更すると、変更は連鎖します。ワークスペース全体のすべての呼び出し箇所、それを参照する型定義とインターフェース、import/export 文、テスト、そして（オプションで）ドキュメントとコメント。ファイルの移動はさらに複雑な波及効果を引き起こし、すべての依存ファイルのインポートパス、バレルファイル（&lt;code&gt;index.ts&lt;/code&gt;）と再エクスポート、&lt;code&gt;tsconfig&lt;/code&gt; パスやバンドラー設定に組み込まれたモジュール解決の前提、Webpack 設定のような散在する設定ファイルなどに影響します。ここに根本的なミスマッチがあります。LLM はパターンマッチングを通じてもっともらしいコードを生成することに優れていますが、リファクタリングは&lt;em&gt;もっともらしさよりも精度&lt;/em&gt;を要求します。これは創造的なタスクではなく、シンボルの関係、言語固有のセマンティクス、プロジェクトの依存関係グラフの正確な理解を必要とする制約充足問題なのです。「正しく見える」が、深くネストさ れたモジュールの 1 つのインポートを見逃したエージェントは、単に小さなエラーを犯しただけではありません。本番環境まで表面化しないランタイム障害を導入したのです。これが、どれほど洗練されていたとしても、テキスト生成が構造的なコード変換において信頼性に欠けるツールである理由です。&lt;/p&gt; 
-&lt;p&gt;&lt;span id="more-178144"&gt;&lt;/span&gt;&lt;/p&gt; 
-&lt;h2 id="the-problem-when-agents-work-harder-not-smarter"&gt;問題：エージェントが効率的ではなく、非効率に動作するとき&lt;/h2&gt; 
-&lt;p&gt;多くの AI エージェントがリファクタリングでつまずくのは、&lt;em&gt;構造的&lt;/em&gt;な編集を&lt;em&gt;テキスト&lt;/em&gt;編集として扱うからです。開発者が直面し続けている失敗モードをいくつか紹介します。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;依頼内容：&lt;/strong&gt;「このメソッドの名前を変更して」&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;従来の失敗：&lt;/strong&gt;エージェントはメソッド定義を更新しましたが、プロジェクト全体の呼び出し箇所を見逃しました。プロンプトで参照を更新するよう明示的に依頼した場合でも、プロセスは遅くエラーが発生しやすいループになりました。古い名前を検索して置換するのです。このプロンプトを考えてみましょう。&lt;code&gt;expression.js&lt;/code&gt; の &lt;code&gt;get_loose_identifier&lt;/code&gt; を、それが何をするかをよりよく反映するように名前変更してください。このシンボルの名前変更は 4 つのファイルに伝播し、8 つの参照と 3 つのインポートに影響します。次の図の左側（従来のアプローチ）は、専用のリファクタリングツールなしでこの操作がどのように展開されるかを示しています。最初のファイル（&lt;code&gt;expression.js&lt;/code&gt;）でシンボルの名前を変更した後、エージェントはコードベースで &lt;code&gt;get_loose_identifier&lt;/code&gt; を検索し、複数の LLM 呼び出しとツール呼び出しを通じて &lt;code&gt;CallExpression.js&lt;/code&gt; と &lt;code&gt;AssignmentExpression.js&lt;/code&gt; を更新します。努力したにもかかわらず、残りの参照を見逃しています。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;Kiro の対処法：&lt;/strong&gt;開発者が IDE でこのタスクを手動で実行する方法を考えてみましょう。&lt;code&gt;get_loose_identifier&lt;/code&gt; で F2 を押し、新しい名前を入力して、Enter を押します。IDE は、コードベース全体の 8 つの参照と 3 つのインポートすべてを更新しながら、自動的に名前変更を実行します。これがまさにセマンティックリネームツールが行うことです。次の図の右側（新しいアプローチ）は、Kiro が単一のツール呼び出しで名前変更全体を適切に実行する方法を示しています。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/side-by-side.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/side-by-side.png" alt="" width="2560" height="2305" class="alignnone size-full wp-image-178149"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;依頼内容：&lt;/strong&gt;「このファイルの lint エラーを修正して」&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;従来の失敗：&lt;/strong&gt;エージェントは linter の出力をテキスト編集の ToDo リストとして扱いました。1 つのファイルでシグネチャの関数名を camelCase から snake_case に変更しましたが、他のファイルで「参照が見つからない」や「インポートが見つからない」エラーを導入しました。すべての使用箇所への変更の伝播に失敗したのです。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;Kiro の対処法：&lt;/strong&gt;ユーザーが直接名前変更を依頼しなくても、エージェントがセマンティックリネームツールから恩恵を受ける例を示します。ユーザーはエージェントに「&lt;code&gt;text_helpers.py&lt;/code&gt; の lint エラーを修正して」と依頼します。lint エラーは、&lt;code&gt;utils/text_helpers.py&lt;/code&gt; 内の &lt;code&gt;normalizeText&lt;/code&gt; と &lt;code&gt;slugifyTitle&lt;/code&gt; を snake_case に変更する必要があることを示しています。コードベースの部分的なスナップショットを以下に示します。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/lintExample-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/lintExample-1.png" alt="" width="3056" height="1848" class="alignnone size-full wp-image-178150"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;これらの修正をテキスト編集として扱うエージェントは、関数定義の名前を変更し、ローカル参照を修正するかもしれませんが、他の場所のインポートや呼び出し箇所を見逃す可能性が高く、実行時に &lt;code&gt;ImportError&lt;/code&gt;/&lt;code&gt;NameError&lt;/code&gt; を引き起こします。セマンティックリネームツールを使用することで、Kiro は定義だけでなく、&lt;code&gt;api/routes.py&lt;/code&gt; と &lt;code&gt;services/indexer.py&lt;/code&gt; のインポートと呼び出しも更新します。以下の画像の通りです。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/lintExample-after-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/lintExample-after-1.png" alt="" width="3076" height="1688" class="alignnone size-full wp-image-178151"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;依頼内容：&lt;/strong&gt;「コンポーネントを再編成して – &lt;code&gt;Button.tsx&lt;/code&gt; を &lt;code&gt;src/components/&lt;/code&gt; から &lt;code&gt;src/shared/ui/&lt;/code&gt; に移動して」&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;従来の失敗：&lt;/strong&gt;エージェントはタスクを単純なファイル操作として扱いました。ファイルの移動は成功しましたが、古い場所を指すすべてのインポート文が壊れています。エージェントはその後、検索置換操作でファイルごとにインポートを修正しようとしましたが、動的インポートを見逃しました。&lt;code&gt;import('../components/Button')&lt;/code&gt;。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;Kiro の対処法：&lt;/strong&gt;Kiro がインポートパスを自動的に更新する具体的な例を示します。図は、プロジェクト構造の部分的なスナップショットと依存するコードスニペットの一部を示しています。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/moveExample-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/moveExample-1.png" alt="" width="1454" height="608" class="alignnone size-full wp-image-178152"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;&lt;code&gt;Button.tsx&lt;/code&gt; を &lt;code&gt;src/components/&lt;/code&gt; から &lt;code&gt;src/shared/ui/&lt;/code&gt; に移動した後、Kiro は移動したファイルに関連するすべてのインポート文を自動的に更新します。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/moveExample-after-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/moveExample-after-1.png" alt="" width="1456" height="686" class="alignnone size-full wp-image-178153"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;主な利点：&lt;/strong&gt;&lt;/p&gt; 
-&lt;ul&gt; 
- &lt;li&gt; &lt;p&gt;組み込みの言語サーバーが編集を処理するため、手動の検索置換は不要です。&lt;/p&gt; &lt;/li&gt; 
- &lt;li&gt; &lt;p&gt;言語認識：TypeScript/JavaScript モジュール解決を理解します。&lt;/p&gt; &lt;/li&gt; 
- &lt;li&gt; &lt;p&gt;より安全：動作するコードを壊す可能性が低くなります。&lt;/p&gt; &lt;/li&gt; 
- &lt;li&gt; &lt;p&gt;エッジケースの処理：パスエイリアス、モノレポなどに対応します。&lt;/p&gt; &lt;/li&gt; 
-&lt;/ul&gt; 
-&lt;p&gt;これは、VSCode のエクスプローラーでファイルをドラッグアンドドロップしたときに起こることとまったく同じです。セマンティックリネームツールはエージェントベースの同等機能です！&lt;/p&gt; 
-&lt;h2 id="how-kiro-agents-refactor"&gt;Kiro エージェントのリファクタリング方法&lt;/h2&gt; 
-&lt;p&gt;IDE は、エージェント AI の台頭以前にこの問題をすでに解決していました。VSCode でシンボルの名前を変更するために F2 を押すと、IDE は推測しません。コードの構造を理解する言語サーバーに相談し、ワークスペース全体の編集を計算し、安全に適用します。VSCode のワークスペース編集機能により、単なるテキストパターンではなく、コードの構造を理解するプログラマブルなセマンティック検索置換が可能になります。Kiro エージェントは、LLM 推論だけでリファクタリングをシミュレートしようとはしません。代わりに、エージェントは上記と同じメカニズムを使用して、これらの実証済みの IDE 機能をプログラム的に公開する 2 つの新しいリファクタリングツールを登録します。エージェントがシンボルの名前を変更したりファイルを移動したりする必要がある場合、意図をインテリジェントに認識し、適切なリファクタリングツールを選択して呼び出します。エージェントはリファクタリングワークフローを調整し、IDE の言語サーバーが正確性の検証を支援します。&lt;/p&gt; 
-&lt;p&gt;これらのエージェント登録リファクタリングツールが内部でどのように機能するかを見てみましょう。&lt;/p&gt; 
-&lt;h3 id="semantic-rename-tool-renaming-done-right"&gt;セマンティックリネームツール：正しいリネームを実現&lt;/h3&gt; 
-&lt;p&gt;このツールは、VSCode のシンボル名前変更 API に直接接続します。F2 を押したときに使用するのと同じものです。&lt;code&gt;vscode.prepareRename&lt;/code&gt; を使用してシンボルが名前変更可能かどうかを検証し（例：キーワードではない）、&lt;code&gt;vscode.executeDocumentRenameProvider&lt;/code&gt; を使用してワークスペース全体で必要なすべての変更を含むワークスペース編集を生成します。TypeScript、JavaScript、TSX、JSX の場合、組み込みの VSCode 名前変更プロバイダーがすべてを処理します。Python、Go、Java などの場合、ツールはインストールされた言語拡張機能とそれらが提供する言語サーバーに依存します。&lt;/p&gt; 
-&lt;h3 id="the-smart-relocate-tool-moving-files-without-breaking-everything"&gt;スマートリロケートツール：すべてを壊さずにファイルを移動&lt;/h3&gt; 
-&lt;p&gt;このツールは、VSCode のファイル移動機能を使用して、すべての参照を自動的に更新しながらファイルを再配置します。VSCode のエクスプローラーでドラッグアンドドロップするのと同等のプログラム的な操作ですが、エージェントがあなたのために実行できます。&lt;code&gt;vscode.WorkspaceEdit.renameFile&lt;/code&gt; と &lt;code&gt;vscode.workspace.applyEdit&lt;/code&gt; を使用して、ツールは複数のファイルにわたる包括的な変更を生成し、影響を受けるインポートを更新します。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/workflow.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/workflow.png" alt="" width="4408" height="1688" class="alignnone size-full wp-image-178154"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;h2 id="why-this-matters"&gt;これが重要な理由&lt;/h2&gt; 
-&lt;p&gt;&lt;strong&gt;創造性よりも精度：&lt;/strong&gt;リファクタリングは、コードがどのように見えるべきかを LLM に想像させる必要はありません。コードが&lt;em&gt;実際に何であるか&lt;/em&gt;を理解し、外科的に変更できるツールが必要なのです。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;実証済みのインフラストラクチャを通じた信頼：&lt;/strong&gt;これらは実験的な LLM 機能ではなく、開発者が日常的にすでに依存しているリファクタリングインフラストラクチャとの直接統合です。F2 を押したときに機能すれば、エージェントが実行したときにも機能します。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;言語に依存しない：&lt;/strong&gt;重い作業は言語サーバーによって行われるため、このアプローチは技術スタックと言語全体に一般化されます。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;生産性の維持：&lt;/strong&gt;20 秒の手動リファクタリングが、5 分間の AI 生成リカバリーミッションになるべきではありません。適切なツールを使用すれば、操作は高速でアトミックなままです。&lt;/p&gt; 
-&lt;h2 id="the-bigger-picture"&gt;より大きな視点&lt;/h2&gt; 
-&lt;p&gt;構築による正確性という私たちの哲学に基づいて、&lt;a target="_blank" href="https://kiro.dev/blog/empowering-kiro-with-ide-diagnostics/" rel="noopener"&gt;IDE 診断統合&lt;/a&gt;を導いたのと同じ原則で、VSCode のリファクタリング機能の全範囲をカバーするようにこのアプローチを拡張しています。エラーが複合する前にキャッチするためにリアルタイム診断を統合したのと同様に、これらの実証済みの決定論的 IDE 機能を、新しい内部スマートリロケートおよびセマンティックリネームツールに拡張しました。&lt;/p&gt; 
-&lt;p&gt;しかし、リファクタリング機能は名前変更と再配置で止まりません。VSCode の言語サーバーは、エージェントが活用すべき豊富な自動コード変換スイートを提供します。コードブロックを再利用可能な関数に抽出するメソッド/関数の抽出、コードを簡素化する変数/関数のインライン化、すべての呼び出し箇所でメソッドパラメータを更新するシグネチャの変更、アロー関数への変換やその他の言語固有の変換は有力な候補です。&lt;/p&gt; 
-&lt;p&gt;このアプローチを取ることで、エージェントが実行される基盤に正確性、セキュリティ、信頼性を組み込むことができます。これらのツールで確立したパターンは、ツールキットへの新しい追加を導きます。LLM に脆弱なテキスト置換スクリプトを生成するよう依頼する代わりに、インテリジェントなコーディングエージェントは、開発者がすでに信頼しているこれらの実証済みの IDE 操作を活用し続けます。IDE が正しく実行する方法を知っているとき、私たちはそれに作業をさせます。エージェントがより有能になるにつれて、これはその出力をより信頼できるものにするための良いテクニックでもあります。&lt;/p&gt; 
-&lt;p&gt;違いを体験する準備はできましたか？&lt;a target="_blank" href="https://kiro.dev/downloads/" rel="noopener"&gt;Kiro を無料で始めて&lt;/a&gt;、開発ワークフローをどのように変革できるかを確認してください。&lt;a target="_blank" href="https://discord.com/invite/kirodotdev" rel="noopener"&gt;Discord&lt;/a&gt; の成長するコミュニティに参加して、フィードバックを共有し、質問をし、AI 支援コーディングで構築している他の開発者とつながりましょう。&lt;/p&gt; 
-&lt;p&gt;&lt;u&gt;謝辞&lt;/u&gt;&lt;/p&gt; 
-&lt;p&gt;エンジニアリングの洞察と貴重なフィードバックを提供してくれた Al Harris に感謝します。&lt;/p&gt; 
-&lt;p class="text-sm"&gt;本記事は 2026 年 2 月 5 日に公開された Pardis Pashakhanloo と Rajdeep Mukherjee による “&lt;a target="_blank" href="https://kiro.dev/blog/refactoring-made-right/" rel="noopener"&gt;Refactoring made right: how program analysis makes AI agents safe and reliable&lt;/a&gt;” を翻訳したものです。翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
 					
 		
 		
