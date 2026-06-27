@@ -239,9 +239,9 @@ src/components/
 yosse95ai.github.io/
 ├── .github/workflows/deploy.yml
 ├── public/
-│   ├── favicon.svg
+│   ├── favicon.ico
 │   ├── images/
-│   │   ├── icon.jpg        # プロフィール写真
+│   │   ├── icon.png        # プロフィール写真
 │   │   └── gallery/        # 猫写真
 ├── src/
 │   ├── content.config.ts

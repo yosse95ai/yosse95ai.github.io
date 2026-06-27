@@ -23,13 +23,16 @@ src/
 │   └── catalog.astro           # コンポーネントカタログ（開発用・本番ビルド除外）
 ├── styles/
 │   └── global.css              # Tailwind import, DaisyUI plugin, テーマ変数
+├── assets/
+│   ├── icon.png                # プロフィール写真（<Image> で最適化してトップ表示）
+│   └── gallery/                # 猫写真の最適化元
 ├── tests/                      # ユニットテスト（*.test.ts）
 └── content.config.ts           # Content Collections スキーマ定義
 
 public/
-├── favicon.svg
+├── favicon.ico
 └── images/
-    ├── icon.jpg                # プロフィール写真
+    ├── icon.png                # OGP 画像（og:image 用・src/assets/icon.png と同一画像を別管理）
     └── gallery/                # 猫写真（JPG/PNG）
 ```
 
