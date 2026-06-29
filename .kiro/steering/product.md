@@ -1,6 +1,6 @@
 # プロダクト概要
 
-AWSソフトウェアエンジニアの個人ポートフォリオサイト（https://yosse95ai.github.io）。
+AWSエンジニアの個人ポートフォリオサイト（https://yosse95ai.github.io）。
 
 ## 目的
 - 職歴・役割の紹介
