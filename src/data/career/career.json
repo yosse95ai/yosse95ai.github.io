@@ -1,11 +1,19 @@
 [
   {
+    "id": "aws-sa2",
+    "organization": "Amazon Web Services（AWS）",
+    "role": "Solutions Architect Ⅱ",
+    "startDate": "2026-07",
+    "endDate": null,
+    "description": "ヘルスケア領域のお客様への技術支援に加え、業界を問わずお客様の Developer Experience 向上に向けたご支援を行っています。Kiro に関するブログ執筆やイベント登壇を通した技術発信にも取り組んでいます。"
+  },
+  {
     "id": "aws",
     "organization": "Amazon Web Services（AWS）",
-    "role": "Solutions Architect",
+    "role": "Associate Solutions Architect",
     "startDate": "2023-04",
-    "endDate": null,
-    "description": "ヘルスケア領域のお客様を中心としてクラウド活用に向けた技術支援を行っています。関連するブログの執筆・翻訳やイベント登壇を通して技術発信にも取り組んでいます。"
+    "endDate": "2026-06",
+    "description": "ヘルスケア領域のお客様を中心としてクラウド活用に向けた技術支援を行っていました。関連するブログの執筆・翻訳やイベント登壇を通して技術発信にも取り組んでいました。"
   },
   {
     "id": "kyutech-master",
