@@ -5,7 +5,7 @@
 	<atom:link href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/" rel="self" type="application/rss+xml"/>
 	<link>https://aws.amazon.com/jp/blogs/news/</link>
 	<description/>
-	<lastBuildDate>Tue, 23 Jun 2026 06:54:35 +0000</lastBuildDate>
+	<lastBuildDate>Mon, 29 Jun 2026 07:27:10 +0000</lastBuildDate>
 	<language>ja</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -13,6 +13,242 @@
 	1	</sy:updateFrequency>
 	
 	<item>
+		<title>Kiro で OpenAPI/Swagger 仕様から数秒でテストスイートを生成する</title>
+		<link>https://aws.amazon.com/jp/blogs/news/from-openapi-swagger-to-test-suite-in-seconds-with-kiro/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Mon, 29 Jun 2026 07:27:10 +0000</pubDate>
+				<category><![CDATA[Artificial Intelligence]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">708f92a5679b4f5d53dd66f87d1bb2d563f11228</guid>
+
+					<description>API 仕様とテストの乖離は開発現場の慢性的な課題です。本記事では、エージェント駆動の開発システム Kiro を使い、Swagger/OpenAPI 仕様から axios ベースの HTTP テスト、Express のモックサーバー、モックと実 API を切り替える設定、HTML レポートまでを含む Node.js テストスイートを数秒で自動生成する方法を解説します。Petstore API を例にステアリングファイルの活用、生成されたテスト品質、削除ライフサイクル検証、認証付き内部 API への適応、ヘッドレスモードによる CI/CD 自動再生成まで紹介します。</description>
+										<content:encoded>&lt;p&gt;本記事は 2026 年 6 月 25 日に公開された Sumitha AP、Rajdeep Mukherjee による “&lt;a href="https://kiro.dev/blog/from-openapi-swagger-to-test-suite-in-seconds-with-kiro/" target="_blank" rel="noopener noreferrer"&gt;From OpenAPI/Swagger specifications to test suite in seconds with Kiro&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;API は現代のアプリケーションの基盤です。チームが REST API を構築し改良していく中で、網羅的なテストカバレッジを維持することは継続的な課題となります。&lt;a target="_blank" rel="noopener noreferrer" href="https://swagger.io/specification/"&gt;OpenAPI/Swagger 仕様&lt;/a&gt;は、API が&lt;em&gt;どう振る舞うべきか&lt;/em&gt;を的確に記述します。エンドポイント、リクエストの形式、レスポンスのスキーマ、ステータスコードなどです。しかし、それらが実際に機能することを証明するものではありません。&lt;/p&gt; 
+&lt;p&gt;そのギャップを埋める作業は、伝統的に開発者の肩にかかってきました。仕様を読み、各エンドポイントをテストケースに落とし込み、正常系とエッジケースを考慮し、テストランナーを組み立て、依存関係をモックし、結果を意味のある形で見せるためのレポート機能を構築します。中規模の API、例えばエンドポイントが 40 個あるとすると、製品コードを 1 行も書く前に 1 週間分の作業が必要です。しかも仕様が安定していることが前提ですが、実際にはほとんど安定しません。&lt;/p&gt; 
+&lt;p&gt;根本的な課題は、API 仕様とそれに対応するテストスイートが独立して保守されていることです。時間が経つにつれ、両者は必然的に乖離していきます。リリース時に書かれたテストはエンドポイントの変更とともに陳腐化し、新しいエンドポイントはテストカバレッジを伴わずにリリースされていきます。&lt;/p&gt; 
+&lt;p&gt;OpenAPI Generator のようなツールは仕様からテストのスキャフォルディングを生成できますが、通常は開発者自身が埋めるためのスタブを提供するだけです。Kiro は別のアプローチを取り、仕様をテスト生成の信頼できる情報源として扱います。OpenAPI/Swagger ファイルを入力すると、Kiro は動作するテストスイート、エンドポイントカバレッジ、エッジケース、スキーマ検証、レポート用スキャフォルディングを、テストファイルをセットアップする時間と同じくらいで生成します。さらに、Kiro は再生成を素早く低コストで行えるようにすることで、テストを仕様と同期させるコストを下げ、フックによってドリフトを早期に検出できます。本記事では、それがどのように機能し、何が生成されるのかを詳しく見ていきます。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-188960"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2 id="swagger-and-openapi-specification"&gt;&lt;strong&gt;Swagger と OpenAPI 仕様&lt;/strong&gt;&lt;/h2&gt; 
+&lt;p&gt;Swagger は、構造化された JSON を使って REST API をドキュメント化する手段として作られました。どんなエンドポイントがあるか、各エンドポイントがどのパラメータを受け取るか、成功時に何を返すか、問題が起きたときに何を返すか、といった語彙を定義します。&lt;/p&gt; 
+&lt;p&gt;最小限の OpenAPI ドキュメントは、各エンドポイントについて、URL パスと HTTP メソッド、受け取るパラメータ（型、位置（location）、必須／任意）、成功時のレスポンススキーマ、ありうるエラーレスポンスとそのコードを指定します。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-yaml"&gt;# openapi.yaml: マシン可読な API の契約
+openapi: "3.0.0"
+paths:
+  /pet/{petId}:
+    get:
+      summary: "Find pet by ID"
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Pet" }
+        "404":
+          description: "Pet not found"
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;blockquote&gt; 
+ &lt;p&gt;&lt;em&gt;OpenAPI ドキュメントは単なるドキュメント以上のものです。REST API のインターフェースを完全に記述する構造化された定義ファイル（JSON または YAML）です。API の提供者と利用者の間の契約として機能し、マシン可読であるため、適切なツールがそれを解析し、推論し、実際の成果物を生成できます。この点は、以降の議論すべてに関わる重要なポイントです。&lt;/em&gt;&lt;/p&gt; 
+&lt;/blockquote&gt; 
+&lt;p&gt;本記事では、エージェント駆動の開発システムである &lt;a target="_blank" rel="noopener noreferrer" href="https://kiro.dev/"&gt;Kiro&lt;/a&gt; を使って、Swagger API 仕様から直接、モックサーバー・設定トグル・HTML テストレポートまで含む実行可能な Node.js テストスイートを自動生成する方法を示します。&lt;/p&gt; 
+&lt;h2 id="why-existing-tooling-falls-short"&gt;&lt;strong&gt;既存ツールが力不足な理由&lt;/strong&gt;&lt;/h2&gt; 
+&lt;p&gt;これまでに OpenAPI 仕様を扱ったことがあれば、OpenAPI Generator や Swagger Codegen に出会ったことがあるでしょう。背景として、OpenAPI Generator はガバナンスの違いから 2018 年に Swagger Codegen からフォークされました。両者は似た目標を持ちますが、独立して保守されており、リリース頻度や機能セットも異なります。どちらも仕様ファイルを受け取り、選択した言語のクライアントライブラリ、サーバースタブ、SDK コードを生成するオープンソースツールです。HTTP のボイラープレートを削減するには優れていますが、API の振る舞いを検証する目的では設計されていません。テスト生成に使おうとすると、通常はアサーションが最低限のメソッドスタブ、限定的なモック、わずかなスキーマ検証しか得られません。もっとも、具体的な出力は使用する言語、テンプレート、設定によって異なります。テストはコンパイルされ実行はされるかもしれませんが、エッジケース、エラーハンドリング、スキーマの契約を意味のある形でカバーしているとは限りません。&lt;/p&gt; 
+&lt;p&gt;これは見た目以上に深刻な問題です。アサーションのないテストでも CI ではパスし、カバレッジにはカウントされます。しかし実際にはステータスコード、レスポンスの形、エラーケースをチェックしていません。ビルドは成功し、カバレッジ数値も高いのに、&lt;code&gt;400&lt;/code&gt; が &lt;code&gt;500&lt;/code&gt; として返されているといった特定のバグが見過ごされるということが起こり得ます。&lt;/p&gt; 
+&lt;p&gt;Kiro はこの問題に異なるアプローチを取ります。仕様をテンプレート化するのではなく、仕様を推論します。enum の値を現実的なペイロードに解決し、実際のスキーマの契約に紐づいたアサーションを生成し、仕様で定義された振る舞いを反映したモックサーバーを作り出します。出力されるのは後で埋めるためのスキャフォルディングではなく、意味のあるカバレッジを持つ実行可能なテストです。&lt;/p&gt; 
+&lt;table border="1" style="border-collapse: collapse"&gt; 
+ &lt;tbody&gt; 
+  &lt;tr&gt; 
+   &lt;th style="padding: 0 8px"&gt; &lt;p&gt;&lt;u&gt;機能&lt;/u&gt;&lt;/p&gt; &lt;/th&gt; 
+   &lt;th style="padding: 0 8px"&gt; &lt;p&gt;&lt;u&gt;OpenAPI Generator&lt;/u&gt;&lt;/p&gt; &lt;/th&gt; 
+   &lt;th style="padding: 0 8px"&gt; &lt;p&gt;&lt;u&gt;Kiro&lt;/u&gt;&lt;/p&gt; &lt;/th&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;アサーション付きの実行可能なテストを生成&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;◐ 限定的（テンプレート依存）&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;✓ あり&lt;/p&gt; &lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;仕様に対応するモックサーバーを構築&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;✗ なし&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;✓ あり&lt;/p&gt; &lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;スキーマから現実的なペイロードを推論&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;◐ 部分的&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;✓ enum の解決を含む&lt;/p&gt; &lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;チームのコーディング規約に適合&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;◐ カスタムテンプレート&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;✓ ステアリングファイル経由&lt;/p&gt; &lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;仕様のドリフトに応じて CI で再生成&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;✗ 手動&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;✓ ヘッドレスモード&lt;/p&gt; &lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;自然言語の意図を理解&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;✗ なし&lt;/p&gt; &lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt; &lt;p&gt;✓ あり&lt;/p&gt; &lt;/td&gt; 
+  &lt;/tr&gt; 
+ &lt;/tbody&gt; 
+&lt;/table&gt; 
+&lt;p&gt;&lt;em&gt;機能比較: テンプレートベースのジェネレーター vs. Kiro のエージェント駆動アプローチ。&lt;/em&gt;&lt;/p&gt; 
+&lt;p&gt;テンプレートベースのアプローチでは、特定の種類の問題が検出されないままになり得ます。例えば &lt;code&gt;400&lt;/code&gt; エラーが &lt;code&gt;500&lt;/code&gt; として返されたり、認証エンドポイントが不正な形式のトークンを受け入れたりするケースです。とくに、生成されたテストが実際にはエンドポイントへの呼び出しを行わず、レスポンスの検証もしない場合に顕著です。これらのツールは主にコード生成のために設計されており、振る舞いの検証のためのものではありません。一方で Kiro は、各エンドポイントを実際に呼び出し、レスポンスが仕様で定義されたものと一致するかを検証するテストを生成します。これにより、API の実際の準拠状況についてより信頼できるシグナルが得られます。&lt;/p&gt; 
+&lt;h2 id="solution-overview"&gt;&lt;strong&gt;ソリューション概要&lt;/strong&gt;&lt;/h2&gt; 
+&lt;p&gt;本ソリューションでは、サンプルの &lt;a target="_blank" rel="noopener noreferrer" href="https://petstore.swagger.io/"&gt;PetStore の Swagger/OpenAPI&lt;/a&gt; 仕様 URL を入力として受け取り、Kiro を使って完全に機能するテストプロジェクトを生成します。生成されるプロジェクトには以下のコンポーネントが含まれます。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;axios を使用したテストクライアント&lt;/u&gt;：Swagger 仕様で定義されたすべてのエンドポイントをカバーする HTTP テスト。GET、POST、PUT、DELETE 操作と、それに応じたリクエストペイロードおよびレスポンスアサーションを含みます。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;Express のモックサーバー&lt;/u&gt;：API をシミュレートするローカルサーバー。各エンドポイントに対して現実的なレスポンスを返すため、ネットワークアクセスや実サービスへの依存なしにテストを実行できます。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;設定トグル&lt;/u&gt;：同じテストスイートをモックサーバー（ローカル開発用）または実 API（統合テスト用）に対して実行できる簡単なスイッチ。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;HTML テストレポート&lt;/u&gt;：各テストケースの合否と詳細なエラー情報を表示する、スタイル付きで共有可能なレポート。CI/CD パイプラインやプルリクエストのレビューに適しています。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;外部テストフレームワークゼロ&lt;/u&gt;：テストは素の Node.js と軽量なカスタムランナーで動作し、フレームワークのバージョン競合をなくし、セットアップの手間を減らします。&lt;/p&gt; &lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h3 id="prerequisites-"&gt;前提条件&lt;/h3&gt; 
+&lt;p&gt;このウォークスルーを進めるには、以下が必要です。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt; &lt;p&gt;Node.js&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;a target="_blank" rel="noopener noreferrer" href="https://kiro.dev/?trk=e2e02a9c-1da3-42a4-8ef3-d199de4caaf1&amp;amp;sc_channel=ps&amp;amp;ef_id=Cj0KCQjw2MbPBhCSARIsAP3jP9w2VX_mT0Zks1VoYSZGPr4_YHJkhdrRCNPue9ex6sZPhIFCuXS8RGoaAkkBEALw_wcB:G:s&amp;amp;s_kwcid=AL!4422!3!795794191873!p!!g!!ide!23527794632!192204311186&amp;amp;gad_source=1&amp;amp;gad_campaignid=23527794632&amp;amp;gclid=Cj0KCQjw2MbPBhCSARIsAP3jP9w2VX_mT0Zks1VoYSZGPr4_YHJkhdrRCNPue9ex6sZPhIFCuXS8RGoaAkkBEALw_wcB"&gt;Kiro のインストールと設定&lt;/a&gt;&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;Swagger/OpenAPI 仕様の URL（例として Petstore API を使用します）&lt;/p&gt; &lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h3 id="generate-the-test-suite-with-kiro"&gt;Kiro でテストスイートを生成する&lt;/h3&gt; 
+&lt;p&gt;それでは、Petstore の Swagger 仕様から完全なテストスイートを生成しましょう。テスト生成のルールをすべてプロンプトに埋め込むのではなく、Kiro のステアリングファイルを使用します。ステアリングファイルは「&lt;em&gt;.kiro/steering/&lt;/em&gt;」に配置され、ワークスペース内のすべてのプロンプトで Kiro が従う永続的な指示を提供します。これにより、テスト生成の基準を一度定義しておけば、すべてのプロンプトでその恩恵を受けられます。本ブログでは &lt;a target="_blank" rel="noopener noreferrer" href="https://github.com/apsumitha/Kiro-OpenAPI-Spec-Steering-Sample/blob/main/openapi-test-generation.md"&gt;このサンプル&lt;/a&gt;ステアリングファイルを使用しました。チームのニーズや基準に合わせてカスタマイズしてください。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/kiro-steering.gif"&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/kiro-steering.gif" alt="" width="800" height="461" class="alignnone size-full wp-image-188976"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;em&gt;※ この図は GIF 形式に変換しているため画質が粗くなっています。鮮明な動画は&lt;a target="_blank" rel="noopener noreferrer" href="https://kiro.dev/blog/from-openapi-swagger-to-test-suite-in-seconds-with-kiro/"&gt;原文記事&lt;/a&gt;をご参照ください。&lt;/em&gt;&lt;/p&gt; 
+&lt;h4 id="sample-prompt"&gt;サンプルプロンプト&lt;/h4&gt; 
+&lt;p&gt;Kiro の vibe モードで使用するサンプルプロンプトを示します。&lt;/p&gt; 
+&lt;p&gt;&lt;code&gt;Generate a Node.js test suite from https://petstore.swagger.io/index.html using axios, Express for mocking, and no external test frameworks&lt;/code&gt;&lt;/p&gt; 
+&lt;p&gt;Kiro は Swagger 仕様を読み込み、すべてのエンドポイントを解析し、プロジェクト全体を生成します。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/creating-testsuite.gif"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/creating-testsuite.gif" alt="" width="800" height="461" class="alignnone size-full wp-image-188977"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;em&gt;※ この図は GIF 形式に変換しているため画質が粗くなっています。鮮明な動画は&lt;a target="_blank" rel="noopener noreferrer" href="https://kiro.dev/blog/from-openapi-swagger-to-test-suite-in-seconds-with-kiro/"&gt;原文記事&lt;/a&gt;をご参照ください。&lt;/em&gt;&lt;/p&gt; 
+&lt;h3 id="review-the-generated-project-structure"&gt;生成されたプロジェクト構造を確認する&lt;/h3&gt; 
+&lt;p&gt;Kiro は以下のような構造のプロジェクトを生成します。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;config.js&lt;/u&gt;：設定トグルを含みます。&lt;code&gt;useMockServer: true&lt;/code&gt; に設定するとローカルの Express モックサーバーに対してテストを実行し、&lt;code&gt;useMockServer: false&lt;/code&gt; に設定すると実際の Petstore API を対象にします。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;mock-server/server.js&lt;/u&gt;：Petstore のすべてのエンドポイントに対するルートハンドラを持つ Express アプリケーション。各ハンドラは、Swagger 仕様で定義されたスキーマに一致する現実的なレスポンスデータを返します。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;test/&lt;/u&gt;：API リソース（pet、store、user）ごとに整理された個別のテストファイル。各ファイルには、そのリソースのすべての操作に対するテストが含まれ、レスポンスのステータスコードとペイロード構造に対するアサーションがあります。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;test-runner.js&lt;/u&gt;：軽量な素の Node.js テストランナー。すべてのテストファイルを検出して実行し、合否のカウントを追跡し、エラーの詳細を取得します。&lt;/p&gt; &lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h4 id="understand-how-kiro-parses-the-spec-"&gt;Kiro がどのように仕様を解析するかを理解する&lt;/h4&gt; 
+&lt;p&gt;Kiro は汎用的なテストスタブを生成するだけではありません。Swagger 仕様とステアリングファイルの指示を読み込んで、次のことを行います。&lt;/p&gt; 
+&lt;ol&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;すべてのエンドポイントと HTTP メソッドを識別する&lt;/u&gt;：Petstore API の場合、POST /pet、GET /pet/{petId}、PUT /pet、DELETE /pet/{petId}、GET /store/inventory、POST /user/createWithList などの操作が含まれます。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;スキーマ定義からリクエストペイロードを推論する&lt;/u&gt;：POST および PUT 操作について、Kiro は仕様内のモデル定義に基づいて有効なリクエストボディを構築します（例えば、id、name、category、photoUrls、tags、status フィールドを持つ Pet オブジェクト）。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;期待されるレスポンスコードに基づいて検証コードを生成する&lt;/u&gt;：各テストは、仕様のレスポンス定義で定められた正しい HTTP ステータスコード（&lt;code&gt;200&lt;/code&gt;、&lt;code&gt;201&lt;/code&gt;、&lt;code&gt;404&lt;/code&gt;、&lt;code&gt;405&lt;/code&gt;）を検証します。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;対応するモックサーバーのルートを作成する&lt;/u&gt;：仕様内のすべてのエンドポイントに対して、定義されたレスポンススキーマに合致したデータを返す Express ルートハンドラが生成されます。&lt;/p&gt; &lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;h3 id="run-the-tests"&gt;テストを実行する&lt;/h3&gt; 
+&lt;h4 id="run-against-the-mock-server"&gt;モックサーバーに対して実行する&lt;/h4&gt; 
+&lt;p&gt;ローカルのモックサーバーに対してテストスイートを実行するには、チャットインターフェースで次のプロンプトを入力します。&lt;/p&gt; 
+&lt;p&gt;&lt;code&gt;Run the tests with the mock server&lt;/code&gt;&lt;/p&gt; 
+&lt;p&gt;以下のような結果が表示されるはずです。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/test-results.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/test-results.png" alt="" width="1430" height="788" class="alignnone size-full wp-image-188978"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;テストランナーはモックの Express サーバーを起動し、すべてのテストケースを実行し、レポートを生成します。生成された test-report.md をブラウザで開いて結果を確認してください。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/test-report-md.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/test-report-md.png" alt="" width="757" height="715" class="alignnone size-full wp-image-188979"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;h4 id="test-quality-and-classification"&gt;テストの品質と分類&lt;/h4&gt; 
+&lt;p&gt;生成されたテストスイートには、Petstore の Swagger 仕様で定義されたすべてのエンドポイントをカバーするテストケースが含まれています。これらはユニットテストではなく統合テストです。各テストは axios 経由で実行中の Express サーバーに対して実際の HTTP リクエストを送り、TCP トランスポート、ミドルウェアのパース、ルートマッチング、ハンドラのロジック、状態の変化、JSON シリアライズといったスタック全体を使います。サーバー内部は関数レベルでスタブやモックされていません。複数のリクエストを連鎖させるテストも含まれます。例えば DELETE のテストでは、最初にリソースを POST し、次に DELETE し、最後に GET で &lt;code&gt;404&lt;/code&gt; を確認するといった具合で、リクエストライフサイクルをまたいで副作用が正しく永続化されることを検証します。このマルチリクエストでブラックボックスなアプローチは、統合テストを統合テストたらしめる特徴です。&lt;/p&gt; 
+&lt;p&gt;品質面では、このスイートには明確な強みがあります。各エンドポイントについて正常系と異常系の両方を体系的にカバーし、OpenAPI 仕様に記載された具体的な HTTP ステータスコード（&lt;code&gt;200&lt;/code&gt;、&lt;code&gt;400&lt;/code&gt;、&lt;code&gt;404&lt;/code&gt;、&lt;code&gt;405&lt;/code&gt;）を検証します。エフェメラルポートとインメモリのシードデータを使用しているため、スイートは完全に自己完結しており決定的です。ネットワーク依存もポートの衝突もなく、どのマシンでも再現可能です。破壊的な操作はレスポンスコードだけを信用せず、後続の読み取りで検証します。&lt;/p&gt; 
+&lt;p&gt;要するに、これは API の形状とエラーハンドリングに対する CI の高速フィードバックに適した、実用的な契約レベルの統合スイートです。プロダクション品質の信頼性に到達するには、テストごとの状態分離、完全な JSON スキーマ検証、認証のカバレッジ、そして実サービスに対する定期的な実行が加わると良いでしょう。&lt;/p&gt; 
+&lt;h4 id="a-closer-look-testing-the-full-delete-lifecycle"&gt;詳細: 削除ライフサイクル全体のテスト&lt;/h4&gt; 
+&lt;p&gt;Kiro が生成したテストの中でも、より興味深いものの 1 つは、単にエンドポイントを呼び出してステータスコードを確認するだけのものではありません。1 つのテストケースで、リソースのライフサイクル全体を検証します。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/test-delete-lifecycle.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/test-delete-lifecycle.png" alt="" width="560" height="506" class="alignnone size-full wp-image-188980"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;このテストが興味深いのは、DELETE のレスポンスだけを信用していない点です。多くの素朴なテストスイートは &lt;code&gt;200&lt;/code&gt; ステータスコードを確認するだけで止まります。「サーバーが成功したと言ったのだから、成功した」というわけです。しかしそれは状態が実際に変化したかどうかを何も証明していません。バグのあるサーバーは &lt;code&gt;200&lt;/code&gt; を返しつつ、レコードの削除に静かに失敗するかもしれません。&lt;/p&gt; 
+&lt;p&gt;本当に消えている、ということです。&lt;/p&gt; 
+&lt;p&gt;その代わりに、Kiro は 3 段階のテストを生成しました。&lt;/p&gt; 
+&lt;ol&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;Arrange&lt;/u&gt;：既知の ID を持つ新しい pet を POST し、正常に作成されたことを確認します。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;Act&lt;/u&gt;：その pet を DELETE し、サーバーが操作を受け付けたことを検証します。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;Verify&lt;/u&gt;：同じ ID を GET し、サーバーが &lt;code&gt;404&lt;/code&gt; を返すことを検証します。&lt;/p&gt; &lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;p&gt;このパターンは「ラウンドトリップ検証」と呼ばれることがあり、うわべだけのテストと意味のある統合テストを分けるものです。API の状態が実際に遷移することを証明します。すなわち、存在するリソースは破棄でき、いったん破棄されれば本当に消えているということです。スタックのどこかの層（ルーティング、ハンドラのロジック、データストア）が削除を黙って取りこぼしても、GET による検証がそれを捕まえます。&lt;/p&gt; 
+&lt;p&gt;これはテストが自己完結している好例でもあります。テストは、先行するテストによって書き換えられたかもしれないシードデータに依存するのではなく、自分自身でテストデータを用意します。これにより、テストの合否が実行順序に左右されなくなります。テストごとに状態をリセットしないスイートでは、これは小さくとも重要な品質シグナルです。&lt;/p&gt; 
+&lt;h4 id="run-against-the-live-api"&gt;実 API に対して実行する&lt;/h4&gt; 
+&lt;p&gt;生成されたテストがモックの外でも通用するかを検証するには、1 つの環境変数を設定するだけで、開発者はスイートを実際の Petstore サーバーに向けることができます。&lt;/p&gt; 
+&lt;p&gt;&lt;code&gt;PETSTORE_URL=https://petstore.swagger.io npm test&lt;/code&gt;&lt;/p&gt; 
+&lt;p&gt;あるいは Kiro に「&lt;code&gt;Run the tests with the real server&lt;/code&gt;」とプロンプトを与えます。これにより、コードを変更することなくまったく同じテストが実行されますが、対象がローカルの Express モックではなく実稼働の共有バックエンドになります。&lt;/p&gt; 
+&lt;p&gt;失敗が発生したとき、それらは通常いくつかの認識可能なカテゴリに分類されます。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;実 API が仕様より寛容な場合。&lt;/u&gt;Swagger 定義では不正な入力に対して &lt;code&gt;405&lt;/code&gt; を文書化していても、実サーバーはそれを静かに受け入れて &lt;code&gt;200&lt;/code&gt; を返すことがあります。モックの方が現実より厳しかったというわけです。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;エラーコードの意味が異なる場合。&lt;/u&gt;モックは非数値 ID に対して &lt;code&gt;400&lt;/code&gt; を返すかもしれませんが、実サーバーは &lt;code&gt;404&lt;/code&gt; を返すかもしれません。どちらも擁護可能です。同じ仕様の異なる解釈を表しているだけです。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;レスポンス形状が期待と一致しない場合。&lt;/u&gt;テストが文字列として期待するフィールドが JSON オブジェクトとして返ってきたり、ネストされたプロパティが完全に欠落していたりします。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;u&gt;共有状態の前提が崩れる場合。&lt;/u&gt;シードされたデータ（事前にロードされたユーザーや pet など）に依存するテストは、実サーバーがそれらのテストデータを持たないために失敗します。&lt;/p&gt; &lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;このようなことが起きたときの推奨は、失敗をやみくもに「修正」しないことです。代わりに、それぞれを切り分けの問いとして捉えます。モックが間違っているのか、テストが間違っているのか、ドキュメントが間違っているのかということです。そこから次のように進めます。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt; &lt;p&gt;実サーバーがより寛容な場合は、モックを緩めて合わせるか、テストをモック専用としてタグ付けするかを判断します。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;エラーコードが異なる場合は、単一の信頼できる情報源（通常は実サーバーの実際の振る舞い）に揃え、モックとテストの期待値の両方を更新します。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;共有状態が問題である場合は、テストを自己完結型にします。検証前に自分自身でテストデータを用意し、ローカルにしか存在しないデータに依存しないようにします。&lt;/p&gt; &lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;ポイントは、初日から両モードで全テストを通すことではありません。両方のターゲットに対して実行することで、&lt;em&gt;前提が現実から乖離している箇所&lt;/em&gt;が浮かび上がり、そのギャップを埋める道筋が体系的に得られるということです。&lt;/p&gt; 
+&lt;h3 id="adapt-for-authenticated-internal-apis"&gt;認証された内部 API に適応する&lt;/h3&gt; 
+&lt;p&gt;Petstore API は認証を求めないパブリックなサンドボックスです。一方、実際の社内 API はほとんどの場合認証を必須とします。認証付きエンドポイントにこのアプローチを適応させる方法を示します。&lt;/p&gt; 
+&lt;p&gt;まず、認証設定に対応できるようにテスト設定を拡張します。資格情報をハードコードするのではなく、外部から渡せるようにすることで、同じスイートを複数の環境で動かせるようにします。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-javascript"&gt;// config.js
+module.exports = {
+  baseURL: process.env.API_BASE_URL || 'http://127.0.0.1:3000',
+  auth: {
+    type: process.env.AUTH_TYPE || 'none', // 'none', 'bearer', 'apiKey', 'basic'
+    token: process.env.AUTH_TOKEN,
+    apiKey: process.env.API_KEY,
+    apiKeyHeader: process.env.API_KEY_HEADER || 'X-API-Key',
+    username: process.env.AUTH_USERNAME,
+    password: process.env.AUTH_PASSWORD,
+  },
+};
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;次に、設定された認証タイプに基づいて適切な資格情報を付与する共有クライアントファクトリーを構築します。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-javascript"&gt;// client.js
+const axios = require('axios');
+const config = require('./config');
+function createClient() {
+  const headers = {};
+  switch (config.auth.type) {
+    case 'bearer':
+      headers['Authorization'] = `Bearer ${config.auth.token}`;
+      break;
+    case 'apiKey':
+      headers[config.auth.apiKeyHeader] = config.auth.apiKey;
+      break;
+    case 'basic':
+      const encoded = Buffer.from(
+        `${config.auth.username}:${config.auth.password}`
+      ).toString('base64');
+      headers['Authorization'] = `Basic ${encoded}`;
+      break;
+  }
+  return axios.create({
+    baseURL: config.baseURL,
+    headers,
+    validateStatus: () =&amp;gt; true,
+  });
+}
+module.exports = { createClient };
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;これで、すべてのテストファイルが共有クライアントを使用し、資格情報はコードの外に保たれます。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-bash"&gt;    # トークン認証のステージング API に対して実行
+    AUTH_TYPE=bearer AUTH_TOKEN=eyJhbG... API_BASE_URL=https://api.internal.example.com npm test
+    # API キーで保護されたサービスに対して実行
+    AUTH_TYPE=apiKey API_KEY=sk-live-abc123 API_BASE_URL=https://gateway.internal.example.com npm test
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;これを整えれば、認証の強制そのものを検証する専用テストも追加できます。資格情報なしのリクエストが拒否されること、期限切れトークンが &lt;code&gt;401&lt;/code&gt; を返すこと、不十分なスコープが &lt;code&gt;403&lt;/code&gt; を返すことなどです。これらは Petstore のサンドボックスでは試せないものの、内部サービスではしばしば最も重要となるテストです。&lt;/p&gt; 
+&lt;h3 id="automate-test-regeneration-with-kiro-headless-mode"&gt;Kiro ヘッドレスモードでテスト再生成を自動化する&lt;/h3&gt; 
+&lt;p&gt;テストスイートを一度生成できるだけでも有用ですが、本当の価値は、API が進化しても両者を同期させ続けられる点にあります。&lt;a target="_blank" rel="noopener noreferrer" href="https://kiro.dev/docs/cli/headless/"&gt;Kiro CLI のヘッドレスモード&lt;/a&gt;を使えば、CI/CD パイプラインから Kiro をプログラムで実行できます。ブラウザもインタラクティブな端末も不要です。API キーを環境変数として設定し、プロンプトを渡せば、Kiro が一連の処理をエンドツーエンドで実行します。&lt;/p&gt; 
+&lt;h2 id="conclusion-"&gt;まとめ&lt;/h2&gt; 
+&lt;p&gt;本記事では、Kiro を使って Swagger 仕様から完全な Node.js API テストスイートを数秒で生成する方法を示しました。生成されるプロジェクトには、HTTP テストクライアント、Express のモックサーバー、モック API と実 API を切り替える設定トグル、テストレポートが含まれ、外部のテストフレームワーク依存はありません。&lt;/p&gt; 
+&lt;p&gt;このアプローチは、API 仕様をテストコードに手作業で翻訳する手間を取り除き、包括的な API テストカバレッジを達成するための体系的で再現可能な方法を提供します。Swagger または OpenAPI 仕様を持つあらゆる API に同じパターンを適用できます。&lt;/p&gt; 
+&lt;p&gt;Kiro を始めるには、&lt;a target="_blank" rel="noopener noreferrer" href="https://kiro.dev/"&gt;kiro.dev&lt;/a&gt; をご覧ください。&lt;/p&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
 		<title>Kiro Web の Automations 機能のご紹介</title>
 		<link>https://aws.amazon.com/jp/blogs/news/introducing-automations/</link>
 		
@@ -30,7 +266,7 @@
 &lt;p&gt;&lt;span id="more-188472"&gt;&lt;/span&gt;&lt;/p&gt; 
 &lt;h2 id="how-it-works"&gt;仕組み&lt;/h2&gt; 
 &lt;p&gt;Kiro Web の &lt;a href="https://app.kiro.dev/automations" target="_blank" rel="noopener noreferrer"&gt;Automations&lt;/a&gt; に移動し、繰り返しタスクに名前を付けて、対象のリポジトリを GitHub または GitLab（あるいはその両方）から選びます。あとは実行したい内容を記述し、スケジュールを設定するだけです。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/23/create.png"&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/23/create.png" alt="" width="1950" height="1776" class="alignnone size-full wp-image-188509"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/23/create.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/23/create.png" alt="" width="1950" height="1776" class="alignnone size-full wp-image-188509"&gt;&lt;/a&gt;&lt;/p&gt; 
 &lt;p&gt;1 つの automation につき最大 5 つのスケジュールを追加できます。Daily や Weekly のような組み込みオプションから選ぶか、より細かい指定をしたい場合は cron 式を記述します。スケジュールの実行時刻になると、Kiro はクラウドサンドボックスを立ち上げ、リポジトリをクローンし、作業を実行して、変更内容を含むプルリクエストをオープンします。各実行は独立したサンドボックスを持つセッションであり、他のセッションやローカル環境から隔離されています。&lt;/p&gt; 
 &lt;p&gt;Automations がプルリクエストをオープンするので、作業が完了したらレビューするだけです。&lt;/p&gt; 
 &lt;p&gt;作成した automation はいつでも編集できます。スケジュールを変更したり、リポジトリを更新したり、実行内容を書き直したりできます。変更は次回のスケジュール実行に適用されます。automation を削除せずに無効化することもでき、準備ができたら再度有効化できます。&lt;/p&gt; 
@@ -450,38 +686,6 @@
 &lt;h2 id="whats-next-for-enterprises"&gt; エンタープライズ向けの次のステップ&lt;br&gt; &lt;/h2&gt; 
 &lt;p&gt; これら 2 つの機能は、企業が既に依存しているシステム内で Kiro を機能させるための、より広範な取り組みの一部です。既存のツールやサービスとのさらなる統合、および開発速度を安全に向上させるために必要なガードレールを提供する追加のガバナンス制御と機能に積極的に取り組んでいます。 &lt;/p&gt; 
 &lt;p&gt; 組織での Kiro 導入を検討中の方、または既に利用中で特定のエンタープライズ機能の優先的な実装を希望される方は、&lt;a class="text-primary hover:underline" href="https://kiro.dev/enterprise/" target="_blank" rel="noopener"&gt;お知らせいただくか&lt;/a&gt;、&lt;a class="text-primary hover:underline" target="_blank" rel="noopener noreferrer" href="https://github.com/kirodotdev/Kiro"&gt;GitHub&lt;/a&gt; で Issues を開いてください。 &lt;/p&gt; 
-&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>Claude Sonnet 4.6 が Kiro で利用可能になりました</title>
-		<link>https://aws.amazon.com/jp/blogs/news/sonnet-4-6/</link>
-		
-		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
-		<pubDate>Thu, 19 Feb 2026 07:21:09 +0000</pubDate>
-				<category><![CDATA[Artificial Intelligence]]></category>
-		<category><![CDATA[Developer Tools]]></category>
-		<category><![CDATA[Kiro]]></category>
-		<guid isPermaLink="false">18f599bd90887274c5f096fabfea99eb4a031e8d</guid>
-
-					<description>本日より Kiro IDE と CLI で Claude Sonnet 4.6 が利用可能になりました。Sonnet 4.6 は Opus 4.6 の知能に近づきながらトークン効率が高く、複雑なコードベースでの機能構築、リファクタリング、デバッグなどの反復的なワークフローを高品質に処理します。マルチモデルパイプラインでリードエージェントとサブエージェントの両方の役割を果たし、エージェント作業に最適化されています。Pro、Pro+、Power のお客様に AWS の 2 リージョンで提供され、1.3 倍のクレジット乗数でコスト効率も優れています。</description>
-										<content:encoded>&lt;p&gt;本記事は 2026 年 2 月 17 日に公開された Nima Kaviani による “&lt;a href="https://kiro.dev/blog/sonnet-4-6/" target="_blank" rel="noopener"&gt;Claude Sonnet 4.6 is now available in Kiro&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
-&lt;p&gt;本日より、&lt;a href="https://kiro.dev/" target="_blank" rel="noopener"&gt;Kiro IDE&lt;/a&gt; と &lt;a href="https://kiro.dev/docs/cli/" target="_blank" rel="noopener"&gt;CLI&lt;/a&gt; で Claude Sonnet 4.6 が利用可能になりました。Sonnet 4.6 は Sonnet 4.5 からの完全なアップグレードであり、ソフトウェア開発において Opus 4.6 に匹敵する知能を持ちながら、よりトークン効率が高く、ワークフロー全体でより高速で高品質なタスク完了を実現します。&lt;/p&gt; 
-&lt;p&gt;&lt;span id="more-179365"&gt;&lt;/span&gt;&lt;/p&gt; 
-&lt;h2 id="the-coding-model-youll-want-to-use-all-day"&gt;一日中使いたくなるコーディングモデル&lt;/h2&gt; 
-&lt;p&gt;Sonnet 4.6 は、複雑なコードベースを手取り足取り誘導する必要がないほど賢いモデルです。機能構築、リファクタリング、デバッグなどの反復的なワークフローを処理し、進行中にモデルをガイドしても品質を損ないません。Sonnet 4.6 は、インタラクティブな開発作業において優れた体験を提供します。&lt;/p&gt; 
-&lt;p&gt;複数のタスクを含む &lt;a href="https://kiro.dev/docs/specs/" target="_blank" rel="noopener"&gt;spec&lt;/a&gt; を進めている際、Sonnet 4.6 は長いセッション全体でコンテキストと精度を維持します。マルチモデルパイプラインにおいて、リードエージェントとサブエージェントの両方の役割を果たし、適応的な思考とコンテキスト圧縮により、作業の進め方を正確に制御できます。&lt;/p&gt; 
-&lt;h2 id="built-for-agentic-work"&gt;エージェント作業のために構築&lt;/h2&gt; 
-&lt;div&gt; 
- &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/19/evals-1.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/19/evals-1.png" alt="" width="1696" height="1974" class="alignnone size-full wp-image-179372"&gt;&lt;/a&gt; 
-&lt;/div&gt; 
-&lt;p&gt;Sonnet 4.6 は、現代の AI 開発が要求する複数ステップのオーケストレーションのために特別に構築されています。ツール呼び出しを処理し、長いセッション全体で状態を維持し、複雑な推論チェーンを管理します。これらすべてを、大量使用を実用的にする価格帯で実現します。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://kiro.dev/docs/powers/" target="_blank" rel="noopener"&gt;Kiro powers&lt;/a&gt; や &lt;a href="https://kiro.dev/docs/chat/subagents/" target="_blank" rel="noopener"&gt;カスタムサブエージェント&lt;/a&gt;を使用しているチームにとって、Sonnet 4.6 は自然に組み込まれます。パイプラインの異なる部分に異なるモデルを必要とせず、オーケストレーターとワーカーの両方の役割を果たすことができます。&lt;/p&gt; 
-&lt;h2 id="availability"&gt;利用可能性&lt;/h2&gt; 
-&lt;p&gt;Sonnet 4.6 は、Google、GitHub、AWS BuilderID、AWS IAM Identity Center でログインするすべての Kiro Pro、Pro+、Power のお客様にご利用いただけます。Sonnet 4.6 は AWS US-East-1（バージニア北部）および AWS Europe（フランクフルト）リージョンで利用可能で、Sonnet 4.5 と同様に 1.3 倍のクレジット乗数を備えており、開発作業においてコスト効率が良くなっています。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://kiro.dev/downloads/" target="_blank" rel="noopener"&gt;Kiro をダウンロード&lt;/a&gt;するか、アプリまたは CLI を再起動して新しいモデルを使用してください。&lt;/p&gt; 
 &lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
 					
 		
