@@ -5,7 +5,7 @@
 	<atom:link href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/" rel="self" type="application/rss+xml"/>
 	<link>https://aws.amazon.com/jp/blogs/news/</link>
 	<description/>
-	<lastBuildDate>Mon, 29 Jun 2026 07:27:10 +0000</lastBuildDate>
+	<lastBuildDate>Thu, 02 Jul 2026 03:32:41 +0000</lastBuildDate>
 	<language>ja</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -13,6 +13,152 @@
 	1	</sy:updateFrequency>
 	
 	<item>
+		<title>Kiro とともに医療情報システムのガイドライン遵守開発に挑む</title>
+		<link>https://aws.amazon.com/jp/blogs/news/building-compliant-healthcare-systems-with-kiro/</link>
+		
+		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
+		<pubDate>Thu, 02 Jul 2026 03:04:03 +0000</pubDate>
+				<category><![CDATA[Artificial Intelligence]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Healthcare]]></category>
+		<category><![CDATA[Intermediate (200)]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<category><![CDATA[Public Sector]]></category>
+		<guid isPermaLink="false">cc271118561d1d938f9542eaadf6550a595d60a5</guid>
+
+					<description>医療情報システム開発で避けて通れない数多くの業界ガイドラインに対して、AI 駆動開発でどう立ち向かうか。本記事では、ガイドラインの知識を Agent Skills、開発標準を Agent Steering として Kiro に与え、必要なときに必要な分だけコンテキストを参照させながら、人間が意思決定権を持って協働する「Kiro をチームの一員に育て上げる」アプローチを紹介します。</description>
+										<content:encoded>&lt;p&gt;Kiro 好きの Solutions Architect の吉村です。普段はヘルスケア業界のお客様の技術支援に加えて、業界問わず Developer Experience に関するご支援をさせていただいております。&lt;/p&gt; 
+&lt;p&gt;本記事では、医療情報システム開発で避けて通れない数多くの業界ガイドラインに対して、Kiro を医療情報システム開発をよく理解したチームの一員へと育て上げ、一緒に立ち向かうというアプローチをご紹介します。本アプローチは、&lt;a href="https://jami2026symp.org/" target="_blank" rel="noopener noreferrer"&gt;第 30 回日本医療情報学会春季学術大会&lt;/a&gt;の AWS ブースや &lt;a href="https://aws.amazon.com/jp/summits/japan/" target="_blank" rel="noopener noreferrer"&gt;AWS Summit Japan 2026&lt;/a&gt; のヘルスケアブースでのデモ展示で、来場者の皆様と議論し、好意的なフィードバックをいただいたものをベースにしています。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-188952"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2 id="introduction"&gt;はじめに&lt;/h2&gt; 
+&lt;p&gt;医療情報システムの開発には、&lt;a href="https://www.mhlw.go.jp/stf/shingi/0000516275_00006.html" target="_blank" rel="noopener noreferrer"&gt;医療情報システムの安全管理に関するガイドライン 第 7.0 版&lt;/a&gt;（いわゆる 3 省 2 ガイドラインの 1 つで、厚生労働省が定めるもの。以降「医療情報ガイドライン」）や、&lt;a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/johoka/standardspec.html" target="_blank" rel="noopener noreferrer"&gt;電子カルテの標準仕様&lt;/a&gt;、公共 SaaS 要件 (&lt;a href="https://guide.gcas.cloud.go.jp/" target="_blank" rel="noopener noreferrer"&gt;GCAS ガイド&lt;/a&gt;) など、参照するべき業界ガイドラインが数多く存在します。医療領域で AI を使おうとする多くの開発現場が「AI 駆動開発でスピードを上げたいけど、大量の業界ガイドラインをどう扱えばいいのか」という悩みに直面します。&lt;/p&gt; 
+&lt;p&gt;今回のアプローチは、AI 活用のベストプラクティスを組み合わせた実験的なもので、皆さんの組織やプロジェクトに合わせて取捨選択・カスタマイズして使うことを前提とします。本記事では &lt;a href="https://kiro.dev/" target="_blank" rel="noopener noreferrer"&gt;Kiro&lt;/a&gt; の &lt;a href="https://kiro.dev/docs/skills/" target="_blank" rel="noopener noreferrer"&gt;Agent Skills&lt;/a&gt; と &lt;a href="https://kiro.dev/docs/steering/" target="_blank" rel="noopener noreferrer"&gt;Agent Steering&lt;/a&gt; で具体化しますが、本質は動的に読み込める知識と開発ルールを与えることにあります。そのため Claude Code など他のコーディングエージェントでも応用でき、皆さんの普段の開発に後付けで組み込めます。&lt;/p&gt; 
+&lt;h2 id="challenges"&gt;医療情報システム開発で AI 駆動開発がぶつかる壁&lt;/h2&gt; 
+&lt;p&gt;規制やガイドラインの多い医療ドメインでは、AI 駆動開発にまつわる様々なアンチパターンに遭遇することがしばしばあります。具体的なアプローチに入る前に、まずは私たちがぶつかる壁を整理します。&lt;/p&gt; 
+&lt;h3 id="general-challenges"&gt;AI 駆動開発における課題&lt;/h3&gt; 
+&lt;p&gt;大規模言語モデル (LLM) には、コンテキストウィンドウ（エージェントが一連の作業の中で参照できる情報の枠）があります。ここにはシステムへの指示、会話の履歴、読み込んだファイル、ツールの実行結果などが収まり、その容量はトークン量で決まる有限の予算のようなものです。コンテキストウィンドウが大きくなればそれだけ多くの情報を投げ込めて、より良い結果が得られると考えがちですが、実際はそう単純ではありません。入力が長くなるほどパフォーマンスが低下することが、近年さまざまな研究で報告されています。&lt;/p&gt; 
+&lt;p&gt;Chroma が 2025 年に公開した技術レポート &lt;a href="https://research.trychroma.com/context-rot" target="_blank" rel="noopener noreferrer"&gt;「Context Rot: How Increasing Input Tokens Impacts LLM Performance」&lt;/a&gt;で、入力長が増えると単純なタスクでも性能が大きく変動すると報告しています。&lt;/p&gt; 
+&lt;blockquote&gt; 
+ &lt;p&gt;We observe that model performance varies significantly as input length changes, even on simple tasks.&lt;/p&gt; 
+&lt;/blockquote&gt; 
+&lt;p&gt;Nelson F. Liu 氏らが 2023 年に発表した研究 &lt;a href="https://arxiv.org/abs/2307.03172" target="_blank" rel="noopener noreferrer"&gt;「Lost in the Middle: How Language Models Use Long Contexts」&lt;/a&gt;では、関連情報が長いコンテキストの中間に置かれると見落とされやすい傾向が報告されています。&lt;/p&gt; 
+&lt;blockquote&gt; 
+ &lt;p&gt;significantly degrades when models must access relevant information in the middle of long contexts, even for explicitly long-context models.&lt;/p&gt; 
+&lt;/blockquote&gt; 
+&lt;p&gt;Philippe Laban 氏らが 2025 年に発表した研究 &lt;a href="https://arxiv.org/abs/2505.06120" target="_blank" rel="noopener noreferrer"&gt;「LLMs Get Lost In Multi-Turn Conversation」&lt;/a&gt;は、指示が曖昧なまま会話がマルチターン化すると、トップクラスのモデルでも性能が低下する。一度誤った仮定を置くと、その後もそれに固執して立て直せなくなる傾向があると報告しています。&lt;/p&gt; 
+&lt;blockquote&gt; 
+ &lt;p&gt;when LLMs take a wrong turn in a conversation, they get lost and do not recover&lt;/p&gt; 
+&lt;/blockquote&gt; 
+&lt;p&gt;クラウド上のワークロードを設計・運用するためのベストプラクティス集である &lt;a href="https://aws.amazon.com/jp/architecture/well-architected/" target="_blank" rel="noopener noreferrer"&gt;AWS Well-Architected Framework&lt;/a&gt; の &lt;a href="https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf03-bp02.html" target="_blank" rel="noopener noreferrer"&gt;Agentic AI Lens&lt;/a&gt; でも、今のタスクに必要なものだけを組み立て、残りは圧縮・要約することをベストプラクティスとして挙げ、会話履歴やツール定義を毎回すべて詰め込むことをアンチパターンとしています。&lt;/p&gt; 
+&lt;p&gt;これらは、曖昧な指示が AI を不要な仮定へと突き進ませるという現場の実感とも重なります。さらに不要・冗長な情報を詰め込めば、いわゆる AI slop と呼ばれる質の低い出力やハルシネーションを招きます。結果として、指示の質によって成果物の品質に差が生まれます。&lt;/p&gt; 
+&lt;h3 id="healthcare-challenges"&gt;医療情報システムにおける課題&lt;/h3&gt; 
+&lt;p&gt;こうした一般的な問題に、医療領域ではドメイン固有の事情が重なります。まず、参照するべき業界ガイドラインが大量にあります。医療情報ガイドラインだけを見ても、&lt;a href="https://www.mhlw.go.jp/content/10808000/001716290.pdf" target="_blank" rel="noopener noreferrer"&gt;概説編&lt;/a&gt;・&lt;a href="https://www.mhlw.go.jp/content/10808000/001716291.pdf" target="_blank" rel="noopener noreferrer"&gt;経営管理編&lt;/a&gt;・&lt;a href="https://www.mhlw.go.jp/content/10808000/001716292.pdf" target="_blank" rel="noopener noreferrer"&gt;企画管理編&lt;/a&gt;・&lt;a href="https://www.mhlw.go.jp/content/10808000/001716295.pdf" target="_blank" rel="noopener noreferrer"&gt;システム運用編&lt;/a&gt;・&lt;a href="https://www.mhlw.go.jp/content/10808000/001716297.pdf" target="_blank" rel="noopener noreferrer"&gt;保守委託機関編&lt;/a&gt;の 5 編から成り、全体で 160 ページを超えます。医療情報ガイドライン全体の概要は、AWS ブログ「&lt;a href="https://aws.amazon.com/jp/blogs/news/japan-security-guideline-for-medical-infromation-systems-2024-practice-01/" target="_blank" rel="noopener noreferrer"&gt;医療情報ガイドラインをクラウド上で実践する -概要編-&lt;/a&gt;」でも解説しています。さらに標準仕様に準拠した電子カルテの開発では、GCAS ガイドや電子カルテの標準仕様書の遵守が必要で、Web ページや大量の PDF・エクセルなど形式もさまざまです。これらを人間がすべて理解して AI に的確に指示するのは、簡単ではありません。&lt;/p&gt; 
+&lt;p&gt;ここで 1 つ皆さんにクイズです。Kiro IDE は添付したドキュメントをネイティブのドキュメントブロックとして読み込むことができますが、「医療情報ガイドラインのうち、システム運用編という 1 編だけを添付したら、Claude Opus 4.8 の 100 万トークンのコンテキストは何割くらい埋まるでしょうか？」&lt;/p&gt; 
+&lt;div id="attachment_189138" style="width: 2264px" class="wp-caption alignnone"&gt;
+ &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/01/pdf-context.png"&gt;&lt;img aria-describedby="caption-attachment-189138" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/01/pdf-context.png" alt="Claude Opus 4.8 で医療情報ガイドラインのシステム運用編を添付した直後のコンテキスト消費量を示す Kiro の画面" width="2254" height="1014" class="size-full wp-image-189138"&gt;&lt;/a&gt;
+ &lt;p id="caption-attachment-189138" class="wp-caption-text"&gt;Claude Opus 4.8 で医療情報ガイドラインのシステム運用編を添付した直後のコンテキスト消費量&lt;/p&gt;
+&lt;/div&gt; 
+&lt;p&gt;実際に Claude Opus 4.8 で試すと、&lt;u&gt;この 1 編だけで対話開始時点のコンテキストの約 29%&lt;/u&gt; が消費されました。全 5 編ではさらに膨らみ、加えて開発標準や MCP も読み込まれると、やり取りできる余地はますます狭まります。コンテキスト上限に近づくと、多くのコーディングエージェントでは内容が自動的に圧縮 (コンパクション) されます。このことからも、ドキュメントを「とにかく全部 AI に渡す」のは筋が悪く、「必要なときに、必要な情報を、必要な分だけ」渡すべきです。&lt;/p&gt; 
+&lt;p&gt;そして、最終的な妥当性を担保し、責任を持つのは人間です。ドキュメントを与えずに指示を出す場合、その人の理解度がそのまま AI への指示の正確さと出力の精度を左右します。結果として、関わるロールや習熟度によって、指示や成果物の品質に差が生まれやすくなります。&lt;/p&gt; 
+&lt;div id="attachment_189263" style="width: 3034px" class="wp-caption alignnone"&gt;
+ &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/01/problem-1.png"&gt;&lt;img aria-describedby="caption-attachment-189263" loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/01/problem-1.png" alt="医療情報システムにおける AI 駆動開発の課題を、業界ガイドラインの多さと、人間・AI それぞれが抱える課題の観点で整理した図" width="3024" height="1536" class="size-full wp-image-189263"&gt;&lt;/a&gt;
+ &lt;p id="caption-attachment-189263" class="wp-caption-text"&gt;医療情報システムの AI 駆動開発が直面する課題&lt;/p&gt;
+&lt;/div&gt; 
+&lt;h2 id="approach-overview"&gt;Kiro をチームの一員に育て上げる&lt;/h2&gt; 
+&lt;p&gt;ここまで見てきた課題に立ち向かうために、Kiro を「医療情報システム開発をよく理解したチームの一員」に育て上げます。医療情報システム開発に必要な知識と組織の開発の進め方を少しずつ授けていきます。&lt;/p&gt; 
+&lt;h3 id="what-is-kiro"&gt;Kiro とは&lt;/h3&gt; 
+&lt;p&gt;Kiro は、AI にコードを書かせるだけの段階を越えて、エージェントと協働してソフトウェアを設計・実装する、agentic engineering のための開発環境です。プロンプトから実行可能な仕様 (Spec) を起こす&lt;a href="https://kiro.dev/docs/specs/" target="_blank" rel="noopener noreferrer"&gt;仕様駆動開発&lt;/a&gt;や、複数のエージェントによる並行作業などを特徴とし、今回活用する Agent Skills・Agent Steering のほか、&lt;a href="https://kiro.dev/docs/mcp/" target="_blank" rel="noopener noreferrer"&gt;MCP&lt;/a&gt;・マルチモーダル入力・&lt;a href="https://kiro.dev/changelog/ide/0-11/#document-attachments" target="_blank" rel="noopener noreferrer"&gt;ドキュメント添付&lt;/a&gt;といった機能を備えています。&lt;/p&gt; 
+&lt;h3 id="approach-bigpicture"&gt;アプローチの全体像&lt;/h3&gt; 
+&lt;p&gt;本記事では、[企画] → [準備] → [開発] → [改善] という 4 つのフェーズに沿って、ソフトウェア開発ライフサイクル (SDLC) 全体を通してこのアプローチを見ていきます。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;[企画] Kiro と壁打ちしてアイデアを言語化&lt;/li&gt; 
+ &lt;li&gt;[準備] ガイドラインの知識を Agent Skills として与え、コンテキストを構築&lt;/li&gt; 
+ &lt;li&gt;[準備] 開発標準やルールを Agent Steering として与え、ハーネスを構築&lt;/li&gt; 
+ &lt;li&gt;[開発] 要件定義から設計・実装・テスト・デプロイなど、SDLC 全体を Kiro と一緒に推進&lt;/li&gt; 
+ &lt;li&gt;[改善] 開発で見えた学びやプロダクトの成熟度に応じて、知識やハーネスを洗練&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;&lt;/p&gt; 
+&lt;div id="attachment_189264" style="width: 3034px" class="wp-caption alignnone"&gt;
+ &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/01/approach-overview.png"&gt;&lt;img aria-describedby="caption-attachment-189264" loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/01/approach-overview.png" alt="企画・準備・開発・改善の 4 フェーズと、各フェーズに共通する制御ループ（依頼・計画作成・レビュー・見直し・承認・実行・検証）を示したアプローチ全体像の図" width="3024" height="1604" class="size-full wp-image-189264"&gt;&lt;/a&gt;
+ &lt;p id="caption-attachment-189264" class="wp-caption-text"&gt;企画・準備・開発・改善の 4 フェーズと、各フェーズ共通の制御ループ&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;/p&gt; 
+&lt;p&gt;この 4 つのフェーズに共通して、人間と AI が交互に手を動かしながら、以下の制御ループを繰り返します。&lt;/p&gt; 
+&lt;ol&gt; 
+ &lt;li&gt;人間が AI にタスクを依頼&lt;/li&gt; 
+ &lt;li&gt;AI が計画を作成&lt;/li&gt; 
+ &lt;li&gt;人間がレビュー&lt;/li&gt; 
+ &lt;li&gt;AI が計画を見直し&lt;/li&gt; 
+ &lt;li&gt;人間が計画を承認&lt;/li&gt; 
+ &lt;li&gt;AI が計画を実行&lt;/li&gt; 
+ &lt;li&gt;人間が AI の成果物を検証&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;p&gt;このループを各フェーズで回すことで、Kiro に丸投げするのではなく、人間が意思決定権と監督責任を持ち続けます。&lt;/p&gt; 
+&lt;p&gt;しかし、人間の意図は曖昧性をはらんでいます。出発点が曖昧になると AI は不要な仮定を置き、望んでいない方向へ進み始めます。この曖昧性をできる限り排除するために、Kiro が作成する計画の中に、曖昧な部分についての逆質問を含めさせます。曖昧なまま進めず、不明点を &lt;code&gt;[Question]&lt;/code&gt; として挙げさせ、人間が &lt;code&gt;[Answer]&lt;/code&gt; で意図を伝え、独自の判断で先に進ませません。計画に合意してから実行に移すことで、曖昧な指示による手戻りを未然に防げます。&lt;/p&gt; 
+&lt;div id="attachment_189270" style="width: 3034px" class="wp-caption alignnone"&gt;
+ &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/01/kiro-reverse-qa-3.png"&gt;&lt;img aria-describedby="caption-attachment-189270" loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/01/kiro-reverse-qa-3.png" alt="AI に逆質問させるプロンプトテクニックの例。計画を立てさせ、不明点は [Question] タグで質問させて人間が [Answer] で回答するプロンプト例と、その結果生成された質問リストの画面" width="3024" height="1258" class="size-full wp-image-189270"&gt;&lt;/a&gt;
+ &lt;p id="caption-attachment-189270" class="wp-caption-text"&gt;AI に逆質問させるプロンプト例。不明点を [Question] で挙げさせ、人間が [Answer] で意図を伝える&lt;/p&gt;
+&lt;/div&gt; 
+&lt;p&gt;それでは、各フェーズを具体的に見ていきます。&lt;/p&gt; 
+&lt;h3 id="phase-planning"&gt;[企画] Kiro と壁打ちして構想を固める&lt;/h3&gt; 
+&lt;p&gt;これから作るものの構想を、Kiro と壁打ちしながら言語化します。漠然としたアイデアを整理し、ビジネスチームとエンジニアチームが同じ言葉で議論できる共通認識をつくります。&lt;/p&gt; 
+&lt;p&gt;このとき活躍するのが、Kiro のマルチモーダル入力です。ホワイトボードのラフな構成図や手書きのスケッチ、画面イメージなど、言語化しにくいものを画像で渡し、Kiro と対話しながらドキュメントへ落とし込めます。&lt;/p&gt; 
+&lt;p&gt;あわせて、構想の実現可能性や業界の動向も Kiro と一緒に調べ、技術的な選択肢や懸念点を洗い出しながら具体化します。ここでも制御ループが効き、計画段階での逆質問で曖昧な構想の穴を早めに埋められます。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/kikaku-1.png"&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/kikaku-1.png" alt="企画フェーズの流れ。脳内のふわっとしたイメージを手書きのアーキテクチャ図とプロンプトとして Kiro に入力し、言語化と実現可能性の調査を経て、前提・要件整理や PlantUML 図を含むレポートを作成する例" style="width: 100%"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;h3 id="phase-prep-skills"&gt;[準備] ガイドラインの知識を Agent Skills として与える&lt;/h3&gt; 
+&lt;p&gt;ここからが、Kiro へ開発に必要なコンテキストを与えるフェーズです。&lt;/p&gt; 
+&lt;p&gt;まずは、医療情報システム開発に必要なガイドラインの知識を Agent Skills として用意します。スキルは動的に読み込まれるので、Kiro は常に全文を抱え込むのではなく、そのとき必要な知識だけを読み込んで参照します。大量のガイドラインで最初からコンテキストを圧迫することなく、「必要なときに、必要な情報を、必要な分だけ」読み込みます。&lt;/p&gt; 
+&lt;p&gt;スキルの作り方はシンプルで、Kiro 自身にスキルを作らせます。医療情報ガイドラインのような PDF はドキュメントとして直接添付し、GCAS ガイドのように Web で公開されている情報はビルトインの &lt;a href="https://kiro.dev/docs/chat/webtools/" target="_blank" rel="noopener noreferrer"&gt;web_fetch&lt;/a&gt; ツールでコンテキストに取り込みます。あとは全体像で触れた制御ループに沿って、どんな粒度で分割すべきかを Kiro に計画させ、曖昧な部分は質問させて詰めたうえで、計画を承認してからスキルを生成、成果物を人間がレビューします。&lt;/p&gt; 
+&lt;p&gt;たとえば、ネットワークや認証、データ管理、セキュリティといったトピックごとのスキルに分割し、&lt;code&gt;SKILL.md&lt;/code&gt; にどんな場面で参照すべきかという説明を、&lt;code&gt;references&lt;/code&gt; フォルダに詳細な要件をまとめた参照ファイルを配置します。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/skill-1.png"&gt;&lt;img loading="lazy" width="3024" height="1570" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/skill-1.png" alt="医療情報ガイドラインや GCAS ガイドを、ネットワークや認証、データ管理、セキュリティといったトピックごとに分割した Agent Skills の構成を示す画面" class="alignnone size-full wp-image-189090" style="width: 100%"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;h3 id="phase-prep-steering"&gt;[準備] 開発標準を Agent Steering として与える&lt;/h3&gt; 
+&lt;p&gt;スキルで知識を渡したら、次は開発の進め方を Kiro に教えます。Agent Steering は、ワークスペースの標準やアーキテクチャ、コーディング規約といった前提を Markdown ファイルに定義しておくと、セッションのたびにユーザーが指示しなくても自動的にコンテキストへ読み込まれる仕組みです。プロダクト概要 (&lt;code&gt;product.md&lt;/code&gt;)、技術スタック (&lt;code&gt;tech.md&lt;/code&gt;)、プロジェクト構造 (&lt;code&gt;structure.md&lt;/code&gt;) といった基盤ファイルや、コーディング規約などの独自ファイルを用意できます。&lt;/p&gt; 
+&lt;p&gt;ここでハーネスという考え方を取り入れます。ハーネスとは、AI を信頼できる開発の担い手にするために、その周りに用意する仕組みです。どれだけ高性能なモデルでも、それ単体で常に期待どおりに動くとは限りません。適切なコンテキストを渡し、進め方や守るべきルールを与え、振る舞いを制御し、出力を検証する。こうした足場を整えてはじめて、AI に開発の一員として安心して任せられるようになります。&lt;/p&gt; 
+&lt;p&gt;ハーネスは単一の機能ではなく、複数の要素の組み合わせです。たとえば、知識を与える Agent Skills、開発の進め方や規約を効かせる Agent Steering、外部のツールやデータへ安全につなぐ MCP、成果物を機械的に検査するテストや静的解析などです。Agent Steering はこれらのピースの一つです。&lt;/p&gt; 
+&lt;p&gt;最初から完璧に作り込む必要はありません。小さく始めて、開発を回しながら見えてきた学びを少しずつ反映したり、プロジェクトの成熟度に合わせて洗練させていくのが現実的です。&lt;/p&gt; 
+&lt;p&gt;たとえば、すでに組織の開発標準や設計方針がドキュメント化されているなら、それらを入力に Kiro と一緒に Agent Steering へ落とし込めます。まだなければ、制御ループの中で Kiro に組織の開発プロセスのあるべき姿を深掘りさせ、一緒に形にしていくこともできます。これらをプロジェクトのハーネスの出発点にすることができます。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/steering.png"&gt;&lt;img loading="lazy" width="3024" height="1562" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/steering.png" alt="開発標準を Agent Steering のファイルとして配置し、Kiro に開発の進め方を持たせている例を示す画面" class="alignnone size-full wp-image-189093" style="width: 100%"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;ここまで見てきた Agent Skills も Agent Steering も、その実体は Markdown ファイルです。そのため、ソースコードと同じように Git などのバージョン管理ツールで変更を追跡でき、GitHub などを通じてプロジェクトのメンバー全員へ配布できます。こうして育てた Kiro のコンテキストとハーネスは、チームの共有資産として扱えます。&lt;/p&gt; 
+&lt;h3 id="phase-dev"&gt;[開発] 整えた土台の上で、Kiro とともに開発する&lt;/h3&gt; 
+&lt;p&gt;準備フェーズまで終えると、実は開発フェーズで新しくお伝えすることは、それほど多くありません。ここまで整えてきたコンテキストとハーネス、そして制御ループの上で、皆さんの組織の開発プロセスと設計手法に沿って開発を進めるだけです。&lt;/p&gt; 
+&lt;p&gt;ただし、これは従来どおりの開発を行うだけではありません。Kiro とともに AI ネイティブな開発へとシフトします。人間は実現したい意図を Kiro に伝え、制御ループの中でその意図を一緒に洗練し、コードやドキュメントを書く作業そのものは Kiro に任せます。そのうえで人間は、生成された成果物をレビューし、最終的な意思決定と監督責任を担う立ち回りへと移ります。&lt;/p&gt; 
+&lt;p&gt;開発の進め方そのものは、組織やプロジェクトによってさまざまです。たとえば、チームのための AI ネイティブな開発方法論である AI-DLC を実践するために、OSS で公開されている補助ツール &lt;a href="https://github.com/awslabs/aidlc-workflows" target="_blank" rel="noopener noreferrer"&gt;AI-DLC Workflow&lt;/a&gt; をベースにしたとします。AI-DLC は Inception・Construction・Operations の 3 つのフェーズからなり、クロスファンクショナルなチームがモブワークで AI と協働し、AI の提案をその場で検証しながら進めるのが特徴です。&lt;/p&gt; 
+&lt;p&gt;要件定義のフェーズ (Inception) では、ユーザーに届けたい価値を起点にユーザーストーリーや受け入れ基準を定義し、並行開発できる単位へとタスクを分解します。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/inception.png"&gt;&lt;img loading="lazy" width="3024" height="1416" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/inception.png" alt="AI-DLC Workflow の Inception フェーズに沿って、Kiro とともに要件定義を進めている Kiro IDE の画面" class="alignnone size-full wp-image-189101" style="width: 100%"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;設計・実装のフェーズ (Construction) では、詳細設計から実装、テストへと進めます。このとき Kiro は、準備フェーズで与えたガイドラインの知識や開発標準を参照しながら、成果物を生成します。これらの成果物を人間が検証していきます。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/construction.png"&gt;&lt;img loading="lazy" width="3024" height="1382" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/construction.png" alt="AI-DLC Workflow の Construction フェーズに沿って、Kiro が詳細設計・実装・テストを進めている Kiro IDE の画面" class="alignnone size-full wp-image-189103" style="width: 100%"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;ただし、AI-DLC Workflow はあくまで一例です。重要なのは、皆さんの組織固有の開発プロセスそのものを Kiro に教え、AI ネイティブなプロセスへと変革させていくことです。&lt;/p&gt; 
+&lt;p&gt;AI-DLC については「&lt;a href="https://aws.amazon.com/jp/blogs/news/ai-driven-development-life-cycle/" target="_blank" rel="noopener noreferrer"&gt;AI 駆動開発ライフサイクル:ソフトウェアエンジニアリングの再構築&lt;/a&gt;」をご参照ください。&lt;/p&gt; 
+&lt;h3 id="phase-improve"&gt;[改善] ハーネスを育て続ける&lt;/h3&gt; 
+&lt;p&gt;ここまで構築してきたコンテキストとハーネスは、一度作って終わりではありません。開発で得た学びやプロダクトの成熟度に応じて、コンテキストとハーネスの 2 つの面から育て続けます。&lt;/p&gt; 
+&lt;p&gt;まず、Kiro に与えた知識（コンテキスト）を最新に保ちます。医療情報ガイドラインのように、規制やガイドラインそのものが改定されることもあります。こうしたとき、改定版を読み込ませて変更点を整理し、該当する Agent Skills を更新すれば、最新の内容に追従し続けられます。膨大な改定内容の読み込みと差分の整理を、Kiro は人間よりはるかに高速にこなせます。これが、規制やガイドラインの多い医療ドメインで、AI ネイティブな開発を行う意義でもあります。&lt;/p&gt; 
+&lt;p&gt;あわせて、開発を支える仕組み（ハーネス）も強化します。たとえば SAST (静的解析) やテストを整備し、ガイドライン遵守・セキュリティ・品質の観点を継続的に検査できるようにします。さらに Kiro の &lt;a href="https://kiro.dev/docs/hooks/" target="_blank" rel="noopener noreferrer"&gt;Agent Hooks&lt;/a&gt; を使えば、ファイルの保存やタスクの完了といったイベントをきっかけに、これらの検査やレビューを自動で実行できます。手作業の抜け漏れやセキュリティ上の見落としを、仕組みで防げるようになります。&lt;/p&gt; 
+&lt;p&gt;こうしてコンテキストとハーネスが育つほど、Kiro は医療情報システム開発を理解したチームの一員として、ますます頼れる存在になっていきます。&lt;/p&gt; 
+&lt;h2 id="benefits"&gt;このアプローチの何が嬉しいか&lt;/h2&gt; 
+&lt;p&gt;ここまで、Kiro をチームの一員に育て上げる流れを見てきました。このアプローチがもたらす効果を整理します。&lt;/p&gt; 
+&lt;p&gt;1 つ目は、開発に関わる全ロールが「同じ前提を備えた Kiro」と協働できることです。医療情報システム開発に必要な知識も開発標準も Kiro 側に持たせているため、それらを参照するのは人間ではなく Kiro です。企画担当も設計者も実装者も QA も、同じ知識とハーネスを備えた Kiro を相棒にできます。これにより、人間が的確な指示を出す難しさや曖昧さを、組織全体で減らせます。&lt;/p&gt; 
+&lt;p&gt;2 つ目は、いま使っている開発プロセスに後付けできることです。このアプローチの本質である Agent Skills と Agent Steering は Markdown ファイルにすぎません。そのため、既存のワークフローやツールチェーンを置き換える必要はなく、非侵襲的に組み込めます。ゼロから作り直さなくてよいので、導入のハードルも低いです。&lt;/p&gt; 
+&lt;p&gt;そして 3 つ目は、組織全体の AI 活用のバーを引き上げられることです。こうして育てた Kiro は、組織全体で共有できます。AI はあくまで人の力を増幅する Amplifier であり、担当者ごとの個人差そのものがなくなるわけではありません。ただ、知識もハーネスもない素の状態に比べれば、どの役割の人もより良い結果にたどり着きやすくなります。&lt;/p&gt; 
+&lt;h2 id="conclusion"&gt;まとめ&lt;/h2&gt; 
+&lt;p&gt;本記事では、医療情報システム開発で避けて通れない数多くの業界ガイドラインに対して、Kiro をチームの一員に育て上げて一緒に立ち向かうアプローチをご紹介しました。大量の業界ガイドラインを抱え込んでコンテキストを圧迫するのではなく、ガイドラインの知識を Agent Skills として与え、開発標準を Agent Steering として最初のハーネスを組み込み、制御ループの中で人間が意思決定権と監督責任を持ちながら Kiro と協働する。その土台作りと洗練を重ねることが、このアプローチの核です。&lt;/p&gt; 
+&lt;p&gt;冒頭でも触れたとおり、このアプローチは確立された方法ではなく、AI 活用のベストプラクティスを組み合わせた実験的なものです。だからこそ、皆さんの組織やプロジェクトに合わせて取捨選択し、カスタマイズしていただければと思います。本質は動的に読み込める知識と開発ルールを与えることなので、いま使っているコーディングエージェントや開発プロセスに後付けで試せます。まずは小さなスキルやステアリングを 1 つ作るところから、Kiro と一緒に始めてみてください。&lt;/p&gt; 
+&lt;p&gt;皆さんの開発現場で Kiro が頼れるチームの一員になることを願っています。そしてより良い医療情報システムをより早く提供できる未来を信じています。&lt;/p&gt; 
+&lt;h2&gt;著者について&lt;/h2&gt; 
+&lt;footer&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="wp-image-189170 alignleft" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/30/profile-1.jpg" alt="Photo of author" width="150" height="150"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Hiroaki Yoshimura&lt;/h3&gt; 
+  &lt;p&gt;AWS Japan のパブリックセクターのソリューションアーキテクトです。ヘルスケア領域のお客様への技術的なご支援と、業界を問わずお客様の Developer Experience に関わるご支援を行っています。また、Kiro に関する&lt;a href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/" target="_blank" rel="noopener noreferrer"&gt;ブログ投稿&lt;/a&gt;やイベント登壇も行っています。&lt;/p&gt; 
+  &lt;p&gt;&lt;/p&gt;
+ &lt;/div&gt; 
+&lt;/footer&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
 		<title>Kiro で OpenAPI/Swagger 仕様から数秒でテストスイートを生成する</title>
 		<link>https://aws.amazon.com/jp/blogs/news/from-openapi-swagger-to-test-suite-in-seconds-with-kiro/</link>
 		
@@ -119,7 +265,7 @@ paths:
 &lt;/ul&gt; 
 &lt;h3 id="generate-the-test-suite-with-kiro"&gt;Kiro でテストスイートを生成する&lt;/h3&gt; 
 &lt;p&gt;それでは、Petstore の Swagger 仕様から完全なテストスイートを生成しましょう。テスト生成のルールをすべてプロンプトに埋め込むのではなく、Kiro のステアリングファイルを使用します。ステアリングファイルは「&lt;em&gt;.kiro/steering/&lt;/em&gt;」に配置され、ワークスペース内のすべてのプロンプトで Kiro が従う永続的な指示を提供します。これにより、テスト生成の基準を一度定義しておけば、すべてのプロンプトでその恩恵を受けられます。本ブログでは &lt;a target="_blank" rel="noopener noreferrer" href="https://github.com/apsumitha/Kiro-OpenAPI-Spec-Steering-Sample/blob/main/openapi-test-generation.md"&gt;このサンプル&lt;/a&gt;ステアリングファイルを使用しました。チームのニーズや基準に合わせてカスタマイズしてください。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/kiro-steering.gif"&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/kiro-steering.gif" alt="" width="800" height="461" class="alignnone size-full wp-image-188976"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/kiro-steering.gif"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/kiro-steering.gif" alt="" width="800" height="461" class="alignnone size-full wp-image-188976"&gt;&lt;/a&gt;&lt;/p&gt; 
 &lt;p&gt;&lt;em&gt;※ この図は GIF 形式に変換しているため画質が粗くなっています。鮮明な動画は&lt;a target="_blank" rel="noopener noreferrer" href="https://kiro.dev/blog/from-openapi-swagger-to-test-suite-in-seconds-with-kiro/"&gt;原文記事&lt;/a&gt;をご参照ください。&lt;/em&gt;&lt;/p&gt; 
 &lt;h4 id="sample-prompt"&gt;サンプルプロンプト&lt;/h4&gt; 
 &lt;p&gt;Kiro の vibe モードで使用するサンプルプロンプトを示します。&lt;/p&gt; 
@@ -653,39 +799,6 @@ module.exports = { createClient };
 &lt;p&gt;&lt;a href="https://kiro.dev/downloads/" target="_blank" rel="noopener"&gt;&lt;em&gt;Kiro を使い始めて&lt;/em&gt;&lt;/a&gt;&lt;em&gt;、継続的な改善を体験してください。&lt;/em&gt;&lt;/p&gt; 
 &lt;hr&gt; 
 &lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; Kiro のインタラクションの共有を&lt;a href="https://kiro.dev/docs/privacy-and-security/data-protection/#opt-out-of-data-sharing" target="_blank" rel="noopener"&gt;オプトアウト&lt;/a&gt;することができます。&lt;a href="https://kiro.dev/docs/enterprise/concepts/#kiro-enterprise-user" target="_blank" rel="noopener"&gt;エンタープライズユーザー&lt;/a&gt;はデフォルトでオプトアウトされています。&lt;/p&gt; 
-&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>Kiro のエンタープライズ ID 連携と使用状況メトリクス</title>
-		<link>https://aws.amazon.com/jp/blogs/news/enterprise-identity-and-usage-metrics/</link>
-		
-		<dc:creator><![CDATA[Hiroaki Yoshimura]]></dc:creator>
-		<pubDate>Fri, 20 Feb 2026 01:47:15 +0000</pubDate>
-				<category><![CDATA[Amazon Q]]></category>
-		<category><![CDATA[Amazon Q Developer]]></category>
-		<category><![CDATA[Artificial Intelligence]]></category>
-		<category><![CDATA[Developer Tools]]></category>
-		<category><![CDATA[Kiro]]></category>
-		<guid isPermaLink="false">f38249bd9efd3721c1aad4fda66c0f79efe67044</guid>
-
-					<description>Kiro はエンタープライズ向けに外部 ID プロバイダー（Okta、Microsoft Entra ID）のサポートとユーザーレベルのアクティビティメトリクスを提供します。既存の ID インフラストラクチャに直接接続し、SSO ポリシーや MFA を活用可能に。管理者は日次集計使用状況データでチームのツール利用状況を可視化でき、AI がエンジニアリングにもたらす効率向上を測定できます。</description>
-										<content:encoded>&lt;p&gt;本記事は 2026 年 2 月 13 日に公開された Ranjith Ramakrishnan による “&lt;a href="https://kiro.dev/blog/enterprise-identity-and-usage-metrics/" target="_blank" rel="noopener"&gt;Enterprise identity and usage metrics&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
-&lt;p&gt; Kiro が 11 月 17 日に一般提供されて以来、Rackspace、Smugmug、Netsmart などの多くの企業が、エンジニアリングチーム全体でスペック駆動開発アプローチを採用し、AI 開発においてより構造化されたアプローチをもたらし、場合によっては最大 90% の効率向上を実現しています。 &lt;/p&gt; 
-&lt;p&gt; 本日、外部 ID プロバイダーのサポートとユーザーレベルのアクティビティメトリクスにより、組織が Kiro をさらに簡単に使用できるようになりました。企業には、ID 管理の仕組みやコンプライアンス要件があり、またチームは「何がどのように使われているのか」を可視化して把握する必要があります。この分野は急速に変化しているため、企業は新しいユーザーを迅速にオンボーディングし、AI がエンジニアをどこでどのように支援しているかについての洞察を得たいと考えています。このデータがあれば、ツールとプロセスへの投資を迅速に拡大し、一貫して高い品質基準を保ちながら、はるかに速くリリースできます。 &lt;/p&gt; 
-&lt;p&gt;&lt;span id="more-178820"&gt;&lt;/span&gt;&lt;/p&gt; 
-&lt;h2 id="external-identity-providers-okta-and-microsoft-entra-id"&gt; 外部 ID プロバイダー: Okta と Microsoft Entra ID&lt;br&gt; &lt;/h2&gt; 
-&lt;p&gt; 組織が &lt;a class="text-primary hover:underline" target="_blank" rel="noopener noreferrer" href="https://www.okta.com/"&gt;Okta&lt;/a&gt; または &lt;a class="text-primary hover:underline" target="_blank" rel="noopener noreferrer" href="https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id"&gt;Microsoft Entra&lt;/a&gt; ID を通じて ID を管理している場合、Kiro はそのインフラストラクチャに直接接続できるようになりました。これは、&lt;a class="text-primary hover:underline" href="https://kiro.dev/" target="_blank" rel="noopener"&gt;IDE&lt;/a&gt;、&lt;a class="text-primary hover:underline" href="https://kiro.dev/cli/" target="_blank" rel="noopener"&gt;CLI&lt;/a&gt;、Web アプリなど、Kiro ポートフォリオ全体で機能します。開発者は既に持っている認証情報で認証するため、新しいログインを設定する必要はありません。 &lt;/p&gt; 
-&lt;p&gt; 管理者が既存の ID プロバイダーをオンボーディングすると、SSO ポリシー、条件付きアクセスルール、MFA 適用が設定どおりに Kiro で使用されます。Okta と Microsoft Entra から始めたのは、多くのお客様からのリクエストに基づいています。追加の &lt;a class="text-primary hover:underline" target="_blank" rel="noopener noreferrer" href="https://openid.net/developers/how-connect-works/"&gt;OIDC&lt;/a&gt; プロバイダーのサポートに取り組んでいます。まだサポートされていないプロバイダーを使用している場合は、&lt;a class="text-primary hover:underline" target="_blank" rel="noopener noreferrer" href="https://github.com/kirodotdev/Kiro/issues"&gt;お知らせください&lt;/a&gt;。優先順位の決定に役立てさせていただきます。 &lt;/p&gt; 
-&lt;p&gt; これは、Kiro を人気のあるエンタープライズツールやシステム（ID プロバイダー、チケットシステムやバージョン管理システム、デプロイツールなど）に接続する最初のステップです。 &lt;/p&gt; 
-&lt;h2 id="user-level-activity-metrics"&gt; ユーザーレベルのアクティビティメトリクス&lt;br&gt; &lt;/h2&gt; 
-&lt;p&gt; 組織の管理者は、チーム全体の利用状況を日次で集計したデータを提供するユーザーアクティビティレポートを有効にできるようになりました。レポートは、クライアントタイプ（IDE、CLI、IDE プラグイン）ごとにアクティビティを分類するため、開発者が実際に使用しているツールを可視化できます。これらの基本的なメトリクスは始まりに過ぎません。 &lt;/p&gt; 
-&lt;p&gt; 生産性の測定と使用パターンの確立は繰り返し出てくるテーマであり、今日、私たちはより豊富な分析（トレンドビュー、チームレベルの集計、エクスポート可能なダッシュボード）だけでなく、エージェント型開発を効果的に活用することが、どのように生産性向上につながるのか、その洞察を得られるようにしていきます。企業が重視するソフトウェアデリバリー指標において、どのチームが最も顕著な向上を実現しているのか？ そしてその成果を牽引する利用パターンとは何か？ 2026年の展開にご期待ください。 &lt;/p&gt; 
-&lt;h2 id="whats-next-for-enterprises"&gt; エンタープライズ向けの次のステップ&lt;br&gt; &lt;/h2&gt; 
-&lt;p&gt; これら 2 つの機能は、企業が既に依存しているシステム内で Kiro を機能させるための、より広範な取り組みの一部です。既存のツールやサービスとのさらなる統合、および開発速度を安全に向上させるために必要なガードレールを提供する追加のガバナンス制御と機能に積極的に取り組んでいます。 &lt;/p&gt; 
-&lt;p&gt; 組織での Kiro 導入を検討中の方、または既に利用中で特定のエンタープライズ機能の優先的な実装を希望される方は、&lt;a class="text-primary hover:underline" href="https://kiro.dev/enterprise/" target="_blank" rel="noopener"&gt;お知らせいただくか&lt;/a&gt;、&lt;a class="text-primary hover:underline" target="_blank" rel="noopener noreferrer" href="https://github.com/kirodotdev/Kiro"&gt;GitHub&lt;/a&gt; で Issues を開いてください。 &lt;/p&gt; 
 &lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
 					
 		
