@@ -21,12 +21,12 @@ function resolveImage(src: string): ImageMetadata | undefined {
 ---
 
 <section class="p-4 sm:p-6">
-  <div class="columns-2 sm:columns-3 lg:columns-4 gap-3 space-y-3">
+  <div class="columns-2 sm:columns-3 md:columns-3 lg:columns-4 gap-3">
     {images.map((img, i) => {
       const imageSrc = resolveImage(img.data.src);
       return imageSrc && (
         <div
-          class="break-inside-avoid overflow-hidden rounded-2xl photo-item skeleton skeleton-img"
+          class="break-inside-avoid overflow-hidden rounded-2xl mb-3 photo-item skeleton skeleton-img"
           style={`box-shadow: 0 1px 4px var(--color-shadow-sm); animation-delay: ${i * 60}ms;`}
         >
           <Image
