@@ -1,5 +1,10 @@
 [
   {
+    "id": "cap-prepay-overage",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/cap-prepay-overage/",
+    "publishedAt": "2026-07-10"
+  },
+  {
     "id": "building-compliant-healthcare-systems-with-kiro",
     "externalUrl": "https://aws.amazon.com/jp/blogs/news/building-compliant-healthcare-systems-with-kiro/",
     "publishedAt": "2026-07-02"
