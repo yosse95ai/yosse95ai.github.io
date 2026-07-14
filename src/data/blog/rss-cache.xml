@@ -5,7 +5,7 @@
 	<atom:link href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/" rel="self" type="application/rss+xml"/>
 	<link>https://aws.amazon.com/jp/blogs/news/</link>
 	<description/>
-	<lastBuildDate>Fri, 10 Jul 2026 01:21:11 +0000</lastBuildDate>
+	<lastBuildDate>Tue, 14 Jul 2026 02:24:23 +0000</lastBuildDate>
 	<language>ja</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -13,6 +13,36 @@
 	1	</sy:updateFrequency>
 	
 	<item>
+		<title>Kiro のバースデーウィークへようこそ</title>
+		<link>https://aws.amazon.com/jp/blogs/news/birthday-2026/</link>
+		
+		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
+		<pubDate>Tue, 14 Jul 2026 02:24:23 +0000</pubDate>
+				<category><![CDATA[Artificial Intelligence]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">d013eb4a4d3b6c977bcb18c0cced8fd48eb3ad0c</guid>
+
+					<description>Kiro は誕生から 1 周年を迎え、AI コーディングからエージェンティックエンジニアリングへと進化しました。7 月 13 日から 17 日まで（太平洋時間）の 1 週間、コミュニティへの感謝を込めたバースデーウィークを開催します。ボーナスクレジットを獲得できるデイリーコーディングチャレンジ、7 月 15 日のバースデーパーティーライブストリーム、コミュニティスポットライト、そしていくつかのサプライズをご用意しています。#BuildWithKiro #TeamKiro #1YearOfKiro で、皆さんの 1 年目を一緒にお祝いしましょう。</description>
+										<content:encoded>&lt;p&gt;本記事は 2026 年 7 月 13 日に公開された Helen Hasbun および Emma Parkerton による “&lt;a href="https://kiro.dev/blog/birthday-2026/" target="_blank" rel="noopener"&gt;Welcome to birthday week&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;1 年が経ち、Kiro は AI コーディングからエージェンティックエンジニアリングへと進化しました。開発者コミュニティの皆さんがいなければ、今の Kiro というツールも、今の私たちというチームもなかったでしょう。皆さんがフィードバックを寄せ、イベントに参加し、作り上げたものを共有していただき、その一つひとつが私たちを成長させてくれました。このコミュニティが私たちとともに成長し、変化していく様子を見守ることができて、心から嬉しく思います。社内では皆さんのことを、とても良い意味でよく話題にしています。念のためお伝えしておきますね。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-190162"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2 id="whats-happening"&gt;何が起きているか&lt;/h2&gt; 
+&lt;p&gt;7 月 13 日から 7 月 17 日まで（太平洋時間）の 1 週間を通じて、皆さんへの感謝をお伝えします。追加のクレジットを獲得できる仕組みや、随所にちょっとしたサプライズを用意し、皆さんが作り上げてきたものやシェアしてくれたものを一緒にお祝いします。毎日、コミュニティを主役にした特別な企画を用意します。&lt;/p&gt; 
+&lt;p&gt;&lt;u&gt;Your year of Kiro（皆さんと Kiro の 1 年のあゆみ）。&lt;/u&gt;1 週間を通じて、皆さんがこの 1 年間で Kiro を使ってどのように作ってきたのかを聞かせてください。何をリリースしたのか、何が楽になったのか、何に驚いたのか。#BuildWithKiro #TeamKiro #1YearOfKiro のハッシュタグと @kirodotdev のメンションを付けて SNS でストーリーを共有してください。私たちは 1 週間ずっと読み、リポストし、皆さんの 1 年目を一緒にお祝いします。&lt;/p&gt; 
+&lt;p&gt;&lt;u&gt;デイリーコーディングチャレンジ。&lt;/u&gt;毎日、Kiro アンバサダーが&lt;a href="https://kiro.dev/birthday/" target="_blank" rel="noopener"&gt;日替わりのコーディングチャレンジ&lt;/a&gt;を発表します。デイリーチャレンジをクリアして Kiro のボーナスクレジットを獲得しましょう。連続クリアで連続ボーナスが加算され、週の終わりには完了したチャレンジ数に応じた倍率が適用されます。皆さんは最高報酬を獲得するために、連続パーフェクトを達成できますか？&lt;/p&gt; 
+&lt;p&gt;&lt;u&gt;バースデーパーティーライブストリーム。&lt;/u&gt;7 月 15 日（水）午前 9 時 30 分（太平洋時間）からライブ配信を行い、この 1 年の印象的な出来事を振り返ります。プロダクトのローンチ、プログラムのローンチ、イベント、各種アップデートなど、取り上げたいことがたくさんあります。そのため、通常 1 時間のストリームを 1 時間半に拡大し、後半の 30 分にはスペシャルゲストとして Kiro VP の Deepak Singh が加わり、ビジョンを紐解きます。当初どういうものだったのか、どのように展開してきたのか、これからどこへ向かうのか。ぜひご視聴ください。素敵なパーティーになります。&lt;/p&gt; 
+&lt;p&gt;&lt;u&gt;コミュニティスポットライト。&lt;/u&gt;1 週間を通じて、1 年目を成功に導いてくれたビルダーの皆さんに光を当てます。明日のために開発する学生、企業を立ち上げ成長させている創業者、日々 Kiro を自ら使いこなしている Amazon と AWS のビルダーやコミュニティ、限界を押し広げて知見を共有してくれる Kiro アンバサダー。Kiro が幅広い業界、影響力、規模でビルダーの皆さんを支えている様子を目の当たりにできたのは、本当に素晴らしいことでした。&lt;/p&gt; 
+&lt;p&gt;&lt;u&gt;いくつかのバースデーサプライズ。&lt;/u&gt;サプライズが 1 つや 2 つなければ、誕生日らしくありませんよね。ここではまだ明かせませんが、サプライズをいくつか用意しているので、SNS をフォローして、最新情報を逃さないようにしてください。&lt;/p&gt; 
+&lt;h2 id="join-the-celebrations"&gt;是非お祝いに参加してください&lt;/h2&gt; 
+&lt;p&gt;今年は皆さんが私たちと一緒に作り上げてくれました。この 1 年の Kiro との物語や体験を共有し、&lt;a href="https://kiro.dev/birthday/" target="_blank" rel="noopener"&gt;デイリーチャレンジ&lt;/a&gt;にできるだけたくさん挑戦し、&lt;a href="https://kiro.dev/events/" target="_blank" rel="noopener"&gt;バースデーパーティーライブストリーム&lt;/a&gt;を視聴してリアルタイムで質問を投稿して、SNS 上で交わされる Kiro コミュニティの会話にぜひご参加ください。皆さんからのフィードバックや体験に、私たちは本当にたくさんの刺激とモチベーションをいただきました。皆さんにとって、コミュニティでの時間が同じように刺激的で励みになるものになることを願っています。&lt;a href="https://discord.gg/kiro" target="_blank" rel="noopener noreferrer"&gt;Discord&lt;/a&gt; にご参加いただき、&lt;a href="https://x.com/kirodotdev" target="_blank" rel="noopener noreferrer"&gt;X&lt;/a&gt; や &lt;a href="https://www.linkedin.com/showcase/kirodotdev" target="_blank" rel="noopener noreferrer"&gt;LinkedIn&lt;/a&gt; をフォローし、1 週間を通じて Kiro をタグ付けし、#BuildWithKiro #TeamKiro #1YearOfKiro のハッシュタグを使って築き上げたものを共有してください。&lt;/p&gt; 
+&lt;p&gt;一緒に 2 年目をスタートしましょう。Kiro、お誕生日おめでとう！&lt;/p&gt; 
+&lt;p&gt;翻訳は Kiro 好きの Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
 		<title>Kiro の超過利用の上限設定と前払い機能のご紹介</title>
 		<link>https://aws.amazon.com/jp/blogs/news/cap-prepay-overage/</link>
 		
@@ -617,98 +647,6 @@ module.exports = { createClient };
 &lt;p&gt;これらのモデルは現在、&lt;a href="https://kiro.dev/docs/models/#how-to-switch-models" target="_blank" rel="noopener"&gt;IDE のモデルセレクター&lt;/a&gt;および &lt;a href="https://kiro.dev/docs/cli/models/#how-to-switch-models" target="_blank" rel="noopener"&gt;Kiro CLI&lt;/a&gt; から実験的サポートとして利用できます。MiniMax M2.5 は AWS US-East-1（バージニア北部）および AWS EU-Central-1（フランクフルト）リージョンで利用可能です。GLM-5 の推論は AWS US-East-1（バージニア北部）リージョンで実行されます。&lt;/p&gt; 
 &lt;p&gt;また、Kiro にすでに搭載されているオープンウェイトモデルへのアクセスも拡大しました。MiniMax M2.1、Qwen3 Coder Next、Deepseek V3.2 は、IAM Identity Center（IdC）経由で認証しているユーザーを含む全ユーザーが利用できるようになりました。推論をワークロードに近づけるため、MiniMax M2.1 と Qwen3 Coder Next は AWS US-East-1（バージニア北部）に加えて AWS EU-Central-1（フランクフルト）リージョンでも利用可能です。&lt;/p&gt; 
 &lt;p&gt;設定不要、ルーティング不要、追加セットアップ不要でモデルを選んですぐに作業を始められます。モデルを切り替えたり、特定のプロジェクトタイプにデフォルトを設定したり、Auto に任せたりと、ワークフローに合わせてご利用ください。エンタープライズチームの場合、管理者は &lt;a href="https://aws.amazon.com/jp/blogs/news/enterprise-governance-mcp-and-models/" target="_blank" rel="noopener"&gt;モデルガバナンス&lt;/a&gt;を使用して、利用可能なモデルをコンプライアンスおよびデータレジデンシーの要件に合わせることができます。いつものように、ぜひ試してみて、&lt;a target="_blank" rel="noopener noreferrer" href="https://discord.gg/kirodotdev"&gt;使い心地をお聞かせください&lt;/a&gt;。どのモデルが好評で、どのような課題が残っているかを注視しています。次にサポートしてほしいモデルがあれば、&lt;a target="_blank" rel="noopener noreferrer" href="https://github.com/kirodotdev/Kiro/issues/new?template=feature_request.yml"&gt;ぜひご要望をお寄せください&lt;/a&gt;。&lt;/p&gt; 
-&lt;p&gt;翻訳は Solutions Architect の吉村 が担当いたしました。&lt;/p&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>Kiro のエンタープライズガバナンス: MCP サーバーとモデルを管理する</title>
-		<link>https://aws.amazon.com/jp/blogs/news/enterprise-governance-mcp-and-models/</link>
-		
-		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
-		<pubDate>Fri, 03 Apr 2026 07:48:00 +0000</pubDate>
-				<category><![CDATA[Artificial Intelligence]]></category>
-		<category><![CDATA[Developer Tools]]></category>
-		<category><![CDATA[General]]></category>
-		<category><![CDATA[Kiro]]></category>
-		<guid isPermaLink="false">958b4021edf5c8ed12c5b574cce50c1308a5a7d4</guid>
-
-					<description>Kiro に 2 つの新しいエンタープライズガバナンス機能が追加されました。管理者が承認済み MCP サーバーを JSON 形式のレジストリでホワイトリスト管理できる「MCP サーバーレジストリ」と、組織内の開発者が利用できる AI モデルを制限できる「モデルガバナンス」です。MCP レジストリは起動時・24 時間ごとに同期され、未承認サーバーへの接続を防止します。モデルガバナンスはデータレジデンシー要件への対応にも有効で、実験的モデルを承認完了まで無効化できます。これらの機能は Kiro IDE 0.11.28 / CLI 1.23 以降のエンタープライズユーザー向けに提供されます。</description>
-										<content:encoded>&lt;p&gt;本記事は 2026 年 3 月 12 日に公開された Ryan Yanchuleff, Kartik Rao, Arnab Satpati による “&lt;a href="https://kiro.dev/blog/enterprise-governance-mcp-and-models/" target="_blank" rel="noopener"&gt;Enterprise governance: control your MCP servers and models&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
-&lt;p&gt;AI コーディングツールを評価するエンタープライズのセキュリティおよびコンプライアンスチームは、一貫して 2 つの機能を優先しています。MCP サーバー接続の一元管理と、組織全体で使用される AI モデルのガバナンスです。&lt;/p&gt; 
-&lt;p&gt;どちらも、企業が新しいカテゴリの開発者ツールに対してどう向き合うかを表しています。MCP サーバーはデータベース、ドキュメント、API、内部ツールに接続することで IDE を拡張し、実際の生産性向上をもたらします。AI モデルは定期的にリリースされ、それぞれデータ処理の特性と推論リージョンが異なります。エンタープライズ規模では、組織は開発環境の他の部分と同様に、これらに対してもポリシー主導の管理を期待しています。&lt;/p&gt; 
-&lt;p&gt;コンプライアンス要件が高い組織にとって、これらの管理機能は広範な導入の前提条件となることが多いです。セキュリティチームは、MCP サーバーへのアクセスが組織のポリシーに沿っていること、そしてモデルの使用が承認された範囲内に収まっていることを、エンジニアリングチーム全体へのロールアウトを承認する前に確認する必要があります。&lt;/p&gt; 
-&lt;p&gt;本日、Kiro に 2 つの新しいエンタープライズガバナンス機能を提供します。管理者が承認済み MCP サーバーを許可リストで管理できる MCP サーバーレジストリと、組織が開発者が使用できるモデルを定義できるモデルガバナンス管理です。Kiro はこれらのポリシーを IDE と CLI の両方で確定的に適用します。&lt;/p&gt; 
-&lt;p&gt;&lt;span id="more-181309"&gt;&lt;/span&gt;&lt;/p&gt; 
-&lt;h2 id="the-problem-mcp-without-guardrails"&gt;問題: ガードレールのない MCP&lt;/h2&gt; 
-&lt;p&gt;MCP は AI コーディングツールが外部システムに接続するための標準的な方法となっています。Kiro はローンチ以来 MCP をサポートしており、まず&lt;a href="https://aws.amazon.com/jp/blogs/news/teaching-kiro-new-tricks-with-agent-steering-and-mcp/" target="_blank" rel="noopener"&gt;ローカルサーバー&lt;/a&gt;、次に&lt;a href="https://aws.amazon.com/jp/blogs/news/introducing-remote-mcp/" target="_blank" rel="noopener"&gt;リモートサーバー&lt;/a&gt;に対応しました。開発者は MCP サーバーを使用して、Kiro をドキュメントシステム、データベース、チケットツール、クラウドインフラなどに接続しています。&lt;/p&gt; 
-&lt;p&gt;MCP の導入が組織全体に拡大するにつれ、エンタープライズのセキュリティチームは開発環境内の他の統合ポイントに適用するのと同じ一元的な監視を求めるようになります。何百人もの開発者が MCP を通じて外部システムに接続している場合、管理者はパッケージレジストリ、CI/CD プラグイン、API アクセスを管理するのと同じように、使用が承認されているサーバーを定義して適用する方法が必要です。&lt;/p&gt; 
-&lt;p&gt;これはエンタープライズのお客様から最も一貫して寄せられたリクエストの 1 つでした。個々の開発者の裁量に任せるのではなく、ポリシーを通じて MCP サーバーへのアクセスを管理する方法を管理者に提供してほしいというものです。組織は、セキュリティチームが求めるガバナンス体制を維持しながら、MCP の導入を迅速に進めたいと考えていました。&lt;/p&gt; 
-&lt;h2 id="how-it-works-the-mcp-registry"&gt;仕組み: MCP レジストリ&lt;/h2&gt; 
-&lt;p&gt;Kiro の MCP ガバナンスは管理者に 2 つの管理機能を提供します。MCP を無効にする MCP のオン/オフトグルと、管理者が Kiro 用の承認済み MCP サーバーの JSON 許可リストを設定できる MCP レジストリです。どちらの管理機能も、エンタープライズユーザー向けに作成される &lt;a href="https://kiro.dev/docs/cli/enterprise/subscribe/" target="_blank" rel="noopener"&gt;Kiro プロファイル&lt;/a&gt;の一部であり、そのアカウントのすべてのサブスクライバーに対してアカウントレベルで設定できます。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/03/19/shared-settings.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/03/19/shared-settings.png" alt="" width="2560" height="606" class="alignnone size-full wp-image-181465"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;レジストリ自体は JSON ファイルで、Amazon S3、nginx、内部 Web サーバーなど任意の HTTPS エンドポイントに作成してホストします。Kiro 管理コンソールのプロファイルに URL を追加すると、Kiro が確定的な方法で残りの処理を行います。すべての Kiro クライアントは起動時にレジストリを取得し、24 時間ごとに再同期します。ローカルにインストールされた MCP サーバーがレジストリに存在しなくなった場合、Kiro はそれを終了させ、開発者が再追加できないようにします。レジストリがサーバーの新しいバージョンを指定している場合、Kiro はそのサーバーを更新後のバージョンで自動的に再起動します。&lt;/p&gt; 
-&lt;p&gt;開発者が Kiro CLI で &lt;code&gt;/mcp add&lt;/code&gt; を実行すると、レジストリのサーバーのみが表示されます。レジストリで定義されたサーバーパラメーター（URL、パッケージ識別子、ランタイム引数）は読み取り専用です。開発者は独自の環境変数（認証キーやローカルパス用）と HTTP ヘッダーを追加できますが、リストにないサーバーには接続できません。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/03/19/logic.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/03/19/logic.png" alt="" width="1878" height="848" class="alignnone size-full wp-image-181461"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;レジストリはリモートとローカルの両方の MCP サーバーをサポートしています。&lt;/p&gt; 
-&lt;ul&gt; 
- &lt;li&gt; &lt;p&gt;&lt;strong&gt;リモートサーバー&lt;/strong&gt;: &lt;code&gt;streamable-http&lt;/code&gt; または &lt;code&gt;sse&lt;/code&gt; トランスポートで接続し、エンドポイント URL と HTTP ヘッダーを設定可能です。&lt;/p&gt; &lt;/li&gt; 
- &lt;li&gt; &lt;p&gt;&lt;strong&gt;ローカルサーバー&lt;/strong&gt;: npm、PyPI、OCI レジストリのパッケージとして定義され、&lt;code&gt;stdio&lt;/code&gt; トランスポートで動作します。Kiro は &lt;code&gt;npx&lt;/code&gt;、&lt;code&gt;uvx&lt;/code&gt;、または &lt;code&gt;docker&lt;/code&gt; を使用してダウンロードおよび実行します。適切なパッケージランナーが開発者のマシンにインストールされている必要があります。&lt;/p&gt; &lt;/li&gt; 
-&lt;/ul&gt; 
-&lt;h2 id="built-on-the-mcp-registry-open-standard"&gt;MCP レジストリオープン標準に基づく構築&lt;/h2&gt; 
-&lt;p&gt;Kiro のレジストリファイル形式は、&lt;a target="_blank" rel="noopener noreferrer" href="https://github.com/modelcontextprotocol/registry"&gt;MCP レジストリ標準&lt;/a&gt;の一部を採用しました。これは MCP サーバーの検出と配布のためのオープンソース仕様で、MCP プロジェクト（元々は Anthropic が作成し、現在はオープン標準として管理されています）によって維持されています。これにより、MCP ガバナンスへの投資が特定のサービスプロバイダーに縛られることはありません。レジストリ仕様は、MCP サーバーのカタログ化、バージョン管理、検出方法の標準化されたデータモデルを定義しています。&lt;/p&gt; 
-&lt;p&gt;Kiro のレジストリ定義は、JSON 形式の仕様から&lt;a target="_blank" rel="noopener noreferrer" href="https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json"&gt;&lt;u&gt;サーバースキーマ&lt;/u&gt;&lt;/a&gt;の一部に従っています。各サーバーエントリには、名前（ファイル内で一意）、説明、バージョン（セマンティックバージョニング推奨）、および remotes 配列（HTTP ベースのサーバー用）または packages 配列（ローカル stdio サーバー用）のいずれかが含まれます。簡略化した例を以下に示します。&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="language-json"&gt;{
-  "servers": [
-    {
-      "server": {
-        "name": "my-remote-server",
-        "description": "My server description",
-        "version": "1.0.0",
-        "remotes": [
-          {
-            "type": "streamable-http",
-            "url": "https://acme.com/my-server"
-          }
-        ]
-      }
-    },
-    {
-      "server": {
-        "name": "my-local-server",
-        "description": "My server description",
-        "version": "1.0.0",
-        "packages": [
-          {
-            "registryType": "npm",
-            "identifier": "@acme/my-server",
-            "transport": { "type": "stdio" }
-          }
-        ]
-      }
-    }
-  ]
-}&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;完全な JSON スキーマと属性リファレンスについては、&lt;a href="https://kiro.dev/docs/enterprise/governance/mcp/#mcp-registry-json-schema" target="_blank" rel="noopener"&gt;Kiro MCP ガバナンスドキュメント&lt;/a&gt;を参照してください。&lt;/p&gt; 
-&lt;h2 id="model-governance-control-which-models-your-developers-can-use"&gt;モデルガバナンス: 開発者が使用できるモデルを管理する&lt;/h2&gt; 
-&lt;p&gt;Kiro は&lt;a href="https://aws.amazon.com/jp/blogs/news/open-weight-models/" target="_blank" rel="noopener"&gt;オープンウェイトモデル&lt;/a&gt;や Anthropic の最新モデル（&lt;a href="https://aws.amazon.com/jp/blogs/news/kiro-opus-4-6/" target="_blank" rel="noopener"&gt;Opus 4.6&lt;/a&gt; や &lt;a href="https://aws.amazon.com/jp/blogs/news/sonnet-4-6/" target="_blank" rel="noopener"&gt;Sonnet 4.6&lt;/a&gt; など）のような新しいモデルオプションを追加し続けています。選択肢が増えることは開発者にとって良いことです。しかし、モデル承認プロセスを持つ企業にとって、新しいモデルが登場するたびに、誰かが使用できるようになる前に回答が必要なコンプライアンス上の問題が生じます。&lt;/p&gt; 
-&lt;p&gt;本日、Kiro エンタープライズのお客様向けにモデルガバナンスも提供します。Kiro の管理者は、未承認のモデルを無効にすることで、開発者が利用できるモデルを制限できるようになりました。&lt;/p&gt; 
-&lt;p&gt;明確にしておくと、これは「独自モデルの持ち込み」ではありません。モデルガバナンスは Kiro にモデルを追加するものではありません。すでに利用可能なリストからモデルを削除するものです。組織がまだモデルを承認していない場合、レビュープロセスが完了するまで開発者にオプションとして表示されないよう無効にできます。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/03/19/models.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/03/19/models.png" alt="" width="1246" height="1306" class="alignnone size-full wp-image-181463"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;h2 id="why-this-matters"&gt;なぜこれが重要なのか&lt;/h2&gt; 
-&lt;p&gt;エンタープライズのモデル承認プロセスには正当な理由があります。モデルによってトレーニングデータの出所、ライセンス条件、データ処理の特性が異なります。新しいモデルを使用する前に法的レビューを必要とする組織もあります。数週間かかる技術評価プロセスを持つ組織もあります。&lt;/p&gt; 
-&lt;p&gt;モデルガバナンスがなければ、Kiro が新しいモデルをリリースするたびに、組織内のすべての開発者がすぐに利用できるようになります。管理者は承認プロセスを適用する方法がなく、IDE でモデルを選択する前に開発者がポリシードキュメントを確認することに頼ることになります。それでは組織規模には対応できません。&lt;/p&gt; 
-&lt;h2 id="data-residency-and-experimental-models"&gt;データレジデンシーと実験的モデル&lt;/h2&gt; 
-&lt;p&gt;これは特にデータレジデンシー要件を持つお客様にとって重要です。Kiro の一般提供モデルはリージョナルなクロスリージョン推論を使用しており、データは選択した地域（米国またはヨーロッパ）内に留まります。しかし、&lt;a href="https://kiro.dev/docs/privacy-and-security/data-protection/#global-cross-region-inference-for-experimental-features" target="_blank" rel="noopener"&gt;実験的サポート&lt;/a&gt;でリリースされた新しいモデルはグローバルなクロスリージョン推論を使用する場合があり、リクエストが選択した地域外の AWS リージョンで処理される可能性があります。&lt;/p&gt; 
-&lt;p&gt;データレジデンシー要件が高い組織にとって、この区別は重要です。グローバルに推論をルーティングする実験的モデルは、モデル自体が技術的に優れていても、コンプライアンス義務と互換性がない場合があります。&lt;/p&gt; 
-&lt;p&gt;モデルガバナンスは管理者にこれを処理するための簡単な方法を提供します。データレジデンシー要件に対してレビューが完了するまで実験的モデルを無効にします。モデルが実験的段階からリージョナル推論を備えた一般提供段階に移行したら、有効にします。開発者は Kiro のタイムラインではなく、組織のタイムラインで新しいモデルにアクセスできます。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/03/19/controls.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/03/19/controls.png" alt="" width="1684" height="972" class="alignnone size-full wp-image-181464"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;h2 id="how-it-works"&gt;仕組み&lt;/h2&gt; 
-&lt;p&gt;管理者は AWS マネジメントコンソールの Kiro 管理設定を通じてモデルの可用性を設定します。インターフェースには Kiro がサポートするすべてのモデルと、その現在のステータス（GA または実験的）および推論スコープが表示されます。管理者はモデルのオン/オフを切り替えられます。無効にされたモデルは、IDE と CLI の両方で組織内のどの開発者のモデルセレクターにも表示されません。&lt;/p&gt; 
-&lt;p&gt;Kiro が新しいモデルをリリースすると、管理者は準備が整うまで簡単にオフにできます。開発者は組織が承認したモデルのみを見ることができます。&lt;/p&gt; 
-&lt;h2 id="get-started"&gt;今すぐ始めましょう&lt;/h2&gt; 
-&lt;p&gt;MCP ガバナンスとモデルガバナンスは、&lt;a href="https://kiro.dev/docs/enterprise/getting-started/" target="_blank" rel="noopener"&gt;AWS IAM Identity Center&lt;/a&gt;、&lt;a href="https://aws.amazon.com/jp/blogs/news/enterprise-identity-and-usage-metrics/" target="_blank" rel="noopener"&gt;Okta、または Microsoft Entra ID&lt;/a&gt; を通じて認証する Kiro エンタープライズのお客様向けに、Kiro IDE 0.11.28 または Kiro CLI 1.23 以降で利用可能です。&lt;a target="_blank" rel="noopener noreferrer" href="https://app.kiro.dev/"&gt;Kiro 管理設定コンソール&lt;/a&gt;で MCP レジストリとモデルポリシーを設定してください。&lt;/p&gt; 
 &lt;p&gt;翻訳は Solutions Architect の吉村 が担当いたしました。&lt;/p&gt;</content:encoded>
 					
 		
