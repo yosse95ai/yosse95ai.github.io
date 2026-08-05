@@ -5,7 +5,7 @@
 	<atom:link href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/" rel="self" type="application/rss+xml"/>
 	<link>https://aws.amazon.com/jp/blogs/news/</link>
 	<description/>
-	<lastBuildDate>Tue, 14 Jul 2026 02:24:23 +0000</lastBuildDate>
+	<lastBuildDate>Wed, 05 Aug 2026 00:43:36 +0000</lastBuildDate>
 	<language>ja</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -13,6 +13,136 @@
 	1	</sy:updateFrequency>
 	
 	<item>
+		<title>1 つのエージェントで、あらゆるクライアントに: Kiro エージェントハーネスをどう構築したか</title>
+		<link>https://aws.amazon.com/jp/blogs/news/one-agent/</link>
+		
+		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
+		<pubDate>Wed, 05 Aug 2026 00:43:36 +0000</pubDate>
+				<category><![CDATA[Artificial Intelligence]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">0a506f5d2d96360210ebab6afbd71abb7ade41a5</guid>
+
+					<description>Kiro IDE、CLI、Web に別々に存在した 3 つのエージェントを、単一の Kiro エージェントハーネスに統合した過程を解説します。標準化された Agent Client Protocol (ACP) を採用し、独自の WebSocket トランスポートと Kiro-ACP 拡張、Cedar ベースのケイパビリティ権限モデルを組み合わせることで、仕様駆動開発、カスタムエージェント、フックをすべてのクライアントで一貫して提供します。IDE 1.0、CLI v3、Web、iOS 版で今すぐ試せます。</description>
+										<content:encoded>&lt;p&gt;本記事は 2026 年 8 月 3 日に公開された Clare Liguori、Romain Dura、Al Harris、Richard Threlkeld による “&lt;a href="https://kiro.dev/blog/one-agent/" target="_blank" rel="noopener noreferrer"&gt;One agent, every surface: how we built the Kiro agent harness&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;Kiro の開発初期、私たちは開発者の 1 日のなかでエージェント駆動の開発がどのように感じられるべきかを議論し始めました。繰り返し立ち返ったのは、セッションがラップトップとクラウドサンドボックスの間を摩擦なく行き来する姿でした。1 日の終わりにラップトップを閉じても、Kiro セッションはクラウドで動き続けます。コーヒーを取りに行く合間にスマートフォンから状況を確認できます。翌朝、Kiro &lt;a href="https://kiro.dev/ide/" target="_blank" rel="noopener noreferrer"&gt;IDE&lt;/a&gt; を開いて中断したところから作業を再開します。&lt;a href="https://kiro.dev/web/" target="_blank" rel="noopener noreferrer"&gt;Web&lt;/a&gt; 版 Kiro でプロジェクトを開始し、Kiro IDE でコンテキストを追加し、既にテストとイテレーションを進めているターミナルでは Kiro &lt;a href="https://kiro.dev/cli/" target="_blank" rel="noopener noreferrer"&gt;CLI&lt;/a&gt; を使い続け、Slack から進捗を確認します。エージェント駆動の開発とは、作業するあらゆるクライアントを横断する 1 つの連続した会話であるべきです。&lt;/p&gt; 
+&lt;p&gt;今年の初め、私たちはエージェントのアーキテクチャがこのビジョンの実現を妨げていることに気づきました。当時、Kiro IDE、CLI、Web の各クライアントは、それぞれ独自のセッションフォーマット、ツールセット、設定モデルを持つ専用のエージェントを実行していました。セッションと環境の間を容易に移動するには、どのクライアントを使っていても、どこで動作していても同じように振る舞う単一のエージェントが必要です。クライアント専用のエージェントアーキテクチャでは、エージェント同士が十分な共通基盤を持っていなかったため、あるクライアントで開始したセッションを別のクライアントに移すことができませんでした。本記事では、3 つのエージェントのコードベースを 1 つの Kiro エージェントハーネスに統合した過程 (もちろん Kiro 自身を使って構築しました) と、私たちのビジョンを実現可能にしたアーキテクチャ上の決定について解説します。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-192007"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2 id="three-diverging-harnesses-"&gt;分岐していった 3 つのハーネス&lt;/h2&gt; 
+&lt;p&gt;Kiro を作り始めた当初、私たちはスピードと実験を優先しました。各クライアントチームが独自のエージェントハーネスを作ることを推奨しました。エージェントハーネスとは、エージェントループ、ツール実行、サブエージェントへの委譲、セッション管理、設定のロード、モデルとの通信を管理するオーケストレーション層のことです。IDE チームは Code OSS の拡張モデルに合わせて TypeScript で、CLI チームはパフォーマンスを重視して Rust で、Web チームは最新のエージェント研究に近い場所に居るために Python で、それぞれ独自に構築しました。&lt;/p&gt; 
+&lt;p&gt;ハーネスを分けたことで各チームは独立して素早くリリースし、イテレーションできましたが、同時にそれぞれのチームが異なる選択をすることも意味しました。セッションストレージはクライアントごとに動作が異なりました。権限システムは独立して設計されており、互換性のない構文を使っていました。CLI は正規表現ベースの &lt;code&gt;allowedCommands&lt;/code&gt;/&lt;code&gt;deniedCommands&lt;/code&gt; を使い、IDE は &lt;code&gt;trustedCommands&lt;/code&gt; にプレフィックスマッチを、denylist にはサブストリングマッチを使っていました。コンパクション戦略も分岐しました。サブエージェントのコンテキスト共有も異なるモデルに従っていました。カスタムエージェントもクライアントごとに動作が違いました。機能セットも分裂しました。仕様駆動開発と powers は IDE のみで動作し、プランモードとコードインテリジェンスは CLI のみで動作していました。&lt;/p&gt; 
+&lt;p&gt;実装コストは時間とともに複利で膨らみました。新しい機能は 3 回作って 3 回保守する必要があり、その結果としてエージェントの挙動がわずかに異なることもありました。バグも 3 回修正する必要がありました。ユーザーはどのクライアントを選ぶかによって不整合を体験することになりました。セッションがクライアントとコンピュートを横断して移動するという私たちのビジョンは、共有のセッションフォーマット、共有のツールセット、共有の設定モデルが存在しないためアーキテクチャ的に不可能でした。各チームの独立性と個別のスピードを維持するために、クライアント間でエージェントの振る舞いに関する契約を合意し、3 つのハーネスそれぞれで実装するという案も検討しました。しかしインターフェースの整合を取ることも、新機能ごとに増えていく調整コストを生みます。新機能ごとに仕様書、3 つの実装、そして同一の振る舞いを継続的に検証する作業が必要になるのです。&lt;/p&gt; 
+&lt;p&gt;転機となったのは、Web 版 Kiro のパブリックローンチの準備を進めていたときでした。Web 版 Kiro を独自のエージェントとともにローンチし、この複利的な実装コストを払い続けるのではなく、各チームが学んだベストな知見を組み合わせた単一のエージェントハーネスを構築することを決めました。単一のハーネスであればチーム間の重複がなくなり、すべての労力を 1 箇所に集中投資できます。&lt;/p&gt; 
+&lt;h2 id="kiro-agent-harness-architecture"&gt;Kiro エージェントハーネスのアーキテクチャ&lt;/h2&gt; 
+&lt;p&gt;私たちが早い段階で下した重要なアーキテクチャ判断は、ハーネスを各クライアントにコンパイルして組み込むライブラリではなく、独立したサーバープロセスとして構築することでした。過去の試みから、共有ライブラリでは十分に強い境界を強制できないことがわかっていました。クライアントコードは公開を意図していない内部メソッドを呼び出し始めるか、ライブラリの上に独自のエージェントロジックを重ねてしまいます。そうなれば実装は再び分岐していきます。独立したプロセスであれば、この分離が現実のものになります。ハーネスとクライアントは同じ言語やランタイムを共有する必要がないため、各クライアントは自分のプラットフォームに適したスタックのまま留まれます。&lt;/p&gt; 
+&lt;p&gt;これにより、3 つの密結合したクライアントとエージェントのペアではなく、&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-text"&gt;┌────────────┐      ┌────────────────────────────────┐
+│  Kiro IDE  ├──────│  IDE agent (TypeScript)        │
+└────────────┘      └────────────────────────────────┘
+┌────────────┐      ┌────────────────────────────────┐
+│  Kiro CLI  ├──────│  CLI agent (Rust)              │
+└────────────┘      └────────────────────────────────┘
+┌────────────┐      ┌────────────────────────────────┐
+│  Kiro Web  ├──────│  Web agent (Python)            │
+└────────────┘      └────────────────────────────────┘
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;クライアントと単一のエージェントハーネスとの間にきれいな分離ができました。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-text"&gt;┌─────────────────────────┐              ┌─────────────────────────────────┐
+│  Clients                │              │  Kiro agent harness             │
+│                         │              │                                 │
+│  UX and presentation    │              │  Agent loop                     │
+│  User interaction       │───protocol───│  Tools and sub-agents           │
+│  Platform-native tools  │              │  Session state                  │
+│  (optional overrides)   │              │  MCP client                     │
+│                         │              │  Configuration and steering     │
+│                         │              │  Permissions                    │
+│                         │              │  Telemetry                      │
+└─────────────────────────┘              └─────────────────────────────────┘
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;Kiro エージェントハーネスはコードベースの隣で動作する軽量なプロセスで、高速に起動し、エージェント側のすべてを所有します。クライアントはユーザーがエージェントとどのようにやり取りするか、エージェントの作業をどのように提示するかを所有します。この境界を越える唯一の方法は、定義されたプロトコルインターフェースです。コンパイルされて組み込まれるライブラリではなく独立したプロセスであるため、あらゆるコンピュート上で動作できます。同じハーネスがラップトップ上でも、クラウド上の VM 内でも、クライアントに意識させることなく起動できます。&lt;/p&gt; 
+&lt;p&gt;サーバーとクライアントの間に明確なインターフェースがあるということは、エージェントのコードがクライアントとは独立して進化することを意味します。ハーネスの変更がプロトコルインターフェースに影響を与えない場合 (たとえば新しいツールの追加、プランニングの改善、エージェントループのチューニング)、クライアント側の変更ゼロですぐにすべてのクライアントにリリースできます。たとえば最近、カスタムエージェントのライブリロード機能を追加しました。セッション中に &lt;code&gt;.kiro/agents/&lt;/code&gt; のファイルを編集すると、ハーネスがすぐに検知し、利用可能なコマンドをクライアントに再度通知します。利用可能なコマンドの通知タイプはすでにプロトコルに存在していたため、クライアントの変更は不要でした。どのクライアントも追加の変更なしにこの機能を手に入れられたのです。&lt;/p&gt; 
+&lt;p&gt;サポート対象のクライアントが多様なため、このハーネスは画一的な設計ではありません。クライアントごとに機能が異なり、一部の操作はクライアントネイティブの機能を使ってクライアント層で実装するほうが理にかなっています。クライアントは独自のツールを提供して組み込みツールを抑制でき、自分のフォームファクター (form factor) に合ったものを使えます。たとえば IDE はファイル操作に Code OSS の API を使い、ファイルシステム上で直接動作するハーネスの組み込みツールではなく、独自のファイル読み書きツールを提供しています。エージェントがこれらのクライアント提供ツールのいずれかを実行する必要があるときは、クライアントに通知し、クライアントがツールを実行して結果を返します。&lt;/p&gt; 
+&lt;h3 id="the-protocol-agent-client-protocol-acp"&gt;プロトコル: Agent Client Protocol (ACP)&lt;/h3&gt; 
+&lt;p&gt;クライアントとハーネスの境界を定義するプロトコルとして、&lt;a target="_blank" rel="noopener noreferrer" href="https://agentclientprotocol.org/"&gt;Agent Client Protocol (ACP)&lt;/a&gt; を選びました。ACP はエージェントとクライアントの通信を標準化した仕様で、2026 年 6 月に 1.0 に到達しました。このプロトコルは JetBrains の IDE、Xcode、Zed といった IDE や、Obsidian、Emacs、Neovim といったほかのエディターでもサポートされています。私たちは今年の初めに &lt;a href="https://aws.amazon.com/jp/blogs/news/kiro-adopts-acp/" target="_blank" rel="noopener noreferrer"&gt;Kiro CLI で ACP を採用した経験&lt;/a&gt;から、これらのアプリケーション内で直接 Kiro とやり取りできるようにしていました。統一されたハーネスにも ACP を採用することにしたのは、サードパーティ製エディター向けだけでなく、Kiro 自身のクライアントと私たち自身のエージェントの間のインターフェースとして使うためです。ACP の 2 つの性質がこれを可能にしました。カスタムメソッドに対する拡張性と、トランスポートの柔軟性です。&lt;/p&gt; 
+&lt;p&gt;ACP は公式にトランスポートとして stdio をサポートしています。これはハーネスがエディターやターミナルの子プロセスとして動作するローカルクライアントで機能します。Web 版 Kiro や iOS アプリのようなリモートクライアントには、別のトランスポートが必要でした。これらのクライアントがクラウドサンドボックスで動作するハーネスに接続できるように、独自の WebSocket ベースのトランスポートを追加しました。クライアントがどのトランスポートを使うかに関わらず、バイナリ、ツール、エージェントの振る舞いは同一です。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-text"&gt;┌─────────────────────────────────────────────────────────────┐
+│                   Kiro agent harness                        │
+└──────────┬────────────────┬────────────────┬────────────────┘
+           │ stdio          │ stdio          │ WebSocket
+           │                │                │
+    ┌──────┴──────┐  ┌──────┴─────┐  ┌───────┴──────────────┐
+    │  Kiro CLI   │  │  Kiro IDE  │  │  Kiro Web · iOS app  │
+    │  (terminal) │  │ (Code OSS) │  │  (browser · mobile)  │
+    └─────────────┘  └────────────┘  └──────────────────────┘
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;トランスポートを超えて、私たちは ACP のメソッドセットを Kiro-ACP と呼ぶものに拡張しました。標準の ACP は基本的な部分 (セッションのライフサイクル、メッセージのストリーミング、ツール呼び出しのレポート) を扱いますが、Kiro の機能にはそれ以上のものが必要でした。たとえばライブステアリングを追加しました。ユーザーはエージェントの作業中でもメッセージを送信でき、そのメッセージが次の推論ターンで注入されることで、キャンセルや待機なしにエージェントの方向性を調整できます。ACP はメッセージのキューイングをサポートしていないため、ライブステアリングを実現するために新しいメソッドプロパティと通知で ACP を拡張しました。また Kiro の仕様駆動開発ワークフローを専用のメソッド群としてモデル化し、ACP の基本的なツール承認を豊富なマルチスコープの権限システムへと拡張し、コンテキストウィンドウの使用状況とフック実行に関する通知を追加しました。合計で Kiro-ACP はベースプロトコルに加えて 20 を超えるエージェント呼び出し可能なメソッド、15 のクライアント呼び出し可能なメソッド、20 の通知タイプを追加しています。ACP の拡張モデルはこれをきれいに保ちます。仕様どおり、カスタムメソッドはアンダースコアのプレフィックスを使い、Kiro の拡張はすべて &lt;code&gt;_kiro/&lt;/code&gt; 名前空間の下に配置されています。プロトコルをフォークすることなく、Kiro 固有の機能のために拡張できるのです。&lt;/p&gt; 
+&lt;p&gt;結果として、サードパーティのクライアントはファーストパーティのクライアントと同じ方法で接続できます。ACP 互換のクライアントであれば、ツール、サブエージェント、セッション管理、MCP 接続を含む完全なエージェントを利用できます。ファーストパーティのクライアント (IDE、CLI、Web、iOS) は加えて Kiro-ACP の拡張を利用して、ライブステアリング、仕様、リッチな権限 UI、コンテキスト使用量トラッキングといった機能を提供します。&lt;/p&gt; 
+&lt;h2 id="specs-agents-and-hooks--everywhere"&gt;仕様、エージェント、フックがどこでも使える&lt;/h2&gt; 
+&lt;p&gt;単一のハーネスがもたらす直接的なメリットは、これまで 1 つのクライアントに閉じ込められていた機能が、同じ設定フォーマットと同じ振る舞いで、どのクライアントでも使えるようになったことです。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;仕様駆動開発&lt;/strong&gt;は以前は IDE 限定でした。今では CLI (&lt;code&gt;/spec new&lt;/code&gt; で開始できます) と Web 版 Kiro でも動作します。エージェントは仕様ワークフローを駆動する LLM とのやり取りと自動化された推論 (要件の生成、技術設計の作成、作業のタスクへの分解) を扱い、各クライアントは自分のフォームファクターに合った形でそれを提示します。IDE は仕様のアーティファクトを横並びのペインで表示します。CLI はターミナル内でレンダリングします。Web 版 Kiro はブラウザーでインラインレビューとマルチユーザーコラボレーションとともに表示するので、チームが一緒に仕様をイテレーションできます。エージェントは ACP を話し、クライアントは出力をどう提示するかを決めます。&lt;/p&gt; 
+&lt;p&gt;&lt;strong&gt;カスタムエージェント&lt;/strong&gt;は、どのクライアントでも同じ &lt;code&gt;.kiro/agents/&lt;/code&gt; Markdown フォーマットを使います。エージェントには説明、システムプロンプト、タグベースのツール選択 (個別のツール名ではなく &lt;code&gt;read&lt;/code&gt;、&lt;code&gt;write&lt;/code&gt;、&lt;code&gt;shell&lt;/code&gt; といったシンプルなタグ)、アクセス可能なサブエージェント、インラインの MCP サーバー定義、インラインの権限ルールを定義できます。カスタムエージェントの設定をバージョン管理にコミットすれば、チームメンバー全員がすべてのクライアントで使えるようになります。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-yaml"&gt;---
+description: セキュリティ上の問題を確認するコードレビューエージェント
+tools: [read, shell, "@github"]
+permissions:
+  rules:
+    - capability: fs_read
+      effect: allow
+    - capability: shell
+      match: ["git diff *", "git log *", "npm audit"]
+      effect: allow
+mcpServers:
+  github:
+    url: https://api.githubcopilot.com/mcp/
+    headers:
+      Authorization: Bearer ${GITHUB_TOKEN}
+---
+
+あなたはセキュリティに重点を置いたコードレビュアーです。現在の差分を
+レビューし、脆弱性、認証情報の漏洩、安全でないパターンを確認してください。
+依存関係のアドバイザリは npm audit で確認してください。
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;&lt;strong&gt;フック&lt;/strong&gt;は同じ &lt;code&gt;.kiro/hooks/*.json&lt;/code&gt; フォーマットを使い、同じトリガー (&lt;code&gt;SessionStart&lt;/code&gt;、&lt;code&gt;PreToolUse&lt;/code&gt;、&lt;code&gt;PostToolUse&lt;/code&gt;、&lt;code&gt;FileCreate&lt;/code&gt;、&lt;code&gt;FileSave&lt;/code&gt;) で、すべてのクライアントで同じように動作します。&lt;/p&gt; 
+&lt;p&gt;機能の可用性を超えて、統一されたハーネスは、正しく作るのが難しい領域でも一貫した振る舞いを提供します。コンテキスト管理、コンパクション、要約は、どのクライアントを使ってもすべて同じように動作します。以前はハーネスごとに独自のコンパクション戦略を持っていたため、IDE、CLI、Web クライアントのどれを使っているかによってセッションが長くなるにつれて振る舞いが変わることがありました。今では 1 箇所で実装、テスト、改善される単一の実装があります。統一されたハーネスをクライアント全体に展開して以来、コンテキスト保持を改善するため、ハーネスにより良いコンパクションプロンプトをすでにリリースしています。またハーネスの深い部分でレジリエンスとパフォーマンスの改善もリリースしました。モデル推論リクエストの改善されたリトライロジック、高速な権限評価、より弾力性のある MCP サーバー接続などです。すべてのクライアントがこれらの変更の恩恵を受けます。結果として、どのクライアントを好むかに関わらず、一貫した品質と信頼性が得られます。&lt;/p&gt; 
+&lt;h2 id="one-policy-language"&gt;単一のポリシー言語&lt;/h2&gt; 
+&lt;p&gt;統一ハーネスが登場する前、各クライアントは異なる構文、異なるセマンティクス、異なる設定場所を持つ独自の権限システムを持っていました。CLI は正規表現パターンによる &lt;code&gt;allowedCommands&lt;/code&gt;/&lt;code&gt;deniedCommands&lt;/code&gt; を使いました。IDE はプレフィックスマッチによる trustedCommands と、サブストリングマッチによる別の &lt;code&gt;commandDenylist&lt;/code&gt; を使いました。どちらのクライアントでも権限はツール単位でした。&lt;code&gt;.env への読み取りを拒否する&lt;/code&gt;といった単一の意図は、ファイルを読める各ツール (read、glob、grep、コードインテリジェンス) に対して個別に設定する必要があります。1 つでも見落とすと、エージェントは別のツール経由でそのファイルにアクセスできてしまうのです。ユーザーはツール呼び出しごとに &lt;code&gt;y&lt;/code&gt; を押し続けるか、すべてを信頼するかの二択を迫られ、その中間の実用的な選択肢がありませんでした。私たちが求めていたのは、ケイパビリティレベルで意図を表現でき、永続的かつ組み合わせ可能な同意によって承認疲れ (acceptance fatigue) を減らせる権限モデルでした。&lt;/p&gt; 
+&lt;p&gt;今では、形式的に検証されたポリシー言語である &lt;a target="_blank" rel="noopener noreferrer" href="https://www.cedarpolicy.com/"&gt;Cedar&lt;/a&gt; に支えられた、単一のケイパビリティベースの権限モデルがあります。1 つのルールで、すべてのツールにまたがる同種の操作をまとめて対象にできます。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-yaml"&gt;rules:
+  # Block all tools that read files from accessing secrets
+  - capability: fs_read
+    match: [".env", ".env.*", "secrets/**", "**/*.pem"]
+    effect: deny
+
+  # Allow specific shell commands without prompting
+  - capability: shell
+    match: ["npm test *", "npm run build", "git status"]
+    effect: allow
+
+  # Allow an MCP server's tools
+  - capability: mcp
+    match: ["github/*"]
+    effect: allow
+&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;ケイパビリティはツールを機能ごとにグループ化します。&lt;code&gt;fs_read&lt;/code&gt;、&lt;code&gt;fs_write&lt;/code&gt;、&lt;code&gt;shell&lt;/code&gt;、&lt;code&gt;web_fetch&lt;/code&gt;、&lt;code&gt;mcp&lt;/code&gt;、&lt;code&gt;subagent&lt;/code&gt; などです。fs_read の deny は、ファイルを読むすべてのツール (&lt;code&gt;read_file&lt;/code&gt;、&lt;code&gt;grep_search&lt;/code&gt;、&lt;code&gt;file_search&lt;/code&gt;、そして今後追加される &lt;code&gt;read&lt;/code&gt; 系ツール) を個別に列挙することなくブロックします。&lt;/p&gt; 
+&lt;p&gt;ポリシーは複数のスコープにまたがって合成でき、deny が常に勝つセマンティクスでマージされます。Kiro 自体は変更不可能なセキュリティ不変条件を適用します (たとえば、エージェントは自身の権限ファイルを変更できません)。エンタープライズ管理者は MDM 経由で制限をプッシュできます。ユーザーは自分のルールをユーザーレベルまたはワークスペースレベルで設定します。エージェントプロファイルはその役割に応じた権限を宣言できます。セッションレベルの判断は、作業しながら積み上がっていきます。事前の設定は不要です。ポリシーは同意の判断を下すにつれて自然に育っていき、意味のあるスコープでそれを永続化できます。&lt;/p&gt; 
+&lt;h2 id="the-harness-unlocks-the-vision-"&gt;ハーネスがビジョンを解き放つ&lt;/h2&gt; 
+&lt;p&gt;新しいエージェントハーネスアーキテクチャの成果はすでに現れています。すべてのクライアントが統一ハーネスに移行して以来、クライアント側の変更ゼロで複数の機能をクライアント横断でリリースしてきました。グローバルフックとポリシープリセットもその一例です。&lt;strong&gt;グローバルフック&lt;/strong&gt;は &lt;code&gt;~/.kiro/hooks/&lt;/code&gt; でフックを一度定義するだけで、すべてのワークスペースで自動的に発火するため、保存時のリント実行やコミット前のセキュリティチェックといった横断的な振る舞いをプロジェクトごとに複製する必要がなくなります。&lt;strong&gt;ポリシープリセット&lt;/strong&gt;は &lt;code&gt;edit-workspace&lt;/code&gt; や &lt;code&gt;dev-shell&lt;/code&gt; のような合成可能な名前付きルールセットで、一般的なワークフローにおけるプロンプト疲れ (prompt fatigue) を減らします。権限にポリシープリセットを追加すると (たとえば &lt;code&gt;policies: [dev-shell, edit-workspace, read-all]&lt;/code&gt;)、ハーネスのポリシーエンジンがロード時にそれらを個別のルールに展開します。どちらの機能もハーネスのアップデートだけですべてのクライアントに提供されました。&lt;/p&gt; 
+&lt;p&gt;本記事の冒頭で述べたビジョンには、まだ構築が必要なエージェントの能力 (ケイパビリティ) がいくつかあります。たとえば、環境間でセッションを移動するためのセッションパッケージングや、ローカルとクラウドの両方のセッションをどのクライアントからも制御できる機能などです。統一されたハーネスなら、新しい能力を一度作るだけで済みます。多くの場合、グローバルフックやポリシープリセットのように、クライアント側の変更ゼロですべてのクライアントに配信できます。統一ハーネスがクライアント側の作業を完全になくしたわけではありませんし、そうしたいわけでもありませんでした。ターミナル、デスクトップの IDE、ブラウザー、スマートフォンは異なるインタラクションモデルを持っており、私たちは画一的な体験を提供するのではなく、各クライアントがそのフォームファクターに合った体験に感じられることを望んでいます。新しいエージェントハーネスアーキテクチャなら、エージェントのロジックはクライアント全体で同一で、各クライアントチームはそれとどうやり取りするのがベストかに集中できます。&lt;/p&gt; 
+&lt;p&gt;Kiro のユーザーとして、新しいエージェントハーネスアーキテクチャは、新しい能力がより速く届き、一貫した振る舞いを示し、あなたが好むクライアントに関わらず同じ設定で動作することを意味します。&lt;/p&gt; 
+&lt;h2 id="try-the-new-kiro-agent-harness-"&gt;新しい Kiro エージェントハーネスを試す&lt;/h2&gt; 
+&lt;p&gt;新しい Kiro エージェントハーネスは 4 つの Kiro クライアントすべてでライブ稼働しているので、今日から試せます。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;a href="https://kiro.dev/ide/" target="_blank" rel="noopener noreferrer"&gt;&lt;strong&gt;Kiro IDE&lt;/strong&gt;&lt;/a&gt;&lt;strong&gt; 1.0&lt;/strong&gt; は、ケイパビリティベースの権限、タグベースツールとインライン MCP を備えたカスタムエージェント、並列セッションを指揮するためのエージェントフォーカスモード、ドッキング可能なチャットタブ、セッションエクスポートを提供します。&lt;a href="https://kiro.dev/docs/whats-new-1-0/" target="_blank" rel="noopener noreferrer"&gt;IDE 1.0 のドキュメントと移行方法&lt;/a&gt;を参照してください。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;a href="https://kiro.dev/cli/" target="_blank" rel="noopener noreferrer"&gt;&lt;strong&gt;Kiro CLI&lt;/strong&gt;&lt;/a&gt;&lt;strong&gt; v3&lt;/strong&gt; (アーリーアクセス) は、仕様駆動開発、permissions.yaml、拡張されたフック、新しいエージェント設定フォーマットを備え、ターミナルで同じ統一ハーネスを実行します。&lt;code&gt;kiro-cli --v3&lt;/code&gt; で試せます。&lt;a href="https://kiro.dev/docs/cli/v3/" target="_blank" rel="noopener noreferrer"&gt;CLI v3 のドキュメントと移行方法&lt;/a&gt;を参照してください。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;a href="https://kiro.dev/web/" target="_blank" rel="noopener noreferrer"&gt;&lt;strong&gt;Web 版 Kiro&lt;/strong&gt;&lt;/a&gt; (プレビュー) はクラウドサンドボックスでハーネスを実行し、ブラウザーで仕様を使った自律的な開発、マルチリポジトリセッション、GitHub と GitLab の統合を提供します。&lt;a target="_blank" rel="noopener noreferrer" href="https://app.kiro.dev"&gt;サインイン / サインアップ&lt;/a&gt;できます。&lt;/p&gt; &lt;/li&gt; 
+ &lt;li&gt; &lt;p&gt;&lt;a href="https://kiro.dev/mobile/" target="_blank" rel="noopener noreferrer"&gt;&lt;strong&gt;iOS 版 Kiro&lt;/strong&gt;&lt;/a&gt; (プレビュー) は Web 版 Kiro と同じクラウドセッションにスマートフォンから接続し、ラップトップを開かずに自律的な作業のキックオフ、差分のレビュー、変更の承認を行えます。&lt;a href="https://kiro.dev/mobile/" target="_blank" rel="noopener noreferrer"&gt;アーリーアクセスをリクエスト&lt;/a&gt;してください。&lt;/p&gt; &lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
 		<title>Kiro のバースデーウィークへようこそ</title>
 		<link>https://aws.amazon.com/jp/blogs/news/birthday-2026/</link>
 		
@@ -619,34 +749,6 @@ module.exports = { createClient };
 &lt;p&gt;これらの改善は Kiro の&lt;a href="https://kiro.dev/docs/specs/#what-are-specs" target="_blank" rel="noopener"&gt;仕様駆動開発&lt;/a&gt;にも活かされています。Opus 4.7 は、より大規模なコードベースや広範な変更において、詳細なスペックを高い忠実度で実装に落とし込む最適なモデルと位置づけています。計画、ツール使用、実行、レビューを行き来するワークフローにおいても、一貫性を保ち、方向性のずれを最小限に抑えます。&lt;/p&gt; 
 &lt;p&gt;Opus 4.7 は、AWS IAM Identity Center でログインしている Kiro Pro、Pro+、Power の一部のお客様を対象に、AWS US-East-1（バージニア北部）および AWS Europe（フランクフルト）リージョンにて&lt;a href="https://kiro.dev/docs/privacy-and-security/data-protection/#global-cross-region-inference-for-experimental-features" target="_blank" rel="noopener"&gt;実験的サポート&lt;/a&gt;として段階的に展開されており、クロスリージョン推論サポートと広範な提供が続く予定です。1M トークンのフルコンテキストウィンドウ、Opus 4.6 と同じ 2.2 倍のクレジット乗数を備えています。&lt;/p&gt; 
 &lt;p&gt;&lt;a target="_blank" rel="noopener noreferrer" href="https://kiro.dev/downloads/"&gt;Kiro をダウンロード&lt;/a&gt;するか、アプリまたは CLI を再起動して最新の利用可能なモデルをご確認ください。&lt;/p&gt; 
-&lt;p&gt;翻訳は Solutions Architect の吉村 が担当いたしました。&lt;/p&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>Kiro に MiniMax M2.5 と GLM-5 が追加されました</title>
-		<link>https://aws.amazon.com/jp/blogs/news/minimax-m25-and-glm-5/</link>
-		
-		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
-		<pubDate>Mon, 06 Apr 2026 08:58:22 +0000</pubDate>
-				<category><![CDATA[Artificial Intelligence]]></category>
-		<category><![CDATA[Developer Tools]]></category>
-		<category><![CDATA[Kiro]]></category>
-		<guid isPermaLink="false">269d02c683e3e8c937789a4980094a45ec336ec8</guid>
-
-					<description>Kiro に新たに MiniMax M2.5 と GLM-5 の 2 つのオープンウェイトモデルが追加されました。MiniMax M2.5 はクレジット乗数 0.25x の低コストモデルで、SWE-Bench Verified 80.2% を達成し、マルチステップ実装や長時間エージェントセッションに最適です。GLM-5 は 200K コンテキストウィンドウを持つ大規模 MoE モデルで、リポジトリ規模の複雑なアーキテクチャ変更や長期エージェントワークフローに強みを発揮します。両モデルは IDE と CLI から即座に利用可能です。</description>
-										<content:encoded>&lt;p&gt;本記事は 2026 年 4 月 2 日に公開された Nima Kaviani による “&lt;a href="https://kiro.dev/blog/minimax-m25-and-glm-5/" target="_blank" rel="noopener"&gt;MiniMax M2.5 and GLM-5 are now in Kiro&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
-&lt;p&gt;Kiro のオープンウェイトモデルへのネイティブサポートを拡充してきました。最近では MiniMax M2.5 に続き、GLM-5 も Kiro IDE および CLI から直接利用できるようになりました。Kiro はすでにコスト・コンテキスト長・速度のバランスが異なる多様なモデルをサポートしています。今回の 2 つの追加により、その幅がさらに広がり、開発者やチームが目の前の作業に応じてモデルを選択できる余地が増えました。&lt;/p&gt; 
-&lt;p&gt;&lt;span id="more-182440"&gt;&lt;/span&gt;&lt;/p&gt; 
-&lt;h2 id="the-models"&gt;モデルの詳細&lt;/h2&gt; 
-&lt;p&gt;&lt;a href="https://kiro.dev/docs/models/" target="_blank" rel="noopener"&gt;各モデル&lt;/a&gt;が持つ特徴と、得意とする用途について詳しく見ていきましょう。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;MiniMax M2.5&lt;/strong&gt;（クレジット乗数 0.25x）— クエリごとに 100 億パラメーターを活性化するスパース MoE (Mixture of Experts) モデルです。わずか 4 分の 1 のクレジットコストで、SWE-Bench Verified において 80.2% のスコアを記録しており、Claude Sonnet を超えた初のオープンウェイトモデルとして、Claude Opus 4.6（80.8%）に次ぐ位置につけています。Kiro の中でも最もコスト効率の高いモデルの一つです。MiniMax M2.1 と比較して複雑なエージェントタスクを 37% 高速に完了します。コードを書く前に機能を分解して構造をマッピングするため、マルチステップの実装作業や長時間のエージェントセッションに優れています。また、10 以上の言語（Go、C、C++、TypeScript、Rust、Kotlin、Python、Java、JavaScript など）にわたる強力な多言語サポートを提供し、Web、Android、iOS、Windows にまたがるフルスタックプロジェクトにも対応しています。継続的なコーディングセッションや反復的な実装作業に対して、高速かつコスト効率の高いモデルをお求めであれば、MiniMax M2.5 は有力な選択肢です。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;GLM-5&lt;/strong&gt;（クレジット乗数 0.5x）— 200K コンテキストウィンドウを備えた大規模 MoE モデルです。GLM-5 は長期的なエージェントワークフローに最適化されています。リポジトリ規模のコンテキストを処理し、大規模なコードベースにわたるマルチステップのツール使用において一貫性を維持することに優れています。クロスファイルのマイグレーション、フルスタックの機能開発、あるいはモデルが全体像を把握する必要があるレガシーリファクタリングなどのユースケースが該当します。深いコンテキストが求められる複雑なアーキテクチャ変更に取り組んでいる場合は、GLM-5 を試してみる価値があります。&lt;/p&gt; 
-&lt;h2 id="try-them-out-in-the-ide-and-cli"&gt;IDE と CLI で試してみましょう&lt;/h2&gt; 
-&lt;p&gt;これらのモデルは現在、&lt;a href="https://kiro.dev/docs/models/#how-to-switch-models" target="_blank" rel="noopener"&gt;IDE のモデルセレクター&lt;/a&gt;および &lt;a href="https://kiro.dev/docs/cli/models/#how-to-switch-models" target="_blank" rel="noopener"&gt;Kiro CLI&lt;/a&gt; から実験的サポートとして利用できます。MiniMax M2.5 は AWS US-East-1（バージニア北部）および AWS EU-Central-1（フランクフルト）リージョンで利用可能です。GLM-5 の推論は AWS US-East-1（バージニア北部）リージョンで実行されます。&lt;/p&gt; 
-&lt;p&gt;また、Kiro にすでに搭載されているオープンウェイトモデルへのアクセスも拡大しました。MiniMax M2.1、Qwen3 Coder Next、Deepseek V3.2 は、IAM Identity Center（IdC）経由で認証しているユーザーを含む全ユーザーが利用できるようになりました。推論をワークロードに近づけるため、MiniMax M2.1 と Qwen3 Coder Next は AWS US-East-1（バージニア北部）に加えて AWS EU-Central-1（フランクフルト）リージョンでも利用可能です。&lt;/p&gt; 
-&lt;p&gt;設定不要、ルーティング不要、追加セットアップ不要でモデルを選んですぐに作業を始められます。モデルを切り替えたり、特定のプロジェクトタイプにデフォルトを設定したり、Auto に任せたりと、ワークフローに合わせてご利用ください。エンタープライズチームの場合、管理者は &lt;a href="https://aws.amazon.com/jp/blogs/news/enterprise-governance-mcp-and-models/" target="_blank" rel="noopener"&gt;モデルガバナンス&lt;/a&gt;を使用して、利用可能なモデルをコンプライアンスおよびデータレジデンシーの要件に合わせることができます。いつものように、ぜひ試してみて、&lt;a target="_blank" rel="noopener noreferrer" href="https://discord.gg/kirodotdev"&gt;使い心地をお聞かせください&lt;/a&gt;。どのモデルが好評で、どのような課題が残っているかを注視しています。次にサポートしてほしいモデルがあれば、&lt;a target="_blank" rel="noopener noreferrer" href="https://github.com/kirodotdev/Kiro/issues/new?template=feature_request.yml"&gt;ぜひご要望をお寄せください&lt;/a&gt;。&lt;/p&gt; 
 &lt;p&gt;翻訳は Solutions Architect の吉村 が担当いたしました。&lt;/p&gt;</content:encoded>
 					
 		
