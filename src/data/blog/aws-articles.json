@@ -1,5 +1,10 @@
 [
   {
+    "id": "one-agent",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/one-agent/",
+    "publishedAt": "2026-08-05"
+  },
+  {
     "id": "birthday-2026",
     "externalUrl": "https://aws.amazon.com/jp/blogs/news/birthday-2026/",
     "publishedAt": "2026-07-14"
