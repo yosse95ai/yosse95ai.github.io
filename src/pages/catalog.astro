@@ -345,6 +345,101 @@ const skillsByCategory = Object.fromEntries(
       <ActivitySection />
     </section>
 
+    <!-- ===== Before/After: #41-1 Skills カテゴリ見出し階層表現 ===== -->
+    <div class="border rounded-2xl p-4 space-y-4" style="border-color: oklch(0.88 0.008 150);">
+      <p class="text-xs font-mono uppercase tracking-wider" style="color: oklch(0.55 0.15 145);">
+        #41-1 Skills カテゴリ見出し: Before / After
+      </p>
+      <div class="flex flex-col gap-6">
+        <div class="space-y-2">
+          <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">Before: text-sm font-mono text-text-secondary</p>
+          <div class="rounded-xl p-4 bg-base-content">
+            <p class="text-sm md:text-base font-mono mb-2 text-text-secondary">Cloud</p>
+            <div class="flex flex-wrap gap-1">
+              {skillsByCategory['cloud'].slice(0, 3).map(skill => (
+                <SkillItem name={skill.data.name} icon={skill.data.icon} url={skill.data.url} category={skill.data.category} />
+              ))}
+            </div>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">After: text-xs uppercase tracking-wider font-semibold text-base-content</p>
+          <div class="rounded-xl p-4 bg-base-content">
+            <p class="text-xs uppercase tracking-wider text-base-content font-semibold mb-2">Cloud</p>
+            <div class="flex flex-wrap gap-1">
+              {skillsByCategory['cloud'].slice(0, 3).map(skill => (
+                <SkillItem name={skill.data.name} icon={skill.data.icon} url={skill.data.url} category={skill.data.category} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Before/After: #41-2 Bento Grid gap 調整 ===== -->
+    <div class="border rounded-2xl p-4 space-y-4" style="border-color: oklch(0.88 0.008 150);">
+      <p class="text-xs font-mono uppercase tracking-wider" style="color: oklch(0.55 0.15 145);">
+        #41-2 Bento Grid gap: Before / After
+      </p>
+      <div class="flex flex-col gap-6">
+        <div class="space-y-2">
+          <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">Before: gap-4 md:gap-5</p>
+          <div class="flex gap-4 md:gap-5">
+            <div class="flex-1 h-16 rounded-xl" style="background: var(--color-surface); box-shadow: 0 1px 4px var(--color-shadow-sm);"></div>
+            <div class="flex-1 h-16 rounded-xl" style="background: var(--color-surface); box-shadow: 0 1px 4px var(--color-shadow-sm);"></div>
+            <div class="flex-1 h-16 rounded-xl" style="background: var(--color-surface); box-shadow: 0 1px 4px var(--color-shadow-sm);"></div>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">After: gap-6</p>
+          <div class="flex gap-6">
+            <div class="flex-1 h-16 rounded-xl" style="background: var(--color-surface); box-shadow: 0 1px 4px var(--color-shadow-sm);"></div>
+            <div class="flex-1 h-16 rounded-xl" style="background: var(--color-surface); box-shadow: 0 1px 4px var(--color-shadow-sm);"></div>
+            <div class="flex-1 h-16 rounded-xl" style="background: var(--color-surface); box-shadow: 0 1px 4px var(--color-shadow-sm);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Before/After: #41-3 Blog セクション統合 ===== -->
+    <div class="border rounded-2xl p-4 space-y-4" style="border-color: oklch(0.88 0.008 150);">
+      <p class="text-xs font-mono uppercase tracking-wider" style="color: oklch(0.55 0.15 145);">
+        #41-3 Blog セクション統合: Before / After
+      </p>
+      <div class="flex flex-col gap-6">
+        <div class="space-y-2">
+          <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">Before: AWS Blog + Other を分離表示、SeeAllButton x2</p>
+          <div class="rounded-xl p-4 space-y-3" style="background: var(--color-surface);">
+            <p class="text-sm font-mono" style="color: var(--color-text-muted);">AWS Blog</p>
+            <div class="flex gap-2">
+              <div class="w-24 h-12 rounded-lg" style="background: var(--color-border);"></div>
+              <div class="w-24 h-12 rounded-lg" style="background: var(--color-border);"></div>
+              <div class="w-16 h-12 rounded-lg flex items-center justify-center text-xs" style="background: var(--color-primary-content); color: var(--color-primary); border: 1px solid var(--color-primary);">全てを見る</div>
+            </div>
+            <hr style="border-color: var(--color-border);" />
+            <p class="text-sm font-mono" style="color: var(--color-text-muted);">Other</p>
+            <div class="flex gap-2">
+              <div class="w-24 h-12 rounded-lg" style="background: var(--color-border);"></div>
+              <div class="w-16 h-12 rounded-lg flex items-center justify-center text-xs" style="background: var(--color-primary-content); color: var(--color-primary); border: 1px solid var(--color-primary);">全てを見る</div>
+            </div>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <p class="text-xs font-mono" style="color: oklch(0.55 0.010 250);">After: 統合リスト (最新5件) + SeeAllButton x1 (primary塗りつぶし)</p>
+          <div class="rounded-xl p-4 space-y-3" style="background: var(--color-surface);">
+            <div class="flex gap-2">
+              <div class="w-24 h-12 rounded-lg" style="background: var(--color-border);"></div>
+              <div class="w-24 h-12 rounded-lg" style="background: var(--color-border);"></div>
+              <div class="w-24 h-12 rounded-lg" style="background: var(--color-border);"></div>
+              <div class="w-24 h-12 rounded-lg" style="background: var(--color-border);"></div>
+              <div class="w-24 h-12 rounded-lg" style="background: var(--color-border);"></div>
+              <div class="w-16 h-12 rounded-lg flex items-center justify-center text-xs" style="background: var(--color-primary); color: var(--color-primary-content); border: 1px solid var(--color-primary);">全てを見る</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script>
       function initSkeletons() {
         document.querySelectorAll('.skeleton-img').forEach((wrapper) => {

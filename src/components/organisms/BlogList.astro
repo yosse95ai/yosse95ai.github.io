@@ -1,6 +1,5 @@
 ---
 import OgpCard from '../molecules/OgpCard.astro';
-import SeeAllButton from '../molecules/SeeAllButton.astro';
 import { getCollection } from 'astro:content';
 import { fetchOgp } from '../../lib/fetchOgp';
 
@@ -30,7 +29,6 @@ const [awsCards, otherCards] = await Promise.all([
         externalUrl: a.data.externalUrl,
         type: 'aws' as const,
         ...ogp,
-        // JSONに publishedAt があればそれを優先
         publishedAt: a.data.publishedAt ?? ogp.publishedAt,
       };
     })
@@ -49,20 +47,15 @@ const [awsCards, otherCards] = await Promise.all([
   ),
 ]);
 
-// publishedAt 降順（null は末尾）
-const sortByDate = <T extends { publishedAt: string | null }>(cards: T[]) =>
-  cards.sort((a, b) => {
-    if (!a.publishedAt && !b.publishedAt) return 0;
-    if (!a.publishedAt) return 1;
-    if (!b.publishedAt) return -1;
-    return b.publishedAt.localeCompare(a.publishedAt);
-  });
+// 全記事をマージし publishedAt 降順（null は末尾）
+const allCards = [...awsCards, ...otherCards].sort((a, b) => {
+  if (!a.publishedAt && !b.publishedAt) return 0;
+  if (!a.publishedAt) return 1;
+  if (!b.publishedAt) return -1;
+  return b.publishedAt.localeCompare(a.publishedAt);
+});
 
-const sortedAwsCards = sortByDate(awsCards);
-const sortedOtherCards = sortByDate(otherCards);
-
-const displayedAwsCards   = limit !== undefined ? sortedAwsCards.slice(0, limit)   : sortedAwsCards;
-const displayedOtherCards = limit !== undefined ? sortedOtherCards.slice(0, limit) : sortedOtherCards;
+const displayedCards = limit !== undefined ? allCards.slice(0, limit) : allCards;
 ---
 
 <section
@@ -72,52 +65,30 @@ const displayedOtherCards = limit !== undefined ? sortedOtherCards.slice(0, limi
     Blog
   </h2>
 
-  <!-- AWS Blog -->
-  <div class="flex flex-col gap-3">
-    <p class="text-sm md:text-base font-mono text-text-muted">AWS Blog</p>
-    <div
-      class={layout === 'grid'
-        ? 'flex gap-4 overflow-x-auto pb-2 -mx-2 px-2 md:!grid md:overflow-x-visible md:pb-0 md:mx-0 md:px-0 md:grid-cols-4'
-        : 'flex gap-4 overflow-x-auto pb-2 -mx-2 px-2'}
-      style="scrollbar-width: thin; scrollbar-color: var(--color-border) transparent;"
-    >
-      {displayedAwsCards.map(card => (
-        <div class={layout === 'grid' ? 'shrink-0 w-72 md:shrink md:w-auto' : 'shrink-0 w-72'}>
-          <OgpCard
-            externalUrl={card.externalUrl}
-            title={card.title}
-            description={card.description}
-            ogpImage={card.ogpImage}
-          />
-        </div>
-      ))}
-      {limit !== undefined && layout !== 'grid' && <SeeAllButton href="/history#blog" />}
-    </div>
-  </div>
-
-  <!-- 区切り線 -->
-  <hr class="border-border" />
-
-  <!-- Other Blog -->
-  <div class="flex flex-col gap-3">
-    <p class="text-sm md:text-base font-mono text-text-muted">Other</p>
-    <div
-      class={layout === 'grid'
-        ? 'flex gap-4 overflow-x-auto pb-2 -mx-2 px-2 md:!grid md:overflow-x-visible md:pb-0 md:mx-0 md:px-0 md:grid-cols-4'
-        : 'flex gap-4 overflow-x-auto pb-2 -mx-2 px-2'}
-      style="scrollbar-width: thin; scrollbar-color: var(--color-border) transparent;"
-    >
-      {displayedOtherCards.map(card => (
-        <div class={layout === 'grid' ? 'shrink-0 w-72 md:shrink md:w-auto' : 'shrink-0 w-72'}>
-          <OgpCard
-            externalUrl={card.externalUrl}
-            title={card.title}
-            description={card.description}
-            ogpImage={card.ogpImage}
-          />
-        </div>
-      ))}
-      {limit !== undefined && layout !== 'grid' && <SeeAllButton href="/history#blog" />}
-    </div>
+  <div
+    class={layout === 'grid'
+      ? 'flex gap-4 overflow-x-auto pb-2 -mx-2 px-2 md:!grid md:overflow-x-visible md:pb-0 md:mx-0 md:px-0 md:grid-cols-4'
+      : 'flex gap-4 overflow-x-auto pb-2 -mx-2 px-2'}
+    style="scrollbar-width: thin; scrollbar-color: var(--color-border) transparent;"
+  >
+    {displayedCards.map(card => (
+      <div class={layout === 'grid' ? 'shrink-0 w-72 md:shrink md:w-auto' : 'shrink-0 w-72'}>
+        <OgpCard
+          externalUrl={card.externalUrl}
+          title={card.title}
+          description={card.description}
+          ogpImage={card.ogpImage}
+        />
+      </div>
+    ))}
+    {limit !== undefined && layout !== 'grid' && (
+      <a
+        href="/history#blog"
+        class="shrink-0 w-40 self-stretch rounded-2xl flex flex-col items-center justify-center gap-2 no-underline font-semibold text-sm md:text-base bg-primary text-primary-content border border-primary hover:opacity-80 transition-opacity"
+      >
+        <span class="text-lg">→</span>
+        <span class="text-sm md:text-base font-semibold">全てを見る</span>
+      </a>
+    )}
   </div>
 </section>
