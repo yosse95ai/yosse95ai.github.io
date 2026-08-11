@@ -5,7 +5,7 @@
 	<atom:link href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/" rel="self" type="application/rss+xml"/>
 	<link>https://aws.amazon.com/jp/blogs/news/</link>
 	<description/>
-	<lastBuildDate>Wed, 05 Aug 2026 00:43:36 +0000</lastBuildDate>
+	<lastBuildDate>Mon, 10 Aug 2026 12:31:46 +0000</lastBuildDate>
 	<language>ja</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -13,6 +13,66 @@
 	1	</sy:updateFrequency>
 	
 	<item>
+		<title>AWS が Agent Plugins をサポート: ポータブルなエージェント拡張のためのオープン標準</title>
+		<link>https://aws.amazon.com/jp/blogs/news/aws-supports-agent-plugins-an-open-standard-for-portable-agent-extensions/</link>
+		
+		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
+		<pubDate>Mon, 10 Aug 2026 12:31:46 +0000</pubDate>
+				<category><![CDATA[Open Source]]></category>
+		<guid isPermaLink="false">aead422d64027aec1677f49a1f0139c6830dd14d</guid>
+
+					<description>AWS は Cursor、Microsoft、OpenAI、Vercel とともに Agent Plugins Technical Steering Committee の設立メンバーとして参画します。Agent Plugins 1.0.0 は AI エージェント拡張のためのオープンかつベンダーニュートラルなパッケージ仕様で、Agent Skills と MCP サーバーを 1 度パッケージ化すれば、Kiro、VS Code、Cursor など仕様に対応した任意のクライアントに配布できます。AWS Agent Toolkit と Kiro Powers がローンチと同時にサポートを開始します。</description>
+										<content:encoded>&lt;p&gt;本記事は 2026 年 8 月 6 日に公開された Libby Clark、James Ward による “&lt;a href="https://aws.amazon.com/blogs/opensource/aws-supports-agent-plugins-an-open-standard-for-portable-agent-extensions/" target="_blank" rel="noopener"&gt;AWS Supports Agent Plugins: An Open Standard for Portable Agent Extensions&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;MCP サーバーやエージェントスキルを構築したことがある方なら、それをパッケージ化するには 1 つのクライアント向けに調整し、別のクライアント向けに書き直し、チームで使うツールごとにその作業を繰り返すことになるとご存知でしょう。&lt;a href="https://agent-plugins.org" target="_blank" rel="noopener"&gt;Agent Plugins 1.0.0&lt;/a&gt; は、AI エージェントの拡張機能に共通のパッケージ形式を提供するオープンソースかつベンダーニュートラルな仕様です。拡張機能を 1 度パッケージ化すれば、Kiro、VS Code、Cursor など、この仕様を実装した任意のクライアントに配布できます。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-192383"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;p&gt;AWS は、Cursor、Microsoft、OpenAI、Vercel と並ぶ Agent Plugins Technical Steering Committee の設立メンバーであり、エージェント間でスキルや MCP のパッケージングにポータビリティをもたらすこの標準を支持できることを嬉しく思います。すでに &lt;a href="https://github.com/aws/agent-toolkit-for-aws" target="_blank" rel="noopener"&gt;AWS Agent Toolkit&lt;/a&gt; を対応させており、&lt;a href="https://kiro.dev" target="_blank" rel="noopener"&gt;Kiro&lt;/a&gt; でも Agent Plugins 仕様のサポートを順次展開しています。&lt;/p&gt; 
+&lt;p&gt;拡張機能とは、スキル、MCP サーバー、フック、サブエージェントのように、AI エージェントに新たな能力を与えたり、外部ツールやデータへ接続したり、エージェントに代わってタスクを自動化したりする再利用可能なコンポーネントのことです。Agent Plugins の初版では、現在最も採用が進んでいる 2 つのコンポーネントタイプ、Agent Skills と MCP サーバーを標準化しています。フックやカスタムエージェントといった追加の拡張機能タイプは、将来のバージョンに向けたロードマップに含まれています。&lt;/p&gt; 
+&lt;p&gt;モデル選択が、どの AI を使うかについての柔軟性を開発者に与えるのに対して、Agent Plugins は、その選択を特定のクライアントやプロバイダーに縛られることなく、AI がどのツールを使うかについての柔軟性を与えます。&lt;/p&gt; 
+&lt;h2&gt;エージェント型 AI にとってオープン標準が重要な理由&lt;/h2&gt; 
+&lt;p&gt;これまで、エージェント拡張の管理は、パッケージマネージャー登場前のライブラリ配布や、標準的なコンテナ形式が確立する前のアプリケーション配布に少し似ていました。JavaScript が package.json という共通の形式に落ち着いたことで、npm、yarn、pnpm のいずれからも同じパッケージをインストールできるようになり、手作業でのスクリプトダウンロードやコピー&amp;amp;ペーストによる依存関係管理は終焉を迎えました。同様に、OCI がベンダーニュートラルな形式をコンテナイメージにもたらしたことで、1 度ビルドしたイメージが Docker、containerd、Podman、あるいは仕様に準拠した任意のランタイムで実行できるようになり、Docker 独自のイメージ仕様を置き換えました。オープン標準は、その上に築ける共通の土台を全員に提供します。&lt;/p&gt; 
+&lt;p&gt;AWS は、オープンソースとオープン標準による構築こそが AI アーキテクチャの柔軟性と相互運用性を保つと考えています。オープン標準は、開発者に自らの条件でワークロードを組み合わせ、拡張し、移行する自由を与えます。私たちが &lt;a href="https://modelcontextprotocol.io/specification/2026-07-28" target="_blank" rel="noopener"&gt;Model Context Protocol&lt;/a&gt; (MCP)、&lt;a href="https://github.com/agentclientprotocol/agent-client-protocol" target="_blank" rel="noopener"&gt;Agent Client Protocol&lt;/a&gt; (ACP)、&lt;a href="https://github.com/x402-foundation/x402" target="_blank" rel="noopener"&gt;x402&lt;/a&gt;、そして Agent Plugins のような&lt;a href="https://aws.amazon.com/blogs/opensource/open-protocols-with-the-strands-agents-sdk/" target="_blank" rel="noopener"&gt;標準に投資している&lt;/a&gt;のは、モデル、ツール、クライアントに至るまで、皆さんが選んだいかなる決定も特定のベンダーに縛られないようにするためです。&lt;/p&gt; 
+&lt;h2&gt;Agent Plugins とは&lt;/h2&gt; 
+&lt;p&gt;Agent Plugins は、ツール間で容易に共有・バージョン管理・インストールできるように、エージェント拡張をどうパッケージ化するかを定義します。内部的には、プラグインはディレクトリであり、その中にプラグインの識別情報とエントリーポイントを宣言する JSON マニフェストと、コンポーネントの固定配置場所を持ちます。互換性のあるクライアントは、ディレクトリ構造をスキャンして内部に何があるかを検出します。skills/ フォルダーがあればスキルを読み込み、MCP 設定があればそれらのサーバーに接続します。&lt;/p&gt; 
+&lt;p&gt;フォーマットは意図的に小さく保たれています。バージョン 1.0.0 では、Agent Skills (エージェント向けの再利用可能な指示およびリソース) と MCP サーバー (外部ツールやデータへの接続) を標準化しています。クライアントがプラグインをどのようにインストール、表示、配布するかは、意図的に仕様の対象外としています。これらは、共通のフォーマットを共有しつつ、クライアントが差別化できる領域だからです。&lt;/p&gt; 
+&lt;p&gt;これは正しい設計思想です。共有フォーマットは、相互運用に不可欠なコンポーネントを定義したうえで、それ以上のことには介入しないべきです。拡張機能の作者は 1 度パッケージ化するだけで、互換性のあるクライアントが同じ構造からコンポーネントを検出して読み込みます。クライアントは、名前空間で分離した拡張機能によってプロプライエタリな機能を追加する自由を保ちつつ、ポータブルなコアを煩雑にしないでいられます。&lt;/p&gt; 
+&lt;h2&gt;Agent Plugins はコミュニティによる取り組み&lt;/h2&gt; 
+&lt;p&gt;Agent Plugins は、エージェント向けツールを構築するあらゆるチームが独立して直面してきた実務的な課題から生まれました。拡張機能の作者は同じコンポーネントを異なるクライアント向けに調整する冗長な作業を強いられ、開発者は互換性のないパッケージング慣習を渡り歩くことで時間を失っていました。&lt;/p&gt; 
+&lt;p&gt;Vercel が仕様の初期ドラフトを公開し、その後、それぞれのやり方でこの問題を解決してきた各社のチームからなるワーキンググループを結成しました。AWS、Cursor、Microsoft、OpenAI、Vercel の代表者たちは、日々開発者が使うエージェントクライアントを構築してきた自らの経験を持ち寄って、共同で仕様を洗練させました。このグループは、1 社のプロダクトロードマップがフォーマットの方向性を左右することがないようにするガバナンス構造を確立しました。&lt;/p&gt; 
+&lt;p&gt;その結果として得られたのは、拡張機能の作者とクライアント実装者の両方の視点が場に揃っていたからこそ実現できた、両者の実際のニーズを反映した仕様です。Technical Steering Committee には設立 5 社すべてからコアメンテナーが参加しており、プロジェクトのコントリビューションプロセスと技術的な意思決定は完全に公開されています。&lt;/p&gt; 
+&lt;p&gt;これこそが、最良の標準が生まれるあり方です。1 社のビジョンをエコシステムに押し付けるのではなく、共有された課題を各社が共に解決していく中での収束から生まれるのです。ツール連携における MCP、可観測性における OpenTelemetry、そしてそれ以前のコンテナ標準でも、私たちは同じパターンを目の当たりにしてきました。&lt;/p&gt; 
+&lt;h2&gt;AWS による Agent Plugins のサポート&lt;/h2&gt; 
+&lt;p&gt;私たちは、開発者が AWS 上で AI エージェントを構築・拡張する 2 つの主要なオファリングである Kiro と AWS Agent Toolkit の両方で、Agent Plugins のサポートをローンチと同時に提供します。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://kiro.dev" target="_blank" rel="noopener"&gt;Kiro&lt;/a&gt; は、開発ライフサイクル全体を通じてエージェントを開発者の意図に沿わせ続けるための spec、フック、自動テストといったステアリング機構を備えたエージェントハーネスです。今回のローンチにより、インストール可能なパッケージによって Kiro を拡張する &lt;a href="https://kiro.dev/powers/" target="_blank" rel="noopener"&gt;Kiro Powers&lt;/a&gt; が Agent Plugins 仕様をネイティブにサポートするようになりました。開発者は、Skills と MCP サーバーをまとめてバンドルしたプラグインをインストールでき、それぞれのコンポーネントを手動で構成することなく、シームレスに動作する機能を利用できます。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://github.com/aws/agent-toolkit-for-aws" target="_blank" rel="noopener"&gt;AWS Agent Toolkit&lt;/a&gt; は、AI コーディングエージェントが AWS 上で信頼性高く構築できるようにする、公式にサポートされた MCP サーバー、スキル、エージェントプラグインのコレクションです。これらは複数のパッケージング形式で提供され、Lambda、S3、DynamoDB、CDK などのサービスをカバーする 30 以上の厳選されたスキルを、複数のプラグインとしてバンドルしています。新しい Agent Plugins 仕様をサポートすることで、異なるハーネスやコード支援ツールが同じパッケージング形式を利用できるようになり、AWS Agent Toolkit のようなエージェント拡張のパッケージをエージェントがどのように取り込むかに関するフラグメンテーションが最終的に減少します。&lt;/p&gt; 
+&lt;h2&gt;今後の展望&lt;/h2&gt; 
+&lt;p&gt;Agent Plugins 1.0.0 は出発点です。仕様は、ポータビリティの恩恵を受ける追加のコンポーネントタイプをエコシステムが見出すにつれて進化していきます。Technical Steering Committee では、フック、サブエージェント、その他の拡張機能タイプが将来のバージョンでどのように Plugins に加わりうるかについて、すでに検討が始まっています。&lt;/p&gt; 
+&lt;p&gt;私たちがこの取り組みに真剣に向き合っているのは、オープン標準が開発者の生産性にもたらす効果を見てきたからです。オープン標準は、優れたツールがそれを必要とする人々の手元に届くのを妨げている摩擦を取り除きます。今日、その対象はエージェント拡張ですが、エージェント型 AI エコシステムが進化を続けるにつれて、さらに多くの標準が生まれてくると私たちは考えています。&lt;/p&gt; 
+&lt;p&gt;仕様の詳細は &lt;a href="https://agent-plugins.org" target="_blank" rel="noopener"&gt;agent-plugins.org&lt;/a&gt; でご確認いただけます。&lt;a href="https://github.com/agentplugins/agent-plugins-spec" target="_blank" rel="noopener"&gt;GitHub リポジトリ&lt;/a&gt;を確認したり、Kiro で最初のプラグインをインストールしたりしてみてください。&lt;/p&gt; 
+&lt;h2&gt;著者について&lt;/h2&gt; 
+&lt;footer&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/ca3512f4dfa95a03169c5a670a4c91a19b3077b4/2023/04/03/Libby-Clark.jpg" alt="Libby Clark" width="125"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Libby Clark&lt;/h3&gt; 
+  &lt;p&gt;Libby Clark は AI に注力するプリンシパルオープンソースストラテジストです。&lt;/p&gt; 
+  &lt;p&gt;&lt;/p&gt;
+ &lt;/div&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/ca3512f4dfa95a03169c5a670a4c91a19b3077b4/2025/07/10/James-Ward.png" alt="James Ward" width="125"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;James Ward&lt;/h3&gt; 
+  &lt;p&gt;James Ward は AWS のプリンシパルデベロッパーアドボケイトです。James は世界を飛び回りながら、エンタープライズ開発者が信頼性の高いシステムを構築する方法を学ぶのを支援しています。現在は、Spring AI、Embabel、Strands Agents、Amazon Bedrock、MCP、A2A を用いた AI エージェントシステムを開発者が構築できるように支援することに注力しています。&lt;/p&gt; 
+  &lt;p&gt;&lt;/p&gt;
+ &lt;/div&gt; 
+&lt;/footer&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
 		<title>1 つのエージェントで、あらゆるクライアントに: Kiro エージェントハーネスをどう構築したか</title>
 		<link>https://aws.amazon.com/jp/blogs/news/one-agent/</link>
 		
@@ -723,33 +783,6 @@ module.exports = { createClient };
 &lt;p&gt;この 3 つの新機能により、Spec はより速くスマートになります。Quick Plan モードは生成を高速化します。並列タスク実行は実装を高速化します。要件分析は、ひと通り読むだけでは見逃す問題を捕捉します。構造はソフトウェアをより良くするものであり、プロセスを遅くするものであってはなりません。今やその両方を実現します。&lt;/p&gt; 
 &lt;p&gt;Quick Plan、並列タスク実行、要件分析は現在利用可能です。&lt;a href="https://kiro.dev/docs/specs/" target="_blank" rel="noopener"&gt;Kiro Spec を使い始める&lt;/a&gt;。&lt;/p&gt; 
 &lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>Opus 4.7 が Kiro で利用可能になりました</title>
-		<link>https://aws.amazon.com/jp/blogs/news/opus-4-7/</link>
-		
-		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
-		<pubDate>Mon, 20 Apr 2026 00:38:05 +0000</pubDate>
-				<category><![CDATA[Artificial Intelligence]]></category>
-		<category><![CDATA[Developer Tools]]></category>
-		<category><![CDATA[Kiro]]></category>
-		<guid isPermaLink="false">a50f1fdbf291b26df4b13d00f03a84e6220eef72</guid>
-
-					<description>Anthropic の最新モデル Claude Opus 4.7 が Kiro IDE および CLI に順次展開されました。Opus 4.6 の直接アップグレード版として、複雑で長時間にわたるタスクでのコーディング性能が向上し、複数ファイル・ツールにまたがるマルチステップ実装や自己検証機能を備えています。Kiro のスペック駆動開発との親和性も高く、大規模コードベースでの高忠実度な実装を実現します。</description>
-										<content:encoded>&lt;p&gt;本記事は 2026 年 4 月 17 日に公開された Nima Kaviani による “&lt;a href="https://kiro.dev/blog/opus-4-7/" target="_blank" rel="noopener"&gt;Opus 4.7 is now available in Kiro&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
-&lt;p&gt;本日より、Claude Opus 4.7 が Kiro IDE および CLI に順次展開されています。Opus 4.7 は Anthropic の最新かつ最も高性能な Opus モデルであり、Opus 4.6 の直接的なアップグレード版として、複雑で長時間にわたるタスクにおけるコーディング性能が向上しています。&lt;/p&gt; 
-&lt;p&gt;&lt;span id="more-183181"&gt;&lt;/span&gt;&lt;/p&gt; 
-&lt;div&gt; 
- &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/04/17/benchmarks.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/04/17/benchmarks.png" alt="Opus 4.7 と他モデルの 14 ベンチマーク比較表" width="2523" height="2560" class="alignnone size-full wp-image-183182"&gt;&lt;/a&gt; 
-&lt;/div&gt; 
-&lt;p&gt;Opus 4.7 は前バージョンよりも多くの本番タスクを解決し、長いセッションにわたって複雑な指示をより正確に遵守します。複数のファイルやツールにまたがるマルチステップの実装を処理し、結果を返す前に自身の出力を検証し、より確実な実行力によって、依頼された内容により忠実に応えます。&lt;/p&gt; 
-&lt;p&gt;これらの改善は Kiro の&lt;a href="https://kiro.dev/docs/specs/#what-are-specs" target="_blank" rel="noopener"&gt;仕様駆動開発&lt;/a&gt;にも活かされています。Opus 4.7 は、より大規模なコードベースや広範な変更において、詳細なスペックを高い忠実度で実装に落とし込む最適なモデルと位置づけています。計画、ツール使用、実行、レビューを行き来するワークフローにおいても、一貫性を保ち、方向性のずれを最小限に抑えます。&lt;/p&gt; 
-&lt;p&gt;Opus 4.7 は、AWS IAM Identity Center でログインしている Kiro Pro、Pro+、Power の一部のお客様を対象に、AWS US-East-1（バージニア北部）および AWS Europe（フランクフルト）リージョンにて&lt;a href="https://kiro.dev/docs/privacy-and-security/data-protection/#global-cross-region-inference-for-experimental-features" target="_blank" rel="noopener"&gt;実験的サポート&lt;/a&gt;として段階的に展開されており、クロスリージョン推論サポートと広範な提供が続く予定です。1M トークンのフルコンテキストウィンドウ、Opus 4.6 と同じ 2.2 倍のクレジット乗数を備えています。&lt;/p&gt; 
-&lt;p&gt;&lt;a target="_blank" rel="noopener noreferrer" href="https://kiro.dev/downloads/"&gt;Kiro をダウンロード&lt;/a&gt;するか、アプリまたは CLI を再起動して最新の利用可能なモデルをご確認ください。&lt;/p&gt; 
-&lt;p&gt;翻訳は Solutions Architect の吉村 が担当いたしました。&lt;/p&gt;</content:encoded>
 					
 		
 		
