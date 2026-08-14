@@ -5,7 +5,7 @@
 	<atom:link href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/" rel="self" type="application/rss+xml"/>
 	<link>https://aws.amazon.com/jp/blogs/news/</link>
 	<description/>
-	<lastBuildDate>Mon, 10 Aug 2026 12:31:46 +0000</lastBuildDate>
+	<lastBuildDate>Thu, 13 Aug 2026 07:17:16 +0000</lastBuildDate>
 	<language>ja</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -13,6 +13,508 @@
 	1	</sy:updateFrequency>
 	
 	<item>
+		<title>MGI、Sentieon、AWS で強化するゲノムデータストレージとワークフロー</title>
+		<link>https://aws.amazon.com/jp/blogs/news/enhanced-genomic-data-storage-and-workflows-with-mgi-sentieon-and-aws/</link>
+		
+		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
+		<pubDate>Thu, 13 Aug 2026 07:17:16 +0000</pubDate>
+				<category><![CDATA[AWS HealthOmics]]></category>
+		<category><![CDATA[Healthcare]]></category>
+		<category><![CDATA[Industries]]></category>
+		<guid isPermaLink="false">c4f90fac7cc6bc1c2b55be6d7c23f1309524823b</guid>
+
+					<description>MGI、Sentieon、AWS の協業により、ゲノミクスラボは大規模なシーケンシングデータを効率的に管理・解析できます。ベルリンの MGI 欧州本社では、3 台の DNBSEQ-T7 シーケンサーが週あたり合計で最大 63 テラベース生成するゲノムデータを AWS HealthOmics Sequence Store に取り込み、Sentieon の DNAscope や TNseq を Ready2Run ワークフローまたはプライベートワークフローで実行します。Ready2Run の固定料金と自動リソース管理により、コストを予測しやすく、迅速で高精度な発見を実現します。</description>
+										<content:encoded>&lt;p&gt;本記事は 2025 年 2 月 25 日に公開された Dr. Tomasz Zemojtel、Christopher Gatsch、Dr. Manuel Delpero、Zhan Ying、Dr. Mueller Michael による “&lt;a href="https://aws.amazon.com/blogs/industries/enhanced-genomic-data-storage-and-workflows-with-mgi-sentieon-and-aws/" target="_blank" rel="noopener"&gt;Enhanced Genomic Data Storage and Workflows with MGI, Sentieon, and AWS&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;ゲノム研究の分野はかつてないスピードで進化しており、データストレージと解析に堅牢かつスケーラブルなソリューションが求められています。MGI、Sentieon、Amazon Web Services (AWS) は協業により、ゲノム研究を支援する機能を提供します。研究者や臨床医は、AWS HealthOmics と Sentieon のワークフローを活用することで、MGI のシーケンシング技術の能力を最大限に引き出せるようになりました。これにより、効率的なデータの保管、取得、整理と、大規模で高精度なゲノム解析が可能になります。&lt;/p&gt; 
+&lt;p&gt;本記事では、この統合的な協業のソリューションアーキテクチャ、ワークフローの選択肢、そして研究ラボにおけるハイスループットなゲノム解析の実装の詳細をご紹介します。&lt;/p&gt; 
+&lt;h3&gt;ベルリンのMGI 欧州本社におけるハイスループットなゲノムデータ解析&lt;/h3&gt; 
+&lt;p&gt;ハイスループットシーケンシング施設は、膨大なデータ量と解析ワークフローの管理に大きな課題を抱えています。ローカルストレージや計算基盤を利用する従来のアプローチでは、データ生成の規模に対応しきれず、処理のボトルネック、高いメンテナンスコスト、複雑なデータセキュリティ要件などが発生しがちです。ラボには、データストレージをシームレスに扱い、スケーラブルな計算リソースを提供し、セキュリティコンプライアンスを維持しつつ、予測可能なコストで利用できるソリューションが必要です。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://mgi-tech.eu/" target="_blank" rel="noopener"&gt;MGI-tech&lt;/a&gt; はバイオテクノロジーイノベーションのリーダーであり、次世代シーケンシング (NGS) とラボオートメーション技術を開発・提供しています。同社のフラッグシップである DNBSEQ&lt;img src="https://s.w.org/images/core/emoji/14.0.0/72x72/2122.png" alt="™" class="wp-smiley" style="height: 1em; max-height: 1em;"&gt; プラットフォームは、精密医療、農業、ヘルスケア分野に向けて、高精度かつハイスループットな遺伝子解析ソリューションを提供します。&lt;/p&gt; 
+&lt;p&gt;ベルリンにあるMGI 欧州本社には 3 台のハイスループット T7 シーケンサーが設置されており、週あたり合計で最大 63 テラベース (Tb、テラ塩基) のゲノムデータを生成しています。3 台の T7 シーケンサーが生成したデータは AWS へ安全に転送され、ゲノムデータ向けにスケーラブルかつコストを最適化したストレージソリューションである &lt;a href="https://aws.amazon.com/healthomics/faqs/#Data_Stores_" target="_blank" rel="noopener"&gt;AWS HealthOmics Sequence Store&lt;/a&gt; に取り込まれます。AWS HealthOmics 内では、Sentieon の高性能なプライベートワークフローが実行され、高速かつ高精度なデータ解析が行われます。&lt;/p&gt; 
+&lt;p&gt;この統合型のハイスループットソリューションにより、MGI 欧州本社の研究者や臨床医は、重要なアプリケーションに向けて複雑なゲノムデータから価値ある知見を引き出せます。具体的には、遺伝性疾患の診断、がん研究、医薬品開発、大規模な集団ゲノミクスの研究などが含まれます。&lt;/p&gt; 
+&lt;h3&gt;AWS HealthOmics と Sentieon&lt;/h3&gt; 
+&lt;p&gt;AWS HealthOmics は、ゲノムデータの保管、処理、解析のためのセキュアでスケーラブルなサービスです。HealthOmics Sequence Store は、大量のシーケンシングデータをコスト効率よく保管する手段を提供し、HealthOmics ワークフローとのシームレスな統合によって、下流解析ですぐに利用できる状態を保ちます。保存時の機密性の高い顧客データを保護するため、HealthOmics は &lt;a href="https://aws.amazon.com/kms/?nc2=type_a" target="_blank" rel="noopener"&gt;AWS Key Management Service&lt;/a&gt; (AWS KMS) の AWS 所有のキーを用いてデフォルトで暗号化を行います。カスタマーマネージドキーもサポートされています。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://www.sentieon.com/" target="_blank" rel="noopener"&gt;Sentieon&lt;/a&gt; は 2014 年から AWS パートナーであり、高速かつ高精度なゲノムデータ処理のために最適化されたバイオインフォマティクスアルゴリズムを開発してきました。HealthOmics ワークフローでは、Sentieon の &lt;a href="https://www.sentieon.com/detailed-description-of-pipelines/#dnascope" target="_blank" rel="noopener"&gt;DNAscope&lt;/a&gt; および &lt;a href="https://www.sentieon.com/detailed-description-of-pipelines/#tnseq" target="_blank" rel="noopener"&gt;TNseq&lt;/a&gt; パイプラインを、あらかじめ定義された Ready2Run ワークフローとしても、カスタマイズ可能なプライベートワークフローとしても実行できます。&lt;/p&gt; 
+&lt;h3&gt;アーキテクチャの概要&lt;/h3&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/c5b76da3e608d34edb07244cd9b875ee86906328/2025/02/25/Figure-1-–-The-workflow-architecture-implemented-at-the-European-MGI-Headquarters-in-Berlin.png" target="_blank" rel="noopener"&gt;&lt;img class="size-full wp-image-27722 aligncenter" src="https://d2908q01vomqb2.cloudfront.net/c5b76da3e608d34edb07244cd9b875ee86906328/2025/02/25/Figure-1-–-The-workflow-architecture-implemented-at-the-European-MGI-Headquarters-in-Berlin.png" alt="画像の内容は次の段落で説明されています" width="620" height="186"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;em&gt;図 1 – ベルリンのMGI 欧州本社で実装されたワークフローアーキテクチャ。&lt;/em&gt;&lt;/p&gt; 
+&lt;p&gt;図 1 は次の流れを示しています。&lt;/p&gt; 
+&lt;ol&gt; 
+ &lt;li&gt;MGI DNBSEQ-T7 シーケンサーが 1 週間で最大 21 Tb (テラベース) のデータを CAL 形式 (MGI シーケンサーのベースコールソフトウェアが生成するバイナリファイル形式) で出力します。&lt;/li&gt; 
+ &lt;li&gt;MGI ZTRON Lite Pro が CAL ファイルを FASTQ ファイルに変換し、データの受け渡しを可能にします。&lt;/li&gt; 
+ &lt;li&gt;FASTQ ファイルは AWS 上の &lt;a href="https://aws.amazon.com/s3/" target="_blank" rel="noopener"&gt;Amazon Simple Storage Service&lt;/a&gt; (Amazon S3) に安全に転送されます。&lt;/li&gt; 
+ &lt;li&gt;これらのファイルは AWS HealthOmics Sequence Store にインポートされます。また、&lt;a href="https://github.com/awslabs/amazon-omics-tools?tab=readme-ov-file#omics-transfer-manager" target="_blank" rel="noopener"&gt;HealthOmics Transfer Manager&lt;/a&gt; を通じて、ローカルストレージから FASTQ ファイルを HealthOmics Sequence Store に直接アップロードすることもできます。&lt;/li&gt; 
+ &lt;li&gt;DNAscope や TNseq パイプラインなどの Sentieon Genomics ソフトウェアは、HealthOmics ワークフロー上で Ready2Run ワークフローとしても、カスタマイズ可能なプライベートワークフローとしても実行できます。&lt;/li&gt; 
+ &lt;li&gt;ワークフロー実行の最後に、AWS HealthOmics は生成された BAM および VCF ファイルを S3 バケットへ転送します。&lt;/li&gt; 
+ &lt;li&gt;結果は臨床研究者などのユーザーによって参照されます。&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;h3&gt;Ready2Run ワークフロー: 迅速かつ簡単なセットアップ&lt;/h3&gt; 
+&lt;p&gt;迅速でシンプルなソリューションを求める研究者向けに、Sentieon の Ready2Run ワークフローは、あらかじめ構築・最適化されたパイプラインを提供します。数クリックまたはシンプルな API 呼び出しでデプロイでき、固定料金かつ予測可能な実行時間で動作します。これらのワークフローは、次のようなさまざまなゲノム解析タスクに対応するよう設計されています。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;&lt;strong&gt;DNAscope&lt;/strong&gt;: MGI シーケンシングプラットフォーム向けに最適化された、生殖細胞系列バリアントコール用パイプライン。&lt;/li&gt; 
+ &lt;li&gt;&lt;strong&gt;TNseq&lt;/strong&gt;: 体細胞バリアントコール用パイプライン。GATK の Mutect2 と同等の精度を達成しながら、MGI データではより短い実行時間を実現します。&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;AWS HealthOmics ワークフローを利用することで、研究者は Sentieon の Ready2Run パイプラインから選択でき、さまざまな解析ニーズ、リファレンスゲノム、シーケンシングプラットフォームに対応する柔軟な選択肢を得られます。これらのワークフローは実行単位で課金されるため、コストを予測しやすく、ハイスループットなゲノミクスプロジェクトに必要なスケーラビリティを提供します。&lt;/p&gt; 
+&lt;h3&gt;プライベートワークフロー: 高度なユーザー向けの完全なカスタマイズ&lt;/h3&gt; 
+&lt;p&gt;より高度な制御やカスタマイズを必要とするチーム向けに、Sentieon は AWS HealthOmics 上でパイプラインをプライベートワークフローとして実行することもサポートしています。これらのワークフローは完全な柔軟性を提供し、研究者が固有のニーズに合わせてワークフローをカスタマイズ・最適化できるようにします。&lt;/p&gt; 
+&lt;p&gt;Sentieon のプライベートワークフローを実行することで、ユーザーは次のことが可能になります。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;AWS 向けの Sentieon コンテナイメージを独自に構築する。&lt;/li&gt; 
+ &lt;li&gt;パラメーター、リファレンスゲノム、解析結果の出力内容をカスタマイズする。&lt;/li&gt; 
+ &lt;li&gt;パイプライン構成を制御しつつ、AWS HealthOmics のインフラストラクチャを活用する。&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;プライベートワークフローを始めるには、&lt;a href="https://github.com/Sentieon/sentieon-amazon-omics" target="_blank" rel="noopener"&gt;Sentieon GitHub リポジトリ&lt;/a&gt;で提供されている詳細なセットアップ手順に従ってください。このリポジトリには、コンテナイメージ、セットアップスクリプト、WDL および Nextflow の両エンジン向けのワークフローサンプルなど、カスタマイズしたワークフローの構築とデプロイに必要なものがすべて含まれています。プライベートワークフロー向けに Sentieon ライセンスサーバーを有効化する手順については、&lt;a href="https://docs.aws.amazon.com/omics/latest/dev/private-workflows-subscribe.html" target="_blank" rel="noopener"&gt;Requesting Sentieon licenses for private workflows&lt;/a&gt; を参照してください。&lt;/p&gt; 
+&lt;h3&gt;まとめ&lt;/h3&gt; 
+&lt;p&gt;MGI、Sentieon、AWS の協業は、ゲノミクスラボ向けの堅牢なソリューションを提供します。MGI のシーケンシング技術を活用することで、合理化された、かつカスタマイズ可能なワークフローを AWS インフラストラクチャとシームレスに統合して利用できます。また、Sentieon の Ready2Run ワークフローを実行する場合でも、プライベートワークフローをセットアップする場合でも、研究者は AWS HealthOmics を活用して、セキュアでコンプライアンスに準拠した環境で大規模にゲノムデータを保管・解析できます。これにより、より迅速かつ高精度な発見が可能になります。&lt;/p&gt; 
+&lt;p&gt;AWS KMS 暗号化などの組み込みのセキュリティ機能により、コンプライアンスに準拠した環境でのデータ保護が確保されます。また、固定料金の Ready2Run ワークフローは、予測可能なコストと自動化されたリソース管理を提供します。&lt;/p&gt; 
+&lt;p&gt;MGI、Sentieon、AWS のこの協業は、MGI シーケンシング技術を活用するゲノミクスラボ向けに堅牢なソリューションを提供し、より迅速かつ高精度な発見を可能にします。このソリューションは、ハイスループットシーケンシング業務に一般的に伴う処理のボトルネックの解消に役立ちます。&lt;/p&gt; 
+&lt;p&gt;この統合ソリューションをゲノム研究や臨床アプリケーションに実装する方法について詳しくは、&lt;a href="https://aws.amazon.com/healthomics/" target="_blank" rel="noopener"&gt;AWS HealthOmics&lt;/a&gt; のウェブページや &lt;a href="https://github.com/Sentieon/sentieon-amazon-omics" target="_blank" rel="noopener"&gt;Sentieon GitHub リポジトリ&lt;/a&gt;をご覧ください。また、この技術がお客様のゲノム解析ワークフローをどのように加速できるかについて、個別のご相談を承ります。&lt;a href="https://pages.awscloud.com/genomics-contact-us.html?languages=english" target="_blank" rel="noopener"&gt;AWS 担当者&lt;/a&gt;までお問い合わせください。&lt;/p&gt; 
+&lt;h3&gt;謝辞&lt;/h3&gt; 
+&lt;p&gt;本ブログの作成にご協力いただいた MGI-tech のバイオインフォマティクスサイエンティスト Dr. Liene Astica、フィールドバイオインフォマティクスサイエンティスト Ying Zhan、フィールドアプリケーションサイエンティスト Ongeziwe Mbhele の各氏に感謝申し上げます。&lt;/p&gt; 
+&lt;h3&gt;参考資料&lt;/h3&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;&lt;a href="https://aws.amazon.com/health/genomics/solutions/" target="_blank" rel="noopener"&gt;AWS for Genomics Solutions&lt;/a&gt;&lt;/li&gt; 
+ &lt;li&gt;&lt;a href="https://aws.amazon.com/blogs/industries/category/industries/healthcare/" target="_blank" rel="noopener"&gt;AWS Healthcare &amp;amp; Life Sciences Blog Collection&lt;/a&gt;&lt;/li&gt; 
+ &lt;li&gt;&lt;a href="https://aws.amazon.com/health/life-sciences/solutions/compliance/" target="_blank" rel="noopener"&gt;AWS Healthcare &amp;amp; Life Sciences – Security and Compliance&lt;/a&gt;&lt;/li&gt; 
+ &lt;li&gt;&lt;a href="https://genomicsunlocked.com/" target="_blank" rel="noopener"&gt;Genomics Unlocked: MGI-tech の最新ウェビナーシリーズを視聴できます&lt;/a&gt;&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h2&gt;著者について&lt;/h2&gt; 
+&lt;footer&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/c5b76da3e608d34edb07244cd9b875ee86906328/2025/02/25/Tomasz-Zemojtel-1.png" alt="Photo of author" width="125" height="126"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Dr. Tomasz Zemojtel&lt;/h3&gt; 
+  &lt;p&gt;Dr. Tomasz Zemojtel は、AWS の EMEA 地域におけるヘルスケアビジネス開発マネージャーです。ヘルスケアとテクノロジーのバックグラウンドを持ち、ヘルスケア組織や研究・臨床機関がクラウドサービスを活用してイノベーションを推進できるよう支援することを専門としています。Tomasz は、クラウドコンピューティングを通じて大規模な臨床データセットの可能性を引き出し、個別化医療や統合型ヘルスケアソリューションを前進させることに情熱を注いでいます。仕事以外では、ジョギングや山歩き、海辺で過ごす時間を楽しんでいます。&lt;/p&gt; 
+ &lt;/div&gt; 
+&lt;/footer&gt; 
+&lt;footer&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/c5b76da3e608d34edb07244cd9b875ee86906328/2025/02/21/Christopher-Gatsch.jpg" alt="Photo of author" width="125" height="125"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Christopher Gatsch&lt;/h3&gt; 
+  &lt;p&gt;Christopher Gatsch は MGI のフィールドバイオインフォマティクスサイエンティストで、顧客ワークフローの最適化や BIT 製品体験・ワークフロー効率の向上に注力しています。読書、アウトドア活動、さまざまな国への旅行に情熱を注いでいます。&lt;/p&gt; 
+ &lt;/div&gt; 
+&lt;/footer&gt; 
+&lt;footer&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/c5b76da3e608d34edb07244cd9b875ee86906328/2025/02/21/Manuel-Delpero.jpg" alt="Photo of author" width="125" height="125"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Dr. Manuel Delpero&lt;/h3&gt; 
+  &lt;p&gt;Dr. Manuel Delpero は MGI のアプリケーションサイエンティスト部門のアソシエイトマネージャーで、顧客ワークフローの最適化と、バイオインフォマティクスとコマーシャル戦略の橋渡しを専門としています。分子遺伝学およびバイオインフォマティクスの博士号を持ち、バイオテクノロジーの技術面とビジネス面の両方において幅広い業界経験があります。ウェイトトレーニング、旅行、新しいビジネス機会の探求に情熱を注いでいます。&lt;/p&gt; 
+ &lt;/div&gt; 
+&lt;/footer&gt; 
+&lt;footer&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/c5b76da3e608d34edb07244cd9b875ee86906328/2025/02/21/Zhan-Ying.png" alt="Photo of author" width="125" height="126"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Zhan Ying&lt;/h3&gt; 
+  &lt;p&gt;Zhan Ying は人工知能のバックグラウンドを持つ IT スペシャリストで、包括的な BIT ソリューションを提供しています。マシン統合、ユーザーラボのネットワーキング、販売後のトラブルシューティングなど、BIT 関連の IT サポートを担当しています。&lt;/p&gt; 
+ &lt;/div&gt; 
+&lt;/footer&gt; 
+&lt;footer&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/c5b76da3e608d34edb07244cd9b875ee86906328/2025/02/25/Michael-Mueller-1.png" alt="Photo of author" width="125" height="133"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Dr. Mueller Michael&lt;/h3&gt; 
+  &lt;p&gt;Dr. Michael Mueller は AWS のシニアゲノミクスソリューションアーキテクトです。ゲノミクスとクラウドコンピューティングの力を組み合わせてヘルスケアを改善する取り組みを支援することに情熱を注いでいます。ロンドンの大都会の探索と、イギリスやヨーロッパのアウトドアの両方を楽しんでいます。&lt;/p&gt; 
+ &lt;/div&gt; 
+&lt;/footer&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>AWS HealthOmics ワークフローで PacBio 全ゲノムシーケンシングのバリアント解析パイプラインをベンチマークする</title>
+		<link>https://aws.amazon.com/jp/blogs/news/publicsector-benchmarking-pacbio-whole-genome-sequencing-variant-pipeline-analysis-with-aws-healthomics-workflows/</link>
+		
+		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
+		<pubDate>Thu, 13 Aug 2026 06:19:52 +0000</pubDate>
+				<category><![CDATA[AWS HealthOmics]]></category>
+		<category><![CDATA[Best Practices]]></category>
+		<category><![CDATA[Healthcare]]></category>
+		<category><![CDATA[Industries]]></category>
+		<category><![CDATA[Public Sector]]></category>
+		<guid isPermaLink="false">ffb014f91fccfc4483fc8dbf8cdb97e5f33a9e76</guid>
+
+					<description>PacBio HiFi の全ゲノムシーケンシング (WGS) バリアント解析パイプラインを AWS HealthOmics 上に実装し、大規模運用に向けてベンチマークしました。DeepVariant を GPU (NVIDIA Tesla A10G / omics.g5.2xlarge) で実行すると、CPU 比 21.3 パーセントのコスト削減と 8.5 パーセントの高速化を達成。run_analyzer の推奨構成なら 19.15 ドルまで削減できる見込みです。</description>
+										<content:encoded>&lt;p&gt;本記事は 2025 年 7 月 18 日に公開された Edwin Sandanaraj、Charlie Lee、Billy Rowell、Khi Pin Chua、Rajesh Sukumaran による “&lt;a href="https://aws.amazon.com/blogs/publicsector/benchmarking-pacbio-whole-genome-sequencing-variant-pipeline-analysis-with-aws-healthomics-workflows/" target="_blank" rel="noopener"&gt;Benchmarking PacBio whole genome sequencing variant pipeline analysis with AWS HealthOmics workflows&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2025/07/16/AWS-Public-Sector-Blog-Featured-Images-Blog-Header-static-template-Autosaved-15.png" target="_blank" rel="noopener"&gt;&lt;img loading="lazy" class="aligncenter size-full wp-image-27179" src="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2025/07/16/AWS-Public-Sector-Blog-Featured-Images-Blog-Header-static-template-Autosaved-15.png" alt="AWS Branded Background with text &amp;quot;Benchmarking PacBio whole genome sequencing variant pipeline analysis with AWS HealthOmics workflows&amp;quot;" width="2048" height="1024"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;ゲノム研究が医療とポピュレーションヘルス (集団全体の健康) の最前線を切り拓き続ける中で、複雑なゲノム領域の解読、構造バリアントの同定、そして遺伝的多様性の大規模な理解には、ロングリードシーケンシングがますます不可欠になっています。&lt;a href="https://www.pacb.com/technology/hifi-sequencing/" target="_blank" rel="noopener"&gt;PacBio HiFi&lt;/a&gt; シーケンシングは、高精度かつ長いリードを生成するため、包括的な全ゲノムシーケンシング (WGS) に適しています。&lt;/p&gt; 
+&lt;p&gt;大規模なロングリード WGS 解析を実行するには、スケーラブルでセキュア、かつ本番運用に耐える計算環境が必要です。&lt;a href="https://aws.amazon.com/healthomics/" target="_blank" rel="noopener"&gt;AWS HealthOmics&lt;/a&gt; はまさにこの用途に特化して構築されており、バイオインフォマティシャンはコンテナ化されたワークフローの実行と大量のゲノムデータの処理を、高い信頼性と柔軟性をもって行えます。&lt;a href="https://www.pacb.com/press_releases/singapores-national-precision-medicine-npm-programme-will-partner-with-pacbio-to-propel-hifi-sequencing-in-southeast-asia/" target="_blank" rel="noopener"&gt;PacBio と AWS HealthOmics ワークフローの統合&lt;/a&gt;アーキテクチャは、大規模ゲノミクスプログラムの中核として機能してきました。この実装により、セキュアかつ効率的なデータ処理を実現しながら、大規模な解析結果の提供を効率化できます。HealthOmics の堅牢なセキュリティとスケーラブルなインフラストラクチャを活用することで、PacBio ワークフローは大規模なロングリードシーケンシングデータを処理しつつ、国家的なヘルスケア施策に求められるデータガバナンス基準を維持できます。こうした実際の運用実績は、HealthOmics が PacBio の全国的な精密医療プログラムをエンタープライズ級の信頼性とパフォーマンスで支えられることを示しています。&lt;/p&gt; 
+&lt;p&gt;本ガイドでは、PacBio の &lt;a href="https://github.com/PacificBiosciences/HiFi-human-WGS-WDL" target="_blank" rel="noopener"&gt;WGS バリアントパイプライン&lt;/a&gt;を AWS HealthOmics 上で実装する方法を紹介し、広範なベンチマークに基づく大規模かつコスト効率の高いデプロイに向けたパフォーマンス最適化の知見とエビデンスに基づく推奨事項をお伝えします。&lt;/p&gt; 
+&lt;p&gt;PacBio HiFi シーケンシングは、典型的には 15〜25 キロ塩基のロングリードを、高い塩基精度 (塩基の 90 パーセントが Q30 を上回る) で生成します。この組み合わせにより、研究者は反復領域や GC (Guanine-Cytosine) リッチな領域を網羅し、ハプロタイプを正確にフェージング (決定) し、ショートリード技術では見落とされがちな構造バリアントを検出できます。ロングリードシーケンシング解析の代表的な用途は次のとおりです。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;&lt;u&gt;一塩基バリアント (SNV) および小規模な挿入・欠失 (indel)&lt;/u&gt; – 塩基レベルの変化や複数塩基にわたる小さな変異&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;構造バリアントの発見&lt;/u&gt; – 大規模な挿入、欠失、再構成を塩基レベルの精度で解読&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;ハプロタイプのフェージング&lt;/u&gt; – 長いハプロタイプブロックにわたって、バリアントを母方または父方のアレルに割り当て&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;複雑な遺伝子座のアセンブリ&lt;/u&gt; – 疾患関連遺伝子座における反復配列や遺伝子重複を解き明かす&lt;/li&gt; 
+ &lt;li&gt;&lt;a href="https://www.nature.com/articles/nmeth.1935" target="_blank" rel="noopener"&gt;&lt;u&gt;De novo アセンブリ&lt;/u&gt;&lt;/a&gt;&lt;u&gt;とパンゲノム構築&lt;/u&gt; – 集団特有の多様性を反映した、高品質で連続性の高いゲノムアセンブリの生成&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;DNA メチル化&lt;/u&gt; – ゲノム全体の CpG サイトにおける 5-メチルシトシン (5mCpG) マークから、活性領域や不活性領域を同定&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h2&gt;PacBio HiFi WGS バリアントパイプラインの技術概要&lt;/h2&gt; 
+&lt;p&gt;PacBio の WGS バリアントパイプラインは &lt;a href="https://openwdl.org/" target="_blank" rel="noopener"&gt;Workflow Description Language&lt;/a&gt; (WDL) で定義されており、二次解析と三次解析に向けたモジュール式かつコンテナ化されたソリューションを提供します。このパイプラインには、HiFi アライメントツールに加え、SNV、小規模な挿入・欠失、コピー数バリアント (CNV)、構造バリアント (SV) 向けに設計されたバリアントコーラーが組み込まれています。さらに、タンデムリピート (TR) のジェノタイピング、セグメント重複領域内の遺伝子の型判定 (遺伝子タイピング)、バリアントのハプロタイプへのフェージング、コンセンサス 5mCpG 確率の推定などの機能も備えています。マルチサンプルのコホートに対しては、小規模バリアントと構造バリアントの両方に対するジョイントコーリング (joint-calling) を提供します。包括的なアノテーションツールは、小規模バリアントと構造バリアントの両方に対応します。ヒト HiFi データを解析するステップは次のとおりです。&lt;/p&gt; 
+&lt;ol&gt; 
+ &lt;li&gt;&lt;u&gt;リードアライメント&lt;/u&gt; – HiFi リード向けに最適化されたマッパーおよびアライナーである &lt;a href="https://github.com/PacificBiosciences/pbmm2" target="_blank" rel="noopener"&gt;pbmm2&lt;/a&gt; を用いて、ロングリードをリファレンスゲノムにアライメントします。このアライナーはスプリットマッピングや大きなギャップを効率的に扱えるため、構造バリアントやセグメント重複を正確にマッピングするうえで重要です。出力は、下流処理向けの豊富なメタデータを含む、ソート済み・インデックス付きの &lt;a href="https://en.wikipedia.org/wiki/BAM_(file_format)" target="_blank" rel="noopener"&gt;Binary Alignment Map (BAM)&lt;/a&gt; ファイルです。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;SNV と小規模バリアントのコール&lt;/u&gt; – SNV および小規模な挿入・欠失の検出には、HiFi リードに特化して学習させたバリアントコーラー (&lt;a href="https://github.com/google/deepvariant" target="_blank" rel="noopener"&gt;DeepVariant&lt;/a&gt;) を使用します。ロングリードデータのエラープロファイルとリード特性に合わせて調整された&lt;a href="https://aws.amazon.com/ai/machine-learning/" target="_blank" rel="noopener"&gt;機械学習 (ML)&lt;/a&gt; モデルを適用することで、マッピングが難しい領域でも偽陽性率の低い高信頼のバリアントコールを生成します。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;構造バリアントの検出&lt;/u&gt; – このステップでは、リードシグネチャとアライメントパターンを比較して、欠失、挿入、逆位、転座などの大規模なゲノム変化を同定します。PacBio の構造バリアントコーラー (&lt;a href="https://github.com/PacificBiosciences/pbsv" target="_blank" rel="noopener"&gt;pbsv&lt;/a&gt;) はロングリードデータ向けに設計されており、ショートリードのアプローチでは見落とされがちな複雑なブレークポイント、タンデムリピート、マルチアレリック (multi-allelic) なイベントを検出できます。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;重複領域のバリアント&lt;/u&gt; – &lt;a href="https://github.com/PacificBiosciences/paraphase" target="_blank" rel="noopener"&gt;Paraphase&lt;/a&gt; は、遺伝子ファミリーのリードを単一のリファレンスコピーへ再アライメントしてハプロタイプを同定することで、セグメント重複領域における小規模バリアントをコールします。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;タンデムリピートバリアントコーラー&lt;/u&gt; – &lt;a href="https://github.com/PacificBiosciences/trgt" target="_blank" rel="noopener"&gt;Tandem repeat genotyping tool (TRGT)&lt;/a&gt; は、HiFi リードにおけるタンデムリピートの変動 (多型) を解析・ジェノタイピングします。リピート長 (サイズ) に基づく標準的なジェノタイピングに加えて、配列組成、リピートのモザイク性、CpG メチル化パターンの包括的な解析、そしてリピートをスパンするリードの視覚的表現も提供します。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;フェージングとハプロタイプの決定&lt;/u&gt; – 下流の解釈をサポートするため、ワークフローにはバリアントをハプロタイプに割り当てるフェージングステップが含まれています。&lt;a href="https://github.com/PacificBiosciences/HiPhase" target="_blank" rel="noopener"&gt;HiPhase&lt;/a&gt; は HiFi リードのロングレンジ情報を活用し、数十キロ塩基にわたるハプロタイプブロックを決定することで、臨床および集団ゲノミクスの文脈における解釈性を向上させます。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;5mCpG 検出&lt;/u&gt; – &lt;a href="https://github.com/PacificBiosciences/pb-CpG-tools" target="_blank" rel="noopener"&gt;pb-CpG-tools&lt;/a&gt; は、アライメント済みの HiFi リードから、CpG に対するハプロタイプ特異的なサイトメチル化確率を生成します。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;コホートレベルのジェノタイピング (任意)&lt;/u&gt; – 複数サンプルのコホートに対しては、&lt;a href="https://github.com/dnanexus-rnd/GLnexus" target="_blank" rel="noopener"&gt;glnexus&lt;/a&gt; と &lt;a href="https://github.com/PacificBiosciences/pbsv" target="_blank" rel="noopener"&gt;pbsv&lt;/a&gt; を用いたジョイントジェノタイピング (joint-genotyping) のステップを追加することで、サンプル間のバリアントコールを整合させることができます。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;アノテーション&lt;/u&gt; – パイプラインには 2 つのアノテーションツール、&lt;a href="https://github.com/brentp/slivar" target="_blank" rel="noopener"&gt;slivar&lt;/a&gt; と &lt;a href="https://github.com/PacificBiosciences/svpack" target="_blank" rel="noopener"&gt;svpack&lt;/a&gt; が含まれており、小規模バリアントと構造バリアントに対する包括的なアノテーションを提供します。&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;p&gt;ワークフローは 7 つの主要なステップで構成されています (次のアーキテクチャ図の 1〜7 に対応)。&lt;/p&gt; 
+&lt;ol&gt; 
+ &lt;li&gt;HiFi-WGS パイプラインを &lt;a href="https://aws.amazon.com/cloudformation/" target="_blank" rel="noopener"&gt;AWS CloudFormation&lt;/a&gt; にデプロイし、コンテナの移行をトリガーします。&lt;/li&gt; 
+ &lt;li&gt;&lt;a href="https://aws.amazon.com/lambda/" target="_blank" rel="noopener"&gt;AWS Lambda&lt;/a&gt; 関数が &lt;a href="https://aws.amazon.com/codebuild/" target="_blank" rel="noopener"&gt;AWS CodeBuild&lt;/a&gt; をオーケストレーションし、コンテナ処理を行います。&lt;/li&gt; 
+ &lt;li&gt;未アライメントの BAM (unaligned BAM / uBAM) ファイルから &lt;a href="https://aws.amazon.com/s3/" target="_blank" rel="noopener"&gt;Amazon Simple Storage Service (Amazon S3)&lt;/a&gt; への入力データフロー。&lt;/li&gt; 
+ &lt;li&gt;&lt;a href="https://aws.amazon.com/cloudwatch/" target="_blank" rel="noopener"&gt;Amazon CloudWatch&lt;/a&gt; によるパイプライン実行のモニタリング。&lt;/li&gt; 
+ &lt;li&gt;&lt;a href="https://aws.amazon.com/eventbridge/" target="_blank" rel="noopener"&gt;Amazon EventBridge&lt;/a&gt; を用いたイベント駆動のワークフロー管理。&lt;/li&gt; 
+ &lt;li&gt;出力用 S3 バケットへの結果の保存。&lt;/li&gt; 
+ &lt;li&gt;HealthOmics ツールによるパフォーマンス分析で、コストと利用状況を追跡。&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;p&gt;このサーバーレスかつマネージドなアーキテクチャは、運用可視性と最適化機能を備えた、スケーラブルかつコスト効率の高いゲノムデータ処理を提供します。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2025/07/16/Picture9.jpg" target="_blank" rel="noopener"&gt;&lt;img loading="lazy" class="size-full wp-image-27175 aligncenter" src="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2025/07/16/Picture9.jpg" alt="AWS HealthOmics WGS パイプラインのワークフローと統合ポイントを示すアーキテクチャ図" width="624" height="370"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;em&gt;図 1: AWS HealthOmics WGS パイプラインのワークフローと統合ポイントを示すアーキテクチャ図&lt;/em&gt;&lt;/p&gt; 
+&lt;h2&gt;大規模運用における AWS HealthOmics 上の PacBio WGS バリアントパイプライン&lt;/h2&gt; 
+&lt;p&gt;AWS HealthOmics は、パイプラインのデプロイと実行を管理し、インフラストラクチャ、コンテナオーケストレーション、WDL のサポートを担当します。各タスクはカスタマイズ可能なリソースを持つコンテナ化ジョブとして実行され、依存関係の管理、そして &lt;a href="https://aws.amazon.com/iam/" target="_blank" rel="noopener"&gt;AWS Identity and Access Management (IAM)&lt;/a&gt; によって権限管理された Amazon S3 でのデータストレージを扱います。ワークフローの入力、出力、ログは、HealthOmics コンソールと &lt;a href="https://aws.amazon.com/cloudwatch/" target="_blank" rel="noopener"&gt;Amazon CloudWatch&lt;/a&gt; を通じて追跡可能です。&lt;/p&gt; 
+&lt;p&gt;AWS HealthOmics 上の WGS パイプラインのソリューションのデプロイは HiFi-human-WGS-WDL v2.1.2 に基づいており、ゲノム解析への無駄のないアプローチを提供します。CloudFormation ソリューションスタックのデプロイでは、Docker イメージの移行を自動化し、&lt;a href="https://aws.amazon.com/ecr/" target="_blank" rel="noopener"&gt;Amazon Elastic Container Registry (Amazon ECR)&lt;/a&gt; のポリシーと HealthOmics ワークフロー用 IAM ロールを設定します。パイプラインは次のステップに従います。&lt;/p&gt; 
+&lt;ol&gt; 
+ &lt;li&gt;&lt;a href="https://github.com/aws-samples/sample-pacbio-wgs-healthomics" target="_blank" rel="noopener"&gt;aws-samples リポジトリ&lt;/a&gt;の CloudFormation テンプレートは、必要な Docker イメージを適切な権限とともに ECR のプライベートリポジトリへ移行する AWS スタックを構築します。このカスタマイズ可能なスタックは、HealthOmics サービスが必要とする S3 バケットと ECR イメージに対して、最小権限アクセスの原則に沿うよう調整できます。&lt;/li&gt; 
+ &lt;li&gt;スタックは Docker イメージの移行に CodeBuild を利用します。パイプライン操作を進める前に、CodeBuild プロジェクトが &lt;code&gt;SUCCEEDED&lt;/code&gt; ステータスに達しているかを確認してください。&lt;/li&gt; 
+ &lt;li&gt;未アライメントの HiFi BAM ファイルは、Amazon S3 または &lt;a href="https://aws.amazon.com/blogs/industries/store-omics-data-cost-effectively-at-any-scale-with-aws-healthomics/" target="_blank" rel="noopener"&gt;HealthOmics シーケンスストア&lt;/a&gt;に保存します。どちらも互換性がありますが、HealthOmics シーケンスストアはゲノミクス固有の追加機能と、よりよいメタデータ管理を提供します。本実装では、PacBio の&lt;a href="https://zenodo.org/records/14908106" target="_blank" rel="noopener"&gt;リファレンスデータリソース&lt;/a&gt;と、検証用の &lt;a href="https://downloads.pacbcloud.com/public/revio/2022Q4/HG002-rep1/" target="_blank" rel="noopener"&gt;HG002&lt;/a&gt; の公開 HiFi データセットを使用しています。&lt;/li&gt; 
+ &lt;li&gt;&lt;a href="https://github.com/PacificBiosciences/HiFi-human-WGS-WDL/releases/tag/v2.1.2" target="_blank" rel="noopener"&gt;HiFi-human-WGS-WDL&lt;/a&gt; リポジトリをクローンし、Docker イメージが選択したパイプラインバージョンと一致することを確認します (テンプレートは v2.1.2 用に構成されています)。別のバージョンを使う場合は、CloudFormation テンプレート内のイメージハッシュ値を調整してください。バリアント解析パイプラインのワークフローパラメーターを作成するには、&lt;a href="https://github.com/aws-samples/sample-pacbio-wgs-healthomics" target="_blank" rel="noopener"&gt;aws-samples&lt;/a&gt; リポジトリで提供されているサンプルテンプレートを利用します。&lt;/li&gt; 
+ &lt;li&gt;HealthOmics は複数サンプルの並列処理を可能にします。マネージドサービスとして、実行の投入を処理し、通知や下流のパイプライントリガーのために Amazon EventBridge と統合します。Amazon &lt;a href="https://docs.aws.amazon.com/omics/latest/dev/eventbridge.html" target="_blank" rel="noopener"&gt;EventBridge ルールの構成例&lt;/a&gt;については、&lt;a href="https://aws.amazon.com/blogs/industries/designing-an-event-driven-architecture-for-bioinformatics-workflows-using-aws-healthomics-and-amazon-eventbridge/" target="_blank" rel="noopener"&gt;AWS ブログ&lt;/a&gt;を参照してください。&lt;/li&gt; 
+ &lt;li&gt;HealthOmics ワークフローは、パイプラインの進捗モニタリングのために CloudWatch と統合されます。ワークフローログは CloudWatch ストリームで確認でき、出力用 S3 バケットへコピーされ、サンプル追跡のために実行 ID ごとに整理されます。&lt;/li&gt; 
+ &lt;li&gt;&lt;a href="https://github.com/awslabs/aws-healthomics-tools?tab=readme-ov-file#healthomics-run-analyzer" target="_blank" rel="noopener"&gt;HealthOmics run_analyzer&lt;/a&gt; ツールは、サンプル単位で詳細なコストとリソース利用状況の知見を提供し、最適なインスタンスタイプを推奨します。本記事のベンチマーク結果はこれらの分析に基づいています。&lt;a href="https://github.com/awslabs/aws-healthomics-tools" target="_blank" rel="noopener"&gt;aws-healthomics-tools&lt;/a&gt; は pypi 経由でインストールするか、後述の手順に従ってください。&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;h2&gt;HealthOmics プライベートワークフローで PacBio WGS バリアントパイプラインを作成・実行する方法&lt;/h2&gt; 
+&lt;p&gt;CloudFormation スタックは、PacBio WGS バリアントパイプライン解析に必要な Docker イメージの作成を自動化します。&lt;a href="https://github.com/aws-samples/sample-pacbio-wgs-healthomics" target="_blank" rel="noopener"&gt;PacBio WGS analysis with HealthOmics workflows&lt;/a&gt; に記載された手順に従ってください。PacBio WGS バリアントパイプラインのプライベートワークフローを作成する主な手順は次のとおりです。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;&lt;a href="https://github.com/PacificBiosciences/HiFi-human-WGS-WDL/releases/tag/v2.1.2" target="_blank" rel="noopener"&gt;PacBio リポジトリ&lt;/a&gt;から HiFi-human-WGS-WDL v2.1.2 リポジトリをダウンロードするか、&lt;a href="https://github.com/PacificBiosciences/HiFi-human-WGS-WDL" target="_blank" rel="noopener"&gt;PacBio リポジトリ&lt;/a&gt;から任意のバージョンをダウンロードします。バージョンによっては、CloudFormation テンプレートの Docker パスを修正する必要があります。&lt;/li&gt; 
+ &lt;li&gt;CloudFormation デプロイの前提条件として、Lambda 関数が操作を実行するための &lt;a href="https://docs.aws.amazon.com/kms/" target="_blank" rel="noopener"&gt;AWS Key Management Service (AWS KMS)&lt;/a&gt; キーと、&lt;a href="https://docs.aws.amazon.com/vpc/" target="_blank" rel="noopener"&gt;Amazon Virtual Private Cloud (Amazon VPC)&lt;/a&gt; 接続内の 2 つの利用可能なパブリックサブネットを作成する必要があります。ポート 443 経由の HTTPS インバウンドトラフィックを許可する自己参照型のセキュリティグループを作成してください。&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h2&gt;パイプラインの評価&lt;/h2&gt; 
+&lt;p&gt;実行完了後、&lt;a href="https://github.com/awslabs/aws-healthomics-tools/tree/main?tab=readme-ov-file#healthomics-run-analyzer" target="_blank" rel="noopener"&gt;run_analyzer&lt;/a&gt; ツールを使用して計算利用状況とコストを評価します。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-bash"&gt;pip install aws-healthomics-tools
+aws-healthomics-tools run_analyzer &amp;lt;RUN_ID&amp;gt; -o Pacbio-WGS-run_analyser_outputs.csv&lt;/code&gt;&lt;/pre&gt; 
+&lt;h2&gt;エンドツーエンドのパイプライン HiFi 解析のベンチマーク結果&lt;/h2&gt; 
+&lt;p&gt;PacBio の公開データセットである &lt;a href="https://downloads.pacbcloud.com/public/revio/2022Q4/HG002-rep1/" target="_blank" rel="noopener"&gt;HG002&lt;/a&gt; HiFi データセットを用いて、米国東部 (バージニア北部) &lt;code&gt;us-east-1&lt;/code&gt; &lt;a href="https://docs.aws.amazon.com/glossary/latest/reference/glos-chap.html#region" target="_blank" rel="noopener"&gt;AWS リージョン&lt;/a&gt;における HealthOmics 上でさまざまな最適化戦略を検証しました。WGS バリアント解析パイプラインには、1 CPU から 64 CPU、最大 256 GB の RAM まで、リソース要求が幅広いタスクが含まれます。HealthOmics は計算リソースを動的にプロビジョニングします。最も負荷の高いタスクである DeepVariant によるバリアントコールは、HiFi リードでは 64 CPU と 239 GB RAM を必要とし、GPU アクセラレーションも利用可能です。本ベンチマークでは、タスクアクセラレーターによるコストパフォーマンス最適化と、パイプライン性能に対するストレージタイプの影響に焦点を当て、本番運用に最適な構成の確立を目指しました。&lt;/p&gt; 
+&lt;p&gt;最も要求の高いタスクは、&lt;a href="https://github.com/PacificBiosciences/pbmm2" target="_blank" rel="noopener"&gt;pbmm2&lt;/a&gt; によるリードアライメントと DeepVariant によるバリアントコールでした。DeepVariant の処理を、複数の GPU アクセラレーター (NVIDIA Tesla T4 (omics.g4)、NVIDIA Tesla A10G (omics.g5)、NVIDIA L4 (omics.g6)) で評価しました。これらは、静的および動的な HealthOmics の実行ストレージ (static / dynamic run storage) を用いた CPU ベースのアクセラレーション (omics.m) と比較してベンチマークしています。&lt;/p&gt; 
+&lt;p&gt;最適な構成は NVIDIA Tesla A10G を搭載した omics.g5.2xlarge で、動的ファイルストレージを利用してパイプラインを 8.67 時間・21.26 ドルの計算コストで完了しました。DeepVariant 用の GPU コンテナは、CPU ベースの構成と比較して 21.3 パーセントのコスト削減と 8.5 パーセントの高速化を実現し、パフォーマンスとコスト効率の両面で明確なメリットを示しました。&lt;/p&gt; 
+&lt;p&gt;ストレージ構成の分析では、NVIDIA Tesla T4 (omics.g4) と L4 (omics.g6) のインスタンスは動的ストレージから大きな恩恵を受ける一方で、標準的な omics インスタンスと Tesla A10G (omics.g5) インスタンスはストレージタイプ間の差がほとんどないことが分かりました。これは、ストレージ最適化戦略をインスタンスごとに検討すべきであることを示唆しています。&lt;/p&gt; 
+&lt;p&gt;HealthOmics の run_analyzer ツールでは、Tesla A10G と静的ストレージの組み合わせで 19.15 ドルまでコスト最適化できる可能性が示されました。この分析により、いくつかのタスクでメモリ割り当てを最適化できる余地があることが明らかになりました。pbmm2 アライナーは 64 GB、DeepVariant の make_examples は 16 GB、pbsv_call は 16 GB、DeepVariant の postprocess_variants は 8 vCPU と 64 GB、hiphase は 32 GB で動作できます。ただし、これらの要件はシーケンシング深度や遺伝的多様性によって変動し得ることに注意が必要です。遺伝的多様性の高い集団では、リファレンスに対して相対的により多くのバリアントが検出される傾向があるためです。特にバリアント数に応じてスケールする場面では、PacBio のデフォルトの計算リソース要件が依然として必須となります。&lt;/p&gt; 
+&lt;p&gt;次の棒グラフでは、分析結果を 3 つのパネルで示しています。実行時間 (時間)、実際のコスト (ドル)、そして run_analyzer の推奨事項を適用した後の最適コスト (ドル) です。NVIDIA Tesla A10G と静的ストレージの組み合わせは、19.15 ドルという最良の最適コストを示すと同時に、8.67 時間という競争力のあるランタイム性能も維持しています。この最適コストは、HealthOmics ツール run_analyzer が推奨する計算構成を用いることで達成可能です。&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2025/07/16/Picture10-1.jpg" target="_blank" rel="noopener"&gt;&lt;img loading="lazy" class="size-full wp-image-27176 aligncenter" src="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2025/07/16/Picture10-1.jpg" alt="AWS HealthOmics 上の WGS バリアント解析パイプラインにおける、アクセラレーター種別とストレージ構成別の価格性能比較" width="1288" height="515"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;em&gt;図 2: AWS HealthOmics 上の WGS バリアント解析パイプラインにおける、アクセラレーター種別とストレージ構成別の価格性能比較&lt;/em&gt;&lt;/p&gt; 
+&lt;p&gt;AWS HealthOmics は、ゲノムデータに不可欠な堅牢なセキュリティフレームワークを提供し、HIPAA、GDPR、ISO 27001 などの規制に沿った包括的な対策を実装しています。これには、エンドツーエンドの暗号化、KMS キー、ロールベースのアクセス制御、セキュアなロギングと監査が含まれます。この高度なセキュリティアーキテクチャにより、組織はゲノム解析ワークフローをスケールさせながら、厳格なデータガバナンスとプライバシー基準を遵守できます。これにより、HealthOmics は規制要件を守りつつ、機密性の高いデータを大規模に扱うのに適したサービスとなっています。&lt;/p&gt; 
+&lt;h2&gt;まとめ&lt;/h2&gt; 
+&lt;p&gt;本分析では、PacBio の HiFi WGS バリアント解析パイプラインを AWS HealthOmics 上に実装し、パフォーマンスとコストの大幅な最適化を達成しました。GPU アクセラレーション、特に NVIDIA Tesla A10G (omics.g5.2xlarge) は、CPU ベースの構成と比較して 21.3 パーセントのコスト削減と 8.5 パーセント高速なパイプライン完了を実現しました。評価では、NVIDIA Tesla T4 と L4 のインスタンスは動的ストレージから恩恵を受け、Tesla A10G はストレージタイプにかかわらず安定した性能を維持することが分かりました。HealthOmics の run_analyzer ツールにより、適切なリソース割り当てを通じて、Tesla A10G と静的ストレージを組み合わせた 19.15 ドルの最適コスト構成を特定できました。HealthOmics のリソースを動的にプロビジョニングする能力と、HIPAA、GDPR、ISO 27001 に準拠した堅牢なセキュリティフレームワークが組み合わさることで、機密性の高いゲノムデータを大規模に処理するのに適しています。これらの知見は、厳格なデータガバナンスとプライバシー基準を維持しながら、効率的でセキュア、かつスケーラブルなゲノム解析ワークフローを実装するための貴重な指針となります。&lt;/p&gt; 
+&lt;h3&gt;始め方&lt;/h3&gt; 
+&lt;p&gt;PacBio HiFi データを大規模に解析するには、次を参照してください。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;PacBio のオープンソース &lt;a href="https://github.com/PacificBiosciences/HiFi-human-WGS-WDL" target="_blank" rel="noopener"&gt;HiFi-human-WGS-WDL パイプライン&lt;/a&gt;を活用する&lt;/li&gt; 
+ &lt;li&gt;&lt;a href="https://aws.amazon.com/healthomics/" target="_blank" rel="noopener"&gt;AWS HealthOmics&lt;/a&gt; がどのようにセキュアかつスケーラブルなゲノム解析を実現するかを学ぶ&lt;/li&gt; 
+ &lt;li&gt;サポートやカスタマイズされたワークショップのご依頼は、&lt;a href="https://aws.amazon.com/health/genomics/" target="_blank" rel="noopener"&gt;AWS Genomics&lt;/a&gt; チームまでお問い合わせください&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h2&gt;著者について&lt;/h2&gt; 
+&lt;footer&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2024/08/20/Edwin_Sandanaraj.jpg" alt="Photo of author" width="125"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Edwin Sandanaraj&lt;/h3&gt; 
+  &lt;p&gt;Edwin は AWS のゲノミクスソリューションアーキテクトです。神経腫瘍学で博士号を取得し、ヘルスケアゲノミクスのデータ管理と解析で 20 年を超える経験を持ち、アジア太平洋・日本地域における精密ゲノミクスの取り組みを加速するために豊富な知見を提供しています。臨床ゲノミクスとマルチオミクスをクラウドベースのソリューションで組み合わせ、精密医療を加速することに情熱を注いでいます。&lt;/p&gt; 
+ &lt;/div&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2025/07/16/Picture5-1.jpg" alt="Photo of author" width="125"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Charlie Lee&lt;/h3&gt; 
+  &lt;p&gt;Charlie は AWS におけるアジア太平洋・日本地域のゲノミクス業界リードで、バイオインフォマティクスに軸足を置く計算機科学の博士号を持っています。バイオインフォマティクス、ゲノミクス、分子診断で 20 年以上の経験を持つ業界リーダーであり、最先端のシーケンシング技術とクラウドコンピューティングをゲノミクスに活用し、研究の加速とヘルスケアの改善に情熱を注いでいます。&lt;/p&gt; 
+ &lt;/div&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2025/07/16/Picture7-2.jpg" alt="Photo of author" width="125"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Billy Rowell&lt;/h3&gt; 
+  &lt;p&gt;Billy は PacBio のシニアスタッフバイオインフォマティクスサイエンティストで、遺伝学とゲノミクスの研究に 25 年以上の経験を持っています。バリアントコールと希少疾患研究に向けた高性能計算 (HPC) およびマルチクラウドワークフローの開発をリードしています。&lt;/p&gt; 
+ &lt;/div&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2025/07/16/Picture8-4.png" alt="Photo of author" width="125"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Khi Pin Chua&lt;/h3&gt; 
+  &lt;p&gt;Dr. Khi Pin は PacBio の計算生物学グループのサイエンティストです。彼の仕事は、PacBio の HiFi シーケンシングデータから新しい生物学的知見を引き出すための革新的なツールと解析ワークフローの開発に集中しています。PacBio の最先端のロングリードシーケンシング技術を、特にがんゲノミクスなどの分野で高度なゲノミクス応用に活用する研究者や臨床医の広いネットワークと協働しています。&lt;/p&gt; 
+ &lt;/div&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2025/07/16/Picture6-2.jpg" alt="Photo of author" width="125"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Rajesh Sukumaran&lt;/h3&gt; 
+  &lt;p&gt;Rajesh は AWS のアジア太平洋・日本地域を担当する HealthTech (ヘルステクノロジー) のシニアパートナーマネージャーです。ヘルスケアとテクノロジーの分野で 20 年以上の経験を持ち、AWS パートナーと協働してヘルスケアの変革を推進するソリューションを提供しています。熱意あるヘルスケア起業家であり、コンピューターエンジニアでもある Rajesh は、INSEAD で MBA を取得しています。&lt;/p&gt; 
+ &lt;/div&gt; 
+&lt;/footer&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Kiro でライフサイエンス研究を加速する: 100 以上のオープンソースデータベースへの統合 AI インターフェース</title>
+		<link>https://aws.amazon.com/jp/blogs/news/accelerating-life-sciences-research-with-kiro-a-unified-ai-interface-to-100-open-source-databases/</link>
+		
+		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
+		<pubDate>Thu, 13 Aug 2026 06:19:49 +0000</pubDate>
+				<category><![CDATA[AWS HealthOmics]]></category>
+		<category><![CDATA[Public Sector]]></category>
+		<guid isPermaLink="false">fbdb70935709be34299965646b12b73ab5a66fa9</guid>
+
+					<description>ライフサイエンス研究者は、遺伝子、バリアント、構造、薬剤、疾患を調べるたびに、API や認証、データ形式が異なる何十ものデータベースを行き来する必要があります。本記事では、Kiro を 24 分野・100 以上のデータベースを横断する統合研究インターフェースへと拡張する Kiro power パッケージ「Kiro for Life Sciences」を紹介します。24 のドメイン特化 MCP サーバーとデータベース横断検索、ガイド付きワークフロー、ドメインスキルにより、自然言語での質問から構造化された結果までを一気通貫で得られます。</description>
+										<content:encoded>&lt;p&gt;本記事は 2026 年 6 月 3 日に公開された Edwin Sandanaraj、Dr. Charlie Lee、Maruthi Alamuru による “&lt;a href="https://aws.amazon.com/blogs/publicsector/accelerating-life-sciences-research-with-kiro-a-unified-ai-interface-to-100-open-source-databases/" target="_blank" rel="noopener"&gt;Accelerating life sciences research with Kiro: A unified AI interface to 100+ open source databases&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;&lt;img loading="lazy" class="size-full wp-image-31215 aligncenter" src="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2026/06/01/Accelerating-life-sciences-research-with-Kiro-A-unified-AI-interface-to-100-open-source-databases.png" alt="Kiro でライフサイエンス研究を加速する: 100 以上のオープンソースデータベースへの統合 AI インターフェース" width="1152" height="576"&gt;&lt;/p&gt; 
+&lt;p&gt;ライフサイエンス分野の研究者は、データ統合という根深い課題に直面しています。たとえば、体細胞変異を創薬可能な標的と結びつけるといった 1 つの調査だけでも、遺伝子のコンテキストを得るために &lt;a href="https://www.ncbi.nlm.nih.gov/gene/" target="_blank" rel="noopener"&gt;National Center for Biotechnology Information (NCBI)&lt;/a&gt;、臨床的意義を確認するために &lt;a href="https://www.ncbi.nlm.nih.gov/clinvar/" target="_blank" rel="noopener"&gt;ClinVar&lt;/a&gt;、タンパク質の機能を確認するために &lt;a href="https://www.uniprot.org/" target="_blank" rel="noopener"&gt;UniProt&lt;/a&gt;、構造データを得るために &lt;a href="https://www.rcsb.org/" target="_blank" rel="noopener"&gt;Protein Data Bank (PDB)&lt;/a&gt;、相互作用パートナーを確認するために &lt;a href="https://string-db.org/" target="_blank" rel="noopener"&gt;STRING&lt;/a&gt;、化合物の生物活性を確認するために &lt;a href="https://www.ebi.ac.uk/chembl/" target="_blank" rel="noopener"&gt;ChEMBL&lt;/a&gt; に問い合わせる必要があるかもしれません。それぞれのデータベースには独自の API、認証方式、データ形式、レート制限があります。研究者は数十のブラウザタブを行き来しながらコンテキストを切り替えるか、API が変更されるたびに壊れるカスタムスクリプトを書くかを強いられているのが現状です。&lt;/p&gt; 
+&lt;p&gt;本記事では、&lt;a href="https://kiro.dev/" target="_blank" rel="noopener"&gt;Kiro&lt;/a&gt; for Life Sciences を紹介します。これは &lt;a href="https://github.com/aws-samples/sample-kiro-power-life-sciences" target="_blank" rel="noopener"&gt;Kiro power パッケージ&lt;/a&gt;で、Kiro を 24 の科学分野にわたる 100 以上のデータベースを横断する統合研究インターフェースへと変貌させます。ポータルでもダッシュボードでもなく、研究者が自然言語で質問を投げると、権威ある情報源から直接引き出された構造化・相互参照された回答を得られる AI アシスト開発環境です。&lt;/p&gt; 
+&lt;h2&gt;データサイロが発見のスピードを鈍らせる&lt;/h2&gt; 
+&lt;p&gt;&lt;em&gt;BRCA1&lt;/em&gt; のバリアントを研究する計算生物学者は、昨今、次のような作業を行う必要があるかもしれません。&lt;/p&gt; 
+&lt;ol&gt; 
+ &lt;li&gt;NCBI Gene で基本的なアノテーションを検索する。&lt;/li&gt; 
+ &lt;li&gt;UniProt からアミノ酸配列を取得する。&lt;/li&gt; 
+ &lt;li&gt;ClinVar で病的バリアントを確認する。&lt;/li&gt; 
+ &lt;li&gt;PDB または AlphaFold で立体構造を調べる。&lt;/li&gt; 
+ &lt;li&gt;STRING で相互作用パートナーを探す。&lt;/li&gt; 
+ &lt;li&gt;疾患との関連を調べるために &lt;a href="https://www.ncbi.nlm.nih.gov/omim" target="_blank" rel="noopener"&gt;OMIM&lt;/a&gt; と相互参照する。&lt;/li&gt; 
+ &lt;li&gt;集団における頻度を確認するために &lt;a href="https://gnomad.broadinstitute.org/" target="_blank" rel="noopener"&gt;gnomAD&lt;/a&gt; を調べる。&lt;/li&gt; 
+ &lt;li&gt;そのパスウェイを標的とする化合物を ChEMBL で検索する。&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;p&gt;これで 1 つの遺伝子につき、8 つのデータベース、8 つの認証フロー、8 種類の結果フォーマットです。これがバリアントごと、プロジェクトごとに積み重なっていきます。認知負荷は非常に大きく、重要なクロスリファレンスを見落とすリスクも現実的な問題として存在します。&lt;/p&gt; 
+&lt;h2&gt;ソリューション概要: Kiro for Life Sciences&lt;/h2&gt; 
+&lt;p&gt;Kiro for Life Sciences は、Kiro power とモジュラーな &lt;a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener"&gt;Model Context Protocol (MCP)&lt;/a&gt; サーバーを組み合わせたアーキテクチャを採用しています。中心となる power がハブとして機能し、オンボーディングダッシュボード、検索可能なリソースカタログ、認証情報マネージャー、ドメインスキル、ガイド付きワークフローを提供します。実際のデータベース接続は、独立してデプロイ・設定可能な 24 のドメイン特化 MCP サーバーが担当します。&lt;/p&gt; 
+&lt;p&gt;このソリューションは、次の主要なアーキテクチャ設計判断に基づいて構築されています。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;&lt;u&gt;設計上のモジュール性&lt;/u&gt; – 必要なサーバーだけをインストールできます。プロテオミクス研究室に生態学用サーバーは不要です。各サーバーは独立した Python パッケージとして提供されます。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;認証情報の一元管理&lt;/u&gt; – API キーは mcp.json に一度設定するだけです。認証情報マネージャーがトークンの更新、レート制限、エクスポネンシャルバックオフを用いたリトライロジックを処理します。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;データベース横断検索&lt;/u&gt; – 1 つの質問を投げるだけで、複数のデータベースから同時に回答を得られます。手動でのオーケストレーションは不要です。&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h2&gt;カバー範囲の全体像&lt;/h2&gt; 
+&lt;p&gt;次の表は、各ドメインにおいてどのデータベースやツールがカバー範囲となっているかを示しています。&lt;/p&gt; 
+&lt;table border="3"&gt; 
+ &lt;thead&gt; 
+  &lt;tr&gt; 
+   &lt;th&gt;ドメイン&lt;/th&gt; 
+   &lt;th&gt;データベースおよびツール&lt;/th&gt; 
+   &lt;th&gt;ツール数&lt;/th&gt; 
+  &lt;/tr&gt; 
+ &lt;/thead&gt; 
+ &lt;tbody&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;ゲノミクスおよびシーケンシング&lt;/td&gt; 
+   &lt;td&gt;NCBI、Ensembl、ClinVar、gnomAD、&lt;a href="https://cancer.sanger.ac.uk/cosmic/login" target="_blank" rel="noopener"&gt;COSMIC&lt;/a&gt;、&lt;a href="https://www.ncbi.nlm.nih.gov/snp/" target="_blank" rel="noopener"&gt;dbSNP&lt;/a&gt;、&lt;a href="https://www.encodeproject.org/" target="_blank" rel="noopener"&gt;ENCODE&lt;/a&gt;、&lt;a href="https://www.ncbi.nlm.nih.gov/geo/" target="_blank" rel="noopener"&gt;GEO&lt;/a&gt;、&lt;a href="https://www.ncbi.nlm.nih.gov/sra" target="_blank" rel="noopener"&gt;SRA&lt;/a&gt;、&lt;a href="https://www.ddbj.nig.ac.jp/index-e.html" target="_blank" rel="noopener"&gt;DDBJ&lt;/a&gt;、&lt;a href="https://www.internationalgenome.org/data/" target="_blank" rel="noopener"&gt;1000 Genomes&lt;/a&gt;&lt;/td&gt; 
+   &lt;td&gt;18&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;プロテオミクス&lt;/td&gt; 
+   &lt;td&gt;UniProt、&lt;a href="https://www.ebi.ac.uk/interpro/" target="_blank" rel="noopener"&gt;InterPro&lt;/a&gt;、STRING、PRIDE、&lt;a href="https://www.expasy.org/archives/nextprot" target="_blank" rel="noopener"&gt;neXtProt&lt;/a&gt;&lt;/td&gt; 
+   &lt;td&gt;8&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;構造生物学&lt;/td&gt; 
+   &lt;td&gt;PDB、&lt;a href="https://alphafold.ebi.ac.uk/" target="_blank" rel="noopener"&gt;AlphaFold DB&lt;/a&gt;、&lt;a href="https://www.cathdb.info/" target="_blank" rel="noopener"&gt;CATH&lt;/a&gt;、&lt;a href="https://www.ebi.ac.uk/pdbe/scop/" target="_blank" rel="noopener"&gt;SCOP&lt;/a&gt;&lt;/td&gt; 
+   &lt;td&gt;6&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;臨床および製薬&lt;/td&gt; 
+   &lt;td&gt;OMIM、&lt;a href="https://go.drugbank.com/" target="_blank" rel="noopener"&gt;DrugBank&lt;/a&gt;、ChEMBL、&lt;a href="https://www.clinpgx.org/" target="_blank" rel="noopener"&gt;PharmGKB&lt;/a&gt;、&lt;a href="https://www.opentargets.org/" target="_blank" rel="noopener"&gt;OpenTargets&lt;/a&gt;、&lt;a href="https://clinicaltrials.gov/" target="_blank" rel="noopener"&gt;ClinicalTrials.gov&lt;/a&gt;、&lt;a href="https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers-database" target="_blank" rel="noopener"&gt;FDA FAERS&lt;/a&gt;&lt;/td&gt; 
+   &lt;td&gt;10&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;ケモインフォマティクス&lt;/td&gt; 
+   &lt;td&gt;&lt;a href="https://pubchem.ncbi.nlm.nih.gov/" target="_blank" rel="noopener"&gt;PubChem&lt;/a&gt;、&lt;a href="https://www.chemspider.com/" target="_blank" rel="noopener"&gt;ChemSpider&lt;/a&gt;、&lt;a href="https://www.rdkit.org/" target="_blank" rel="noopener"&gt;RDKit&lt;/a&gt;、&lt;a href="https://www.swissdock.ch/" target="_blank" rel="noopener"&gt;SwissDock&lt;/a&gt;&lt;/td&gt; 
+   &lt;td&gt;8&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;免疫学&lt;/td&gt; 
+   &lt;td&gt;&lt;a href="https://www.iedb.org/" target="_blank" rel="noopener"&gt;IEDB&lt;/a&gt;、&lt;a href="https://www.immport.org/home" target="_blank" rel="noopener"&gt;ImmPort&lt;/a&gt;、&lt;a href="https://www.imgt.org/" target="_blank" rel="noopener"&gt;IMGT&lt;/a&gt;、&lt;a href="http://www.abysis.org/abysis/" target="_blank" rel="noopener"&gt;abYsis&lt;/a&gt;&lt;/td&gt; 
+   &lt;td&gt;4&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;微生物学およびメタゲノミクス&lt;/td&gt; 
+   &lt;td&gt;&lt;a href="https://www.arb-silva.de/" target="_blank" rel="noopener"&gt;SILVA&lt;/a&gt;、&lt;a href="https://qiime2.org/" target="_blank" rel="noopener"&gt;QIIME 2&lt;/a&gt;、&lt;a href="http://api.metagenomics.anl.gov/api.html" target="_blank" rel="noopener"&gt;MG-RAST&lt;/a&gt;、&lt;a href="https://www.bv-brc.org/" target="_blank" rel="noopener"&gt;BV-BRC&lt;/a&gt;、&lt;a href="https://card.mcmaster.ca/" target="_blank" rel="noopener"&gt;CARD&lt;/a&gt;&lt;/td&gt; 
+   &lt;td&gt;8&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;パスウェイおよび相互作用&lt;/td&gt; 
+   &lt;td&gt;&lt;a href="https://www.genome.jp/kegg/" target="_blank" rel="noopener"&gt;KEGG&lt;/a&gt;、&lt;a href="https://reactome.org/" target="_blank" rel="noopener"&gt;Reactome&lt;/a&gt;、&lt;a href="https://biocyc.org/" target="_blank" rel="noopener"&gt;BioCyc&lt;/a&gt;、&lt;a href="https://www.wikipathways.org/" target="_blank" rel="noopener"&gt;WikiPathways&lt;/a&gt;、&lt;a href="https://www.ebi.ac.uk/intact/" target="_blank" rel="noopener"&gt;IntAct&lt;/a&gt;&lt;/td&gt; 
+   &lt;td&gt;7&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;生態学および環境&lt;/td&gt; 
+   &lt;td&gt;&lt;a href="https://www.gbif.org/" target="_blank" rel="noopener"&gt;GBIF&lt;/a&gt;、&lt;a href="https://iucn.org/resources" target="_blank" rel="noopener"&gt;IUCN&lt;/a&gt;、&lt;a href="https://www.inaturalist.org/" target="_blank" rel="noopener"&gt;iNaturalist&lt;/a&gt;、&lt;a href="https://www.ibol.org/phase1/bold/" target="_blank" rel="noopener"&gt;BOLD&lt;/a&gt;、&lt;a href="https://www.ebi.ac.uk/metagenomics" target="_blank" rel="noopener"&gt;MGnify&lt;/a&gt;&lt;/td&gt; 
+   &lt;td&gt;7&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;分子生物学&lt;/td&gt; 
+   &lt;td&gt;&lt;a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi" target="_blank" rel="noopener"&gt;BLAST&lt;/a&gt;、&lt;a href="https://primer3.org/" target="_blank" rel="noopener"&gt;Primer3&lt;/a&gt;、&lt;a href="https://www.ebi.ac.uk/Tools/hmmer/home" target="_blank" rel="noopener"&gt;HMMER&lt;/a&gt;、&lt;a href="https://rebase.neb.com/" target="_blank" rel="noopener"&gt;REBASE&lt;/a&gt;、&lt;a href="https://www.ebi.ac.uk/jdispatcher/msa/clustalo" target="_blank" rel="noopener"&gt;Clustal Omega&lt;/a&gt;&lt;/td&gt; 
+   &lt;td&gt;9&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;その他 14 以上のドメイン&lt;/td&gt; 
+   &lt;td&gt;神経科学、細胞生物学、メタボロミクス、エピゲノミクス、イメージング、農業、ヘルスケア、バイオバンキング、パイプライン、データ標準、AI/ML&lt;/td&gt; 
+   &lt;td&gt;50 以上&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;&lt;u&gt;合計&lt;/u&gt;&lt;/td&gt; 
+   &lt;td&gt;&lt;u&gt;100 以上のデータベースおよびツール&lt;/u&gt;&lt;/td&gt; 
+   &lt;td&gt;&lt;u&gt;250 以上&lt;/u&gt;&lt;/td&gt; 
+  &lt;/tr&gt; 
+ &lt;/tbody&gt; 
+&lt;/table&gt; 
+&lt;h2&gt;仕組み&lt;/h2&gt; 
+&lt;p&gt;このインターフェースは、1 つのクエリに対して複数のデータベースから回答を返すよう設計されています。使い始めるには、まず Kiro に次のように尋ねます。&lt;code&gt;TP53 を研究しています。UniProt から配列を取得し、PDB で実験的に決定された構造を探し、AlphaFold で予測構造を確認し、STRING から相互作用パートナーを取得し、InterPro からドメイン構造を表示してください。&lt;/code&gt;&lt;/p&gt; 
+&lt;p&gt;Kiro は 5 つのデータベースへ並列にクエリを発行し、統合されたタンパク質プロファイルを返します。スクリプトを書く必要も、タブを切り替える必要も、フォーマットの調整も不要です。&lt;/p&gt; 
+&lt;h3&gt;データベース横断検索インテリジェンス&lt;/h3&gt; 
+&lt;p&gt;データベース横断検索機能は、インストール済みの MCP サーバーに並列クエリをオーケストレーションし、結果の自動集約とグレースフルデグラデーションを行います。&lt;/p&gt; 
+&lt;table border="3"&gt; 
+ &lt;thead&gt; 
+  &lt;tr&gt; 
+   &lt;th&gt;検索タイプ&lt;/th&gt; 
+   &lt;th&gt;並列で問い合わせるデータベース&lt;/th&gt; 
+  &lt;/tr&gt; 
+ &lt;/thead&gt; 
+ &lt;tbody&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;gene&lt;/td&gt; 
+   &lt;td&gt;NCBI Gene、UniProt、Ensembl、ClinVar、OMIM、Gene Ontology、KEGG、Reactome&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;drug&lt;/td&gt; 
+   &lt;td&gt;DrugBank、ChEMBL、PharmGKB、OpenTargets、PubChem、&lt;a href="https://www.hmdb.ca/" target="_blank" rel="noopener"&gt;HMDB&lt;/a&gt;、CARD&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;protein&lt;/td&gt; 
+   &lt;td&gt;UniProt、PDB、AlphaFold DB、InterPro、STRING、neXtProt、&lt;a href="https://esmatlas.com/about" target="_blank" rel="noopener"&gt;ESM&lt;/a&gt;&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;species&lt;/td&gt; 
+   &lt;td&gt;GBIF、IUCN Red List、BOLD、iNaturalist、NCBI Taxonomy、MGnify&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;metabolite&lt;/td&gt; 
+   &lt;td&gt;HMDB、MetaboLights、METLIN、MassBank、PubChem、KEGG&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td&gt;cell_type&lt;/td&gt; 
+   &lt;td&gt;CellxGene、Single Cell Expression Atlas、Cell Atlas、Allen Brain Atlas&lt;/td&gt; 
+  &lt;/tr&gt; 
+ &lt;/tbody&gt; 
+&lt;/table&gt; 
+&lt;h3&gt;ガイド付きのマルチステップワークフロー&lt;/h3&gt; 
+&lt;p&gt;power には 16 個の steering ファイルが含まれています。これらは、ワークスペースのファイルパターンに基づいて自動的に有効化される、段階的なワークフローガイドです。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;&lt;u&gt;バリアントコーリングパイプライン&lt;/u&gt; – &lt;a href="https://aws.amazon.com/healthomics/" target="_blank" rel="noopener"&gt;AWS HealthOmics&lt;/a&gt; を通じて、体細胞または生殖細胞系列のバリアントコーリングをセットアップして実行します。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;遺伝子と疾患の関連&lt;/u&gt; – ClinVar を OMIM および HPO と相互参照し、バリアントから表現型までを網羅したマップを構築します。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;化合物スクリーニング&lt;/u&gt; – PubChem で候補を検索し、RDKit で記述子を計算し、ZINC でフィルタリングした上で、分子ドッキングまで実施します。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;プライマー設計とクローニング&lt;/u&gt; – Primer3 でプライマーを設計し、PrimerBLAST で特異性を検証し、制限酵素解析を行い、最終的なコンストラクトを構築します。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;マイクロバイオーム解析&lt;/u&gt; – SILVA を用いて分類群を割り当て、QIIME 2 で多様性を評価し、CARD で薬剤耐性遺伝子をプロファイリングします。&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;これらはドキュメントページではありません。Kiro が段階的に手順を辿って実行する実行可能ガイドであり、適切なツールを適切な順序で呼び出します。&lt;/p&gt; 
+&lt;h3&gt;ベストプラクティスを内包したドメインスキル&lt;/h3&gt; 
+&lt;p&gt;10 個のドメインスキルは、作業内容に応じて有効化されるコンテキスト対応のガイダンスを提供します。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;&lt;u&gt;バイオインフォマティクスファイル形式&lt;/u&gt; – FASTA、FASTQ、BAM、VCF、GFF、BED の取り扱いパターン&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;ゲノミクスパイプラインのベストプラクティス&lt;/u&gt; – 再現性のあるワークフローのための WDL、Nextflow、CWL の設計パターン&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;データコンプライアンス&lt;/u&gt; – HIPAA、GDPR、GxP、MIAME、MINSEQE の要件&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;臨床インターオペラビリティ&lt;/u&gt; – FHIR、HL7、OMOP CDM の統合パターン&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;ケモインフォマティクス&lt;/u&gt; – SMILES または InChI の取り扱い、Lipinski の法則、SAR 解析&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;パイプラインを書いているときには、Kiro は慣例を知っています。患者データを扱っているときには、コンプライアンス要件を知っています。&lt;/p&gt; 
+&lt;h2&gt;例: 1 セッションでバリアントから創薬標的まで&lt;/h2&gt; 
+&lt;p&gt;現実的な研究セッションはこのような形になります。研究者が質問を投げると、ツールが適切なデータベースから自動的に情報を引き出し、回答を返します。&lt;/p&gt; 
+&lt;ol&gt; 
+ &lt;li&gt;&lt;code&gt;ClinVar で EGFR の病的バリアントを検索してください&lt;/code&gt;: 臨床的意義付きのバリアント ID を返します。&lt;/li&gt; 
+ &lt;li&gt;&lt;code&gt;PDB から EGFR のタンパク質構造を取得してください&lt;/code&gt;: 分解能と手法を含む 1M17 を返します。&lt;/li&gt; 
+ &lt;li&gt;&lt;code&gt;ChEMBL における EGFR と薬剤の既知の相互作用を教えてください&lt;/code&gt;: 化合物の生物活性データを返します。&lt;/li&gt; 
+ &lt;li&gt;&lt;code&gt;OpenTargets で EGFR の疾患関連を確認してください&lt;/code&gt;: がん種を横断したスコア付きの関連情報を返します。&lt;/li&gt; 
+ &lt;li&gt;&lt;code&gt;このリード化合物の ADMET 特性を予測してください&lt;/code&gt;: 溶解度、BBB 透過性、CYP450 の予測を返します。&lt;/li&gt; 
+ &lt;li&gt;&lt;code&gt;受容体 1M17 とこのリガンドの SMILES でドッキングジョブを投入してください&lt;/code&gt;: 結合親和性と相互作用する残基を返します。&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;p&gt;研究者は 1 回の会話の中で 6 つのステップを踏み、6 つのデータベースを検索しました。コンテキストの切り替えも、フォーマット変換も、認証情報の切り替えも不要です。&lt;/p&gt; 
+&lt;h2&gt;何が違うのか&lt;/h2&gt; 
+&lt;p&gt;Galaxy や UCSC Genome Browser のような Web ポータルは強力ですが、特定のドメインに特化しています。1 つのインターフェースで 24 の分野にまたがることはできません。Kiro for Life Sciences は、ライフサイエンスの全ドメインを横断する統合体験を、IDE の内部から直接利用できる形で提供します。&lt;/p&gt; 
+&lt;p&gt;Biopython のようなスクリプトライブラリはプログラマティックなアクセスを提供しますが、データベースごとに統合コードを書き、メンテナンスする必要があります。Kiro が API 呼び出し、ページング、エラー処理、レート制限を処理するため、研究者は配管作業ではなくサイエンスに集中できます。&lt;/p&gt; 
+&lt;p&gt;汎用の AI アシスタントは生物学について議論できますが、データベースに対してライブクエリを実行することはできません。Kiro は認証済みで構造化された API 呼び出しを行い、機械可読な結果、つまり訓練コーパスからの要約ではない実データを返します。&lt;/p&gt; 
+&lt;p&gt;このソリューションが提供する独自の価値は、研究者が平易な言葉で質問を投げられる点にあります。Kiro が問い合わせるべきデータベースを判断し、並列で呼び出しを実行し、認証やリトライを処理し、統合された結果を、コードを書いたりパイプラインを実行したりデータを解析したりする環境と同じ場所で返します。&lt;/p&gt; 
+&lt;h2&gt;計算科学者のためのアーキテクチャ&lt;/h2&gt; 
+&lt;p&gt;各 MCP サーバーは、非同期 HTTP クライアント、エクスポネンシャルバックオフ、構造化されたエラー処理を備えた、独立した Python パッケージとして構築されています。共通の基盤パッケージである life-sciences-common が、すべてのサーバーが継承する HTTP クライアント、リトライロジック、エラー分類を提供するため、あらゆるドメインで一貫した挙動が保証されます。&lt;/p&gt; 
+&lt;p&gt;サーバーは uvx を使って実行可能で、Docker コンテナやインフラストラクチャの管理は不要です。バンドルマニフェストは 24 のサーバーすべてを宣言的に記述しており、ステータスの確認やセットアップの構成を容易にします。Hypothesis を用いたプロパティベーステストが、エッジケースにも耐える堅牢性を提供し、予期せぬ入力に対してもツールが正しく動作するという安心感を与えます。&lt;/p&gt; 
+&lt;p&gt;大規模な計算処理については、AWS HealthOmics 統合により、独自のクラスタインフラストラクチャを管理することなく、nf-core、WDL、CWL のパイプラインを実行できます。&lt;/p&gt; 
+&lt;p&gt;このソリューションは、複数の分野の研究者に次のようなメリットをもたらします。&lt;/p&gt; 
+&lt;p&gt;データベース API ごとにラッパースクリプトを保守しているバイオインフォマティシャンは、その定型コードを廃止し、統合レイヤーを Kiro に任せられます。複数のデータソースを横断して発見を相互参照する必要のある計算生物学者は、これまで 6 つものツールの出力をつなぎ合わせなければ実現できなかったことを、1 回の会話でこなせるようになります。&lt;/p&gt; 
+&lt;p&gt;臨床研究者は、解析環境を離れることなくバリアントを疾患、そして薬剤へとマッピングできるため、調査の一連の流れを 1 か所に集約できます。タンパク質構造を調べたり、プライマーを設計したりしたい実験系の科学者は、もはやプログラマティックな API を学ぶ必要はなく、自然言語で尋ねるだけで済みます。&lt;/p&gt; 
+&lt;p&gt;研究チームにとっては、データベースへの問い合わせを共有・再現可能なアプローチで行えることが、全員が同じツール群から作業できることを意味し、共同研究にありがちな「私のマシンでは動くのに」問題を軽減します。&lt;/p&gt; 
+&lt;h2&gt;導入手順&lt;/h2&gt; 
+&lt;p&gt;power をインストールし、対象ドメインの MCP サーバーを構成して、質問を始めるだけです。オンボーディングダッシュボードには、利用可能なもの、認証情報が必要なもの、すぐに使えるものが表示されます。&lt;/p&gt; 
+&lt;p&gt;次のコードブロックは mcp.json の設定例です。&lt;/p&gt; 
+&lt;pre&gt;&lt;code class="language-json"&gt;{
+  "mcpServers": {
+    "life-sciences-genomics": {
+      "command": "uvx",
+      "args": ["life-sciences-genomics"],
+      "env": {
+        "NCBI_API_KEY": "your-ncbi-api-key"
+      }
+    },
+    "life-sciences-proteomics": {
+      "command": "uvx",
+      "args": ["life-sciences-proteomics"]
+    },
+    "life-sciences-structural": {
+      "command": "uvx",
+      "args": ["life-sciences-structural"]
+    }
+  }
+}&lt;/code&gt;&lt;/pre&gt; 
+&lt;p&gt;結果として、3 つのサーバーが構成され、1 つのチャットインターフェースから NCBI、Ensembl、ClinVar、UniProt、PDB、AlphaFold のほか、さらに十数個のデータベースへすでにクエリを実行できるようになっています。&lt;/p&gt; 
+&lt;h2&gt;まとめ&lt;/h2&gt; 
+&lt;p&gt;ライフサイエンス研究が抱えているのは計算能力の問題ではなく、統合の問題です。データは何百ものデータベースにわたって存在しています。課題は、それらに効率的にアクセスし、正しく相互参照し、しかもプロジェクトごとにカスタムの統合レイヤーを構築せずに実現することです。&lt;/p&gt; 
+&lt;p&gt;Kiro for Life Sciences は、1 つのインターフェース、一元化された認証情報、そして研究者が遺伝子からバリアント、構造、創薬標的、臨床試験まで、数日ではなく数分で辿り着ける 1 つの場所を提供することで、その統合コストを解消します。データベースは引き続き唯一の情報源であり、Kiro が唯一のアクセスポイントとなります。始めるには、24 の MCP サーバー、スキル、steering ファイル、設定例をすべて含む完全な power パッケージを &lt;a href="https://github.com/aws-samples/sample-kiro-power-life-sciences" target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt; でご覧ください。&lt;/p&gt; 
+&lt;h2&gt;著者について&lt;/h2&gt; 
+&lt;footer&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2024/08/20/Edwin_Sandanaraj.jpg" alt="Photo of author" width="125" height="118"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Edwin Sandanaraj&lt;/h3&gt; 
+  &lt;p&gt;Edwin は Amazon Web Services (AWS) のシニアソリューションアーキテクトです。神経腫瘍学の博士号を持ち、ヘルスケアゲノミクスのデータ管理と解析において 20 年以上の経験を持つ彼は、豊富な知識でアジアパシフィックおよび日本における精密ゲノム医療の取り組みの加速を支援しています。クラウドベースのソリューションを活用した個別化医療の推進を目的に、臨床ゲノミクスとマルチオミクスに強い関心を寄せています。&lt;/p&gt; 
+ &lt;/div&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2025/07/16/Picture5-1.jpg" alt="Photo of author" width="125" height="136"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Dr. Charlie Lee&lt;/h3&gt; 
+  &lt;p&gt;Charlie Lee は AWS のアジアパシフィックおよび日本におけるゲノミクス業界リードで、バイオインフォマティクスを専門とするコンピューターサイエンスの博士号を持っています。バイオインフォマティクス、ゲノミクス、分子診断の分野で 20 年以上の経験を持つ業界リーダーであり、最先端のシーケンシング技術とクラウドコンピューティングによるゲノミクスを通じて、研究の加速とヘルスケアの向上に情熱を注いでいます。&lt;/p&gt; 
+ &lt;/div&gt; 
+ &lt;div class="blog-author-box"&gt; 
+  &lt;div class="blog-author-image"&gt; 
+   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2026/06/02/Maruthi.jpg" alt="Photo of author" width="125" height="125"&gt; 
+  &lt;/div&gt; 
+  &lt;h3 class="lb-h4"&gt;Maruthi Alamuru&lt;/h3&gt; 
+  &lt;p&gt;Maruthi は AWS Healthcare and Life Sciences 業界担当のメンバーです。15 年以上にわたり、ライフサイエンスおよびヘルスケア企業が最先端テクノロジーと実世界の成果とのギャップを埋めるのを支援してきました。これにより企業は、創薬の加速、患者体験の再構築、そして生命を変える治療法や製品をこれまでにない速さで市場に届けることができるようになっています。&lt;/p&gt; 
+ &lt;/div&gt; 
+&lt;/footer&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
 		<title>AWS が Agent Plugins をサポート: ポータブルなエージェント拡張のためのオープン標準</title>
 		<link>https://aws.amazon.com/jp/blogs/news/aws-supports-agent-plugins-an-open-standard-for-portable-agent-extensions/</link>
 		
@@ -304,7 +806,7 @@ mcpServers:
 &lt;p&gt;こうした一般的な問題に、医療領域ではドメイン固有の事情が重なります。まず、参照するべき業界ガイドラインが大量にあります。医療情報ガイドラインだけを見ても、&lt;a href="https://www.mhlw.go.jp/content/10808000/001716290.pdf" target="_blank" rel="noopener noreferrer"&gt;概説編&lt;/a&gt;・&lt;a href="https://www.mhlw.go.jp/content/10808000/001716291.pdf" target="_blank" rel="noopener noreferrer"&gt;経営管理編&lt;/a&gt;・&lt;a href="https://www.mhlw.go.jp/content/10808000/001716292.pdf" target="_blank" rel="noopener noreferrer"&gt;企画管理編&lt;/a&gt;・&lt;a href="https://www.mhlw.go.jp/content/10808000/001716295.pdf" target="_blank" rel="noopener noreferrer"&gt;システム運用編&lt;/a&gt;・&lt;a href="https://www.mhlw.go.jp/content/10808000/001716297.pdf" target="_blank" rel="noopener noreferrer"&gt;保守委託機関編&lt;/a&gt;の 5 編から成り、全体で 160 ページを超えます。医療情報ガイドライン全体の概要は、AWS ブログ「&lt;a href="https://aws.amazon.com/jp/blogs/news/japan-security-guideline-for-medical-infromation-systems-2024-practice-01/" target="_blank" rel="noopener noreferrer"&gt;医療情報ガイドラインをクラウド上で実践する -概要編-&lt;/a&gt;」でも解説しています。さらに標準仕様に準拠した電子カルテの開発では、GCAS ガイドや電子カルテの標準仕様書の遵守が必要で、Web ページや大量の PDF・エクセルなど形式もさまざまです。これらを人間がすべて理解して AI に的確に指示するのは、簡単ではありません。&lt;/p&gt; 
 &lt;p&gt;ここで 1 つ皆さんにクイズです。Kiro IDE は添付したドキュメントをネイティブのドキュメントブロックとして読み込むことができますが、「医療情報ガイドラインのうち、システム運用編という 1 編だけを添付したら、Claude Opus 4.8 の 100 万トークンのコンテキストは何割くらい埋まるでしょうか？」&lt;/p&gt; 
 &lt;div id="attachment_189138" style="width: 2264px" class="wp-caption alignnone"&gt;
- &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/01/pdf-context.png"&gt;&lt;img aria-describedby="caption-attachment-189138" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/01/pdf-context.png" alt="Claude Opus 4.8 で医療情報ガイドラインのシステム運用編を添付した直後のコンテキスト消費量を示す Kiro の画面" width="2254" height="1014" class="size-full wp-image-189138"&gt;&lt;/a&gt;
+ &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/01/pdf-context.png"&gt;&lt;img aria-describedby="caption-attachment-189138" loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/01/pdf-context.png" alt="Claude Opus 4.8 で医療情報ガイドラインのシステム運用編を添付した直後のコンテキスト消費量を示す Kiro の画面" width="2254" height="1014" class="size-full wp-image-189138"&gt;&lt;/a&gt;
  &lt;p id="caption-attachment-189138" class="wp-caption-text"&gt;Claude Opus 4.8 で医療情報ガイドラインのシステム運用編を添付した直後のコンテキスト消費量&lt;/p&gt;
 &lt;/div&gt; 
 &lt;p&gt;実際に Claude Opus 4.8 で試すと、&lt;u&gt;この 1 編だけで対話開始時点のコンテキストの約 29%&lt;/u&gt; が消費されました。全 5 編ではさらに膨らみ、加えて開発標準や MCP も読み込まれると、やり取りできる余地はますます狭まります。コンテキスト上限に近づくと、多くのコーディングエージェントでは内容が自動的に圧縮 (コンパクション) されます。このことからも、ドキュメントを「とにかく全部 AI に渡す」のは筋が悪く、「必要なときに、必要な情報を、必要な分だけ」渡すべきです。&lt;/p&gt; 
@@ -673,115 +1175,6 @@ module.exports = { createClient };
 &lt;h2 id="getting-started"&gt;今すぐ始めましょう&lt;/h2&gt; 
 &lt;p&gt;すでに繰り返し発生している作業があれば今すぐ試してみてください。毎週月曜日に実行しているチェック、数日おきに見つけている食い違い、後回しにし続けている依存関係の整理などです。Kiro Web の &lt;a href="https://app.kiro.dev/automations" target="_blank" rel="noopener noreferrer"&gt;Automations&lt;/a&gt; に移動して 1 つ設定し、走らせてみましょう。最初の実行は、次回のスケジュール時刻に開始されます。使い心地は、アプリ内の Feedback アイコンまたは &lt;a href="https://github.com/kirodotdev/Kiro/issues/new/choose" target="_blank" rel="noopener noreferrer"&gt;GitHub&lt;/a&gt; からお知らせください。&lt;/p&gt; 
 &lt;p&gt;Automations は現在、Pro、Pro+、Pro Max、Power プランのサブスクライバー向けに、Kiro Web で利用可能です。組織で AWS IAM Identity Center を使用している場合、automation を作成する前に管理者が Kiro Web へのアクセスを有効化する必要があります。&lt;/p&gt; 
-&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>Kiro for iOS のご紹介</title>
-		<link>https://aws.amazon.com/jp/blogs/news/introducing-kiro-for-ios/</link>
-		
-		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
-		<pubDate>Thu, 18 Jun 2026 03:05:28 +0000</pubDate>
-				<category><![CDATA[Artificial Intelligence]]></category>
-		<category><![CDATA[Developer Tools]]></category>
-		<category><![CDATA[Kiro]]></category>
-		<guid isPermaLink="false">224fbd1cacbdfa1474e822a1bdfcc2f2e4aa208f</guid>
-
-					<description>Kiro のネイティブ iOS アプリが登場しました。スマートフォンから直接、クラウド上で動作する Kiro セッションの起動、監視、軌道修正、対話が可能になり、chat / spec / autonomous の 3 モードに対応します。差分はネイティブカードで読みやすく描画され、Web セッションと ID・設定・モデルがそのまま同期されます。ノート PC を開かずとも、移動中や待ち時間にエージェントへ作業を委譲し、後から PR として確認できます。</description>
-										<content:encoded>&lt;p&gt;本記事は 2026 年 6 月 17 日に公開された Kyle Seaman による “&lt;a href="https://kiro.dev/blog/introducing-kiro-for-ios/" target="_blank" rel="noopener"&gt;Introducing Kiro for iOS&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
-&lt;p&gt;2026 年 6 月 17 日、本格的な開発業務に対応するネイティブ iOS アプリとして Kiro を提供開始します。これにより、開発者へ自分のスマートフォンから直接、Kiro セッションの起動、監視、軌道修正、対話を行える新たなインターフェースをご提供します。つまり、ノート PC を起動していなくても、セッションを開始し、完了したら戻って確認し、差分をレビューし、変更を承認するといった作業を、作業から離れずに行えるようになります。&lt;/p&gt; 
-&lt;p&gt;&lt;span id="more-187906"&gt;&lt;/span&gt;&lt;/p&gt; 
-&lt;p&gt;リモートセッションが Kiro を使う標準的な方法になるにつれて、スマートフォンは仕事とつながり続ける自然な場所になります。Web セッションの延長線上にあるものとお考えください。短い確認を入れるだけでセッションを前に進められ、不要な手戻りを防ぎ、適切なコンテキストでエージェントが作業を進められるよう支援できます。選択できるモードは chat、spec、autonomous の 3 つです。質問するために短時間のチャットセッションを開く、要件を同期し続けるために仕様 (spec) 駆動のワークフローを継続する、タスクを完全に委譲するために autonomous セッションを開始するなど、いずれの場合も、電車の中やランチが届くのを待っている間に、ノート PC を一度も開くことなく行えるようになりました。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/hero.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/hero.png" alt="" width="1600" height="1280" class="alignnone size-full wp-image-187908"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;h2 id="cloud-sessions-that-never-stop"&gt;止まらないクラウドセッション&lt;/h2&gt; 
-&lt;p&gt;アプリを開くと、Kiro はクラウドセッションのライブな状態を読み込み、アクティブなスレッド、承認、プロジェクトのコンテキストを横断して作業できるようにします。エージェントの応答はリアルタイムにストリーミング表示され、ツールの実行状況もインラインで表示されます。また、autonomous モードでは、計画からコードレビューまでの実行ステータスが、人間の介入なしに表示されます。エージェントはクラウド上で独立して動作するため、起動状態を保つデスクトップ、接続用の VPN、夜通し動かしておくマシンを必要とせず、常時稼働かつ常時アクセス可能です。&lt;/p&gt; 
-&lt;h2 id="diffs-built-for-mobile"&gt;モバイルのために設計された差分表示&lt;/h2&gt; 
-&lt;p&gt;差分はファイルヘッダー付きのネイティブな差分カード（追加 / 削除）として描画されるため、小さな画面でもコードが読みやすく、全体をすばやく見渡せます。PR とコードレビューのステータスは、すべてのセッション行で一目で確認できます。レスポンシブな Web レイアウトはスマートフォンでコードを読むのに適した形ではないと分かっているからこそ、私たちはネイティブで作りました。&lt;/p&gt; 
-&lt;h2 id="start-work-check-back-later"&gt;作業を開始して、後で確認する&lt;/h2&gt; 
-&lt;p&gt;Kiro では、作業を委譲し、その場を離れ、PR として戻ってくることができるようになりました。仕様駆動のワークフローを継続すれば、Kiro が中断したところから引き継ぎます。あるいは、スマートフォンまたは Web から autonomous セッションを起動すれば、Kiro はクラウドサンドボックス内で独立して動作し、ファイルを調査してテストを実行します。Kiro が入力を必要とすると、いったん停止します。あなたはどこからでも応答して方向性を選べば、中断した地点から作業が再開されます。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/context.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/context.png" alt="" width="1294" height="864" class="alignnone size-full wp-image-187909"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;h2 id="same-agent-same-context"&gt;同じエージェント、同じコンテキスト&lt;/h2&gt; 
-&lt;p&gt;Kiro Web で開始したセッションは、同じ ID、同じ設定、同じモデルで自動的に表示されます。Google、GitHub、IAM、または Builder ID でサインインすれば、リポジトリ、認証情報、サンドボックスの状態がそのまま保持され、更新内容はリアルタイムでスマートフォンに表示されます。&lt;/p&gt; 
-&lt;p&gt;単一のビューから、異なるリポジトリをまたいで動作する複数のセッションを管理し、プルリクエストを監視し、セッション単位でフロンティアモデルとオープンウェイトモデルから選択できます。すべてが Kiro から自動的に同期されるため、接点をまたいでも失われるものはありません。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/sessions.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/sessions.png" alt="" width="1294" height="864" class="alignnone size-full wp-image-187910"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;新しいアイデアがふと浮かんだら、chat、spec、autonomous のいずれかのモードを選び、GitHub からリポジトリを接続し、モデルを選択してメッセージを送信するだけで、その場で直接セッションを作成できます。別のコンテキストウィンドウを持つ別アプリではなく、あなたについてくる 1 つのエージェントです。&lt;/p&gt; 
-&lt;h2 id="get-started-"&gt;はじめる&lt;/h2&gt; 
-&lt;p&gt;Kiro の iOS は、Kiro Pro、Pro+、Pro Max、Power のお客様向けに提供いたします。&lt;a href="https://kiro.dev/mobile/#notify" target="_blank" rel="noopener"&gt;早期アクセスをリクエスト&lt;/a&gt;いただければ、順番にご案内します。Kiro CLI、Web、IDE で利用しているものと同じ ID でサインインでき、セッション、モデル設定、接続済みリポジトリが自動的に同期されます。iOS 26 以降が必要です。&lt;/p&gt; 
-&lt;p&gt;翻訳は Solutions Architect の吉村 が担当いたしました。&lt;/p&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>Kiro Pro Max の紹介 (月額 $100): クレジットは多く、コストの迷いは少なく</title>
-		<link>https://aws.amazon.com/jp/blogs/news/kiro-pro-max/</link>
-		
-		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
-		<pubDate>Mon, 15 Jun 2026 23:18:54 +0000</pubDate>
-				<category><![CDATA[Artificial Intelligence]]></category>
-		<category><![CDATA[Developer Tools]]></category>
-		<category><![CDATA[Kiro]]></category>
-		<guid isPermaLink="false">fb061321be1e87cd2367574dfd6905376d8d60bd</guid>
-
-					<description>Kiro は月額 $40 の Pro+ と月額 $200 の Power プランの間のギャップを埋める新プラン「Kiro Pro Max（月額 $100）」を発表しました。月 5,000 クレジット、全プレミアムモデルへのアクセス、スペックやカスタムサブエージェントなど Power プランと同等の機能を提供します。Kiro を日常的な主要ツールとして使うプロフェッショナル開発者向けのプランです。</description>
-										<content:encoded>&lt;p&gt;本記事は 2026 年 6 月 11 日に公開された Ranjith Ramakrishnan, Dragos Ilinca による “&lt;a href="https://kiro.dev/blog/kiro-pro-max/" target="_blank" rel="noopener"&gt;Introducing Kiro Pro Max ($100/mo): more credits, less guesswork&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
-&lt;p&gt;Kiro の&lt;a href="https://kiro.dev/pricing/" target="_blank" rel="noopener"&gt;料金プラン&lt;/a&gt;は、お客様の多様なニーズと利用実態にお応えできるよう、一貫した思想のもとで設計されてきました。無料プランでは定評あるオープンウェイトモデルを使って気軽にお試しいただくことができ、月額 $20 の Pro プランは軽量なワークフローに対応しています。月額 $40 の Pro+ プランは Kiro を日常的にご活用いただく開発者に適しており、月額 $200 の Power プランは大規模なワークロードに対応しています。しかしながら、多くのお客様から、$40 と $200 の間には大きなギャップがあるとのフィードバックを頂戴しておりました。Pro+ のクレジット上限に達した場合でも、超過利用を有効化することで作業を継続することは既に可能でしたが、超過利用は予測が難しく、費用がかさんでしまうという課題がありました。&lt;/p&gt; 
-&lt;p&gt;&lt;span id="more-187649"&gt;&lt;/span&gt;&lt;/p&gt; 
-&lt;h2 id="kiro-pro-max-100month"&gt;Kiro Pro Max: 月額 $100&lt;/h2&gt; 
-&lt;p&gt;このギャップを解消する新しいプランとして「Kiro Pro Max」をご紹介します。本プランの主な内容は以下の通りです。&lt;/p&gt; 
-&lt;ul&gt; 
- &lt;li&gt; &lt;p&gt;&lt;u&gt;月 5,000 クレジット&lt;/u&gt;: Kiro を 1 日数時間以上ご利用いただくプロフェッショナルな開発者向けに設計&lt;/p&gt; &lt;/li&gt; 
- &lt;li&gt; &lt;p&gt;&lt;u&gt;全プレミアムモデルへのアクセス&lt;/u&gt;: Claude Opus 4.8、Sonnet 4.6、Auto をはじめ、モデルセレクターに含まれるすべてのモデルをご利用いただけます（地域ごとのモデル提供状況に準じます）&lt;/p&gt; &lt;/li&gt; 
- &lt;li&gt; &lt;p&gt;&lt;u&gt;Power プランと同等の機能セット&lt;/u&gt;: スペック、カスタムサブエージェント、Powers、フック、CLI への完全なアクセス&lt;/p&gt; &lt;/li&gt; 
-&lt;/ul&gt; 
-&lt;p&gt;月額 $100 という価格設定は、日々の業務でエージェンティック開発を実践されるお客様にとって有力な選択肢となります。Pro+ の割り当てを常に大幅に超過されているお客様や、超過料金が $60〜70 に達してしまっているお客様にとって、Pro Max は予測可能な定額料金で大幅に余裕のあるご利用を実現します。&lt;/p&gt; 
-&lt;h2 id="who-its-for"&gt;対象ユーザー&lt;/h2&gt; 
-&lt;p&gt;Pro Max は、Kiro を業務の中核ツールとしてご活用いただくプロフェッショナルな開発者向けに設計されています。1 日を通じて複数のプロジェクトでコーディング、スペックの実行、機能のイテレーション、デバッグを行うようなお客様を想定しています。利用可能な最良のモデルにアクセスし、意義のある作業を進めるのに十分なクレジットを確保しつつ、月次支出を明確に管理されたいお客様に最適な選択肢です。&lt;/p&gt; 
-&lt;h2 id="how-to-upgrade"&gt;アップグレード方法&lt;/h2&gt; 
-&lt;p&gt;6 月 11 日より、アカウント設定画面から Pro Max へ切り替えていただけます。月の途中でアップグレードされる場合、差額は日割り計算となります。日割り計算後の新しいクレジット割り当ては、ただちに有効となります。Kiro を新たにご利用開始されるお客様は、他のすべてのプランと同様に、&lt;a href="https://kiro.dev/blog/new-paid-tier-bonus/" target="_blank" rel="noopener"&gt;$20 のサインアップボーナスクレジット&lt;/a&gt;を Kiro Pro Max サブスクリプションにご適用いただけます。&lt;/p&gt; 
-&lt;h2 id="flexibility-and-control-not-one-size-fits-all"&gt;画一的ではなく、柔軟性とコントロールを&lt;/h2&gt; 
-&lt;p&gt;無料プランから Power プランまで、Kiro は様々な利用レベルのお客様に対応するサブスクリプションをご提供しております。週末に個人プロジェクトを開発される場合も、1 日 8 時間プロダクションコードを書き続けられる場合も、すべてのお客様に Kiro を最大限ご活用いただけるよう取り組んでいます。優れた開発者体験には柔軟性とコントロールが不可欠であり、料金プランはお客様の実際の作業スタイルに即したものであるべきです。過小あるいは過大なプランをお客様に強いるものであってはなりません。&lt;/p&gt; 
-&lt;p&gt;ぜひこの機会に &lt;a href="https://kiro.dev/downloads/" target="_blank" rel="noopener"&gt;Kiro をお試しいただく&lt;/a&gt;か、&lt;a target="_blank" rel="noopener noreferrer" href="https://app.kiro.dev/settings/account"&gt;プランのアップグレード&lt;/a&gt;をご検討ください。&lt;/p&gt; 
-&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>Kiro の Spec が速く、そしてスマートになりました</title>
-		<link>https://aws.amazon.com/jp/blogs/news/faster-smarter-specs/</link>
-		
-		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
-		<pubDate>Thu, 11 Jun 2026 05:33:33 +0000</pubDate>
-				<category><![CDATA[Artificial Intelligence]]></category>
-		<category><![CDATA[Developer Tools]]></category>
-		<category><![CDATA[Kiro]]></category>
-		<guid isPermaLink="false">bc10418c80ba105b0b35451e071b77a2641f1f4d</guid>
-
-					<description>Kiro IDE に 3 つの新機能が追加されました。並列タスク実行では、Spec 内の独立したタスクを依存グラフに基づいて同時実行し、実装時間を大幅に短縮します。クイックプランモードでは、事前の確認質問を通じて要件・設計・タスクを一括生成し、Spec 作成を高速化します。要件分析では、ニューロシンボリック AI を活用して要件の曖昧さや矛盾を自動検出し、実装前に問題を解消できます。</description>
-										<content:encoded>&lt;p&gt;本記事は 2026 年 5 月 12 日に公開された Ankit Sharma による “&lt;a href="https://kiro.dev/blog/faster-smarter-specs/" target="_blank" rel="noopener"&gt;Specs just got faster (and smarter)&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
-&lt;p&gt;仕様駆動開発を導入したとき、Spec フローは最初こそ少し時間がかかるかもしれないが、最終的にはより高品質な実装をもたらすと考えていました。しかし時間が経つにつれ、「構造と品質は遅さを意味する」という前提自体を問い直すようになりました。&lt;/p&gt; 
-&lt;p&gt;たとえば、10 個のタスクを持つ Feature Spec があるとします。そのうち 6 つは独立しています。異なるエンドポイント、異なるファイル、共有状態なし。それでも Kiro は順番に 1 つずつ実行します。あるいは、スコープ・制約・エッジケースをすでに明確に把握している機能であれば、現在のステップごとの承認フローは問題の規模に対してプロセスが多すぎると感じることもあります。逆のケースも起こります。一見シンプルに見える機能のプロンプトに、多くの未記述の前提や曖昧さが含まれており、実装を間違った方向に導いてしまうことがあります。事前の小さな確認が、実装時間（とトークン！）を大幅に節約できます。本日、Kiro IDE にこれらの問題を解決する改善を導入します。Spec フローをより速く開始し、より速く実装し、最初から正しい解決策を得られるようになります。必要なところではスピードを、重要なところでは深さを得られるようになりました。&lt;/p&gt; 
-&lt;p&gt;&lt;span id="more-184981"&gt;&lt;/span&gt;&lt;/p&gt; 
-&lt;h2 id="run-tasks-in-parallel"&gt;タスクの並列実行&lt;/h2&gt; 
-&lt;p&gt;Spec で「Run all Tasks」をクリックすると、Kiro はタスクリストを分析し、同時に実行できるタスクを特定するようになりました。タスクリストの多くは真に逐次的ではありません。依存関係があります。タスク 2 とタスク 3 がどちらもタスク 1 に依存しているとしても、互いには依存していないことがあります。順番に実行するのは時間の無駄です。Kiro はタスクリストから依存グラフを構築し、同じファイルに書き込むタスク、以前のタスクのコードをテストするタスク、真に独立しているタスクを識別します。同じファイルを扱うタスクは並列実行されません。セットアップやインフラ作業が最初に実行されます。テストはそれが検証するコードの後に実行されます。それ以外はすべて同時に実行され、同時実行されるウェーブ (wave) にグループ化されます。各タスクは独立したコンテキストで実行されるため、タスク間で状態が漏洩することはありません。タスクが失敗しても、他のタスクは実行を続けます。どれが成功し、どれが注意を要するかを確認できます。以前の作業に依存するタスクは引き続き順番を待ちます。並列実行のために設定は不要です。「Run all Tasks」をクリックすれば、Kiro が残りを処理します。独立したタスクが複数ある Spec では、すぐに違いを実感できるでしょう。私たちの経験では、大きな Spec の実装時間が 1 時間超から約 4 分の 1 に短縮されるケースも見られています。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/05/13/parallel-tasks.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/05/13/parallel-tasks.png" alt="並列タスク実行：独立したタスクがウェーブ (wave) にグループ化されて同時実行される依存グラフ" width="2560" height="1381" class="alignnone size-full wp-image-184985"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;h2 id="fast-track-specs-with-quick-plan-mode"&gt;Quick Plan モードで Spec を高速化&lt;/h2&gt; 
-&lt;p&gt;標準の Spec フローには 3 つのフェーズがあります。要件、設計、タスクです。次のフェーズに進む前にそれぞれを承認します。これは未知の領域を探索するときに価値を発揮します。しかし、スコープを明確に把握している、よく理解された機能の場合、Quick Plan モードを使うと正確さを犠牲にせず速く進められます。&lt;/p&gt; 
-&lt;p&gt;プロンプトに基づいて、Kiro は事前に確認事項（スコープ、制約、エッジケース）を質問し、要件・設計・タスクを一度に自動生成します。質問する前に、Kiro はワークスペースをスキャンして言語・フレームワーク・プロジェクト構造を検出し、質問をあなたのスタックに特化したものにします。質問は 4 つの軸を対象とします。スコープと制約、説明の曖昧さ、実装の分岐点、機能の方向性に関する決定です。タスクリストが完成したら、すぐにビルドに取りかかれます。成果物は引き続き作成・保存され、エージェントが実行時に使用します。後から確認・編集することも可能です。タスクの変更を依頼した場合は、タスクのみが再生成されます。設計を調整した場合は、設計とタスクが再構築されます。スコープを変更した場合は、要件からパイプライン全体が再実行されます。Kiro は影響を受ける部分のみを再生成します。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/05/13/quick-plan.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/05/13/quick-plan.png" alt="Quick Plan ：アイデアからタスクリストまでをワンパスで生成する 5 ステップのワークフロー図" width="2560" height="1381" class="alignnone size-full wp-image-184986"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;Kiro は実装中、spec の成果物を信頼できる唯一の情報源 (single source of truth) として使用します。これにより、Kiro が行うすべての判断は、文書化された要件や設計上の選択に基づいて追跡できるようになります。Quick Plan は同じ成果に向かうより速いパスであり、構造をスキップするショートカットではありません。&lt;/p&gt; 
-&lt;h2 id="requirements-analysis-catch-what-a-read-through-misses"&gt;要件分析：ひと通り読むだけでは見逃すものを捕捉する&lt;/h2&gt; 
-&lt;p&gt;要件には、一目では気づきにくい微妙な問題が含まれることがあります。たとえば、個々に見ると問題なさそうな2つの要件が、組み合わせてみると同時には満たせない場合があります。 また、読む人によって解釈が分かれ、異なる実装につながってしまう曖昧な表現が含まれていることもあります。 さらに、誰もが「当然そうだろう」と思い込んでいるものの、実際には明文化されていない前提が、後になって問題になることもあります。&lt;/p&gt; 
-&lt;p&gt;Kiro がプロンプトに基づいて要件を生成した後、「Analyze Requirements」を選択すると、ニューロシンボリック AI (Neurosymbolic AI) を活用した深い分析を開始できます。ニューロシンボリック AI は LLM と自動推論を組み合わせ、どちらか単独では実現できないことを達成します。Kiro は曖昧さや矛盾を発見次第（修正案とともに）提示します。それにより、確信を持って設計・実装フェーズに進めます。&lt;/p&gt; 
-&lt;p&gt;&lt;u&gt;曖昧さの検出。&lt;/u&gt;Kiro は各要件の複数の解釈をサンプリングし、異なる開発者が異なる意味に取り得る箇所を見つけます。「レコードを削除する」とは、物理削除を意味するのか、論理削除を意味するのか？Kiro が真の曖昧さを発見した場合、「どちらの意味を意図していましたか？」といった、シンプルな 2 択の質問として提示します。&lt;/p&gt; 
-&lt;p&gt;&lt;u&gt;論理分析。&lt;/u&gt;Kiro は自動推論を使って、要件が整合しているか（2 つの要件が矛盾していないか）を検証し、要件が何も言及していないギャップを見つけます。これは LLM が矛盾の可能性を推測するのではなく、数学的論理を使ってどんな実装も両方のルールを同時に満たせないことを証明するものです。&lt;/p&gt; 
-&lt;p&gt;内部の仕組みを詳しく知りたい場合は、&lt;a href="https://kiro.dev/blog/deep-spec-analysis/" target="_blank" rel="noopener"&gt;要件分析の詳細解説&lt;/a&gt;をご覧ください。&lt;/p&gt; 
-&lt;h2 id="speed-where-it-helps-depth-where-it-matters"&gt;必要なところではスピードを、重要なところでは深さを&lt;/h2&gt; 
-&lt;p&gt;この 3 つの新機能により、Spec はより速くスマートになります。Quick Plan モードは生成を高速化します。並列タスク実行は実装を高速化します。要件分析は、ひと通り読むだけでは見逃す問題を捕捉します。構造はソフトウェアをより良くするものであり、プロセスを遅くするものであってはなりません。今やその両方を実現します。&lt;/p&gt; 
-&lt;p&gt;Quick Plan、並列タスク実行、要件分析は現在利用可能です。&lt;a href="https://kiro.dev/docs/specs/" target="_blank" rel="noopener"&gt;Kiro Spec を使い始める&lt;/a&gt;。&lt;/p&gt; 
 &lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
 					
 		
