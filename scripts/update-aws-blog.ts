@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { execSync } from 'child_process';
 import { parseFeed, extractIdFromUrl } from './lib/feedParser.js';
 import { loadCache, saveCache } from './lib/feedCache.js';
@@ -11,6 +11,7 @@ import type { ArticleEntry } from './lib/types.js';
 const FEED_URL = 'https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/';
 const CACHE_PATH = 'src/data/blog/rss-cache.xml';
 const ARTICLES_PATH = 'src/data/blog/aws-articles.json';
+const OGP_CACHE_PATH = 'src/data/blog/ogp-cache.json';
 
 /** 今日の日付を YYYY-MM-DD 形式で返す */
 function getTodayString(): string {
@@ -35,6 +36,30 @@ function findExistingPr(): PrInfo | null {
 
   const prs = JSON.parse(output) as PrInfo[];
   return prs.length > 0 ? (prs[0] ?? null) : null;
+}
+
+/**
+ * OGPキャッシュを更新する。
+ * 失敗してもデプロイ時に再取得されるため、記事更新自体は継続する。
+ */
+/** 更新対象ファイルをステージングする（OGPキャッシュは存在する場合のみ） */
+function stageUpdatedFiles(): void {
+  const paths = [ARTICLES_PATH, CACHE_PATH];
+  if (existsSync(OGP_CACHE_PATH)) paths.push(OGP_CACHE_PATH);
+  execSync(`git add ${paths.join(' ')}`, { encoding: 'utf-8' });
+}
+
+/**
+ * OGPキャッシュを更新する。
+ * 失敗してもデプロイ時に再取得されるため、記事更新自体は継続する。
+ */
+function refreshOgpCache(): void {
+  try {
+    execSync('npx tsx scripts/refresh-ogp-cache.ts', { encoding: 'utf-8', stdio: 'inherit' });
+    console.log('[update-aws-blog] ogp-cache.json を更新しました');
+  } catch (err) {
+    console.warn('[update-aws-blog] OGPキャッシュの更新に失敗しました（処理は継続します）:', err);
+  }
 }
 
 async function main(): Promise<void> {
@@ -88,6 +113,9 @@ async function main(): Promise<void> {
   writeFileSync(ARTICLES_PATH, JSON.stringify(merged, null, 2) + '\n', 'utf-8');
   console.log('[update-aws-blog] aws-articles.json を更新しました');
 
+  // 8-2. 新規記事分のOGPキャッシュを更新（デプロイ時の取得失敗に備えたフォールバック）
+  refreshOgpCache();
+
   // 9. ブランチ名を生成
   const today = getTodayString();
   const newBranchName = `chore/update-aws-blog-${today}`;
@@ -99,7 +127,7 @@ async function main(): Promise<void> {
     // 既存PRなし: 新規ブランチを作成してコミット・PR作成
     console.log(`[update-aws-blog] 新規ブランチ "${sanitizeForLog(newBranchName)}" を作成します`);
     execSync(`git checkout -b ${newBranchName}`, { encoding: 'utf-8' });
-    execSync(`git add ${ARTICLES_PATH} ${CACHE_PATH}`, { encoding: 'utf-8' });
+    stageUpdatedFiles();
     execSync(`git commit -m "chore: update AWS blog articles (${today})"`, { encoding: 'utf-8' });
     execSync(`git push origin ${newBranchName} --force`, { encoding: 'utf-8' });
     execSync(
@@ -112,7 +140,7 @@ async function main(): Promise<void> {
     const existingBranch = existingPr.headRefName;
     console.log(`[update-aws-blog] 既存PR #${existingPr.number} のブランチ "${sanitizeForLog(existingBranch)}" へforce pushします`);
     execSync(`git checkout -b ${existingBranch}`, { encoding: 'utf-8' });
-    execSync(`git add ${ARTICLES_PATH} ${CACHE_PATH}`, { encoding: 'utf-8' });
+    stageUpdatedFiles();
     execSync(`git commit -m "chore: update AWS blog articles (${today})"`, { encoding: 'utf-8' });
     execSync(`git push origin ${existingBranch} --force`, { encoding: 'utf-8' });
     console.log('[update-aws-blog] 既存PRを更新しました');

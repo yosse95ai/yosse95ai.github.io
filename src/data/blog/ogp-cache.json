@@ -1,0 +1,230 @@
+{
+  "https://aws.amazon.com/jp/blogs/news/accelerating-life-sciences-research-with-kiro-a-unified-ai-interface-to-100-open-source-databases/": {
+    "title": "Kiro でライフサイエンス研究を加速する: 100 以上のオープンソースデータベースへの統合 AI インターフェース | Amazon Web Services",
+    "description": "ライフサイエンス研究者は、遺伝子、バリアント、構造、薬剤、疾患を調べるたびに、API や認証、データ形式が異なる何十ものデータベースを行き来する必要があります。本記事では、Kiro を 24 分野・100 以上のデータベースを横断する統合研究インターフェースへと拡張する Kiro power パッケージ「Kiro for Life Sciences」を紹介します。24 のドメイン特化 MCP サーバーとデータベース横断検索、ガイド付きワークフロー、ドメインスキルにより、自然言語での質問から構造化された結果までを一気通貫で得られます。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/08/05/ogp-3.png",
+    "publishedAt": "2026-08-13T15:19:49+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/amplify-functions-create-serverless-functions-using-typescript-powered-by-aws-lambda/": {
+    "title": "Amplify Functions: TypeScript を用いた AWS Lambda 上のサーバーレス関数の作成 | Amazon Web Services",
+    "description": "AWS Amplify は、Gen 2 における Function の一般提供を発表できることを喜ばしく思います。Amplify Functions は TypeScript を使って定義、作成、使用されます。これらは、カスタムクエリやミューテーションのハンドラーであっても、認証リソースのトリガーであっても構いません。Amplify Functions の実態は、 AWS Lambda によって提供されていますが、Amplify を使えばアプリと同じコードベースや言語でサーバーレス関数をデプロイできます。関数はさまざまなユースケースで使用されますが、多くの場合、リソースの動作を拡張または変更してアプリ向けのカスタマイズされたユーザーエクスペリエンスを構築します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2024/05/09/cover-image-dark-2-1024x512-1.png",
+    "publishedAt": "2024-05-13T09:12:57+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/aws-supports-agent-plugins-an-open-standard-for-portable-agent-extensions/": {
+    "title": "AWS が Agent Plugins をサポート: ポータブルなエージェント拡張のためのオープン標準 | Amazon Web Services",
+    "description": "AWS は Cursor、Microsoft、OpenAI、Vercel とともに Agent Plugins Technical Steering Committee の設立メンバーとして参画します。Agent Plugins 1.0.0 は AI エージェント拡張のためのオープンかつベンダーニュートラルなパッケージ仕様で、Agent Skills と MCP サーバーを 1 度パッケージ化すれば、Kiro、VS Code、Cursor など仕様に対応した任意のクライアントに配布できます。AWS Agent Toolkit と Kiro Powers がローンチと同時にサポートを開始します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/08/07/ogp-4.png",
+    "publishedAt": "2026-08-10T21:31:46+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/aws-transform-custom-ai-driven-java-modernization-to-reduce-tech-debt/": {
+    "title": "AWS Transform custom: AI 駆動 Java モダナイゼーションで技術的負債を削減 | Amazon Web Services",
+    "description": "今日の急速に進化するソフトウェア環境において、Java アプリケーションの保守とモダナイゼーションは、多くの組織が直面する重要な課題です。新しい Java バージョンがリリースされ、ベストプラクティスが進化するにつれて、効率的なコード変換の必要性がますます重要になっています。この記事では、Java アップグレード用の AWS Transform custom のすぐに使える変換を活用する方法について説明します。この記事の最後までに、変換プロセスを完全に制御しながら、これらの標準化された変換を使用して Java アプリケーションを効率的にモダナイズする方法を理解できるようになります。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/05/atx-java-blog-featured-image.png",
+    "publishedAt": "2026-02-09T09:03:24+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/birthday-2026/": {
+    "title": "Kiro のバースデーウィークへようこそ | Amazon Web Services",
+    "description": "Kiro は誕生から 1 周年を迎え、AI コーディングからエージェンティックエンジニアリングへと進化しました。7 月 13 日から 17 日まで（太平洋時間）の 1 週間、コミュニティへの感謝を込めたバースデーウィークを開催します。ボーナスクレジットを獲得できるデイリーコーディングチャレンジ、7 月 15 日のバースデーパーティーライブストリーム、コミュニティスポットライト、そしていくつかのサプライズをご用意しています。#BuildWithKiro #TeamKiro #1YearOfKiro で、皆さんの 1 年目を一緒にお祝いしましょう。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/13/ogp-1.png",
+    "publishedAt": "2026-07-14T11:24:23+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/building-a-personalized-travel-planner-with-amazon-bedrocks-knowledge-bases-and-rag/": {
+    "title": "React Native と AWS Amplify、Amazon Bedrock Knowledge Base を利用したトラベルプランナーの構築 | Amazon Web Services",
+    "description": "この記事では、React Native を使用してトラベルプランアプリケーションを構築する方法を学びます。このアプリケーションは、 Knowledge Base に基づいて、Retrieval Augmented Generation (RAG) および Large Language Models (LLM) を使用して応答を生成します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2024/12/11/travel-planner-1-1024x576-1.png",
+    "publishedAt": "2025-01-24T10:13:29+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/building-compliant-healthcare-systems-with-kiro/": {
+    "title": "Kiro とともに医療情報システムのガイドライン遵守開発に挑む | Amazon Web Services",
+    "description": "医療情報システム開発で避けて通れない数多くの業界ガイドラインに対して、AI 駆動開発でどう立ち向かうか。本記事では、ガイドラインの知識を Agent Skills、開発標準を Agent Steering として Kiro に与え、必要なときに必要な分だけコンテキストを参照させながら、人間が意思決定権を持って協働する「Kiro をチームの一員に育て上げる」アプローチを紹介します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/02/regulatory-compliance-with-kiro-ogp-1121x630.png",
+    "publishedAt": "2026-07-02T12:04:03+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/building-rag-based-applications-with-aws-amplify-ai-kit-and-neon-postgres/": {
+    "title": "AWS Amplify AI Kit と Neon Postgres を利用した RAG ベースアプリケーション構築 | Amazon Web Services",
+    "description": "この記事では、入門の段階を超えて、Amplify のデフォルトのデータベースモデルではなく、Neon からサーバーレス Postgres データベースを使用して製品データを取得します。そうすることで、検索拡張生成 (RAG) を使用して LLM と対話するために必要なコードを簡素化します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2024/12/12/rag-with-postgres-1024x576-1.png",
+    "publishedAt": "2025-02-17T16:02:44+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/cap-prepay-overage/": {
+    "title": "Kiro の超過利用の上限設定と前払い機能のご紹介 | Amazon Web Services",
+    "description": "Kiro の超過利用に関する 2 つの新機能をご紹介します。チーム向けには、AWS Service Quotas コンソールからアカウント単位で超過利用の上限を設定できるようになりました。個人開発者向けには、有料プラン利用者が前払いで購入できるアドオンクレジットパック (最小 5 ドルから) を追加しました。後から届く想定外の請求書に驚かされることなく、支出をコントロールしながら Kiro を使い続けられます。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/07/ogp.png",
+    "publishedAt": "2026-07-10T10:21:11+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/enhanced-genomic-data-storage-and-workflows-with-mgi-sentieon-and-aws/": {
+    "title": "MGI、Sentieon、AWS で強化するゲノムデータストレージとワークフロー | Amazon Web Services",
+    "description": "MGI、Sentieon、AWS の協業により、ゲノミクスラボは大規模なシーケンシングデータを効率的に管理・解析できます。ベルリンの MGI 欧州本社では、3 台の DNBSEQ-T7 シーケンサーが週あたり合計で最大 63 テラベース生成するゲノムデータを AWS HealthOmics Sequence Store に取り込み、Sentieon の DNAscope や TNseq を Ready2Run ワークフローまたはプライベートワークフローで実行します。Ready2Run の固定料金と自動リソース管理により、コストを予測しやすく、迅速で高精度な発見を実現します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/08/04/ogp-1.png",
+    "publishedAt": "2026-08-13T16:17:16+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/enterprise-governance-mcp-and-models/": {
+    "title": "Kiro のエンタープライズガバナンス: MCP サーバーとモデルを管理する | Amazon Web Services",
+    "description": "Kiro に 2 つの新しいエンタープライズガバナンス機能が追加されました。管理者が承認済み MCP サーバーを JSON 形式のレジストリでホワイトリスト管理できる「MCP サーバーレジストリ」と、組織内の開発者が利用できる AI モデルを制限できる「モデルガバナンス」です。MCP レジストリは起動時・24 時間ごとに同期され、未承認サーバーへの接続を防止します。モデルガバナンスはデータレジデンシー要件への対応にも有効で、実験的モデルを承認完了まで無効化できます。これらの機能は Kiro IDE 0.11.28 / CLI 1.23 以降のエンタープライズユーザー向けに提供されます。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/03/19/ogp.png",
+    "publishedAt": "2026-04-03T16:48:00+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/enterprise-identity-and-usage-metrics/": {
+    "title": "Kiro のエンタープライズ ID 連携と使用状況メトリクス | Amazon Web Services",
+    "description": "Kiro はエンタープライズ向けに外部 ID プロバイダー（Okta、Microsoft Entra ID）のサポートとユーザーレベルのアクティビティメトリクスを提供します。既存の ID インフラストラクチャに直接接続し、SSO ポリシーや MFA を活用可能に。管理者は日次集計使用状況データでチームのツール利用状況を可視化でき、AI がエンジニアリングにもたらす効率向上を測定できます。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/14/ogp.png",
+    "publishedAt": "2026-02-20T10:47:15+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/faster-smarter-specs/": {
+    "title": "Kiro の Spec が速く、そしてスマートになりました | Amazon Web Services",
+    "description": "Kiro IDE に 3 つの新機能が追加されました。並列タスク実行では、Spec 内の独立したタスクを依存グラフに基づいて同時実行し、実装時間を大幅に短縮します。クイックプランモードでは、事前の確認質問を通じて要件・設計・タスクを一括生成し、Spec 作成を高速化します。要件分析では、ニューロシンボリック AI を活用して要件の曖昧さや矛盾を自動検出し、実装前に問題を解消できます。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/05/13/ogp.png",
+    "publishedAt": "2026-06-11T14:33:33+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/free-until-september-15/": {
+    "title": "9 月 15 日まで無料で Kiro を使用 | Amazon Web Services",
+    "description": "8 月 22 日の価格更新に続き、9 月 1 日を超えて 9 月 15 日まで、Kiro の無料使用を延長いたします。\n9 月 15 日まで引き続き Kiro を無料で使用できることとなります。9 月分の請求については全額返金いたしますので、引き続き無料で Kiro をご利用いただけます。使用制限は、通常のサブスクリプションサイクルの一部として、9月1日にプランの完全な制限にリセットされます。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/08/29/free-until-september-15.png",
+    "publishedAt": "2025-09-01T09:49:38+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/from-openapi-swagger-to-test-suite-in-seconds-with-kiro/": {
+    "title": "Kiro で OpenAPI/Swagger 仕様から数秒でテストスイートを生成する | Amazon Web Services",
+    "description": "API 仕様とテストの乖離は開発現場の慢性的な課題です。本記事では、エージェント駆動の開発システム Kiro を使い、Swagger/OpenAPI 仕様から axios ベースの HTTP テスト、Express のモックサーバー、モックと実 API を切り替える設定、HTML レポートまでを含む Node.js テストスイートを数秒で自動生成する方法を解説します。Petstore API を例にステアリングファイルの活用、生成されたテスト品質、削除ライフサイクル検証、認証付き内部 API への適応、ヘッドレスモードによる CI/CD 自動再生成まで紹介します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/29/ogp-3.png",
+    "publishedAt": "2026-06-29T16:27:10+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/hidden-inefficiencies-ai-coding/": {
+    "title": "AI コーディングに潜む非効率性とその発見方法 | Amazon Web Services",
+    "description": "AI コーディングエージェントの評価では、合格/不合格メトリクスだけでは見えない非効率性が存在します。Kiro チームは CORAL と呼ぶ適応学習システムを構築し、実際のユーザーセッションからトラジェクトリベースの分析を行っています。具体的な発見として、glob パターンの違いによるサイレント検索失敗（修正後に誤りを 99% 削減）や、cd コマンドの誤用（18% のセッションに影響）への自動修正対応などが挙げられます。このシステムにより、モデル再トレーニング不要で継続的な改善が実現されています。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/25/ogp-2.png",
+    "publishedAt": "2026-02-25T17:10:48+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/how-to-build-next-js-apps-with-authentication-using-aws-amplify-and-auth0/": {
+    "title": "AWS Amplify と Auth0 を使って認証付き Next.js アプリを構築する方法 | Amazon Web Services",
+    "description": "この記事では、AWS Amplify で、OpenID Connect Identity Provider (OIDC) を使用して Next.js アプリケーションを認証および認可する方法を説明します。AWS Amplify は、クラウドで動作するフルスタックアプリケーションを開発およびデプロイするためのフロントエンド開発者向けの製品です。AWS Amplify アプリケーションの機能を強化するために、Auth0 が提供する ID 管理プラットフォームを活用します。Okta の Auth0 は、認証と認可の両方をサポートする ID 管理プラットフォームです。\nNext.js アプリを使って Auth0 と AWS Amplify を統合し、認証のショーケースを作成し、Amplify Hosting を使ってデプロイする方法を紹介します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2024/10/02/how-to-build-authenticated-Nextjs-apps-with-amplify-and-auth0-1-1024x512-1.png",
+    "publishedAt": "2024-10-07T08:14:13+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/introducing-automations/": {
+    "title": "Kiro Web の Automations 機能のご紹介 | Amazon Web Services",
+    "description": "Kiro Web に、繰り返し発生するタスクを自動化するクラウドで動作する Automations 機能を追加しました。スケジュールを設定すると、Kiro が自律エージェントとしてサンドボックス上でタスクを実行し、変更を含むプルリクエストを自動的に開きます。ドキュメント更新、テスト生成、TODO 整理など、定期的な作業をまかせられます。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/23/ogp-2.png",
+    "publishedAt": "2026-06-23T15:28:00+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/introducing-checkpointing/": {
+    "title": "道に迷わないために: Kiro のチェックポイント機能の紹介 | Amazon Web Services",
+    "description": "このブログでは、Kiro のチェックポイント機能についてご紹介します。チェックポイント機能は、開発セッション中の任意の時点に Kiro の変更を巻き戻す力を与えます。Kiro がコードベースを変更すると、チャット履歴に自動的にチェックポイントマーカーが作成されます。ビデオゲームのオートセーブポイントのようなものだと考えてください。物事がうまくいかず、想定以上のダメージを受けた場合、以前のチェックポイントに戻って別のアプローチを試すことができます。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/18/introducing-checkpointing.png",
+    "publishedAt": "2025-11-21T10:32:53+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/introducing-kiro-for-ios/": {
+    "title": "Kiro for iOS のご紹介 | Amazon Web Services",
+    "description": "Kiro のネイティブ iOS アプリが登場しました。スマートフォンから直接、クラウド上で動作する Kiro セッションの起動、監視、軌道修正、対話が可能になり、chat / spec / autonomous の 3 モードに対応します。差分はネイティブカードで読みやすく描画され、Web セッションと ID・設定・モデルがそのまま同期されます。ノート PC を開かずとも、移動中や待ち時間にエージェントへ作業を委譲し、後から PR として確認できます。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/17/ogp-1.png",
+    "publishedAt": "2026-06-18T12:05:28+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/introducing-powers/": {
+    "title": "Kiro powers の紹介 | Amazon Web Services",
+    "description": "AI アシスタントは、フレームワークの専門知識への即座のアクセスを提供し、より速くリリースできるようにすべきです。しかし、今日の AI エージェントも同じ課題に直面しています。組み込みの知識がなければ、あなたと同じように推測と反復を繰り返します。Kiro powers は、幅広い開発とデプロイメントのユースケースに対して、その統一されたアプローチを提供します。MCP ツールとフレームワークの専門知識を一緒にパッケージ化し、動的に読み込みます。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/12/04/introducing-powers.png",
+    "publishedAt": "2025-12-05T15:08:45+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/japan-security-guidelines-for-medical-information-systems-2024-network-part2/": {
+    "title": "医療情報ガイドラインをクラウド上で実践する – ネットワーク編 Part 2 | Amazon Web Services",
+    "description": "Part 2 では、拠点間接続と比較し導入が容易なオープンなネットワークで HTTPS を利用した接続を AWS で実現する構成について解説します。本ブログでは 、mTLS を利用したクライアント認証の実現方法として Amazon API Gateway を利用した実装パターンと、Application Load Balancer (ALB) を利用した実装パターンについてご紹介します。API Gateway は API の作成、管理、保護、監視などを簡単に行うことができるマネージド型のサービスです。ALB は アプリケーション HTTP トラフィック、HTTP 通信、Web 通信、Web サービスのロードバランシングサービスになります。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2024/04/30/ネットワーク編-Part2.png",
+    "publishedAt": "2024-05-15T15:31:01+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/kiro-pro-max/": {
+    "title": "Kiro Pro Max の紹介 (月額 $100): クレジットは多く、コストの迷いは少なく | Amazon Web Services",
+    "description": "Kiro は月額 $40 の Pro+ と月額 $200 の Power プランの間のギャップを埋める新プラン「Kiro Pro Max（月額 $100）」を発表しました。月 5,000 クレジット、全プレミアムモデルへのアクセス、スペックやカスタムサブエージェントなど Power プランと同等の機能を提供します。Kiro を日常的な主要ツールとして使うプロフェッショナル開発者向けのプランです。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/15/ogp.png",
+    "publishedAt": "2026-06-16T08:18:54+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/kiroweeeeeeek-in-japan-day-3-security-governance/": {
+    "title": "Kiro を組織で利用するためのセキュリティとガバナンス | Amazon Web Services",
+    "description": "本ブログは Kiroweeeeeek (X:#kiroweeeeeeek) の第 3 日目です。本ブログでは、Kiro を組織で利用するにあたって気になるセキュリティとガバナンス機能についてご紹介します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/thumbnail-1-1120x630.png",
+    "publishedAt": "2025-11-21T09:40:43+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/minimax-m25-and-glm-5/": {
+    "title": "Kiro に MiniMax M2.5 と GLM-5 が追加されました | Amazon Web Services",
+    "description": "Kiro に新たに MiniMax M2.5 と GLM-5 の 2 つのオープンウェイトモデルが追加されました。MiniMax M2.5 はクレジット乗数 0.25x の低コストモデルで、SWE-Bench Verified 80.2% を達成し、マルチステップ実装や長時間エージェントセッションに最適です。GLM-5 は 200K コンテキストウィンドウを持つ大規模 MoE モデルで、リポジトリ規模の複雑なアーキテクチャ変更や長期エージェントワークフローに強みを発揮します。両モデルは IDE と CLI から即座に利用可能です。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/04/03/ogp.png",
+    "publishedAt": "2026-04-06T17:58:22+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/offline-caching-with-aws-amplify-tanstack-appsync-and-mongodb-atlas/": {
+    "title": "AWS Amplify、TanStack、AppSync、MongoDB Atlas を使用したオフラインキャッシング | Amazon Web Services",
+    "description": "このブログでは、AWS Amplify、AWS AppSync、MongoDB Atlas を使用して、オフラインファーストなアプリケーションと楽観的 UI を作成する方法をご紹介します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/08/01/offline-caching-with-amplify-tanstack-appsync-mongodb.png",
+    "publishedAt": "2025-08-21T10:59:43+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/one-agent/": {
+    "title": "1 つのエージェントで、あらゆるクライアントに: Kiro エージェントハーネスをどう構築したか | Amazon Web Services",
+    "description": "Kiro IDE、CLI、Web に別々に存在した 3 つのエージェントを、単一の Kiro エージェントハーネスに統合した過程を解説します。標準化された Agent Client Protocol (ACP) を採用し、独自の WebSocket トランスポートと Kiro-ACP 拡張、Cedar ベースのケイパビリティ権限モデルを組み合わせることで、仕様駆動開発、カスタムエージェント、フックをすべてのクライアントで一貫して提供します。IDE 1.0、CLI v3、Web、iOS 版で今すぐ試せます。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/08/04/ogp.png",
+    "publishedAt": "2026-08-05T09:43:36+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/opus-4-7/": {
+    "title": "Opus 4.7 が Kiro で利用可能になりました | Amazon Web Services",
+    "description": "Anthropic の最新モデル Claude Opus 4.7 が Kiro IDE および CLI に順次展開されました。Opus 4.6 の直接アップグレード版として、複雑で長時間にわたるタスクでのコーディング性能が向上し、複数ファイル・ツールにまたがるマルチステップ実装や自己検証機能を備えています。Kiro のスペック駆動開発との親和性も高く、大規模コードベースでの高忠実度な実装を実現します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/04/17/ogp-1.png",
+    "publishedAt": "2026-04-20T09:38:05+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/publicsector-benchmarking-pacbio-whole-genome-sequencing-variant-pipeline-analysis-with-aws-healthomics-workflows/": {
+    "title": "AWS HealthOmics ワークフローで PacBio 全ゲノムシーケンシングのバリアント解析パイプラインをベンチマークする | Amazon Web Services",
+    "description": "PacBio HiFi の全ゲノムシーケンシング (WGS) バリアント解析パイプラインを AWS HealthOmics 上に実装し、大規模運用に向けてベンチマークしました。DeepVariant を GPU (NVIDIA Tesla A10G / omics.g5.2xlarge) で実行すると、CPU 比 21.3 パーセントのコスト削減と 8.5 パーセントの高速化を達成。run_analyzer の推奨構成なら 19.15 ドルまで削減できる見込みです。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/08/05/ogp-2.png",
+    "publishedAt": "2026-08-13T15:19:52+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/refactoring-made-right-2/": {
+    "title": "リファクタリングを正しく行う：プログラム解析により AI エージェントの安全性と信頼性を高める方法 | Amazon Web Services",
+    "description": "従来の AI コーディングエージェントは、関数の名前変更やファイル移動などのリファクタリングをテキスト編集として扱うため、インポートの破損や参照エラーを引き起こしていました。Kiro は VSCode の Language Server Protocol を活用したセマンティックリネームツールとスマートリロケートツールを導入し、F2 キーを押したときと同じ IDE の実証済み機能をエージェントが利用できるようにしました。これにより、ワークスペース全体の参照、インポート、型定義を自動的に更新し、20 秒で終わるべきリファクタリングが 5 分のデバッグセッションになる問題を解決します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/06/og-image.png",
+    "publishedAt": "2026-02-18T12:51:15+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/safeguard-healthcare-data-from-ransomware/": {
+    "title": "ランサムウェア被害から医療データの安全を守る | Amazon Web Services",
+    "description": "近年、世界中の機関や組織がランサムウェア攻撃の被害を受けています。医療機関も例外ではなく、ランサムウェアを用いた攻撃の標的となることがしばしばあります。\n本ブログでは、医療機関でも被害が増えているランサムウェアとその被害からの復旧における重要な指標、バックアップを活用したデータ保護についてご紹介します。また、その中でバックアップやリストアにおいて、ご活用いただける AWS のサービスや機能についてご紹介します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2023/11/12/.png",
+    "publishedAt": "2023-11-14T10:13:52+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/simplifying-multi-app-management-in-aws-amplify-hosting/": {
+    "title": "AWS Amplify Hosting によるマルチアプリ管理の簡素化 | Amazon Web Services",
+    "description": "AWS Amplify Hosting では、より多くの Amplify アプリを 1 つのリポジトリに接続できるようになりました。この変更により、開発者が Git プロバイダーと統合する方法が改善され、特に単一リポジトリで管理されるプロジェクト構成に有益です。 Amplify は、関連するすべてのアプリに対して 1 つのリポジトリにつき 1 つの Webhook を使用するようになり、開発作業が効率化されました。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/03/17/webhook_thumb-1.png",
+    "publishedAt": "2025-04-09T17:30:32+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/sonnet-4-6/": {
+    "title": "Claude Sonnet 4.6 が Kiro で利用可能になりました | Amazon Web Services",
+    "description": "本日より Kiro IDE と CLI で Claude Sonnet 4.6 が利用可能になりました。Sonnet 4.6 は Opus 4.6 の知能に近づきながらトークン効率が高く、複雑なコードベースでの機能構築、リファクタリング、デバッグなどの反復的なワークフローを高品質に処理します。マルチモデルパイプラインでリードエージェントとサブエージェントの両方の役割を果たし、エージェント作業に最適化されています。Pro、Pro+、Power のお客様に AWS の 2 リージョンで提供され、1.3 倍のクレジット乗数でコスト効率も優れています。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/02/19/ogp-1.png",
+    "publishedAt": "2026-02-19T16:21:09+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/teaching-kiro-new-tricks-with-agent-steering-and-mcp/": {
+    "title": "エージェントステアリングと MCP を使って Kiro に新しいスキルを教える方法 | Amazon Web Services",
+    "description": "この記事では、AI エージェントおよび開発環境である Kiro に、MathJSON というライブラリを理解させる方法を探ります。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/10/30/teaching-kiro-new-tricks-with-agent-steering-and-mcp.png",
+    "publishedAt": "2025-10-30T17:01:32+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/working-with-aws-appsync-events-real-time-web-games-with-chat/": {
+    "title": "AWS AppSync Events との連携: チャット機能付きリアルタイム Web ゲーム | Amazon Web Services",
+    "description": "この投稿では、プレイヤーがトークンを連続して 4 つ並べることを目的としたゲームのオンラインバージョンを作成するために必要なコアコンセプトを見ていきます。また、AWS Amplify Gen 2 が AWS バックエンドへの高速接続を可能にする方法と、WebSocket 接続を使用してプレイヤーがリアルタイムでゲームの更新を送信できるように AWS AppSync イベントの利用によってどのように実現できるかを確認します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2024/12/22/feature-1024x563-1.png",
+    "publishedAt": "2025-05-01T16:45:44+09:00"
+  },
+  "https://aws.amazon.com/jp/blogs/news/working-with-aws-appsync-events-serverless-websockets-for-pub-sub/": {
+    "title": "AWS AppSync Events との連携: Pub/Sub のためのサーバレス WebSocket | Amazon Web Services",
+    "description": "AWS AppSync は、アプリケーションをイベント、データ、AI モデルに接続することを簡素化し、管理します。新しく追加された AWS AppSync Events により、開発者はサーバーレス WebSocket 経由で、それらのサブスクライブしたクライアントに対して任意のイベントソースからの更新を配信することで、リアルタイムの体験を作成できます。AWS AppSync イベントは、GraphQL に縛られないスタンドアロンな Pub/Sub サービスを提供します。この記事では、リーダーボードというシンプルで実用的なユースケースから始めます。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2024/12/20/image-4-1024x576-1.png",
+    "publishedAt": "2025-02-17T16:04:53+09:00"
+  },
+  "https://findy-tools.io/articles/aws-amplify-gen-2/40": {
+    "title": "AWS Amplify Gen 2入門- AWS社員が解説する詳細ハンズオン - Findy Tools",
+    "description": "AWSサービスの一つである、AWS Amplifyは、Webやモバイル向けのフルスタックアプリケーション開発に必要な機能やツールセットを豊富に用意しているサービスです。本記事では、AWS Amplify Gen 2（以下、Amplify Gen 2）をAWSの方から紹介します。\n",
+    "ogpImage": "https://findy-tools.io/public_images/article/202501_aws-amplify/OGP.jpg",
+    "publishedAt": null
+  },
+  "https://github.com/aws-samples/dify-self-hosted-on-aws": {
+    "title": "GitHub - aws-samples/dify-self-hosted-on-aws: Self-host Dify on AWS",
+    "description": "Self-host Dify on AWS. Contribute to aws-samples/dify-self-hosted-on-aws development by creating an account on GitHub.",
+    "ogpImage": "https://opengraph.githubassets.com/443e1d8c7b085e960f92dc78e52c3af01b2b9514cb20ab3fdf9affffb46355f4/aws-samples/dify-self-hosted-on-aws",
+    "publishedAt": null
+  }
+}
