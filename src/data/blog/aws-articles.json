@@ -1,5 +1,20 @@
 [
   {
+    "id": "enhanced-genomic-data-storage-and-workflows-with-mgi-sentieon-and-aws",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/enhanced-genomic-data-storage-and-workflows-with-mgi-sentieon-and-aws/",
+    "publishedAt": "2026-08-13"
+  },
+  {
+    "id": "publicsector-benchmarking-pacbio-whole-genome-sequencing-variant-pipeline-analysis-with-aws-healthomics-workflows",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/publicsector-benchmarking-pacbio-whole-genome-sequencing-variant-pipeline-analysis-with-aws-healthomics-workflows/",
+    "publishedAt": "2026-08-13"
+  },
+  {
+    "id": "accelerating-life-sciences-research-with-kiro-a-unified-ai-interface-to-100-open-source-databases",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/accelerating-life-sciences-research-with-kiro-a-unified-ai-interface-to-100-open-source-databases/",
+    "publishedAt": "2026-08-13"
+  },
+  {
     "id": "aws-supports-agent-plugins-an-open-standard-for-portable-agent-extensions",
     "externalUrl": "https://aws.amazon.com/jp/blogs/news/aws-supports-agent-plugins-an-open-standard-for-portable-agent-extensions/",
     "publishedAt": "2026-08-10"
