@@ -17,6 +17,7 @@ beforeEach(() => {
   vi.restoreAllMocks();
 });
 
+// fetch対象のURLは ALLOWED_OGP_HOSTNAMES に含まれるホストを使う（SSRF対策のアローリスト）
 describe('fetchOgp', () => {
   it('OGPメタタグを正常に取得できる', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
@@ -24,7 +25,7 @@ describe('fetchOgp', () => {
       text: async () => mockHtml('テストタイトル', 'テスト説明文', 'https://example.com/image.png', '2025-06-01T10:00:00+09:00'),
     }));
 
-    const result = await fetchOgp('https://example.com/article');
+    const result = await fetchOgp('https://aws.amazon.com/jp/blogs/news/article/');
 
     expect(result.title).toBe('テストタイトル');
     expect(result.description).toBe('テスト説明文');
@@ -38,7 +39,7 @@ describe('fetchOgp', () => {
       text: async () => mockHtml('タイトル', '説明', ''),
     }));
 
-    const result = await fetchOgp('https://example.com/no-date');
+    const result = await fetchOgp('https://aws.amazon.com/jp/blogs/news/no-date/');
 
     expect(result.publishedAt).toBeNull();
   });
@@ -49,7 +50,7 @@ describe('fetchOgp', () => {
       status: 404,
     }));
 
-    const url = 'https://example.com/not-found';
+    const url = 'https://aws.amazon.com/jp/blogs/news/not-found/';
     const result = await fetchOgp(url);
 
     expect(result.title).toBe(url);
@@ -60,7 +61,7 @@ describe('fetchOgp', () => {
   it('fetchが例外を投げた場合にfallbackを返す', async () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
 
-    const url = 'https://example.com/error';
+    const url = 'https://aws.amazon.com/jp/blogs/news/error/';
     const result = await fetchOgp(url);
 
     expect(result.title).toBe(url);
@@ -74,7 +75,7 @@ describe('fetchOgp', () => {
     });
     vi.stubGlobal('fetch', mockFetch);
 
-    const url = 'https://example.com/cached';
+    const url = 'https://aws.amazon.com/jp/blogs/news/cached/';
     await fetchOgp(url);
     await fetchOgp(url);
 
@@ -91,7 +92,7 @@ describe('fetchOgp', () => {
       });
     vi.stubGlobal('fetch', mockFetch);
 
-    const result = await fetchOgp('https://example.com/flaky');
+    const result = await fetchOgp('https://aws.amazon.com/jp/blogs/news/flaky/');
 
     expect(mockFetch).toHaveBeenCalledTimes(2);
     expect(result.ogpImage).toBe('https://example.com/retry.png');
@@ -101,7 +102,7 @@ describe('fetchOgp', () => {
     const mockFetch = vi.fn().mockResolvedValue({ ok: false, status: 404 });
     vi.stubGlobal('fetch', mockFetch);
 
-    await fetchOgp('https://example.com/gone');
+    await fetchOgp('https://aws.amazon.com/jp/blogs/news/gone/');
 
     expect(mockFetch).toHaveBeenCalledTimes(1);
   });
@@ -120,7 +121,7 @@ describe('fetchOgp', () => {
       }),
     );
 
-    const urls = Array.from({ length: 20 }, (_, i) => `https://example.com/parallel-${i}`);
+    const urls = Array.from({ length: 20 }, (_, i) => `https://aws.amazon.com/jp/blogs/news/parallel-${i}/`);
     await Promise.all(urls.map((u) => fetchOgp(u)));
 
     expect(maxInFlight).toBeLessThanOrEqual(4);
@@ -133,10 +134,30 @@ describe('fetchOgp', () => {
     });
     vi.stubGlobal('fetch', mockFetch);
 
-    const url = 'https://example.com/concurrent';
+    const url = 'https://aws.amazon.com/jp/blogs/news/concurrent/';
     await Promise.all([fetchOgp(url), fetchOgp(url), fetchOgp(url)]);
 
     expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('アローリスト外のホストへはリクエストしない（SSRF対策）', async () => {
+    const mockFetch = vi.fn();
+    vi.stubGlobal('fetch', mockFetch);
+
+    const url = 'https://169.254.169.254/latest/meta-data/';
+    const result = await fetchOgp(url);
+
+    expect(mockFetch).not.toHaveBeenCalled();
+    expect(result).toEqual({ title: url, description: '', ogpImage: '', publishedAt: null });
+  });
+
+  it('http（非https）のURLはリクエストしない', async () => {
+    const mockFetch = vi.fn();
+    vi.stubGlobal('fetch', mockFetch);
+
+    await fetchOgp('http://aws.amazon.com/jp/blogs/news/article/');
+
+    expect(mockFetch).not.toHaveBeenCalled();
   });
 
   it('HTMLエンティティをデコードする', async () => {
@@ -145,7 +166,7 @@ describe('fetchOgp', () => {
       text: async () => mockHtml('タイトル &amp; サブタイトル', '説明 &lt;test&gt;', ''),
     }));
 
-    const result = await fetchOgp('https://example.com/entities');
+    const result = await fetchOgp('https://aws.amazon.com/jp/blogs/news/entities/');
 
     expect(result.title).toBe('タイトル & サブタイトル');
     expect(result.description).toBe('説明 <test>');

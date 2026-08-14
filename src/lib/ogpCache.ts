@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import type { OgpData } from './fetchOgp';
+import { formatErrorForLog, sanitizeForLog } from './sanitize';
 
 /** OGPキャッシュファイル（リポジトリにコミットしてビルド間で共有する） */
 export const OGP_CACHE_PATH = join('src', 'data', 'blog', 'ogp-cache.json');
@@ -34,7 +35,7 @@ export function loadOgpCache(path: string = OGP_CACHE_PATH): OgpCache {
   try {
     const parsed: unknown = JSON.parse(readFileSync(fullPath, 'utf-8'));
     if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
-      console.warn(`[ogpCache] 不正な形式のキャッシュを無視します: ${path}`);
+      console.warn(`[ogpCache] 不正な形式のキャッシュを無視します: ${sanitizeForLog(path)}`);
       return {};
     }
 
@@ -44,7 +45,9 @@ export function loadOgpCache(path: string = OGP_CACHE_PATH): OgpCache {
     }
     return cache;
   } catch (err) {
-    console.warn(`[ogpCache] キャッシュの読み込みに失敗しました: ${path}`, err);
+    console.warn(
+      `[ogpCache] キャッシュの読み込みに失敗しました: ${sanitizeForLog(path)}: ${formatErrorForLog(err)}`,
+    );
     return {};
   }
 }
@@ -66,6 +69,8 @@ export function saveOgpCache(cache: OgpCache, path: string = OGP_CACHE_PATH): vo
     writeFileSync(fullPath, JSON.stringify(sorted, null, 2) + '\n', 'utf-8');
   } catch (err) {
     // キャッシュ保存の失敗はビルドを止める理由にならない
-    console.warn(`[ogpCache] キャッシュの保存に失敗しました: ${path}`, err);
+    console.warn(
+      `[ogpCache] キャッシュの保存に失敗しました: ${sanitizeForLog(path)}: ${formatErrorForLog(err)}`,
+    );
   }
 }

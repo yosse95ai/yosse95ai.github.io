@@ -1,4 +1,5 @@
 import { loadOgpCache, saveOgpCache, type OgpCache } from './ogpCache';
+import { formatErrorForLog, sanitizeForLog } from './sanitize';
 
 export interface OgpData {
   title: string;
@@ -6,6 +7,22 @@ export interface OgpData {
   ogpImage: string;
   publishedAt: string | null;
 }
+
+/**
+ * SSRF (CWE-918) 対策: OGPを取得してよいホスト名のアローリスト。
+ * サブドメインも許可する（例: `aws.amazon.com` は `docs.aws.amazon.com` も対象）。
+ *
+ * 新しいドメインの記事・OSS・登壇を追加した場合はここに追記する。
+ * 未登録のURLはfetchせず、警告を出してキャッシュ／URLのみの表示にフォールバックする。
+ */
+export const ALLOWED_OGP_HOSTNAMES = [
+  'aws.amazon.com',
+  'findy-tools.io',
+  'github.com',
+  'qiita.com',
+  'youtube.com',
+  'youtu.be',
+] as const;
 
 /**
  * 外部サイト（aws.amazon.com など）はビルド時の同時大量アクセスで
@@ -69,7 +86,8 @@ export async function fetchOgp(url: string): Promise<OgpData> {
 }
 
 async function resolveOgp(url: string): Promise<OgpData> {
-  const fetched = await fetchWithRetry(url);
+  // SSRF対策: アローリスト外のURLへはリクエストしない
+  const fetched = isAllowedOgpUrl(url) ? await fetchWithRetry(url) : null;
 
   if (fetched) {
     memoryCache.set(url, fetched);
@@ -79,7 +97,7 @@ async function resolveOgp(url: string): Promise<OgpData> {
 
   const stale = readFromDisk(url);
   if (stale) {
-    console.warn(`[fetchOgp] Falling back to cached OGP data for ${url}`);
+    console.warn(`[fetchOgp] Falling back to cached OGP data for ${sanitizeForLog(url)}`);
     memoryCache.set(url, stale);
     return stale;
   }
@@ -88,6 +106,40 @@ async function resolveOgp(url: string): Promise<OgpData> {
   // 同一ビルド内で他ページから再試行しないようフォールバックもメモリに保持する
   memoryCache.set(url, fallback);
   return fallback;
+}
+
+/**
+ * SSRF (CWE-918) 対策のURL検証。
+ * https かつアローリストに含まれるホスト名のみ許可し、
+ * 内部ネットワーク・メタデータエンドポイントへのリクエストを防ぐ。
+ */
+export function isAllowedOgpUrl(url: string): boolean {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    console.warn(`[fetchOgp] 不正なURLのためスキップします: ${sanitizeForLog(url)}`);
+    return false;
+  }
+
+  if (parsed.protocol !== 'https:') {
+    console.warn(`[fetchOgp] https以外のURLはスキップします: ${sanitizeForLog(url)}`);
+    return false;
+  }
+
+  const hostname = parsed.hostname.toLowerCase();
+  const allowed = ALLOWED_OGP_HOSTNAMES.some(
+    (host) => hostname === host || hostname.endsWith(`.${host}`),
+  );
+
+  if (!allowed) {
+    console.warn(
+      `[fetchOgp] 許可されていないホストのためスキップします（許可する場合は ALLOWED_OGP_HOSTNAMES に追記）: ${sanitizeForLog(hostname)}`,
+    );
+    return false;
+  }
+
+  return true;
 }
 
 /** リトライ付きでOGPを取得する。全試行が失敗した場合のみ null を返す */
@@ -118,14 +170,13 @@ async function fetchWithRetry(url: string): Promise<OgpData | null> {
       if (retryable && !isLastAttempt) {
         const delay = RETRY_BASE_DELAY_MS * 2 ** (attempt - 1) + Math.floor(Math.random() * 100);
         console.warn(
-          `[fetchOgp] Retrying ${url} (attempt ${attempt + 1}/${MAX_ATTEMPTS}) after ${delay}ms:`,
-          describeError(err),
+          `[fetchOgp] Retrying ${sanitizeForLog(url)} (attempt ${attempt + 1}/${MAX_ATTEMPTS}) after ${delay}ms: ${describeError(err)}`,
         );
         await sleep(delay);
         continue;
       }
 
-      console.warn(`[fetchOgp] Failed to fetch ${url}:`, describeError(err));
+      console.warn(`[fetchOgp] Failed to fetch ${sanitizeForLog(url)}: ${describeError(err)}`);
       return null;
     }
   }
@@ -140,10 +191,10 @@ class HttpError extends Error {
   }
 }
 
+/** ログ出力用のエラー説明文（Log Injection 対策としてサニタイズ済み） */
 function describeError(err: unknown): string {
   if (err instanceof HttpError) return err.message;
-  if (err instanceof Error) return `${err.name}: ${err.message}`;
-  return String(err);
+  return formatErrorForLog(err);
 }
 
 function parseOgp(html: string, url: string): OgpData {

@@ -7,6 +7,7 @@
 import { readFileSync } from 'node:fs';
 import { fetchOgp, flushOgpCache } from '../src/lib/fetchOgp.js';
 import { OGP_CACHE_PATH } from '../src/lib/ogpCache.js';
+import { formatErrorForLog, sanitizeForLog } from '../src/lib/sanitize.js';
 
 interface UrlEntry {
   externalUrl?: string;
@@ -32,7 +33,9 @@ function collectUrls(): string[] {
     try {
       entries = JSON.parse(readFileSync(file, 'utf-8')) as UrlEntry[];
     } catch (err) {
-      console.warn(`[refresh-ogp-cache] 読み込みに失敗しました: ${file}`, err);
+      console.warn(
+        `[refresh-ogp-cache] 読み込みに失敗しました: ${sanitizeForLog(file)}: ${formatErrorForLog(err)}`,
+      );
       continue;
     }
 
@@ -60,14 +63,14 @@ async function main(): Promise<void> {
   flushOgpCache();
 
   console.log(
-    `[refresh-ogp-cache] 成功 ${results.length - failed.length} 件 / 失敗 ${failed.length} 件 → ${OGP_CACHE_PATH}`,
+    `[refresh-ogp-cache] 成功 ${results.length - failed.length} 件 / 失敗 ${failed.length} 件 → ${sanitizeForLog(OGP_CACHE_PATH)}`,
   );
   for (const { url } of failed) {
-    console.warn(`[refresh-ogp-cache] 取得できませんでした: ${url}`);
+    console.warn(`[refresh-ogp-cache] 取得できませんでした: ${sanitizeForLog(url)}`);
   }
 }
 
 main().catch((err: unknown) => {
-  console.error('[refresh-ogp-cache] エラーが発生しました:', err);
+  console.error(`[refresh-ogp-cache] エラーが発生しました: ${formatErrorForLog(err)}`);
   process.exit(1);
 });
