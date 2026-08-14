@@ -7,6 +7,7 @@
     "build": "astro build && rm -rf dist/catalog",
     "preview": "astro preview",
     "test": "vitest --run",
+    "ogp:refresh": "tsx scripts/refresh-ogp-cache.ts",
     "astro": "astro"
   },
   "dependencies": {

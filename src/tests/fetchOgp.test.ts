@@ -81,6 +81,64 @@ describe('fetchOgp', () => {
     expect(mockFetch).toHaveBeenCalledTimes(1);
   });
 
+  it('一時的なエラー（503）はリトライして成功結果を返す', async () => {
+    const mockFetch = vi
+      .fn()
+      .mockResolvedValueOnce({ ok: false, status: 503 })
+      .mockResolvedValueOnce({
+        ok: true,
+        text: async () => mockHtml('リトライ成功', '説明', 'https://example.com/retry.png'),
+      });
+    vi.stubGlobal('fetch', mockFetch);
+
+    const result = await fetchOgp('https://example.com/flaky');
+
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+    expect(result.ogpImage).toBe('https://example.com/retry.png');
+  });
+
+  it('404はリトライせず即座にfallbackを返す', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({ ok: false, status: 404 });
+    vi.stubGlobal('fetch', mockFetch);
+
+    await fetchOgp('https://example.com/gone');
+
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('同時実行数を制限する', async () => {
+    let inFlight = 0;
+    let maxInFlight = 0;
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockImplementation(async () => {
+        inFlight++;
+        maxInFlight = Math.max(maxInFlight, inFlight);
+        await new Promise((r) => setTimeout(r, 5));
+        inFlight--;
+        return { ok: true, text: async () => mockHtml('t', 'd', 'https://example.com/i.png') };
+      }),
+    );
+
+    const urls = Array.from({ length: 20 }, (_, i) => `https://example.com/parallel-${i}`);
+    await Promise.all(urls.map((u) => fetchOgp(u)));
+
+    expect(maxInFlight).toBeLessThanOrEqual(4);
+  });
+
+  it('同一URLへの同時リクエストはfetchを1回に集約する', async () => {
+    const mockFetch = vi.fn().mockImplementation(async () => {
+      await new Promise((r) => setTimeout(r, 5));
+      return { ok: true, text: async () => mockHtml('t', 'd', 'https://example.com/i.png') };
+    });
+    vi.stubGlobal('fetch', mockFetch);
+
+    const url = 'https://example.com/concurrent';
+    await Promise.all([fetchOgp(url), fetchOgp(url), fetchOgp(url)]);
+
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
   it('HTMLエンティティをデコードする', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
       ok: true,
