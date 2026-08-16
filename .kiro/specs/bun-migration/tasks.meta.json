@@ -227,6 +227,56 @@
         "chatSessionId": "sess_be97c09b-f5d8-460b-9881-3d7dc9eb9e26",
         "timestamp": 1786893204175
       }
+    ],
+    "7.6 macOS ARM64 での展開プラットフォームを記録する": [
+      {
+        "executionId": "706a5996-efe3-49f2-a54f-f4b5a040a45a",
+        "chatSessionId": "sess_e682b49a-7bdb-4579-bef1-fb55df634a2f",
+        "timestamp": 1786897438513
+      }
+    ],
+    "9.1 `.github/workflows/deploy.yml` を Bun 化する": [
+      {
+        "executionId": "923cf52f-8fc8-4b1d-b60e-2134ea5d803d",
+        "chatSessionId": "sess_cf288ce3-0615-4f88-a4e9-a9ee9d9c2d8e",
+        "timestamp": 1786898505948
+      },
+      {
+        "executionId": "923cf52f-8fc8-4b1d-b60e-2134ea5d803d",
+        "chatSessionId": "sess_cf288ce3-0615-4f88-a4e9-a9ee9d9c2d8e",
+        "timestamp": 1786898567035
+      }
+    ],
+    "9.2 `.github/workflows/update-aws-blog.yml` を Bun 化する": [
+      {
+        "executionId": "923cf52f-8fc8-4b1d-b60e-2134ea5d803d",
+        "chatSessionId": "sess_cf288ce3-0615-4f88-a4e9-a9ee9d9c2d8e",
+        "timestamp": 1786898509939
+      },
+      {
+        "executionId": "923cf52f-8fc8-4b1d-b60e-2134ea5d803d",
+        "chatSessionId": "sess_cf288ce3-0615-4f88-a4e9-a9ee9d9c2d8e",
+        "timestamp": 1786898609521
+      }
+    ],
+    "9.3 Phase 2 を単独コミットする": [
+      {
+        "executionId": "923cf52f-8fc8-4b1d-b60e-2134ea5d803d",
+        "chatSessionId": "sess_cf288ce3-0615-4f88-a4e9-a9ee9d9c2d8e",
+        "timestamp": 1786898642716
+      },
+      {
+        "executionId": "923cf52f-8fc8-4b1d-b60e-2134ea5d803d",
+        "chatSessionId": "sess_cf288ce3-0615-4f88-a4e9-a9ee9d9c2d8e",
+        "timestamp": 1786898686066
+      }
+    ],
+    "9. Phase 2: CI の Bun 化": [
+      {
+        "executionId": "923cf52f-8fc8-4b1d-b60e-2134ea5d803d",
+        "chatSessionId": "sess_cf288ce3-0615-4f88-a4e9-a9ee9d9c2d8e",
+        "timestamp": 1786898686106
+      }
     ]
   }
 }

@@ -179,7 +179,7 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
     - 続けて `bun run test` / `bun run build` を実行し、`diff /tmp/dist-node.sha256 /tmp/dist-bun.sha256` が差分なしであることを確認する
     - _要件: 1.5, 1.8_
 
-  - [x]* 7.6 macOS ARM64 での展開プラットフォームを記録する
+  - [x] 7.6 macOS ARM64 での展開プラットフォームを記録する
     - 対象 5 系統（`@tailwindcss/oxide` / `lightningcss` / `@rollup/rollup-*` / `@img/*` / `@esbuild/*`）について
       `node_modules` に展開されたパッケージが darwin-arm64 系のみであることを記録する
     - 他プラットフォーム向けディレクトリが 0 個であることを確認する
@@ -197,11 +197,11 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
     - コミット前にユーザープロファイル（Individual / AWS）を確認し `git config` を設定する
     - _要件: 5.1, 5.6, 12.4_
 
-- [ ] 8. チェックポイント - Phase 1 完了
+- [x] 8. チェックポイント - Phase 1 完了
   - すべてのテストがパスしていることを確認し、疑問があればユーザーに確認する。
 
-- [ ] 9. Phase 2: CI の Bun 化
-  - [ ] 9.1 `.github/workflows/deploy.yml` を Bun 化する
+- [x] 9. Phase 2: CI の Bun 化
+  - [x] 9.1 `.github/workflows/deploy.yml` を Bun 化する
     - `actions/setup-node@v5`（`node-version-file: .nvmrc` + `cache: npm` を含む）ステップを丸ごと削除し、
       `oven-sh/setup-bun@v2`（`bun-version-file: .bun-version`）に置換する
     - `npm ci` を `bun install --frozen-lockfile` に変更する
@@ -210,7 +210,7 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
     - `cache: npm` の指定と `--bun` 文字列が 0 個であることを確認する
     - _要件: 2.3, 6.1, 6.2, 6.3, 6.4, 6.8, 6.10, 6.11, 9.4_
 
-  - [ ] 9.2 `.github/workflows/update-aws-blog.yml` を Bun 化する
+  - [x] 9.2 `.github/workflows/update-aws-blog.yml` を Bun 化する
     - 現状は `actions/checkout@v4` / `actions/setup-node@v4`（`deploy.yml` の v5 とは異なる）
     - `setup-node@v4` は `node-version-file: .nvmrc` 付きで残し、`cache: npm` のみ削除する
     - `oven-sh/setup-bun@v2`（`bun-version-file: .bun-version`）を追加する
@@ -218,7 +218,7 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
     - `npx tsx scripts/update-aws-blog.ts` を `bun scripts/update-aws-blog.ts` に変更する
     - _要件: 6.5, 6.6, 6.7, 6.9_
 
-  - [ ] 9.3 Phase 2 を単独コミットする
+  - [x] 9.3 Phase 2 を単独コミットする
     - 対象は 2 つの workflow ファイルのみ。Phase 2 のみの revert で npm 経路に戻せる粒度を保つ
     - コミット前にユーザープロファイル（Individual / AWS）を確認し `git config` を設定する
     - _要件: 5.4, 5.5_
