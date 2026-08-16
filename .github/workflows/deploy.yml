@@ -21,13 +21,15 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci
-      - run: npm run test
+          bun-version-file: .bun-version
+      - run: bun install --frozen-lockfile
+      - run: bun run test
       - uses: withastro/action@v6
+        with:
+          package-manager: bun
+          node-version: '24'
 
   deploy:
     needs: build
