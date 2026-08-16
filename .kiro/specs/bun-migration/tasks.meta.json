@@ -277,6 +277,80 @@
         "chatSessionId": "sess_cf288ce3-0615-4f88-a4e9-a9ee9d9c2d8e",
         "timestamp": 1786898686106
       }
+    ],
+    "10.1 feature branch への push をユーザーに確認して実行する": [
+      {
+        "executionId": "b1cda5cf-a75d-49bd-b3bd-61a543375ef1",
+        "chatSessionId": "sess_d13699e0-67c1-4a9c-8a45-e1341d76e3df",
+        "timestamp": 1786899450572
+      },
+      {
+        "executionId": "b1cda5cf-a75d-49bd-b3bd-61a543375ef1",
+        "chatSessionId": "sess_d13699e0-67c1-4a9c-8a45-e1341d76e3df",
+        "timestamp": 1786899540494
+      }
+    ],
+    "10.2 `deploy.yml` の build job の実行結果を確認する": [
+      {
+        "executionId": "b1cda5cf-a75d-49bd-b3bd-61a543375ef1",
+        "chatSessionId": "sess_d13699e0-67c1-4a9c-8a45-e1341d76e3df",
+        "timestamp": 1786899548173
+      },
+      {
+        "executionId": "b1cda5cf-a75d-49bd-b3bd-61a543375ef1",
+        "chatSessionId": "sess_d13699e0-67c1-4a9c-8a45-e1341d76e3df",
+        "timestamp": 1786899721368
+      }
+    ],
+    "10.3 lockfile のプラットフォーム非依存性を確認する（移行の主目的）": [
+      {
+        "executionId": "b1cda5cf-a75d-49bd-b3bd-61a543375ef1",
+        "chatSessionId": "sess_d13699e0-67c1-4a9c-8a45-e1341d76e3df",
+        "timestamp": 1786899726390
+      },
+      {
+        "executionId": "b1cda5cf-a75d-49bd-b3bd-61a543375ef1",
+        "chatSessionId": "sess_d13699e0-67c1-4a9c-8a45-e1341d76e3df",
+        "timestamp": 1786899996469
+      }
+    ],
+    "10.5 Pages artifact のファイル数を確認する（P1）": [
+      {
+        "executionId": "b1cda5cf-a75d-49bd-b3bd-61a543375ef1",
+        "chatSessionId": "sess_d13699e0-67c1-4a9c-8a45-e1341d76e3df",
+        "timestamp": 1786899730514
+      },
+      {
+        "executionId": "b1cda5cf-a75d-49bd-b3bd-61a543375ef1",
+        "chatSessionId": "sess_d13699e0-67c1-4a9c-8a45-e1341d76e3df",
+        "timestamp": 1786900001192
+      }
+    ],
+    "10.4 Linux x64 CI での展開プラットフォームを記録する": [
+      {
+        "executionId": "b1cda5cf-a75d-49bd-b3bd-61a543375ef1",
+        "chatSessionId": "sess_d13699e0-67c1-4a9c-8a45-e1341d76e3df",
+        "timestamp": 1786900230042
+      },
+      {
+        "executionId": "b1cda5cf-a75d-49bd-b3bd-61a543375ef1",
+        "chatSessionId": "sess_d13699e0-67c1-4a9c-8a45-e1341d76e3df",
+        "timestamp": 1786900333721
+      }
+    ],
+    "10.6 `update-aws-blog.yml` を手動実行して OGP のサイレント劣化を検出する（P4）": [
+      {
+        "executionId": "b1cda5cf-a75d-49bd-b3bd-61a543375ef1",
+        "chatSessionId": "sess_d13699e0-67c1-4a9c-8a45-e1341d76e3df",
+        "timestamp": 1786900337925
+      }
+    ],
+    "10. Phase 2 完了ゲート": [
+      {
+        "executionId": "b1cda5cf-a75d-49bd-b3bd-61a543375ef1",
+        "chatSessionId": "sess_d13699e0-67c1-4a9c-8a45-e1341d76e3df",
+        "timestamp": 1786900337993
+      }
     ]
   }
 }

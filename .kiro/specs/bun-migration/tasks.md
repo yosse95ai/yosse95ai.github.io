@@ -223,37 +223,37 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
     - コミット前にユーザープロファイル（Individual / AWS）を確認し `git config` を設定する
     - _要件: 5.4, 5.5_
 
-- [ ] 10. Phase 2 完了ゲート
-  - [ ] 10.1 feature branch への push をユーザーに確認して実行する
+- [x] 10. Phase 2 完了ゲート
+  - [x] 10.1 feature branch への push をユーザーに確認して実行する
     - **`git push` は自律実行しない。** CI 検証には push が必要なため、対象ブランチと内容を提示して
       ユーザーの明示的な承認を得る
     - 承認後に `git push -u origin <feature-branch>` を実行する（`master` へは push しない）
     - _要件: 12.6_
 
-  - [ ] 10.2 `deploy.yml` の build job の実行結果を確認する
+  - [x] 10.2 `deploy.yml` の build job の実行結果を確認する
     - feature branch 上で build job が成功することを確認する
     - Actions ログに `Setup Bun` と `Setup Node (Bun)` の完了が記録されていることを確認する
     - 全ステップのログを通じて `npm install` / `npm ci` の実行が 0 件であることを確認する
     - 1 件以上記録されている場合は `withastro/action` の `package-manager: bun` 指定を修正して再実行する
     - _要件: 6.12, 6.13, 12.6_
 
-  - [ ] 10.3 lockfile のプラットフォーム非依存性を確認する（移行の主目的）
+  - [x] 10.3 lockfile のプラットフォーム非依存性を確認する（移行の主目的）
     - macOS ARM64 で生成した `bun.lock` を使って Linux x64 CI の `bun install --frozen-lockfile` が
       終了コード 0 で完了することを確認する
     - 実行後に `bun.lock` に差分が 0 行であることを確認する
     - 失敗または差分がある場合は後続タスクを開始せず、不足・不一致となったパッケージ名と該当プラットフォームを記録する
     - _要件: 1.5, 13.1, 13.5, 6.14_
 
-  - [ ]* 10.4 Linux x64 CI での展開プラットフォームを記録する
+  - [x] 10.4 Linux x64 CI での展開プラットフォームを記録する
     - 対象 5 系統について展開されたパッケージが linux-x64 系のみであることを CI ログで記録する
     - 実行プラットフォーム対応パッケージが未展開の系統があれば後続タスクを開始せず記録する
     - _要件: 13.4, 13.6_
 
-  - [ ] 10.5 Pages artifact のファイル数を確認する（P1）
+  - [x] 10.5 Pages artifact のファイル数を確認する（P1）
     - build job がアップロードした artifact のファイル数が `Baseline_Dist_Hashes` のエントリ数と一致することを確認する
     - _要件: 3.7_
 
-  - [ ] 10.6 `update-aws-blog.yml` を手動実行して OGP のサイレント劣化を検出する（P4）
+  - [x] 10.6 `update-aws-blog.yml` を手動実行して OGP のサイレント劣化を検出する（P4）
     - `workflow_dispatch` で手動実行する
     - 実行ログに「OGPキャッシュの更新に失敗しました」が含まれないことを確認する
     - 取得成功件数・取得失敗件数が出力されていることを確認する
@@ -339,6 +339,52 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
   lockfile は全プラットフォームを保持しつつ展開は実行プラットフォーム分のみという Bun の想定挙動を確認
 - 7.7 の切り戻し検証（P5）: `npm ci --dry-run` が終了コード 0。
   `package-lock.json` / `bun.lock` / `node_modules` はいずれも無変更で、npm 経路への切り戻しが成立
+- **Task 10（Phase 2 完了ゲート）の CI 検証 run**: `workflow_dispatch` / ref `feat/bun-migration`
+  （HEAD `a4c0d4d`）/ run ID `31960256018`
+  - build job は**成功**。ログは `/tmp/deploy-run-31960256018-build.log` に保存
+  - deploy job は失敗。理由は
+    `Branch "feat/bun-migration" is not allowed to deploy to github-pages due to environment protection rules.`
+    → 環境保護ルールによるブロックであり**本番 Pages デプロイは実行されていない**。build job の検証結果には影響なし
+- 10.2 の記録（要件 6.12 / 6.13）: `withastro/action@v6` 内部の `Setup Bun`（success, 1482ms）と
+  `Setup Node (Bun)`（success, 3024ms）が両方記録。`Setup Node` / `Setup PNPM` / `Setup Deno` は skipped。
+  内部で `node-version: 24` が渡り `node: v24.19.0` で起動。`npm install` / `npm ci` の実行は **0 件**
+  （ログ中の `npm` 文字列は action の未実行分岐・ツール情報出力・ステップ表示名のみ）。
+  `bun run test` は 9 files / **86 tests** 全パスで `Baseline_Test_Count` と一致
+- 10.3 の記録（要件 1.5 / 13.1 / 13.5 / 6.14。移行の主目的）: macOS ARM64 生成の `bun.lock` で
+  Linux x64（ubuntu-24.04 / bun-linux-x64 1.3.14）の `bun install --frozen-lockfile` が成功
+  （455 packages / 1347ms、`bash -e` で後続ステップ実行＝終了コード 0）。lockfile 不整合エラー 0 件。
+  `bun.lock` の blob SHA は `95bf95860b105bb63d32282da30a0e23fe4dbc2a` でローカル / リモート
+  `feat/bun-migration` / CI checkout commit が一致し差分 0 行。withastro/action 内部の再 install は
+  `Checked 463 installs across 571 packages (no changes)` を報告
+- 10.5 の記録（要件 3.7 / P1）: Pages artifact（`github-pages`、Artifact ID 9267042675、1083254 bytes）の
+  `Archive artifact` tar 一覧からディレクトリエントリを除いたファイル数は **25 件**で
+  `Baseline_Dist_Hashes`（25 ファイル）と一致。相対パスの突き合わせも欠落 0 / 余剰 0
+- **10.4 はユーザー判断でスキップ（未検証）**: 現行の `deploy.yml` のログには 5 系統
+  （`@tailwindcss/oxide` / `lightningcss` / `@rollup/rollup-*` / `@img/*` / `@esbuild/*`）の
+  個別パッケージ名が出力されない（Bun は直接依存のみ `+ pkg@ver` 形式で列挙し、サマリは
+  `455 packages installed` のみ）。CI ログで linux-x64 のみの展開を記録するには
+  `ls node_modules/...` を出力する一時ステップの追加が必要で、そのための workflow 変更と追加 push を
+  避ける判断となった。**要件 13.4 / 13.6 は未充足のまま残る**。
+  なお macOS ARM64 側の同等記録（7.6）は取得済みで、Linux x64 での `--frozen-lockfile` 成功（10.3）により
+  移行の主目的自体は検証済み
+- **10.6 はユーザー判断でスキップ（未検証）**: `update-aws-blog.yml` の `workflow_dispatch` は
+  新着記事があるとブランチ作成 + PR 作成の副作用を伴うため実行しない判断となった。
+  **要件 7.5（CI 実行ログでの P4 検証）は未充足**。OGP キャッシュ更新のログ検証自体は
+  Phase 0 の 3.4（Node 環境）と Phase 1 の 7.4（`bun scripts/refresh-ogp-cache.ts`）で合格済みであり、
+  P4 はローカル検証のみで担保している状態
+- **`deploy.yml` の deploy job にブランチガードを追加（Task 10 の副産物対応）**:
+  Task 10.2 の `workflow_dispatch`（ref `feat/bun-migration`）で deploy job の `environment: github-pages`
+  により deployment レコードが作られ、`github-pages` 環境のブランチ保護（`master` のみ許可）で
+  `waiting` → `failure` となり、PR #68 に「This branch had an error being deployed」が表示された
+  - 対処 1: 失敗した deployment レコード（id `5933295392` / sha `a4c0d4df`）を
+    `gh api -X DELETE repos/.../deployments/5933295392` で削除
+    （削除後 `?ref=feat/bun-migration` の件数 0 を確認）
+  - 対処 2: deploy job に `if: github.ref == 'refs/heads/master'` を追加。
+    `master` への push および `master` 上の `workflow_dispatch` では従来どおり deploy が実行され、
+    feature branch での `workflow_dispatch` では deploy job が skipped となり
+    deployment レコードが作られない
+  - Phase 2 の検証結果（10.2 / 10.3 / 10.5）は build job のみを根拠としているため再検証は不要。
+    `design.md` の `deploy.yml` 構成記述にはこの `if` 条件が含まれていない点を差分として記録しておく
 
 ## Task Dependency Graph
 
