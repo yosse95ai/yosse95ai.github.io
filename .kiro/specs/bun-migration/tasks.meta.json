@@ -171,6 +171,61 @@
         "executionId": "1f6accf7-4893-47d4-9cd6-eaa4a0203c24",
         "chatSessionId": "sess_4eaf611d-20bc-424a-adbe-2f3dca96bf03",
         "timestamp": 1786890488871
+      },
+      {
+        "executionId": "1f6accf7-4893-47d4-9cd6-eaa4a0203c24",
+        "chatSessionId": "sess_4eaf611d-20bc-424a-adbe-2f3dca96bf03",
+        "timestamp": 1786890580635
+      }
+    ],
+    "4. Phase 0 完了ゲート": [
+      {
+        "executionId": "1f6accf7-4893-47d4-9cd6-eaa4a0203c24",
+        "chatSessionId": "sess_4eaf611d-20bc-424a-adbe-2f3dca96bf03",
+        "timestamp": 1786890580737
+      }
+    ],
+    "6.1 `bun install` で `bun.lock` を生成する": [
+      {
+        "executionId": "d9cccd51-bf92-4262-906b-549fa28c8f58",
+        "chatSessionId": "sess_be97c09b-f5d8-460b-9881-3d7dc9eb9e26",
+        "timestamp": 1786892475031
+      },
+      {
+        "executionId": "d9cccd51-bf92-4262-906b-549fa28c8f58",
+        "chatSessionId": "sess_be97c09b-f5d8-460b-9881-3d7dc9eb9e26",
+        "timestamp": 1786893119030
+      }
+    ],
+    "6.2 `bun pm untrusted` の出力を記録する": [
+      {
+        "executionId": "d9cccd51-bf92-4262-906b-549fa28c8f58",
+        "chatSessionId": "sess_be97c09b-f5d8-460b-9881-3d7dc9eb9e26",
+        "timestamp": 1786893123710
+      },
+      {
+        "executionId": "d9cccd51-bf92-4262-906b-549fa28c8f58",
+        "chatSessionId": "sess_be97c09b-f5d8-460b-9881-3d7dc9eb9e26",
+        "timestamp": 1786893199142
+      }
+    ],
+    "6.3 `.bun-version` を新規作成する": [
+      {
+        "executionId": "d9cccd51-bf92-4262-906b-549fa28c8f58",
+        "chatSessionId": "sess_be97c09b-f5d8-460b-9881-3d7dc9eb9e26",
+        "timestamp": 1786893124827
+      },
+      {
+        "executionId": "d9cccd51-bf92-4262-906b-549fa28c8f58",
+        "chatSessionId": "sess_be97c09b-f5d8-460b-9881-3d7dc9eb9e26",
+        "timestamp": 1786893200035
+      }
+    ],
+    "6.4 `package.json` を Bun 運用向けに更新する": [
+      {
+        "executionId": "d9cccd51-bf92-4262-906b-549fa28c8f58",
+        "chatSessionId": "sess_be97c09b-f5d8-460b-9881-3d7dc9eb9e26",
+        "timestamp": 1786893204175
       }
     ]
   }

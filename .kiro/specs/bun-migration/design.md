@@ -1017,6 +1017,19 @@ bun pm untrusted   # 記録のみ。install 直後に実行すること
 6. **`package-lock.json` の最終的な削除タイミング**。Phase 3 完了後、Bun 運用が安定したら
    別 PR で削除するか、恒久的に残すか。Open Question 3 の運用ルールと連動する。
 
+   あわせて解消すべき既知の残渣がある。Phase 1（タスク 6.4）で `package.json` の
+   `devDependencies.tsx` を削除したが、`bun.lock` の `packages` セクションには `tsx@4.21.0` が残る。
+   原因は `vite` の optional peer dependency（`peerDependenciesMeta.tsx.optional: true`）を、
+   `package-lock.json` から移行した既存 lockfile の増分解決で Bun 1.3.14 が保持し続けるため。
+   `bun install --force` / `bun remove tsx` では解消しない。要件 8.2（`package.json` の
+   `devDependencies` / `scripts` に tsx を 0 件）は充足済みで、tsx は直接依存から推移的な
+   optional peer に格下げされた状態にある。
+
+   `bun.lock` を削除して完全再解決すれば tsx は消えるが、`configVersion` が 0→1 に変わり
+   約 250 パッケージが一斉更新され [P1](#correctness-properties)（`dist/` の SHA-256 完全一致）を壊す。
+   したがって本 spec の範囲では実施せず、`package-lock.json` を削除する将来 PR で
+   lockfile を再生成する際に合わせて解消する。
+
 ---
 
 ## Dependencies

@@ -93,7 +93,7 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
     - `npm run test` を実行し、件数が `Baseline_Test_Count` と一致し失敗 0 件であることを確認する
     - _要件: 4.4_
 
-- [~] 4. Phase 0 完了ゲート
+- [x] 4. Phase 0 完了ゲート
   - [x] 4.1 成果物同一性とテストを検証する
     - `npm run build` を実行し、`find dist -type f -exec shasum -a 256 {} \; | sort -k2 > /tmp/dist-phase0.sha256`
     - `diff /tmp/dist-node.sha256 /tmp/dist-phase0.sha256` が差分なしであることを確認する
@@ -101,32 +101,32 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
     - 不一致があれば Phase 0 の変更をロールバックし、不一致の相対パスと種別を報告する
     - _要件: 3.4, 3.5, 3.6, 8.3, 8.6, 12.2_
 
-  - [-] 4.2 Phase 0 を単独コミットする
+  - [x] 4.2 Phase 0 を単独コミットする
     - Bun 関連ファイル（`bun.lock` / `packageManager` / `.bun-version`）を含めないことを確認する
     - コミット前にユーザープロファイル（Individual / AWS）を確認し `git config` を設定する
     - Phase 0 単独で `master` にマージ可能な状態であることを確認する
     - _要件: 5.7, 12.2, 12.3_
 
-- [ ] 5. チェックポイント - Phase 0 完了
+- [x] 5. チェックポイント - Phase 0 完了
   - すべてのテストがパスしていることを確認し、疑問があればユーザーに確認する。
 
-- [ ] 6. Phase 1: ローカル Bun 化
-  - [ ] 6.1 `bun install` で `bun.lock` を生成する
+- [x] 6. Phase 1: ローカル Bun 化
+  - [x] 6.1 `bun install` で `bun.lock` を生成する
     - `bun install` を実行し、`package-lock.json` からの自動マイグレートで `bun.lock` が生成されることを確認する
     - `package-lock.json` の内容が変化していないことを確認する
     - `bun.lock` を Git 追跡対象に追加し、`.gitignore` の除外対象でないことを確認する
     - _要件: 1.1, 1.2, 1.9_
 
-  - [ ]* 6.2 `bun pm untrusted` の出力を記録する
+  - [x]* 6.2 `bun pm untrusted` の出力を記録する
     - **`bun install` の完了直後に実行する**（`node_modules` 未生成状態の 0 件報告は無効）
     - 標準出力の全文を記録項目として保存する。合否ゲートではない
     - _要件: 10.4, 10.5_
 
-  - [ ] 6.3 `.bun-version` を新規作成する
+  - [x] 6.3 `.bun-version` を新規作成する
     - 内容は `1.3.14`（接頭辞 `v` なし、前後空白なし、末尾改行あり、1 行のみ）
     - _要件: 9.1_
 
-  - [ ] 6.4 `package.json` を Bun 運用向けに更新する
+  - [x] 6.4 `package.json` を Bun 運用向けに更新する
     - `packageManager: "bun@1.3.14"` を追加し、`.bun-version` の値と完全一致することを確認する
     - `scripts.ogp:refresh` を `"bun scripts/refresh-ogp-cache.ts"` に変更する
     - `scripts.blog:update` に `"bun scripts/update-aws-blog.ts"` を追加する
@@ -136,62 +136,62 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
     - 変更後に `bun install` を実行して `bun.lock` を更新する
     - _要件: 1.3, 1.6, 1.7, 2.4, 2.5, 8.2, 9.2, 10.1_
 
-  - [ ] 6.5 Bun ランタイム化の混入がないことを検証する
+  - [x] 6.5 Bun ランタイム化の混入がないことを検証する
     - リポジトリルートおよび全サブディレクトリ（`node_modules` を除く）に `bunfig.toml` が 0 個であることを確認する
     - `package.json` の `scripts` および今後変更する workflow に `--bun` が 0 個であることを確認する
     - `package.json` に `trustedDependencies` キーが存在しないことを確認する（空配列も不可）
     - _要件: 2.2, 2.3, 10.1, 10.2_
 
-  - [ ] 6.6 ローカル Bun バージョンの整合を確認する
+  - [x] 6.6 ローカル Bun バージョンの整合を確認する
     - `bun --version` の出力が `.bun-version` の値と一致することを確認する
     - 不一致の場合は `bun upgrade --to 1.3.14` を実行し、再確認する
     - _要件: 9.6_
 
-- [ ] 7. Phase 1 完了ゲート
-  - [ ] 7.1 成果物の同一性を検証する（P1）
+- [x] 7. Phase 1 完了ゲート
+  - [x] 7.1 成果物の同一性を検証する（P1）
     - `bun run build` を実行する
     - `find dist -type f | wc -l` が Phase 0 と同数であることを確認する
     - `find dist -type f -exec shasum -a 256 {} \; | sort -k2 > /tmp/dist-bun.sha256`
     - `diff /tmp/dist-node.sha256 /tmp/dist-bun.sha256` が差分なしであることを確認する
     - _要件: 3.2, 3.3, 3.5, 3.6, 12.4_
 
-  - [ ] 7.2 テストの完全パスと実行ランタイムを検証する（P2 / P3）
+  - [x] 7.2 テストの完全パスと実行ランタイムを検証する（P2 / P3）
     - `bun run test` が失敗 0 件・エラー 0 件で終了コード 0 を返すことを確認する
     - 報告件数が `Baseline_Test_Count` と完全一致することを確認する
     - テストプロセス内で `process.versions.bun` が `undefined`、`process.versions.node` のメジャーが `24` であることを確認する
     - `vi.stubGlobal` / `vi.mock` / `vi.unstubAllGlobals` が動作し、日本語テスト名が文字化けしないことを確認する
     - _要件: 2.1, 4.1, 4.2, 4.3, 4.6, 4.8, 12.4_
 
-  - [ ] 7.3 開発サーバの起動を検証する
+  - [x] 7.3 開発サーバの起動を検証する
     - `bun run dev` を実行し、astro の ready ログが出力されることを確認する
     - 表示された URL のトップページ（`/`）への HTTP GET が 200 を返すことを確認する
     - 確認後に開発サーバを停止する
     - _要件: 12.5_
 
-  - [ ] 7.4 OGP キャッシュ更新スクリプトを Bun で検証する
+  - [x] 7.4 OGP キャッシュ更新スクリプトを Bun で検証する
     - `bun scripts/refresh-ogp-cache.ts` を実行し、対象記事が全件成功することを確認する
     - 取得成功件数・取得失敗件数が出力されることを確認する
     - _要件: 7.2, 7.7_
 
-  - [ ] 7.5 クリーン環境で `--frozen-lockfile` を再検証する
+  - [x] 7.5 クリーン環境で `--frozen-lockfile` を再検証する
     - `rm -rf node_modules dist` の後に `bun install --frozen-lockfile` を実行し、終了コード 0 を確認する
     - 実行前後で `bun.lock` の SHA-256 が一致することを確認する
     - 続けて `bun run test` / `bun run build` を実行し、`diff /tmp/dist-node.sha256 /tmp/dist-bun.sha256` が差分なしであることを確認する
     - _要件: 1.5, 1.8_
 
-  - [ ]* 7.6 macOS ARM64 での展開プラットフォームを記録する
+  - [x]* 7.6 macOS ARM64 での展開プラットフォームを記録する
     - 対象 5 系統（`@tailwindcss/oxide` / `lightningcss` / `@rollup/rollup-*` / `@img/*` / `@esbuild/*`）について
       `node_modules` に展開されたパッケージが darwin-arm64 系のみであることを記録する
     - 他プラットフォーム向けディレクトリが 0 個であることを確認する
     - _要件: 13.2, 13.3_
 
-  - [ ] 7.7 切り戻し可能性を検証する（P5）
+  - [x] 7.7 切り戻し可能性を検証する（P5）
     - `test -f package-lock.json` が成功することを確認する
     - `npm ci --dry-run` が終了コード 0 で完了することを確認する
     - 失敗する場合は切り戻し不能と判定し、失敗した依存関係名と理由を記録する
     - _要件: 5.1, 5.2, 5.3_
 
-  - [ ] 7.8 Phase 1 を単独コミットする
+  - [x] 7.8 Phase 1 を単独コミットする
     - `bun.lock` / `.bun-version` / `package.json` を対象に含める
     - `package-lock.json` を削除・リネームしないことを確認する
     - コミット前にユーザープロファイル（Individual / AWS）を確認し `git config` を設定する
@@ -317,6 +317,28 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
   ここで方針が決まるまで Phase 0 のコミット（4.2）に進まない
 - `git push` を伴うタスク（10.1 / 12.6）は必ずユーザー承認を取る
 - コミットを伴うタスク（4.2 / 7.8 / 9.3 / 12.6）は必ずユーザープロファイルを確認する
+- タスク 6.4 で `package.json` の `devDependencies.tsx` は削除したが、`bun.lock` の `packages`
+  セクションに `tsx@4.21.0` が残る。原因は `vite` の optional peer dependency
+  （`peerDependenciesMeta.tsx.optional: true`）を、`package-lock.json` から移行した既存 lockfile の
+  増分解決で Bun 1.3.14 が保持し続けるため。`bun install --force` / `bun remove tsx` では解消しない
+- 要件 8.2（`package.json` の `devDependencies` / `scripts` に tsx を 0 件）は充足済みであり、
+  tsx は直接依存から推移的な optional peer に格下げされた状態
+- **将来対応**: `bun.lock` を削除して完全再解決すれば tsx は消えるが、`configVersion` が 0→1 に変わり
+  約 250 パッケージが一斉更新され P1（`dist/` の SHA-256 完全一致）を壊す。したがって本 spec の範囲では
+  実施しない。`package-lock.json` を削除する将来 PR（Open Question 6）で lockfile を再生成する際に
+  合わせて解消する
+- **Baseline_Test_Count = 86 tests / 9 test files**（Open Question 5 の確定値）。
+  Phase 0 の `npm run test` と Phase 1 の `bun run test` の双方で同値を確認
+- **Baseline_Dist_Hashes = dist 配下 25 ファイル**。`/tmp/dist-node.sha256` に保存。
+  Phase 1 の `bun run build` 成果物（`/tmp/dist-bun.sha256`）と `diff` 差分 0 件（P1 合格）
+- 7.5 のクリーン環境検証: `rm -rf node_modules dist` → `bun install --frozen-lockfile` で
+  451 packages・終了コード 0、`bun.lock` の SHA-256 は実行前後一致。
+  `bun pm untrusted` はクリーン環境でも 0 件
+- 7.6 の記録（macOS ARM64）: `@tailwindcss/oxide` / `lightningcss` / `@rollup/rollup-*` / `@img/*` /
+  `@esbuild/*` の 5 系統いずれも展開は darwin-arm64 系のみ（6 ディレクトリ）。他プラットフォーム向けは 0 個。
+  lockfile は全プラットフォームを保持しつつ展開は実行プラットフォーム分のみという Bun の想定挙動を確認
+- 7.7 の切り戻し検証（P5）: `npm ci --dry-run` が終了コード 0。
+  `package-lock.json` / `bun.lock` / `node_modules` はいずれも無変更で、npm 経路への切り戻しが成立
 
 ## Task Dependency Graph
 
