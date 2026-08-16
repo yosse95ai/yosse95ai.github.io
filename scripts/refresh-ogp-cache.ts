@@ -51,7 +51,20 @@ function collectUrls(): string[] {
   return [...urls];
 }
 
-async function main(): Promise<void> {
+export interface RefreshOgpCacheResult {
+  /** OGP を取得できた件数 */
+  succeeded: number;
+  /** OGP を取得できなかった件数 */
+  failed: number;
+}
+
+/**
+ * 対象データファイルの全 URL について OGP を取得し、キャッシュへ書き出す。
+ *
+ * 子プロセスを起動せずに呼び出せるよう named export にしている
+ * （呼び出し側が特定の実行ランタイムに依存しないため）。
+ */
+export async function refreshOgpCache(): Promise<RefreshOgpCacheResult> {
   const urls = collectUrls();
   console.log(`[refresh-ogp-cache] ${urls.length} 件のURLを対象にOGPを取得します`);
 
@@ -68,9 +81,16 @@ async function main(): Promise<void> {
   for (const { url } of failed) {
     console.warn(`[refresh-ogp-cache] 取得できませんでした: ${sanitizeForLog(url)}`);
   }
+
+  return { succeeded: results.length - failed.length, failed: failed.length };
 }
 
-main().catch((err: unknown) => {
-  console.error(`[refresh-ogp-cache] エラーが発生しました: ${formatErrorForLog(err)}`);
-  process.exit(1);
-});
+/** スクリプトとして直接実行された場合のみ全件取得を行う（import 時は実行しない） */
+const isEntryPoint = (import.meta as ImportMeta & { main?: boolean }).main === true;
+
+if (isEntryPoint) {
+  refreshOgpCache().catch((err: unknown) => {
+    console.error(`[refresh-ogp-cache] エラーが発生しました: ${formatErrorForLog(err)}`);
+    process.exit(1);
+  });
+}

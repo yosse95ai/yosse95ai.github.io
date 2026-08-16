@@ -1,0 +1,177 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 クリーンな Node 環境を用意して依存をインストールする": [
+      {
+        "executionId": "02f7fa03-71ea-4802-8d0b-cb6c85cf2469",
+        "chatSessionId": "sess_428ec3c5-7e5e-4888-b5e6-e5312e34349b",
+        "timestamp": 1786885266359
+      },
+      {
+        "executionId": "02f7fa03-71ea-4802-8d0b-cb6c85cf2469",
+        "chatSessionId": "sess_428ec3c5-7e5e-4888-b5e6-e5312e34349b",
+        "timestamp": 1786885369409
+      }
+    ],
+    "1.2 `Baseline_Test_Count` を記録する": [
+      {
+        "executionId": "02f7fa03-71ea-4802-8d0b-cb6c85cf2469",
+        "chatSessionId": "sess_428ec3c5-7e5e-4888-b5e6-e5312e34349b",
+        "timestamp": 1786885373975
+      },
+      {
+        "executionId": "02f7fa03-71ea-4802-8d0b-cb6c85cf2469",
+        "chatSessionId": "sess_428ec3c5-7e5e-4888-b5e6-e5312e34349b",
+        "timestamp": 1786885508833
+      }
+    ],
+    "1.3 `Baseline_Dist_Hashes` を記録する": [
+      {
+        "executionId": "02f7fa03-71ea-4802-8d0b-cb6c85cf2469",
+        "chatSessionId": "sess_428ec3c5-7e5e-4888-b5e6-e5312e34349b",
+        "timestamp": 1786885378098
+      },
+      {
+        "executionId": "02f7fa03-71ea-4802-8d0b-cb6c85cf2469",
+        "chatSessionId": "sess_428ec3c5-7e5e-4888-b5e6-e5312e34349b",
+        "timestamp": 1786885513323
+      }
+    ],
+    "1. Phase 0: ベースラインの取得": [
+      {
+        "executionId": "02f7fa03-71ea-4802-8d0b-cb6c85cf2469",
+        "chatSessionId": "sess_428ec3c5-7e5e-4888-b5e6-e5312e34349b",
+        "timestamp": 1786885513383
+      }
+    ],
+    "2.1 `motion` の参照が 0 箇所であることを再確認する": [
+      {
+        "executionId": "29e91fa3-7a1b-4bed-aa24-d1da461128df",
+        "chatSessionId": "sess_762a7bc8-3eb1-4bd7-abe1-f30288622458",
+        "timestamp": 1786885581388
+      },
+      {
+        "executionId": "29e91fa3-7a1b-4bed-aa24-d1da461128df",
+        "chatSessionId": "sess_762a7bc8-3eb1-4bd7-abe1-f30288622458",
+        "timestamp": 1786885663200
+      }
+    ],
+    "2.2 `package.json` から `motion` を削除する": [
+      {
+        "executionId": "29e91fa3-7a1b-4bed-aa24-d1da461128df",
+        "chatSessionId": "sess_762a7bc8-3eb1-4bd7-abe1-f30288622458",
+        "timestamp": 1786885668413
+      },
+      {
+        "executionId": "29e91fa3-7a1b-4bed-aa24-d1da461128df",
+        "chatSessionId": "sess_762a7bc8-3eb1-4bd7-abe1-f30288622458",
+        "timestamp": 1786885714055
+      }
+    ],
+    "2.3 `package-lock.json` の同期方針をユーザーに確認して適用する": [
+      {
+        "executionId": "29e91fa3-7a1b-4bed-aa24-d1da461128df",
+        "chatSessionId": "sess_762a7bc8-3eb1-4bd7-abe1-f30288622458",
+        "timestamp": 1786885721660
+      },
+      {
+        "executionId": "29e91fa3-7a1b-4bed-aa24-d1da461128df",
+        "chatSessionId": "sess_762a7bc8-3eb1-4bd7-abe1-f30288622458",
+        "timestamp": 1786886771086
+      }
+    ],
+    "2. Phase 0: `motion` 依存の削除": [
+      {
+        "executionId": "29e91fa3-7a1b-4bed-aa24-d1da461128df",
+        "chatSessionId": "sess_762a7bc8-3eb1-4bd7-abe1-f30288622458",
+        "timestamp": 1786886771171
+      }
+    ],
+    "3.1 `scripts/refresh-ogp-cache.ts` の構造を確認して実装方式を決定する": [
+      {
+        "executionId": "4b654b0c-3446-44d3-8f3f-74108b05b7c0",
+        "chatSessionId": "sess_cbef71e6-2cd0-4ffd-ba6a-e38ed5ff1281",
+        "timestamp": 1786886815001
+      },
+      {
+        "executionId": "4b654b0c-3446-44d3-8f3f-74108b05b7c0",
+        "chatSessionId": "sess_cbef71e6-2cd0-4ffd-ba6a-e38ed5ff1281",
+        "timestamp": 1786886950187
+      }
+    ],
+    "3.2 `scripts/refresh-ogp-cache.ts` を関数エクスポート可能な構造に整える": [
+      {
+        "executionId": "4b654b0c-3446-44d3-8f3f-74108b05b7c0",
+        "chatSessionId": "sess_cbef71e6-2cd0-4ffd-ba6a-e38ed5ff1281",
+        "timestamp": 1786886955163
+      },
+      {
+        "executionId": "4b654b0c-3446-44d3-8f3f-74108b05b7c0",
+        "chatSessionId": "sess_cbef71e6-2cd0-4ffd-ba6a-e38ed5ff1281",
+        "timestamp": 1786887070252
+      }
+    ],
+    "3.3 `scripts/update-aws-blog.ts` から `npx tsx` 起動を除去する": [
+      {
+        "executionId": "4b654b0c-3446-44d3-8f3f-74108b05b7c0",
+        "chatSessionId": "sess_cbef71e6-2cd0-4ffd-ba6a-e38ed5ff1281",
+        "timestamp": 1786887074519
+      },
+      {
+        "executionId": "4b654b0c-3446-44d3-8f3f-74108b05b7c0",
+        "chatSessionId": "sess_cbef71e6-2cd0-4ffd-ba6a-e38ed5ff1281",
+        "timestamp": 1786887179678
+      }
+    ],
+    "3.4 OGP キャッシュ更新のログ出力を検証する": [
+      {
+        "executionId": "4b654b0c-3446-44d3-8f3f-74108b05b7c0",
+        "chatSessionId": "sess_cbef71e6-2cd0-4ffd-ba6a-e38ed5ff1281",
+        "timestamp": 1786887183709
+      },
+      {
+        "executionId": "4b654b0c-3446-44d3-8f3f-74108b05b7c0",
+        "chatSessionId": "sess_cbef71e6-2cd0-4ffd-ba6a-e38ed5ff1281",
+        "timestamp": 1786887373083
+      }
+    ],
+    "3.5 既存テストへの影響を確認する": [
+      {
+        "executionId": "4b654b0c-3446-44d3-8f3f-74108b05b7c0",
+        "chatSessionId": "sess_cbef71e6-2cd0-4ffd-ba6a-e38ed5ff1281",
+        "timestamp": 1786887187447
+      },
+      {
+        "executionId": "4b654b0c-3446-44d3-8f3f-74108b05b7c0",
+        "chatSessionId": "sess_cbef71e6-2cd0-4ffd-ba6a-e38ed5ff1281",
+        "timestamp": 1786887379776
+      }
+    ],
+    "3. Phase 0: `npx tsx` の除去": [
+      {
+        "executionId": "4b654b0c-3446-44d3-8f3f-74108b05b7c0",
+        "chatSessionId": "sess_cbef71e6-2cd0-4ffd-ba6a-e38ed5ff1281",
+        "timestamp": 1786887379815
+      }
+    ],
+    "4.1 成果物同一性とテストを検証する": [
+      {
+        "executionId": "43570817-eeee-4711-b04a-ac211b5e544a",
+        "chatSessionId": "sess_4eaf611d-20bc-424a-adbe-2f3dca96bf03",
+        "timestamp": 1786888068184
+      },
+      {
+        "executionId": "43570817-eeee-4711-b04a-ac211b5e544a",
+        "chatSessionId": "sess_4eaf611d-20bc-424a-adbe-2f3dca96bf03",
+        "timestamp": 1786888156291
+      }
+    ],
+    "4.2 Phase 0 を単独コミットする": [
+      {
+        "executionId": "1f6accf7-4893-47d4-9cd6-eaa4a0203c24",
+        "chatSessionId": "sess_4eaf611d-20bc-424a-adbe-2f3dca96bf03",
+        "timestamp": 1786890488871
+      }
+    ]
+  }
+}

@@ -5,6 +5,7 @@ import { loadCache, saveCache } from './lib/feedCache.js';
 import { detectDiff } from './lib/detectDiff.js';
 import { mergeAndSort } from './lib/updateArticles.js';
 import { sanitizeForLog } from './lib/sanitize.js';
+import { refreshOgpCache } from './refresh-ogp-cache.js';
 import type { ArticleEntry } from './lib/types.js';
 
 // 定数
@@ -38,10 +39,6 @@ function findExistingPr(): PrInfo | null {
   return prs.length > 0 ? (prs[0] ?? null) : null;
 }
 
-/**
- * OGPキャッシュを更新する。
- * 失敗してもデプロイ時に再取得されるため、記事更新自体は継続する。
- */
 /** 更新対象ファイルをステージングする（OGPキャッシュは存在する場合のみ） */
 function stageUpdatedFiles(): void {
   const paths = [ARTICLES_PATH, CACHE_PATH];
@@ -52,11 +49,16 @@ function stageUpdatedFiles(): void {
 /**
  * OGPキャッシュを更新する。
  * 失敗してもデプロイ時に再取得されるため、記事更新自体は継続する。
+ *
+ * 子プロセスを起動せず、同一プロセス内で関数を直接呼び出すため
+ * 実行ランタイム（Node / Bun）に依存しない。
  */
-function refreshOgpCache(): void {
+async function updateOgpCache(): Promise<void> {
   try {
-    execSync('npx tsx scripts/refresh-ogp-cache.ts', { encoding: 'utf-8', stdio: 'inherit' });
-    console.log('[update-aws-blog] ogp-cache.json を更新しました');
+    const { succeeded, failed } = await refreshOgpCache();
+    console.log(
+      `[update-aws-blog] ogp-cache.json を更新しました（成功 ${succeeded} 件 / 失敗 ${failed} 件）`,
+    );
   } catch (err) {
     console.warn('[update-aws-blog] OGPキャッシュの更新に失敗しました（処理は継続します）:', err);
   }
@@ -114,7 +116,7 @@ async function main(): Promise<void> {
   console.log('[update-aws-blog] aws-articles.json を更新しました');
 
   // 8-2. 新規記事分のOGPキャッシュを更新（デプロイ時の取得失敗に備えたフォールバック）
-  refreshOgpCache();
+  await updateOgpCache();
 
   // 9. ブランチ名を生成
   const today = getTodayString();
