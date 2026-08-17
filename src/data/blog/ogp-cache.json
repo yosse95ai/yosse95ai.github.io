@@ -203,6 +203,12 @@
     "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/10/30/teaching-kiro-new-tricks-with-agent-steering-and-mcp.png",
     "publishedAt": "2025-10-30T17:01:32+09:00"
   },
+  "https://aws.amazon.com/jp/blogs/news/which-kiro-app-should-i-pick/": {
+    "title": "どの Kiro アプリを選べばいい？ | Amazon Web Services",
+    "description": "Kiro は IDE、CLI、Web、Mobile、Kiro Crew という複数のアプリとして提供されるソフトウェアエンジニアリングエージェントです。これらは ACP（Agent Client Protocol）を介して単一のエージェントハーネスに接続する「玄関口」であり、どれかを選ぶのではなく作業や場面に応じて使い分けるのが正解です。本記事では、各アプリの特徴と成熟度、そして「今この瞬間に選ぶべきアプリ」を判断するためのフレームワークを解説します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/08/14/ogp-5.png",
+    "publishedAt": "2026-08-17T10:30:58+09:00"
+  },
   "https://aws.amazon.com/jp/blogs/news/working-with-aws-appsync-events-real-time-web-games-with-chat/": {
     "title": "AWS AppSync Events との連携: チャット機能付きリアルタイム Web ゲーム | Amazon Web Services",
     "description": "この投稿では、プレイヤーがトークンを連続して 4 つ並べることを目的としたゲームのオンラインバージョンを作成するために必要なコアコンセプトを見ていきます。また、AWS Amplify Gen 2 が AWS バックエンドへの高速接続を可能にする方法と、WebSocket 接続を使用してプレイヤーがリアルタイムでゲームの更新を送信できるように AWS AppSync イベントの利用によってどのように実現できるかを確認します。",

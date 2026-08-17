@@ -5,7 +5,7 @@
 	<atom:link href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/" rel="self" type="application/rss+xml"/>
 	<link>https://aws.amazon.com/jp/blogs/news/</link>
 	<description/>
-	<lastBuildDate>Thu, 13 Aug 2026 07:17:16 +0000</lastBuildDate>
+	<lastBuildDate>Mon, 17 Aug 2026 01:30:58 +0000</lastBuildDate>
 	<language>ja</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -13,6 +13,104 @@
 	1	</sy:updateFrequency>
 	
 	<item>
+		<title>どの Kiro アプリを選べばいい？</title>
+		<link>https://aws.amazon.com/jp/blogs/news/which-kiro-app-should-i-pick/</link>
+		
+		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
+		<pubDate>Mon, 17 Aug 2026 01:30:58 +0000</pubDate>
+				<category><![CDATA[Artificial Intelligence]]></category>
+		<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">a78681b9427cf61f059554c48d7ae3d5a254b307</guid>
+
+					<description>Kiro は IDE、CLI、Web、Mobile、Kiro Crew という複数のアプリとして提供されるソフトウェアエンジニアリングエージェントです。これらは ACP（Agent Client Protocol）を介して単一のエージェントハーネスに接続する「玄関口」であり、どれかを選ぶのではなく作業や場面に応じて使い分けるのが正解です。本記事では、各アプリの特徴と成熟度、そして「今この瞬間に選ぶべきアプリ」を判断するためのフレームワークを解説します。</description>
+										<content:encoded>&lt;p&gt;本記事は、2026 年 8 月 12 日に Massimo Re Ferre が公開した「&lt;a href="https://kiro.dev/blog/which-kiro-app-should-i-pick/" target="_blank" rel="noopener noreferrer"&gt;Which Kiro app should I pick?&lt;/a&gt;」を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;Kiro はもう、単一のプロダクトを指す名前ではなくなりました。2025 年 7 月、Kiro を AI IDE としてローンチしました。それ以来、Kiro は IDE という枠にとどまらなくなりました。今の Kiro はソフトウェアエンジニアリングエージェントであり、&lt;a href="https://kiro.dev/ide/" target="_blank" rel="noopener noreferrer"&gt;IDE&lt;/a&gt;、&lt;a href="https://kiro.dev/cli/" target="_blank" rel="noopener noreferrer"&gt;CLI&lt;/a&gt;、&lt;a href="https://kiro.dev/web/" target="_blank" rel="noopener noreferrer"&gt;Web アプリ&lt;/a&gt;、&lt;a href="https://kiro.dev/mobile/" target="_blank" rel="noopener noreferrer"&gt;モバイルアプリ&lt;/a&gt;、そして &lt;a href="https://kiro.dev/crew/" target="_blank" rel="noopener noreferrer"&gt;Kiro Crew&lt;/a&gt; として利用できます。最近 Kiro を少しでも触っていた方なら、おそらく口にした（あるいは口にしたかった）問いがあるはずです。拍子抜けするほど単純な問いです。「結局どれを選べばいいの？」&lt;/p&gt; 
+&lt;p&gt;正直に答えるなら「場合によります」。ですが、もう少しお付き合いください。この逃げのような答えの裏には、れっきとした判断の枠組みがあります。それが分かれば、選ぶのはずっと楽になります。しかも、そもそも問いの立て方が少しずれていたと気づくはずです。問うべきなのは「どれを選ぶか」ではありません。ほとんどの場合、「この用途ならどれを選ぶか」です。&lt;/p&gt; 
+&lt;p&gt;本題に入る前に、この問いの前提を変えた最近の変化を押さえておきます。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-192835"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2 id="one-product-many-front-doors"&gt;1 つのプロダクト、複数の玄関口&lt;/h2&gt; 
+&lt;p&gt;内部的には、Kiro は単一のエージェントハーネスに収束しつつあります。Kiro は、あらゆるサーフェスの裏側で動く 1 つのエージェントになりました。そのハーネスこそがプロダクトです。あらゆる機能が集まる、唯一の正式な置き場所です。実際に触れるもの、たとえば IDE や CLI、Web アプリはいずれもアプリであり、そのプロダクトを利用するための手段です。ハーネスとアプリは意図的に切り離されています。ハーネスは Kiro に何ができるかを定め、アプリはそれをどう体験するかを定めます。&lt;/p&gt; 
+&lt;p&gt;ずっとこんなに整っていたわけではありません。今年の初めまでは、各アプリがそれぞれ独自のエージェントを抱えていました。IDE 版は TypeScript、CLI 版は Rust、Web 版は Python で書かれていました。これらは 3 つの独立した頭脳でした。セッションの保存方式はそれぞれ異なり、権限の表し方にも互換性がなく、新しい機能を追加するには毎回 3 通り実装しなければなりませんでした。その後、これらは単一のエージェントハーネスに統合されました。このハーネスはコードのすぐ隣で独立したプロセスとして動作し、明確に定義されたプロトコル（ACP、&lt;a href="https://agentclientprotocol.org/" target="_blank" rel="noopener noreferrer"&gt;Agent Client Protocol&lt;/a&gt;）を介して各アプリと通信します。頭脳は 1 つ、顔はいくつも。メリットは 3 つあります。1 つめは、ハーネスに追加されたコア機能がすべてのサーフェスで一斉に使えるようになることです。2 つめは、どのアプリを使っても振る舞いが一貫することです。そして 3 つめは、ここがおもしろいところですが、ラップトップで始めたセッションをクラウドで動かし続け、スマートフォンから確認できることです。最初から最後まで同じエージェントが動いているからです。統合後も、個々のアプリがそのサーフェスでしか意味を持たない機能を独自に増やしていくことはできます。ただし、中核となる体験はどこへ移っても変わらず付いてきます。&lt;/p&gt; 
+&lt;p&gt;そして、引き継がれるのはエージェントの機能だけではありません。手元の設定もそのまま付いてきます。スキル、ステアリングファイル、カスタムエージェント、作り込んだ環境設定。いずれも個々のアプリの内側ではなくハーネス側に設定するものです。そのため、使うアプリを変えても環境をゼロから作り直す必要はありません。現時点では特定のアプリの組み合わせに限られますが、目指しているのはどの組み合わせでも成り立つ状態です。どこで作業していても、自分の Kiro が付いてくる形にしたいと考えています。&lt;/p&gt; 
+&lt;p&gt;この統合に至った詳しい経緯と、そこで下した判断（なぜ独立したプロセスにしたのか、なぜプロトコルとして ACP を選んだのか、その過程でどんなもつれを解く必要があったのか）は、Kiro エンジニアリングチームが &lt;a href="https://kiro.dev/blog/one-agent/" target="_blank" rel="noopener noreferrer"&gt;One agent, every surface&lt;/a&gt; にまとめています。少し回り道になりますが、読む価値は十分あります。&lt;/p&gt; 
+&lt;p&gt;これはアーキテクチャの細部の話に聞こえるかもしれませんが、「どのアプリを選ぶか」という問いにまともな答えが出せるのは、まさにこの構造のおかげです。すべてのアプリが同じエンジンを土台にしているので、どれを選ぶかは、外したら困る賭けではありません。選んでいるのは、出口のない囲い込まれた環境ではありません。玄関口を選んでいるだけです。&lt;/p&gt; 
+&lt;p&gt;これらのアプリは、どれも他のアプリを置き換えるために作ったものではありません。アプリはそれぞれ異なるニーズに応えます。そして組み合わせることで、どれか 1 つでは届かない範囲までカバーできます。アプリが収束していく先は下方向、つまり共通のエンジンです。横方向、つまり互いに似ていく方向ではありません。アプリ間の重複は、躍起になって排除すべきバグではありません。1 つの土台の上に複数の体験レイヤーが載る構成なら、当然そうなる形です。IDE と Web アプリの両方でエージェントをオーケストレーションできるかもしれません。それでいいのです。ただし両者がそれを担うのは、違う相手に向けて、違う場面で、違う場所で、違う手癖や好みに沿ってなのかもしれません。&lt;/p&gt; 
+&lt;h2 id="the-principles-behind-these-decisions"&gt;こうした判断を支える原則&lt;/h2&gt; 
+&lt;p&gt;アプリのラインアップをさらに詳しく見ていく前に、判断を支えている原則を整理しておきましょう。どんなアプリを作るかを決めるときに必ず立ち返るものがいくつかあります。個々のアプリの話に入る前に押さえておくと、この先が読みやすくなります。&lt;/p&gt; 
+&lt;p&gt;まず、Kiro が対象にするのはソフトウェアデリバリーライフサイクルです。ソフトウェアを届ける人たちのためにアプリを作ります。まずは開発者、そしてそのすぐ隣にいる職種も対象です。プロダクトマネージャー、プロジェクトマネージャー、アーキテクト、QA リード、UX デザイナー、システムを動かし続けている運用や DevOps の人たちです。そしてこれは、肩書きだけの話ではありません。いま何をしているかの話でもあります。Slack の通知をさばいたり、メールを片付けたり、予定をやりくりしたりしている開発者も、ソフトウェアを届ける仕事をしていることに変わりはありません。ですから、そうした場面で役に立つアプリも対象に含まれます。逆に、意図して作らないと決めているのが「万人向けの汎用 AI アシスタント」です。ただし、この境界線は意図的に曖昧なままにしてあります。線引きの基準は「この人は開発者か？」でも「この作業はコーディングか？」でもありません。「これはソフトウェアを届けるという行為に役立つか？」です。&lt;/p&gt; 
+&lt;p&gt;次に、ビルダーが今いる場所に合わせます。今の環境やスタイルをそのまま受け入れたうえで、そこから一歩先へ進めるよう後押しする、という考え方です。ファイルや関数の中で暮らす人（コードファースト）もいれば、エージェントをオーケストレーションしてコードは副産物と見なす人（エージェントファースト）もいます。業界の大半は今も前者です。母数が大きいのもそちらで、エンタープライズ導入の多くもそこにあります。エージェントファースト勢は今はまだ少数です。ただ、業界が向かっているのはそちらであり、いちばんはっきりした手応えを得られるのもそこです。ですから、エージェントファーストの世界に向けて作りながら、2 つの世界のあいだにシンプルで文脈に即した合流路を用意します。誰でも自分のペースで行き来できるようにするためです。&lt;/p&gt; 
+&lt;p&gt;これがメンタルモデルです。収束させたアーキテクチャの方針から外れないよう気をつけていますが、変化が猛烈に速い領域でもあるので、好機が見えたときには現実的な判断も取りたいと考えています。さて、アプリそのものの話に移りましょう。「結局どれを選べばいいの？」への本当の答えは、ここから先にあります。&lt;/p&gt; 
+&lt;h2 id="the-apps-one-by-one"&gt;アプリを 1 つずつ見ていく&lt;/h2&gt; 
+&lt;h3 id="kiro-ide-the-home-base"&gt;Kiro IDE: 開発の本拠地&lt;/h3&gt; 
+&lt;p&gt;&lt;a href="https://kiro.dev/ide/" target="_blank" rel="noopener noreferrer"&gt;IDE&lt;/a&gt; は、多くの人が「Kiro」と言うときに指しているものです。Code OSS ベースのエディターで、すでに GA（一般提供）になっており、実際に最も多くのコードが書かれる主要なサーフェスです。企業のチームで一般的な開発スタイルを取っているなら、ここが本拠地になります。&lt;/p&gt; 
+&lt;p&gt;最近の追加でおもしろいのが &lt;strong&gt;&lt;a href="https://kiro.dev/docs/ide/experimental/focus-mode/" target="_blank" rel="noopener noreferrer"&gt;Agent Focus Mode&lt;/a&gt;&lt;/strong&gt; です。数週間前に、実験的機能として公開しました。IDE では今、2 つのビューを切り替えられます。Code Focus は使い慣れた、手引きのあるコード中心の編集です。Agent Focus は複数のセッションを並行して動かし、状態を管理し、ワークフローが進んでいくのを見守るビューです。どちらもエディターから一歩も出ずに行き来できます。現時点では、この 2 つのビューはまだ緩くつながっている程度です。常に改善して使う人の好みに寄せていきたいので、ぜひ声を聞かせてください。Agent Focus Mode は、先に挙げた 2 つ目の原則を実際に試してもらうための入口だと考えています。使い慣れた環境という安全な足場から、エージェントファーストの世界を覗いてみることができます。ファイルや関数に戻りたくなったら、その時点でいつでも元のビューに戻せます。&lt;/p&gt; 
+&lt;h3 id="kiro-cli-the-terminal-and-the-pipeline"&gt;Kiro CLI: ターミナルとパイプライン&lt;/h3&gt; 
+&lt;p&gt;こちらも GA です。&lt;a href="https://kiro.dev/cli/" target="_blank" rel="noopener noreferrer"&gt;CLI&lt;/a&gt; が相手にしているのは、性質がまるで違う 2 つの利用者層です。しかもこの 2 つは、たまたままったく同じインターフェースを欲しがっています。&lt;/p&gt; 
+&lt;p&gt;1 つ目は、ターミナルを好んで使う開発者です。シェルの中で暮らし、フラグとパイプで考え、グラフィカルな画面は助けになるどころか、むしろ邪魔だと感じる人たちです。こうした開発者が CLI セッションを 4〜6 本並べて動かしているのを見かけるのも、珍しくありません。しばしば（あるいは時折）コードを覗きますが、1 行ずつレビューすることはあまりなく、テストを（かなり）頼りにしています。2 つ目は自動化です。こちらには人がまったく介在しません。シェルスクリプトに包まれた Kiro、GitHub や GitLab の CI/CD パイプラインの 1 ステップとして組み込まれた Kiro、誰かのラップトップ上の会話ではなくジョブとして走る Kiro です。この 2 つ目が成り立つのは、エンジンが体験から切り離されているからにほかなりません。UI を一切持たない Kiro です。&lt;/p&gt; 
+&lt;p&gt;CLI からは、予想していなかったことも学びました。誰もが、もっと多機能なアプリへと「卒業」していくわけではないということです。私たちはつい、この話全体を一方向の進歩として語ってしまいます。ビルダーはシンプルなツールから凝ったツールへ移っていく、という語り方です。しかし、フル機能の TUI（Terminal User Interface）を出したあと、lite モードを追加せざるをえなくなりました。かなりの割合のユーザーにとって、TUI はすでに過剰だったからです。あえてゆったり構えていて、機能や画面はもっと少なくてよい、増やさなくてよいと考えている人もいます。サーフェスが増えれば便利になるとは限らない。ここは覚えておきたいところです。&lt;/p&gt; 
+&lt;h3 id="kiro-on-the-web-the-cloud-first-surface"&gt;Kiro on the web: クラウドファーストのサーフェス&lt;/h3&gt; 
+&lt;p&gt;&lt;a href="https://kiro.dev/web/" target="_blank" rel="noopener noreferrer"&gt;Kiro on the web&lt;/a&gt; は、現時点では Preview です。クラウドファーストのサーフェスであり、共同作業をする場、作業を立ち上げる場、そしてバックグラウンドのエージェントを見守る場です。エージェントは、つきっきりで面倒を見なくても裏で黙々と作業を続けます。そして最近は、そちらが本当の役割になりつつあります。つまり、クラウドセッションのコントロールプレーンです。IDE や CLI からクラウドエージェントを直接起動できるようになった今、問いは「どうやって 1 つ起動するか」ではなく、「走り出したエージェント全部をどこで見守り、どこから舵を取るか」に変わりました。Web は、セッションがどこで始まったかを問わず、その「一箇所」に急速になりつつあります。向いているのは、フロンティア開発者やチーム、それに PM やリードといった開発の周辺にいる職種の人たちです。一日中エディターに張りついてはいたくないけれど、ソフトウェアを届ける過程には関わりたい人たちです。&lt;/p&gt; 
+&lt;p&gt;Kiro on the web を見ると、この切り離しが理論ではなく実際のものだとよく分かります。統合ハーネスの上で動いているので、機能が生まれたアプリの中に閉じ込められることがなくなります。その効果が最初にはっきり出たのが Web でした。いちばん分かりやすいのが spec-driven development（仕様駆動開発）です。以前は IDE でしか使えませんでしたが、spec ワークフローがハーネス側に移ったとたん、Web 向けに作り直すこともなく Web に現れました。機能をエンジンの中で一度だけ作っておくことの見返りは、まさにここに出ます。できることが、たまたま最初に使ったエディターに縛られず、サーフェスをまたいで持ち歩けるようになります。&lt;/p&gt; 
+&lt;h3 id="kiro-mobile-kiro-on-the-go"&gt;Kiro Mobile: 出先で使う Kiro&lt;/h3&gt; 
+&lt;p&gt;&lt;a href="https://kiro.dev/mobile/" target="_blank" rel="noopener noreferrer"&gt;Kiro Mobile&lt;/a&gt; も Preview です。正直なところ、これは議論の余地がありません。あって当たり前のものです。エージェントをクラウドで実行できる開発ツールなら、スマートフォン向けのサーフェスは避けて通れません。いま力を発揮するのは、離れた場所から行う操作です。バックグラウンドエージェントの監視、結果のレビュー、アクションの承認、長く走っているタスクをひと押しして先に進めること。要するに、机に向かっていなくてもできることすべてです。一方、スマートフォンから手元のラップトップのローカルセッションにつなぐほうは、もっと難しく、まだ手つかずです。まずは見通しの立っているところから着手して、残りは進みながら解いていきます。&lt;/p&gt; 
+&lt;h3 id="kiro-crew-the-outer-harness"&gt;Kiro Crew: 外側のハーネス&lt;/h3&gt; 
+&lt;p&gt;&lt;a href="https://kiro.dev/crew/" target="_blank" rel="noopener noreferrer"&gt;Kiro Crew&lt;/a&gt; は、永続メモリ、スケジュールジョブ、非同期バックグラウンドエージェントといった機能をまとめたものです。いずれも「エージェントを動かす」の先、「スケジュールに沿って、自分が寝ている間にエージェントのクルーをまるごと動かす」という領域に踏み込んだ機能です。しかも、Kiro としては初のオープンソースアプリです。それでも、GA プロダクトに期待されるのと同じ品質・サポートの水準で扱っています。&lt;/p&gt; 
+&lt;p&gt;では、実際には何をしてくれるのでしょうか。Crew は、自分でハンドルを握るのではなく、任せるための場所です。チケットキューを渡せば、トリアージして振り分けます。複数のリポジトリに散らばったインシデントを割り当てれば、こちらが修正に集中している間に調査を進めます。マイグレーションを走らせれば、会議中でも寝ている間でも、チェックポイントとリトライを挟みながら黙々と最後まで進めます。複数のエージェントを同時に動かし、好みや過去の修正をセッションをまたいで引き継ぐので、毎回ゼロから始めることにはなりません。同じ作業には、デスクトップアプリ、Web ダッシュボード、TUI、Slack のいずれからでもアクセスできます。&lt;/p&gt; 
+&lt;p&gt;コードを書く場所が IDE、それをスクリプトにする場所が CLI だとすれば、Crew は、席を外している間もエージェントのクルーが作業を前に進めておいてくれる場所です。だからこそ向いているのは、エージェントを 1 つずつ手で操るよりも、問題に向けてエージェントの一団をまとめて差し向けたいパワーユーザーやフロンティア開発者です。ここで少し歴史の話を。Kiro Crew は、最初からこの名前だったわけではありません。何か月ものあいだ、社内では MeshClaw という名前で動いていました。チーム内で毎日徹底的に使い込まれた期間があったからこそ、そのまま社外に出すことができました。半年もしないうちに、Amazon のビルダー 39,000 人以上が使うようになり、そのうち 500 人近くが開発に参加しました（更新 597 件、週 143 コミット前後のペースです）。その頃にはもう実験の段階を抜けて、多くの人が仕事を進めるために頼る存在になっていました。&lt;/p&gt; 
+&lt;p&gt;ここで、アーキテクチャについて正直に注記を 1 つ加えておきます。Kiro Crew を「アプリ」と呼ぶのは、少し雑な言い方です。実際には、Kiro エンジンを中核に据えた本格的なシステム拡張であり、それ自体が独自のアプリを備えています。Web アプリ、Slack、デスクトップアプリです。Crew の便利さを支えている部分の多くは、統合ハーネスの側ではなく Crew 自身に実装されています。常時稼働の自動化、マルチエージェントのオーケストレーション、セッションをまたいで残るメモリなどです。中には、ハーネスが別のやり方ですでに実現している機能と重なっているものもあります。話としてきれいにまとまる筋書きではありません。リリースの時期が来たとき、誰も触れないまま何か月もかけてすべてをハーネスへ分解し直すのではなく、アーキテクチャの原則からあえて外れて前に進めることを選びました。意図的な判断です。とはいえ、Kiro Crew を共通のアーキテクチャに寄せていく予定です。&lt;/p&gt; 
+&lt;h2 id="so-which-one-should-i-pick"&gt;結局、どれを選べばいい？&lt;/h2&gt; 
+&lt;p&gt;はい、知りたいのはそこですよね。実際にやろうとしていることを基準に、早見表をまとめました。&lt;/p&gt; 
+&lt;table border="1" style="border-collapse: collapse"&gt; 
+ &lt;thead&gt; 
+  &lt;tr&gt; 
+   &lt;th style="padding: 0 8px"&gt;&lt;strong&gt;やりたいこと&lt;/strong&gt;&lt;/th&gt; 
+   &lt;th style="padding: 0 8px"&gt;&lt;strong&gt;使うアプリ&lt;/strong&gt;&lt;/th&gt; 
+   &lt;th style="padding: 0 8px"&gt;&lt;strong&gt;現在の状況&lt;/strong&gt;&lt;/th&gt; 
+  &lt;/tr&gt; 
+ &lt;/thead&gt; 
+ &lt;tbody&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;AI を組み込んだエディターでコードを書く。興味が湧いたら Agent Focus Mode からエージェントファーストを試す&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;&lt;strong&gt;&lt;a href="https://kiro.dev/ide/" target="_blank" rel="noopener noreferrer"&gt;IDE&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;GA&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;ターミナルで作業する。あるいは人手を介さずに Kiro を動かす（スクリプト、CI/CD、パイプライン）&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;&lt;strong&gt;&lt;a href="https://kiro.dev/cli/" target="_blank" rel="noopener noreferrer"&gt;CLI&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;GA&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;腰を据えてエージェントと向き合う。起動元を問わず、すべてのクラウドセッションを 1 か所で開始・確認・調整する&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;&lt;strong&gt;&lt;a href="https://kiro.dev/web/" target="_blank" rel="noopener noreferrer"&gt;Web&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;Preview&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;移動中に単発の操作を済ませる。スマートフォンからセッションを起動し、承認し、確認し、先に進める&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;&lt;strong&gt;&lt;a href="https://kiro.dev/mobile/" target="_blank" rel="noopener noreferrer"&gt;Mobile&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;Preview&lt;/td&gt; 
+  &lt;/tr&gt; 
+  &lt;tr&gt; 
+   &lt;td style="padding: 0 8px"&gt;最も踏み込んだ、最も自律的な作業を任せる（メモリ、スケジュール、非同期エージェント、そして席を外している間も動き続けるエージェントのクルー）&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;&lt;strong&gt;&lt;a href="https://kiro.dev/crew/" target="_blank" rel="noopener noreferrer"&gt;Crew&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt; 
+   &lt;td style="padding: 0 8px"&gt;Open source&lt;/td&gt; 
+  &lt;/tr&gt; 
+ &lt;/tbody&gt; 
+&lt;/table&gt; 
+&lt;p&gt;ここで、1 つ注目してほしいことがあります。どの答えも、やろうとしている作業を指しているだけで、「自分は何派か」という肩書きではありません。そして、ここが肝心なところです。特定のツールに愛着を持って落ち着く人が多いことは、私たちも分かっています。ですが、必ずしも 1 つに決めなければならないわけではありません。土台のエンジンは同じ、という話でしたね。デスクでは IDE を、パイプラインでは CLI を、電車の中では Mobile を、動かしっぱなしにしたい作業では Crew を使ってください。どれも同じハーネスを土台にしているので、全部を同時に使っても構いません。本当の問いは、そもそも「どのアプリを一生使うか」ではありませんでした。「この作業、この瞬間、この気分に、どのアプリか」です。&lt;/p&gt; 
+&lt;p&gt;そして、私のように図で見たほうが分かりやすいという方は、こちらもどうぞ。ここまでの概念を 1 枚の図にまとめてみました。&lt;/p&gt; 
+&lt;div id="attachment_192843" style="width: 874px" class="wp-caption alignnone"&gt;
+ &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/08/14/architecture-3.png"&gt;&lt;img aria-describedby="caption-attachment-192843" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/08/14/architecture-3.png" alt="Kiro のアーキテクチャを示した図。上段には各アプリ（Web、IDE、CLI、Mobile）と、Webhooks やスケジュール、メモリ、オーケストレーションを備え独自のアプリ（Web、Slack など）を持つ Kiro Crew が並ぶ。いずれも下向きの矢印で、ACP インターフェースを備えた共通ハーネス（システムプロンプト、仕様駆動開発、コアツール、カスタムエージェント、メモリなど）に収束する。そのハーネスは、Cloud Sandbox、認証、ガバナンス、課金、オブザーバビリティ、LLM といったプラットフォームサービスの上に載っている" width="864" height="536" class="size-full wp-image-192843"&gt;&lt;/a&gt;
+ &lt;p id="caption-attachment-192843" class="wp-caption-text"&gt;各アプリと Kiro Crew は、1 つの共有ハーネスへと統合され、そのハーネスはさらにその下にあるプラットフォームサービス上に構築されています。&lt;/p&gt;
+&lt;/div&gt; 
+&lt;p&gt;ですから、これさえあれば済む 1 つのアプリを探しに来た方には申し訳ないのですが、私たちが作ろうとしているのはそういう世界ではありません。作っているのは、できることが増えていく 1 つのエンジンに通じる、いくつもの玄関口です。それぞれの玄関口は違う人、違う場面に合わせて形を変えていて、どれも他を置き換えようとはしていません。（Kiro Crew は玄関口というより、家 1 軒に近い存在です。それでも、開いた先にあるのは同じエンジンです。）今日やろうとしていることに合う玄関口を選んでください。明日は別の玄関口を通るかもしれません。というより、それこそが狙いなのです。&lt;/p&gt; 
+&lt;p&gt;いずれにしても、わくわくする時代です。&lt;/p&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
 		<title>MGI、Sentieon、AWS で強化するゲノムデータストレージとワークフロー</title>
 		<link>https://aws.amazon.com/jp/blogs/news/enhanced-genomic-data-storage-and-workflows-with-mgi-sentieon-and-aws/</link>
 		
@@ -36,7 +134,7 @@
 &lt;p&gt;AWS HealthOmics は、ゲノムデータの保管、処理、解析のためのセキュアでスケーラブルなサービスです。HealthOmics Sequence Store は、大量のシーケンシングデータをコスト効率よく保管する手段を提供し、HealthOmics ワークフローとのシームレスな統合によって、下流解析ですぐに利用できる状態を保ちます。保存時の機密性の高い顧客データを保護するため、HealthOmics は &lt;a href="https://aws.amazon.com/kms/?nc2=type_a" target="_blank" rel="noopener"&gt;AWS Key Management Service&lt;/a&gt; (AWS KMS) の AWS 所有のキーを用いてデフォルトで暗号化を行います。カスタマーマネージドキーもサポートされています。&lt;/p&gt; 
 &lt;p&gt;&lt;a href="https://www.sentieon.com/" target="_blank" rel="noopener"&gt;Sentieon&lt;/a&gt; は 2014 年から AWS パートナーであり、高速かつ高精度なゲノムデータ処理のために最適化されたバイオインフォマティクスアルゴリズムを開発してきました。HealthOmics ワークフローでは、Sentieon の &lt;a href="https://www.sentieon.com/detailed-description-of-pipelines/#dnascope" target="_blank" rel="noopener"&gt;DNAscope&lt;/a&gt; および &lt;a href="https://www.sentieon.com/detailed-description-of-pipelines/#tnseq" target="_blank" rel="noopener"&gt;TNseq&lt;/a&gt; パイプラインを、あらかじめ定義された Ready2Run ワークフローとしても、カスタマイズ可能なプライベートワークフローとしても実行できます。&lt;/p&gt; 
 &lt;h3&gt;アーキテクチャの概要&lt;/h3&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/c5b76da3e608d34edb07244cd9b875ee86906328/2025/02/25/Figure-1-–-The-workflow-architecture-implemented-at-the-European-MGI-Headquarters-in-Berlin.png" target="_blank" rel="noopener"&gt;&lt;img class="size-full wp-image-27722 aligncenter" src="https://d2908q01vomqb2.cloudfront.net/c5b76da3e608d34edb07244cd9b875ee86906328/2025/02/25/Figure-1-–-The-workflow-architecture-implemented-at-the-European-MGI-Headquarters-in-Berlin.png" alt="画像の内容は次の段落で説明されています" width="620" height="186"&gt;&lt;/a&gt;&lt;/p&gt; 
+&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/c5b76da3e608d34edb07244cd9b875ee86906328/2025/02/25/Figure-1-–-The-workflow-architecture-implemented-at-the-European-MGI-Headquarters-in-Berlin.png" target="_blank" rel="noopener"&gt;&lt;img loading="lazy" class="size-full wp-image-27722 aligncenter" src="https://d2908q01vomqb2.cloudfront.net/c5b76da3e608d34edb07244cd9b875ee86906328/2025/02/25/Figure-1-–-The-workflow-architecture-implemented-at-the-European-MGI-Headquarters-in-Berlin.png" alt="画像の内容は次の段落で説明されています" width="620" height="186"&gt;&lt;/a&gt;&lt;/p&gt; 
 &lt;p&gt;&lt;em&gt;図 1 – ベルリンのMGI 欧州本社で実装されたワークフローアーキテクチャ。&lt;/em&gt;&lt;/p&gt; 
 &lt;p&gt;図 1 は次の流れを示しています。&lt;/p&gt; 
 &lt;ol&gt; 
@@ -1140,41 +1238,6 @@ module.exports = { createClient };
 &lt;p&gt;本記事では、Kiro を使って Swagger 仕様から完全な Node.js API テストスイートを数秒で生成する方法を示しました。生成されるプロジェクトには、HTTP テストクライアント、Express のモックサーバー、モック API と実 API を切り替える設定トグル、テストレポートが含まれ、外部のテストフレームワーク依存はありません。&lt;/p&gt; 
 &lt;p&gt;このアプローチは、API 仕様をテストコードに手作業で翻訳する手間を取り除き、包括的な API テストカバレッジを達成するための体系的で再現可能な方法を提供します。Swagger または OpenAPI 仕様を持つあらゆる API に同じパターンを適用できます。&lt;/p&gt; 
 &lt;p&gt;Kiro を始めるには、&lt;a target="_blank" rel="noopener noreferrer" href="https://kiro.dev/"&gt;kiro.dev&lt;/a&gt; をご覧ください。&lt;/p&gt; 
-&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>Kiro Web の Automations 機能のご紹介</title>
-		<link>https://aws.amazon.com/jp/blogs/news/introducing-automations/</link>
-		
-		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
-		<pubDate>Tue, 23 Jun 2026 06:28:00 +0000</pubDate>
-				<category><![CDATA[Artificial Intelligence]]></category>
-		<category><![CDATA[Developer Tools]]></category>
-		<category><![CDATA[Kiro]]></category>
-		<guid isPermaLink="false">78a594658a50933be0b270dd0432f61e5c705791</guid>
-
-					<description>Kiro Web に、繰り返し発生するタスクを自動化するクラウドで動作する Automations 機能を追加しました。スケジュールを設定すると、Kiro が自律エージェントとしてサンドボックス上でタスクを実行し、変更を含むプルリクエストを自動的に開きます。ドキュメント更新、テスト生成、TODO 整理など、定期的な作業をまかせられます。</description>
-										<content:encoded>&lt;p&gt;本記事は 2026 年 6 月 18 日に公開された Kyle Seaman、Alex Jia による “&lt;a href="https://kiro.dev/blog/introducing-automations/" target="_blank" rel="noopener"&gt;Introducing automations in Kiro Web&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
-&lt;p&gt;仕事の中には、決まった間隔で繰り返しやってくるものがあります。依存関係は週を追うごとに最新の状態から取り残されていき、ドキュメントはマージのたびに少しずつ遅れをとり、サービス間の API コントラクトは静かに食い違いを広げ、やがてステージングで何かが壊れます。同じことが巡ってくるたびに、同じファイルを開き、同じ diff を読み、同じような修正を書くことになります。&lt;/p&gt; 
-&lt;p&gt;本日（2026 年 6 月 18 日）、Kiro Web にクラウドで動作する &lt;a href="https://app.kiro.dev/automations" target="_blank" rel="noopener noreferrer"&gt;Automations&lt;/a&gt; 機能を追加しました。これにより、こうした繰り返しタスクの自動化を Kiro に任せられるようになります。Automations は自律型エージェントによって管理されます。Kiro は実行ごとにサンドボックス内で autonomous セッションを作成し、完了すると自動的にプルリクエストをオープンします。&lt;/p&gt; 
-&lt;p&gt;&lt;span id="more-188472"&gt;&lt;/span&gt;&lt;/p&gt; 
-&lt;h2 id="how-it-works"&gt;仕組み&lt;/h2&gt; 
-&lt;p&gt;Kiro Web の &lt;a href="https://app.kiro.dev/automations" target="_blank" rel="noopener noreferrer"&gt;Automations&lt;/a&gt; に移動し、繰り返しタスクに名前を付けて、対象のリポジトリを GitHub または GitLab（あるいはその両方）から選びます。あとは実行したい内容を記述し、スケジュールを設定するだけです。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/23/create.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/23/create.png" alt="" width="1950" height="1776" class="alignnone size-full wp-image-188509"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;p&gt;1 つの automation につき最大 5 つのスケジュールを追加できます。Daily や Weekly のような組み込みオプションから選ぶか、より細かい指定をしたい場合は cron 式を記述します。スケジュールの実行時刻になると、Kiro はクラウドサンドボックスを立ち上げ、リポジトリをクローンし、作業を実行して、変更内容を含むプルリクエストをオープンします。各実行は独立したサンドボックスを持つセッションであり、他のセッションやローカル環境から隔離されています。&lt;/p&gt; 
-&lt;p&gt;Automations がプルリクエストをオープンするので、作業が完了したらレビューするだけです。&lt;/p&gt; 
-&lt;p&gt;作成した automation はいつでも編集できます。スケジュールを変更したり、リポジトリを更新したり、実行内容を書き直したりできます。変更は次回のスケジュール実行に適用されます。automation を削除せずに無効化することもでき、準備ができたら再度有効化できます。&lt;/p&gt; 
-&lt;h2 id="what-you-can-automate"&gt;自動化できること&lt;/h2&gt; 
-&lt;p&gt;main ブランチで変更されたコードと既存のドキュメントの間にあるギャップを見つけます。Kiro は毎朝、古くなった部分をチェックし、更新が必要なものがあれば PR をオープンします。&lt;/p&gt; 
-&lt;p&gt;今週変更されたファイルのうち、対応するテストカバレッジがないものを確認します。Kiro は毎日、テストでカバーされていないパスを探し、見つかった場合は自動生成したテストを含む PR をオープンします。&lt;/p&gt; 
-&lt;p&gt;コードベースに長く居座っている古い TODO や FIXME をスキャンします。毎週月曜日、Kiro が対応できるものを片付け、レビュー用に PR をオープンします。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/23/list.png"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/23/list.png" alt="" width="2204" height="1354" class="alignnone size-full wp-image-188510"&gt;&lt;/a&gt;&lt;/p&gt; 
-&lt;h2 id="getting-started"&gt;今すぐ始めましょう&lt;/h2&gt; 
-&lt;p&gt;すでに繰り返し発生している作業があれば今すぐ試してみてください。毎週月曜日に実行しているチェック、数日おきに見つけている食い違い、後回しにし続けている依存関係の整理などです。Kiro Web の &lt;a href="https://app.kiro.dev/automations" target="_blank" rel="noopener noreferrer"&gt;Automations&lt;/a&gt; に移動して 1 つ設定し、走らせてみましょう。最初の実行は、次回のスケジュール時刻に開始されます。使い心地は、アプリ内の Feedback アイコンまたは &lt;a href="https://github.com/kirodotdev/Kiro/issues/new/choose" target="_blank" rel="noopener noreferrer"&gt;GitHub&lt;/a&gt; からお知らせください。&lt;/p&gt; 
-&lt;p&gt;Automations は現在、Pro、Pro+、Pro Max、Power プランのサブスクライバー向けに、Kiro Web で利用可能です。組織で AWS IAM Identity Center を使用している場合、automation を作成する前に管理者が Kiro Web へのアクセスを有効化する必要があります。&lt;/p&gt; 
 &lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
 					
 		
