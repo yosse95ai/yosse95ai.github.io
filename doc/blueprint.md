@@ -202,9 +202,9 @@ AWSに勤務するエンジニアの個人紹介サイト。主にKiroのブロ�
 | 言語 | TypeScript（strict mode） |
 | スタイリング | Tailwind CSS v4（`@tailwindcss/vite`） |
 | UIコンポーネント | DaisyUI v5（Tailwind v4ネイティブ、React不要） |
-| アニメーション | Motion（Vanilla JS API）+ Astro CSS View Transitions |
-| パッケージ管理 | npm |
-| Nodeバージョン管理 | nvm |
+| アニメーション | Tailwind `animate-*` + CSS transition + Astro CSS View Transitions |
+| パッケージ管理 | Bun（ランタイムは Node を維持） |
+| バージョン管理 | Node は nvm（`.nvmrc`）、Bun は `.bun-version` |
 | コンテンツ管理 | Astro Content Collections（Content Layer API） |
 | アイコン | `@iconify/astro` + `@iconify-json/devicon` + `@iconify-json/simple-icons` |
 | デプロイ | GitHub Actions（`withastro/action`）→ GitHub Pages |
@@ -266,8 +266,10 @@ yosse95ai.github.io/
 │   └── styles/global.css
 ├── astro.config.mjs
 ├── tsconfig.json
-└── package-lock.json
-└── .nvmrc
+├── bun.lock
+├── package-lock.json      # 切り戻し用に残置
+├── .bun-version           # Bun のバージョン
+└── .nvmrc                 # Node のバージョン
 ```
 
 ---

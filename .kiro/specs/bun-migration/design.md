@@ -368,6 +368,19 @@ postinstall はブロックされる**。許可と防御のバランスとして
 `package-manager: bun` を明示すると action は `Setup Bun` + `Setup Node (Bun)` を実行し、
 install は `bun install`、build は `bun run build` になる。実行ランタイムは Node のまま。
 
+加えて `deploy` job には `if: github.ref == 'refs/heads/master'` のブランチガードを追加する。
+
+```diff
+   deploy:
+     needs: build
++    if: github.ref == 'refs/heads/master'
+     runs-on: ubuntu-latest
+```
+
+feature branch から `workflow_dispatch` で検証実行すると、`github-pages` 環境のブランチ保護により
+deployment レコードが `failure` になり PR に失敗デプロイとして表示されるため、build job のみを
+走らせて deploy job はスキップさせる。
+
 #### 2-2. `.github/workflows/update-aws-blog.yml`
 
 現状は `checkout@v4` / `setup-node@v4` である点に注意（`deploy.yml` は v5）。
