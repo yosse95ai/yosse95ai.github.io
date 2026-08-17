@@ -424,6 +424,23 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
     build / deploy ともに成功し、`/` `/gallery/` `/history/` が HTTP 200、`/catalog/` が 404 であることを確認。
     Bun 経路での本番デプロイが成立
   - Phase 3 の PR: #70（ブランチ `docs/bun-migration-phase3`、コミット `9348ca8`）
+- **後続対応: `bun.lock` の完全再生成と `package-lock.json` の削除（別 PR / ブランチ `chore/regenerate-bun-lock`）**
+  - 上記 Notes に「将来対応」として残していた `tsx@4.21.0` の残置解消を、ユーザー承認のうえ実施した
+  - `package-lock.json` を残したまま `bun.lock` だけ削除すると Bun が再マイグレートして同じ状態に戻るため、
+    両方の削除が必要だった
+  - 結果: `tsx` はパッケージとして消滅（`node_modules/tsx` なし。`bun.lock` に残る 1 箇所は `vite` の
+    `peerDependencies` 宣言文字列のみでインストール対象ではない）。`configVersion` は 0 → 1、
+    パッケージ数 579 → 586
+  - 副作用: 直接依存 11 個が `^` 範囲内で更新（daisyui 5.5.19 → 5.7.17、tailwindcss と `@tailwindcss/vite`
+    4.2.0 → 4.3.3、vitest 4.0.18 → 4.1.10、astro 5.18.1 → 5.18.2、fast-check 4.5.3 → 4.9.0、
+    fast-xml-parser 5.5.8 → 5.11.0、`@astrojs/check` 0.9.8 → 0.9.10、`@astrojs/sitemap` 3.7.0 → 3.7.3、
+    `@iconify-json/devicon` 1.2.59 → 1.2.62、`@iconify-json/simple-icons` 1.2.71 → 1.2.93）
+  - 検証: テスト 9 files / 86 tests 全パス。ビルド成功、`dist/` は 25 ファイルで構成同一。
+    **P1（SHA-256 完全一致）は意図的に破棄**した。差分は `gallery.*.css`（53,865 → 60,432 バイト、
+    daisyUI / Tailwind の内部再構成）と、それを参照する HTML 3 枚（Astro バージョン meta と
+    CSS ファイル名ハッシュのみ）。見た目はユーザーが目視確認済み
+  - **P5（`npm ci` による切り戻し）はユーザー判断で放棄**。ロールバックは Git revert に一本化し、
+    npm へ戻す場合は `package-lock.json` の再生成が必要になる
 
 ## Task Dependency Graph
 

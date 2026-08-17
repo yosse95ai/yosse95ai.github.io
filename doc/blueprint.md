@@ -266,8 +266,7 @@ yosse95ai.github.io/
 │   └── styles/global.css
 ├── astro.config.mjs
 ├── tsconfig.json
-├── bun.lock
-├── package-lock.json      # 切り戻し用に残置
+├── bun.lock               # lockfile（Bun のみ）
 ├── .bun-version           # Bun のバージョン
 └── .nvmrc                 # Node のバージョン
 ```
