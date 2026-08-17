@@ -259,11 +259,11 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
     - 取得成功件数・取得失敗件数が出力されていることを確認する
     - _要件: 7.4, 7.5_
 
-- [ ] 11. チェックポイント - Phase 2 完了
+- [x] 11. チェックポイント - Phase 2 完了
   - CI が成功していることを確認し、疑問があればユーザーに確認する。
 
-- [ ] 12. Phase 3: ドキュメント / steering の更新
-  - [ ] 12.1 `doc/blueprint.md` を更新する
+- [x] 12. Phase 3: ドキュメント / steering の更新
+  - [x] 12.1 `doc/blueprint.md` を更新する
     - 技術スタック表: パッケージ管理を Bun（ランタイムは Node を維持）に、
       Node バージョン管理を nvm（`.nvmrc`）/ Bun は `.bun-version` に更新する
     - アニメーション行を Tailwind `animate-*` + CSS + Astro CSS View Transitions の 3 要素を含む記述に更新する
@@ -272,7 +272,7 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
       の 4 エントリを記載する
     - _要件: 11.1, 11.2, 11.3_
 
-  - [ ] 12.2 `.kiro/steering/tech.md` を更新する
+  - [x] 12.2 `.kiro/steering/tech.md` を更新する
     - テスト実行節: `bun run test` / `bunx vitest run <path>` に更新し、
       `bun test` が `vi.*` API 非対応のため使用不可である旨を明記する
     - デプロイ節: `oven-sh/setup-bun@v2` + `withastro/action@v6`（`package-manager: bun`）+ `actions/deploy-pages@v4`
@@ -282,23 +282,23 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
       `bunfig.toml` の `[run] bun = true` を設定しない方針と `--bun` を付与しない方針の 2 点を記載する
     - _要件: 11.4, 11.5, 11.6, 11.7_
 
-  - [ ] 12.3 `.kiro/steering/development-standard.md` の rule-1 を更新する
+  - [x] 12.3 `.kiro/steering/development-standard.md` の rule-1 を更新する
     - 既存の Node 確認手順（`cat ./.nvmrc` / `node --version` / `nvm use`）に続けて、
       `cat ./.bun-version` / `bun --version` / 不一致時の `bun upgrade --to <version>` の手順を追加する
     - _要件: 9.6, 11.8_
 
-  - [ ] 12.4 lockfile 乖離の運用ルールを記載する
+  - [x] 12.4 lockfile 乖離の運用ルールを記載する
     - `bun update` 実行時に `bun.lock` のみが更新され `package-lock.json` と乖離することを明記する
     - 乖離の扱い（同期する / 乖離を許容しロールバック時に再生成する）の運用ルールを記載する
     - 記載先は 12.2 で更新した `.kiro/steering/tech.md` のランタイム節とする
     - _要件: 11.10_
 
-  - [ ] 12.5 `.kiro/specs/` に差分がないことを確認する
+  - [x] 12.5 `.kiro/specs/` に差分がないことを確認する
     - `.kiro/specs/` 配下の既存 spec 群（履歴文書）が本作業で変更されていないこと（差分 0 ファイル）を確認する
     - 本 spec の `.kiro/specs/bun-migration/` 配下は対象外
     - _要件: 11.9_
 
-  - [ ] 12.6 Phase 3 をコミットして push をユーザー確認する
+  - [x] 12.6 Phase 3 をコミットして push をユーザー確認する
     - コミット前にユーザープロファイル（Individual / AWS）を確認し `git config` を設定する
     - push はユーザーの明示的な承認を得てから実行する
     - _要件: 5.6, 12.7_
@@ -385,6 +385,28 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
     deployment レコードが作られない
   - Phase 2 の検証結果（10.2 / 10.3 / 10.5）は build job のみを根拠としているため再検証は不要。
     `design.md` の `deploy.yml` 構成記述にはこの `if` 条件が含まれていない点を差分として記録しておく
+- **Phase 3 の実施記録（ブランチ `docs/bun-migration-phase3`、master `65069c7` から分岐）**
+  - 12.1 `doc/blueprint.md`: 技術スタック表を「アニメーション = Tailwind `animate-*` + CSS transition +
+    Astro CSS View Transitions」「パッケージ管理 = Bun（ランタイムは Node を維持）」
+    「バージョン管理 = Node は nvm（`.nvmrc`）、Bun は `.bun-version`」に更新。
+    ディレクトリ構成のツリー末尾に `bun.lock` / `package-lock.json`（切り戻し用に残置の注記付き）/
+    `.bun-version` / `.nvmrc` の 4 エントリを記載し、`└──` の重複記法も修正
+  - 12.2 `.kiro/steering/tech.md`: テスト実行を `bun run test` / `bunx vitest run <path>` に更新し
+    `bun test` が `vi.*` API 非対応で使用不可である旨を明記。デプロイ節の `withastro/action@v5` の誤記を
+    **v6 に修正**し、`oven-sh/setup-bun@v2` + `withastro/action@v6`（`package-manager: bun`）+
+    `actions/deploy-pages@v4` の 3 要素と deploy job のブランチガードを記載。
+    開発コマンドを `bun install` / `bun run dev` / `bun run build` / `bun run preview` に更新。
+    「Node バージョン」節を「ランタイムとパッケージマネージャ」節に置き換え、
+    `bunfig.toml` の `[run] bun = true` を設定しない方針と `--bun` を付けない方針を記載
+  - 12.3 `.kiro/steering/development-standard.md`: rule-1 を「Node と Bun のバージョン確認」に拡張し、
+    `### Node`（既存 3 ステップ）+ `### Bun`（`cat ./.bun-version` / `bun --version` /
+    不一致時 `bun upgrade --to <version>`）の構成に更新
+  - 12.4 lockfile 乖離の運用ルール: `tech.md` の「ランタイムとパッケージマネージャ」節に
+    `### lockfile の運用` サブ節を新設。`bun update` で `bun.lock` のみ更新され `package-lock.json` と
+    乖離すること、**乖離は許容し npm ロールバック時に `package-lock.json` を再生成する**運用を明記
+  - 12.5 `.kiro/specs/` 配下の差分は本 spec の `design.md` のみで、既存 spec 群（履歴文書）の差分は **0 件**
+  - 追随修正: `design.md` の Phase 2 セクションに deploy job の
+    `if: github.ref == 'refs/heads/master'` を反映し、追加理由を注記（design と実装の差分を解消）
 
 ## Task Dependency Graph
 
