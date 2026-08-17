@@ -58,6 +58,7 @@ bunx vitest run <path>  # 特定ファイルのみ
 - GitHub Actions: `oven-sh/setup-bun@v2`（`bun-version-file: .bun-version`）+ `withastro/action@v6`（`package-manager: bun` / `node-version: '24'`）+ `actions/deploy-pages@v4`
 - `master` ブランチへの push でトリガー
 - deploy job は `if: github.ref == 'refs/heads/master'` でガードしており、feature branch からは実行されない
+- `withastro/action@v6` の `package-manager: bun` は、`package-lock.json` が無くなった後も**明示を維持する**（lockfile による自動検出に依存しない）
 - **`git push` は自律的に実行しない**（必ずユーザー確認を取る）
 
 ## 開発コマンド
@@ -76,6 +77,8 @@ bun run preview  # ビルド結果プレビュー
 - 上記 2 点はいずれも Astro / Vitest を Node ランタイムで動かし続けるための方針
 
 ### lockfile の運用
-- `bun update` を実行すると `bun.lock` のみが更新され、`package-lock.json` と乖離する
-- `package-lock.json` は npm への切り戻し用に意図的に残置している
-- 運用ルール: **乖離は許容する**。都度の同期は行わず、npm へロールバックする場合に `package-lock.json` を再生成する
+- lockfile は **`bun.lock` のみ**。`package-lock.json` は削除済みで、リポジトリに存在しない
+- 更新は `bun install` / `bun update` で行う。他のパッケージマネージャの lockfile は生成・コミットしない
+- CI は `bun install --frozen-lockfile` を使うため、依存を変更したら `bun.lock` を必ず同じコミットに含める
+- ロールバックは **Git の revert** で行う（`bun.lock` と `package.json` をセットで戻す）
+- npm へ切り戻す必要が生じた場合は `package-lock.json` の再生成（`npm install --package-lock-only` 相当）が必要になる
