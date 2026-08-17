@@ -303,7 +303,7 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
     - push はユーザーの明示的な承認を得てから実行する
     - _要件: 5.6, 12.7_
 
-- [ ] 13. 最終チェックポイント
+- [x] 13. 最終チェックポイント
   - すべてのテストがパスし、P1〜P5 の検証結果が揃っていることを確認し、疑問があればユーザーに確認する。
 
 ## Notes
@@ -407,6 +407,23 @@ Phase ごとに独立したコミットを作り、ロールバックが Phase �
   - 12.5 `.kiro/specs/` 配下の差分は本 spec の `design.md` のみで、既存 spec 群（履歴文書）の差分は **0 件**
   - 追随修正: `design.md` の Phase 2 セクションに deploy job の
     `if: github.ref == 'refs/heads/master'` を反映し、追加理由を注記（design と実装の差分を解消）
+- **最終チェックポイント（Task 13）の結果: ユーザー承認により完了**
+  - P1（成果物同一性）: **合格**。ローカル `bun run build` の `dist/` 25 ファイルが Node ベースラインと
+    SHA-256 完全一致（7.1）。CI の Pages artifact も 25 ファイルで一致（10.5）
+  - P2（テスト件数）: **合格**。9 files / 86 tests がローカル（7.2）と CI（10.2）の双方で
+    `Baseline_Test_Count` と一致
+  - P3（実行ランタイム）: **合格**。テストプロセス内で `process.versions.bun` は `undefined`、
+    `process.versions.node` は 24 系（7.2）
+  - P4（OGP のサイレント劣化検出）: **ローカルのみ合格**。3.4（Node 環境）と
+    7.4（`bun scripts/refresh-ogp-cache.ts`）で検証済みだが、CI 実行ログでの検証（10.6 / 要件 7.5）は未充足
+  - P5（切り戻し可能性）: **合格**。`npm ci --dry-run` が終了コード 0、`package-lock.json` は残置（7.7）
+  - **未充足のまま残す要件**: 13.4 / 13.6（Linux x64 CI での 5 系統の展開プラットフォーム記録 = 10.4）と
+    7.5（CI 実行ログでの P4 検証 = 10.6）。いずれも記録項目であり、移行の主目的
+    （macOS ARM64 生成の `bun.lock` が Linux x64 CI の `--frozen-lockfile` を通る）は 10.3 で検証済み
+  - 本番デプロイの実績: `master` へのマージ（merge commit `9479c2c`）で走った run `31961683874` が
+    build / deploy ともに成功し、`/` `/gallery/` `/history/` が HTTP 200、`/catalog/` が 404 であることを確認。
+    Bun 経路での本番デプロイが成立
+  - Phase 3 の PR: #70（ブランチ `docs/bun-migration-phase3`、コミット `9348ca8`）
 
 ## Task Dependency Graph
 
