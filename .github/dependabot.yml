@@ -13,6 +13,13 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: "chore"
+    ignore:
+      # TypeScript 7 系（ネイティブコンパイラ）は astro check が依存する
+      # programmatic API を提供していないため型チェックが動作しない。
+      # Astro 側が対応したらこの ignore を削除する
+      # https://github.com/withastro/roadmap/discussions/1321
+      - dependency-name: "typescript"
+        versions: [">=7.0.0"]
     # 関連パッケージはまとめて 1 PR にしてレビュー回数を減らす
     groups:
       astro:
