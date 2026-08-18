@@ -1,7 +1,5 @@
 ---
 import Icon from '../atoms/Icon.astro';
-import KiroIcon from '../atoms/KiroIcon.astro';
-import DifyIcon from '../atoms/DifyIcon.astro';
 
 export interface Props {
   name: string;
@@ -33,11 +31,11 @@ const categoryColor: Record<string, string> = {
 >
   {isKiro ? (
     <div class="shrink-0 w-[22px] h-[22px] rounded flex items-center justify-center" style="background: oklch(0.52 0.24 295);">
-      <KiroIcon size={14} />
+      <Icon name="local:kiro" size={14} />
     </div>
   ) : isDify ? (
     <div class="shrink-0 h-[22px] flex items-center justify-center">
-      <DifyIcon size={14} />
+      <Icon name="local:dify" size={14} />
     </div>
   ) : icon ? (
     <Icon name={icon} size={22} class="shrink-0" />

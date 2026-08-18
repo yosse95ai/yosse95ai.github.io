@@ -3,6 +3,7 @@ import { Icon as AstroIcon } from 'astro-icon/components';
 
 export interface Props {
   name: string;
+  /** アイコンの高さ(px)。幅は viewBox の比率から自動計算される */
   size?: number;
   class?: string;
   style?: string;
@@ -10,14 +11,18 @@ export interface Props {
 }
 
 const { name, size = 24, class: className = '', style, label } = Astro.props;
+
+// 高さのみを指定し、幅は SVG 本来のアスペクト比に任せる。
+// astro-icon は width を em で補完するため、CSS で明示的に auto に上書きする
+// （em はフォントサイズ基準なので、px 指定の height と組み合わせると比率が崩れる）。
+const sizeStyle = `height:${size}px;width:auto;`;
 ---
 
 <AstroIcon
   name={name}
-  width={size}
   height={size}
   class={className}
-  style={style}
+  style={style ? `${sizeStyle}${style}` : sizeStyle}
   aria-label={label}
   aria-hidden={label ? undefined : 'true'}
 />
