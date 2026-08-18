@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  # base ブランチを問わず全ての PR で実行する
+  # （branches フィルタは base ブランチに対する条件であり、head ブランチ名は問わない）
+  pull_request:
+  # マージ後の master も検証する。deploy.yml は test しか通していないため
+  # 型チェックとスモークはここで担保する（README のバッジもこの結果を指す）
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# 同じ PR に連続で push した場合は古い実行を打ち切る
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+
+      - name: 依存関係のインストール
+        run: bun install --frozen-lockfile
+
+      - name: ユニットテスト
+        run: bun run test
+
+      - name: 型チェック
+        run: bun run check
+
+      - name: ビルド
+        run: bun run build
+
+      - name: ビルド出力のスモークチェック
+        run: bun run smoke

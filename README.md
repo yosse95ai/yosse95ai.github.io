@@ -1,9 +1,13 @@
 # yosse95ai.github.io
 
-![Deploy](https://github.com/yosse95ai/yosse95ai.github.io/actions/workflows/deploy.yml/badge.svg)
+[![CI][ci-badge]][ci] [![Deploy][deploy-badge]][deploy]
 [![Built with Kiro][kiro-badge]][kiro]
 
 HomePage URL：https://yosse95ai.github.io
 
+[ci]: https://github.com/yosse95ai/yosse95ai.github.io/actions/workflows/ci.yml
+[ci-badge]: https://github.com/yosse95ai/yosse95ai.github.io/actions/workflows/ci.yml/badge.svg?branch=master
+[deploy]: https://github.com/yosse95ai/yosse95ai.github.io/actions/workflows/deploy.yml
+[deploy-badge]: https://github.com/yosse95ai/yosse95ai.github.io/actions/workflows/deploy.yml/badge.svg
 [kiro]: https://kiro.dev/
 [kiro-badge]: https://img.shields.io/badge/Built_with-Kiro-8A3FFC?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyNCI+PHBhdGggZD0iTTMuOCAxOC41N0MxLjMyIDI0LjA2IDYuNiAyNS40MyAxMC40OSAyMi4yMkMxMS42MyAyNS44MiAxNS45MyAyMy4xNCAxNy40NyAyMC4zNEMyMC44NiAxNC4xOSAxOS40OSA3LjkxIDE5LjE0IDYuNjJDMTYuNzIgLTIuMjEgNC42NyAtMi4yMiAyLjYgNi42NkMyLjExIDguMjIgMi4xIDkuOTkgMS44MyAxMS44MkMxLjY5IDEyLjc1IDEuNTkgMTMuMzQgMS4yMyAxNC4zMUMxLjAzIDE0Ljg3IDAuNzUgMTUuMzcgMC4zIDE2LjIxQy0wLjM5IDE3LjUxIC0wLjEgMjAuMDIgMy40NiAxOC43MlYxOC43MkwzLjggMTguNTdaIiBmaWxsPSJ3aGl0ZSIvPjxwYXRoIGQ9Ik0xMC45NiAxMC40NEM5Ljk3IDEwLjQ0IDkuODIgOS4yNiA5LjgyIDguNTVDOS44MiA3LjkyIDkuOTQgNy40MSAxMC4xNSA3LjA5QzEwLjM0IDYuODEgMTAuNjIgNi42NyAxMC45NiA2LjY3QzExLjMxIDYuNjcgMTEuNiA2LjgxIDExLjgxIDcuMUMxMi4wNSA3LjQzIDEyLjE4IDcuOTMgMTIuMTggOC41NUMxMi4xOCA5Ljc0IDExLjcyIDEwLjQ0IDEwLjk2IDEwLjQ0SDEwLjk2WiIgZmlsbD0iYmxhY2siLz48cGF0aCBkPSJNMTUuMDMgMTAuNDRDMTQuMDQgMTAuNDQgMTMuODkgOS4yNiAxMy44OSA4LjU1QzEzLjg5IDcuOTIgMTQuMDEgNy40MSAxNC4yMiA3LjA5QzE0LjQxIDYuODEgMTQuNjkgNi42NyAxNS4wMyA2LjY3QzE1LjM4IDYuNjcgMTUuNjcgNi44MSAxNS44OCA3LjFDMTYuMTIgNy40MyAxNi4yNSA3LjkzIDE2LjI1IDguNTVDMTYuMjUgOS43NCAxNS43OSAxMC40NCAxNS4wMyAxMC40NEgxNS4wM1oiIGZpbGw9ImJsYWNrIi8+PC9zdmc+Cg==
