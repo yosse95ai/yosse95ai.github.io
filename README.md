@@ -6,7 +6,7 @@
 HomePage URL：https://yosse95ai.github.io
 
 [ci]: https://github.com/yosse95ai/yosse95ai.github.io/actions/workflows/ci.yml
-[ci-badge]: https://github.com/yosse95ai/yosse95ai.github.io/actions/workflows/ci.yml/badge.svg
+[ci-badge]: https://github.com/yosse95ai/yosse95ai.github.io/actions/workflows/ci.yml/badge.svg?branch=master
 [deploy]: https://github.com/yosse95ai/yosse95ai.github.io/actions/workflows/deploy.yml
 [deploy-badge]: https://github.com/yosse95ai/yosse95ai.github.io/actions/workflows/deploy.yml/badge.svg
 [kiro]: https://kiro.dev/

@@ -1,7 +1,12 @@
 name: CI
 
 on:
+  # base ブランチを問わず全ての PR で実行する
+  # （branches フィルタは base ブランチに対する条件であり、head ブランチ名は問わない）
   pull_request:
+  # マージ後の master も検証する。deploy.yml は test しか通していないため
+  # 型チェックとスモークはここで担保する（README のバッジもこの結果を指す）
+  push:
     branches: [master]
   workflow_dispatch:
 
