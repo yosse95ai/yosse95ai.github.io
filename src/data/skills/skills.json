@@ -13,7 +13,7 @@
   { "id": "flask",         "order": 12, "name": "Flask",           "category": "framework", "icon": "devicon:flask",                     "url": "https://flask.palletsprojects.com" },
   { "id": "rails",         "order": 13, "name": "Ruby on Rails",   "category": "framework", "icon": "devicon:rails-wordmark",             "url": "https://rubyonrails.org" },
   { "id": "unity",         "order": 14, "name": "Unity",           "category": "framework", "icon": "devicon:unity",                     "url": "https://unity.com" },
-  { "id": "kiro",          "order": 15, "name": "Kiro",            "category": "tool",      "icon": "local:kiro",                        "url": "https://kiro.dev" },
+  { "id": "kiro",          "order": 15, "name": "Kiro",            "category": "tool",      "icon": "thesvg-color:kiro",                 "url": "https://kiro.dev" },
   { "id": "docker",        "order": 16, "name": "Docker",          "category": "tool",      "icon": "devicon:docker",                    "url": "https://www.docker.com" },
   { "id": "opencv",        "order": 17, "name": "OpenCV",          "category": "tool",      "icon": "devicon:opencv",                    "url": "https://opencv.org" },
   { "id": "dify",          "order": 18, "name": "Dify",            "category": "tool",      "icon": "local:dify",                        "url": "https://dify.ai" },

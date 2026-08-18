@@ -78,11 +78,7 @@ const skillsByCategory = Object.fromEntries(
           <div class="flex flex-wrap gap-6 items-end">
             {skillsByCategory[cat].map(skill => (
               <div class="flex flex-col items-center gap-1">
-                {skill.data.icon === 'local:kiro' ? (
-                  <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: oklch(0.52 0.24 295);">
-                    <Icon name="local:kiro" size={20} />
-                  </div>
-                ) : skill.data.icon === 'local:dify' ? (
+                {skill.data.icon === 'local:dify' ? (
                   <div class="h-8 flex items-center justify-center">
                     <Icon name="local:dify" size={20} />
                   </div>
