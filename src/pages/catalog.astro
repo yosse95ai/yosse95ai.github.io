@@ -37,8 +37,10 @@ const sampleOgp = await Promise.all(
   sampleUrls.map(async (url) => ({ ...(await fetchOgp(url)), url }))
 );
 
-// skills.json からデータ取得してカテゴリ別に分類
-const allSkills = await getCollection('skills');
+// skills.json からデータ取得してカテゴリ別に分類（order 昇順）
+const allSkills = (await getCollection('skills')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
 const categories = ['cloud', 'language', 'framework', 'tool', 'other'] as const;
 const skillsByCategory = Object.fromEntries(
   categories.map(cat => [cat, allSkills.filter(s => s.data.category === cat)])

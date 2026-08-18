@@ -2,7 +2,10 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 
-const images = await getCollection('gallery');
+// getCollection() の返却順は保証されないため order 昇順で明示的に並べる
+const images = (await getCollection('gallery')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
 
 // src/assets/gallery/ の画像を一括読み込み
 const galleryImages = import.meta.glob<{ default: ImageMetadata }>(
