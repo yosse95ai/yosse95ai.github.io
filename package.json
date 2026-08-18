@@ -8,6 +8,8 @@
     "build": "astro build && rm -rf dist/catalog",
     "preview": "astro preview",
     "test": "vitest --run",
+    "check": "astro check",
+    "smoke": "bun scripts/smoke-build.ts",
     "ogp:refresh": "bun scripts/refresh-ogp-cache.ts",
     "blog:update": "bun scripts/update-aws-blog.ts",
     "astro": "astro"
