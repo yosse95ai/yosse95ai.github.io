@@ -23,7 +23,7 @@
     "astro-icon": "^1.2.0",
     "daisyui": "^5.5.19",
     "tailwindcss": "^4.2.0",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.2"
   },
   "devDependencies": {
     "fast-check": "^4.5.3",
