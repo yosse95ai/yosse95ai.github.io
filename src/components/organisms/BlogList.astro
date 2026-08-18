@@ -49,13 +49,13 @@ const [awsCards, otherCards] = await Promise.all([
   ),
 ]);
 
-// publishedAt 降順（null は末尾）
-const sortByDate = <T extends { publishedAt: string | null }>(cards: T[]) =>
+// publishedAt 降順（null は末尾）。同日は id 昇順で並びを決定的にする
+const sortByDate = <T extends { publishedAt: string | null; id: string }>(cards: T[]) =>
   cards.sort((a, b) => {
-    if (!a.publishedAt && !b.publishedAt) return 0;
+    if (!a.publishedAt && !b.publishedAt) return a.id.localeCompare(b.id);
     if (!a.publishedAt) return 1;
     if (!b.publishedAt) return -1;
-    return b.publishedAt.localeCompare(a.publishedAt);
+    return b.publishedAt.localeCompare(a.publishedAt) || a.id.localeCompare(b.id);
   });
 
 const sortedAwsCards = sortByDate(awsCards);

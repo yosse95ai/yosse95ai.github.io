@@ -5,8 +5,6 @@
  */
 import Badge from '../components/atoms/Badge.astro';
 import Icon from '../components/atoms/Icon.astro';
-import KiroIcon from '../components/atoms/KiroIcon.astro';
-import DifyIcon from '../components/atoms/DifyIcon.astro';
 import OgpCard from '../components/molecules/OgpCard.astro';
 import SkillItem from '../components/molecules/SkillItem.astro';
 import SocialLink from '../components/molecules/SocialLink.astro';
@@ -37,8 +35,10 @@ const sampleOgp = await Promise.all(
   sampleUrls.map(async (url) => ({ ...(await fetchOgp(url)), url }))
 );
 
-// skills.json からデータ取得してカテゴリ別に分類
-const allSkills = await getCollection('skills');
+// skills.json からデータ取得してカテゴリ別に分類（order 昇順）
+const allSkills = (await getCollection('skills')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
 const categories = ['cloud', 'language', 'framework', 'tool', 'other'] as const;
 const skillsByCategory = Object.fromEntries(
   categories.map(cat => [cat, allSkills.filter(s => s.data.category === cat)])
@@ -78,13 +78,9 @@ const skillsByCategory = Object.fromEntries(
           <div class="flex flex-wrap gap-6 items-end">
             {skillsByCategory[cat].map(skill => (
               <div class="flex flex-col items-center gap-1">
-                {skill.data.icon === 'local:kiro' ? (
-                  <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: oklch(0.52 0.24 295);">
-                    <KiroIcon size={20} />
-                  </div>
-                ) : skill.data.icon === 'local:dify' ? (
+                {skill.data.icon === 'local:dify' ? (
                   <div class="h-8 flex items-center justify-center">
-                    <DifyIcon size={20} />
+                    <Icon name="local:dify" size={20} />
                   </div>
                 ) : skill.data.icon ? (
                   <Icon name={skill.data.icon} size={32} />

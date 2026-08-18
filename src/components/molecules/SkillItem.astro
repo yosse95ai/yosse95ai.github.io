@@ -1,7 +1,5 @@
 ---
 import Icon from '../atoms/Icon.astro';
-import KiroIcon from '../atoms/KiroIcon.astro';
-import DifyIcon from '../atoms/DifyIcon.astro';
 
 export interface Props {
   name: string;
@@ -12,7 +10,7 @@ export interface Props {
 
 const { name, icon, url, category } = Astro.props;
 
-const isKiro = icon === 'local:kiro';
+// Dify のロゴは横長（48:21.335）なので、他の正方形アイコンと高さを揃えるため専用に扱う
 const isDify = icon === 'local:dify';
 
 const categoryColor: Record<string, string> = {
@@ -31,13 +29,9 @@ const categoryColor: Record<string, string> = {
   class="group flex items-center gap-2.5 rounded-xl px-3 py-2 transition-all duration-200 hover:bg-surface-hover hover:scale-[1.03] hover:shadow-sm no-underline"
   title={name}
 >
-  {isKiro ? (
-    <div class="shrink-0 w-[22px] h-[22px] rounded flex items-center justify-center" style="background: oklch(0.52 0.24 295);">
-      <KiroIcon size={14} />
-    </div>
-  ) : isDify ? (
+  {isDify ? (
     <div class="shrink-0 h-[22px] flex items-center justify-center">
-      <DifyIcon size={14} />
+      <Icon name="local:dify" size={14} />
     </div>
   ) : icon ? (
     <Icon name={icon} size={22} class="shrink-0" />

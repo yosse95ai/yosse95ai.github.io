@@ -5,6 +5,7 @@ import { fetchOgp } from '../../lib/fetchOgp';
 export interface Props {
   title: string;
   event: string;
+  /** 開催日（YYYY / YYYY-MM / YYYY-MM-DD）。表示は年のみ */
   date: string;
   url: string | null;
   id: string;
@@ -12,6 +13,9 @@ export interface Props {
 }
 
 const { title, event, date, url, id, description } = Astro.props;
+
+/** date は YYYY[-MM[-DD]] 形式。表示は年のみ */
+const year = date.slice(0, 4);
 
 const isYouTube = url
   ? url.includes('youtube.com') || url.includes('youtu.be')
@@ -59,7 +63,7 @@ const gradient = `linear-gradient(135deg, oklch(0.35 0.13 ${hue}) 0%, oklch(0.55
 
     <!-- テキスト -->
     <div class="flex flex-col gap-1 p-3 flex-1">
-      <span class="text-sm font-mono text-text-muted">{date} — {event}</span>
+      <span class="text-sm font-mono text-text-muted">{year} — {event}</span>
       <p class="text-base font-semibold leading-tight line-clamp-2 text-base-100">
         {title}
       </p>
