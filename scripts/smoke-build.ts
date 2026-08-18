@@ -11,17 +11,22 @@
  */
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { sanitizeForLog } from './lib/sanitize.js';
 
 const DIST = process.env.SMOKE_DIST_DIR ?? 'dist';
 const SITE = 'https://yosse95ai.github.io';
 
 let failures = 0;
 
-const section = (title: string) => console.log(`\n▶ ${title}`);
-const ok = (message: string) => console.log(`  ✅ ${message}`);
-const ng = (message: string, detail?: string) => {
+// 記事 ID や URL は RSS フィード由来の外部データなので、ログ出力前にサニタイズする
+// （Log Injection / CWE-117 対策。リポジトリ全体で sanitizeForLog を通す方針）
+const section = (title: string) => console.log(`\n▶ ${sanitizeForLog(title)}`);
+const ok = (message: string) => console.log(`  ✅ ${sanitizeForLog(message)}`);
+/** 詳細は 1 要素 1 行として渡す（サニタイズで改行が失われるため文字列連結にしない） */
+const ng = (message: string, details: string[] = []) => {
   failures++;
-  console.error(`  ❌ ${message}${detail ? `\n     ${detail.replace(/\n/g, '\n     ')}` : ''}`);
+  const body = details.map((line) => `\n     ${sanitizeForLog(line)}`).join('');
+  console.error(`  ❌ ${sanitizeForLog(message)}${body}`);
 };
 
 const distFile = (path: string) => join(DIST, path);
@@ -35,7 +40,7 @@ const readJson = <T>(path: string): T => JSON.parse(readFileSync(path, 'utf-8'))
 const checkOrder = (html: string, needles: string[], label: string) => {
   const missing = needles.filter((needle) => !html.includes(needle));
   if (missing.length > 0) {
-    ng(`${label}: 出力に存在しない項目がある`, missing.join('\n'));
+    ng(`${label}: 出力に存在しない項目がある`, missing);
     return;
   }
   const actual = [...needles].sort((a, b) => html.indexOf(a) - html.indexOf(b));
@@ -43,10 +48,10 @@ const checkOrder = (html: string, needles: string[], label: string) => {
     ok(`${label}（${needles.length} 件が期待どおりの順序）`);
     return;
   }
-  ng(
-    `${label}: 並び順が期待と異なる`,
-    `期待: ${needles.join(' > ')}\n実際: ${actual.join(' > ')}`,
-  );
+  ng(`${label}: 並び順が期待と異なる`, [
+    `期待: ${needles.join(' > ')}`,
+    `実際: ${actual.join(' > ')}`,
+  ]);
 };
 
 // ---------------------------------------------------------------- ページの生成
@@ -94,7 +99,10 @@ section('sitemap');
   if (locs.length === expected.length && expected.every((url) => locs.includes(url))) {
     ok(`${locs.length} URL: ${locs.join(', ')}`);
   } else {
-    ng('sitemap の URL が期待と異なる', `期待: ${expected.join(', ')}\n実際: ${locs.join(', ')}`);
+    ng('sitemap の URL が期待と異なる', [
+      `期待: ${expected.join(', ')}`,
+      `実際: ${locs.join(', ')}`,
+    ]);
   }
 }
 
@@ -146,7 +154,10 @@ section('Blog カード（publishedAt 降順、同値は id 昇順）');
     const articles = readJson<Article[]>(`src/data/blog/${file}`);
     const missing = articles.filter((a) => !history.includes(`href="${a.externalUrl}"`));
     if (missing.length > 0) {
-      ng(`${label}: 記事が出力されていない`, missing.map((a) => a.id).join(', '));
+      ng(
+        `${label}: 記事が出力されていない`,
+        missing.map((a) => a.id),
+      );
       continue;
     }
     ok(`${label}: ${articles.length} 件すべてが出力されている`);
