@@ -43,7 +43,7 @@ AWSに勤務するエンジニアの個人紹介サイト。主にKiroのブロ�
 | 経歴タイムライン | 最新 4 件を縦タイムラインで表示。「全てを見る」ボタンを常に表示し `/history` へ遷移 |
 | スキル | カテゴリ別技術スキル一覧 |
 | ブログ記事一覧 | 翻訳・執筆記事の OGP カード一覧。各カテゴリ最新 5 件を横スクロール表示し、末尾に「全てを見る」ボタンで `/history#blog` へ遷移 |
-| Activity | OSS コントリビューション一覧 + 登壇履歴（Speaking）一覧 |
+| Activity | Open Source 一覧（自作プロジェクト + 他リポジトリへのコントリビューション） + 登壇履歴（Speaking）一覧 |
 | SNSリンク | GitHub、LinkedIn、Qiita、Zenn |
 
 ### 4.2 ギャラリーページ (`/gallery`)
@@ -55,7 +55,7 @@ AWSに勤務するエンジニアの個人紹介サイト。主にKiroのブロ�
 ### 4.3 ヒストリーページ (`/history`)
 
 - 全経歴エントリーを縦タイムラインで表示
-- Activity（OSS Contributions + Speaking）セクションを表示
+- Activity（Open Source + Speaking）セクションを表示
 - ブログ全件リスト（`id="blog"`）を Activity の下に配置。PC 幅では 4 列グリッド、スマホでは横スクロール
 - エントリー数に関わらず常にヘッダーナビからアクセス可能
 - トップページの「全てを見る」ボタンは常に表示する
@@ -147,7 +147,7 @@ AWSに勤務するエンジニアの個人紹介サイト。主にKiroのブロ�
 │  Blog 記事一覧（OGPカード横スクロール）  │
 │  col-span-12                            │
 ├─────────────────────────────────────────┤
-│  Activity（OSS Contributions + Speaking）│
+│  Activity（Open Source + Speaking）     │
 │  col-span-12                            │
 └─────────────────────────────────────────┘
 ```
@@ -230,7 +230,7 @@ src/components/
 | `gallery` | `file`（JSON） | id, src, alt, width, height |
 | `skills` | `file`（JSON） | id, name, category, icon, url |
 | `career` | `file`（JSON） | id, organization, role, startDate, endDate（nullable）, description（nullable, optional）※表示時は startDate 降順（最新が上）|
-| `oss` | `file`（JSON） | id, repo, url, description |
+| `oss` | `file`（JSON） | id, order, repo, url, description ※表示時は order 昇順（小さい方が上）|
 | `speaking` | `file`（JSON） | id, title, event, date, url（nullable）, description（nullable, optional）|
 
 ### 7.3 ディレクトリ構成
