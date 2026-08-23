@@ -59,11 +59,13 @@ const career = defineCollection({
   }),
 });
 
-// OSS コントリビューションコレクション
+// OSS コレクション（自作プロジェクト + 他リポジトリへのコントリビューション）
+// getCollection() の返却順は保証されないため、表示順は order で明示する
 const oss = defineCollection({
   loader: file('./src/data/oss/contributions.json'),
   schema: z.object({
     id: z.string(),
+    order: z.number().int().positive(),
     repo: z.string(),
     url: z.url(),
     description: z.string(),

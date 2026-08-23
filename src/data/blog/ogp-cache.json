@@ -230,7 +230,13 @@
   "https://github.com/aws-samples/dify-self-hosted-on-aws": {
     "title": "GitHub - aws-samples/dify-self-hosted-on-aws: Self-host Dify on AWS",
     "description": "Self-host Dify on AWS. Contribute to aws-samples/dify-self-hosted-on-aws development by creating an account on GitHub.",
-    "ogpImage": "https://opengraph.githubassets.com/443e1d8c7b085e960f92dc78e52c3af01b2b9514cb20ab3fdf9affffb46355f4/aws-samples/dify-self-hosted-on-aws",
+    "ogpImage": "https://opengraph.githubassets.com/cd63c2d8b392503c92c502e0443dc3bdc6b5b0b70fd1acc5f194f212bb03911c/aws-samples/dify-self-hosted-on-aws",
+    "publishedAt": null
+  },
+  "https://github.com/yosse95ai/permissions-for-kiro": {
+    "title": "GitHub - yosse95ai/permissions-for-kiro",
+    "description": "Contribute to yosse95ai/permissions-for-kiro development by creating an account on GitHub.",
+    "ogpImage": "https://opengraph.githubassets.com/4f7e87111742cda24c22eb0ce9066709bc35981fb81630f6bfa976eca596d546/yosse95ai/permissions-for-kiro",
     "publishedAt": null
   }
 }

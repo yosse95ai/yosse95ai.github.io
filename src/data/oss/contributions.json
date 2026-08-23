@@ -1,6 +1,14 @@
 [
   {
+    "id": "permissions-for-kiro",
+    "order": 1,
+    "repo": "yosse95ai/permissions-for-kiro",
+    "url": "https://github.com/yosse95ai/permissions-for-kiro",
+    "description": "自作の Kiro 拡張機能。実際に効いている権限ルールをサイドバーにツリー表示し、定義行へジャンプできる。Open VSX で公開中。"
+  },
+  {
     "id": "dify-self-hosted-on-aws",
+    "order": 2,
     "repo": "aws-samples/dify-self-hosted-on-aws",
     "url": "https://github.com/aws-samples/dify-self-hosted-on-aws",
     "description": "AWS 上での Dify セルフホスト環境を実際に活用する中で発見した不具合を OSS にフィードバックし、バグ修正 PR をマージ済み。メンテナー。"

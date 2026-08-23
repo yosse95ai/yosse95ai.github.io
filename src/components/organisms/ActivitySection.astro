@@ -6,6 +6,9 @@ import SpeakingCard from '../molecules/SpeakingCard.astro';
 const allOss = await getCollection('oss');
 const allSpeaking = await getCollection('speaking');
 
+// order 昇順（小さい方が先）。getCollection() の返却順は保証されないため明示的に並べる
+const sortedOss = [...allOss].sort((a, b) => a.data.order - b.data.order);
+
 // date 降順（最新が先）。date は YYYY[-MM[-DD]] なので辞書順比較で時系列順になる
 const sortedSpeaking = [...allSpeaking].sort((a, b) => b.data.date.localeCompare(a.data.date));
 ---
@@ -17,11 +20,11 @@ const sortedSpeaking = [...allSpeaking].sort((a, b) => b.data.date.localeCompare
     Activity
   </h2>
 
-  <!-- OSS Contributions -->
+  <!-- Open Source -->
   <div class="flex flex-col gap-3">
-    <h3 class="text-sm md:text-base font-mono text-text-muted">OSS Contributions</h3>
+    <h3 class="text-sm md:text-base font-mono text-text-muted">Open Source</h3>
     <div class="flex flex-col gap-3">
-      {allOss.map((item) => (
+      {sortedOss.map((item) => (
         <OssItemSimple repo={item.data.repo} url={item.data.url} description={item.data.description} />
       ))}
     </div>
