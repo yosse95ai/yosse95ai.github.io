@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import OgpCard from './OgpCard.astro';
 import { fetchOgp } from '../../lib/fetchOgp';
 
@@ -10,9 +11,28 @@ export interface Props {
   url: string | null;
   id: string;
   description?: string | null;
+  /** サムネイル画像。src/assets/speaking/ 配下のファイル名でマッチング */
+  image?: string | null;
 }
 
-const { title, event, date, url, id, description } = Astro.props;
+const { title, event, date, url, id, description, image } = Astro.props;
+
+// src/assets/speaking/ の画像を一括読み込み
+const speakingImages = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/speaking/*.{jpg,JPG,jpeg,png,webp}',
+  { eager: true },
+);
+
+/** image（例: "/images/speaking/foo.jpg"）からファイル名を抽出してマッチング */
+function resolveImage(src: string): ImageMetadata | undefined {
+  const filename = src.split('/').pop()!;
+  const entry = Object.entries(speakingImages).find(([path]) =>
+    path.endsWith(`/${filename}`),
+  );
+  return entry?.[1].default;
+}
+
+const thumbnail = image ? resolveImage(image) : undefined;
 
 /** date は YYYY[-MM[-DD]] 形式。表示は年のみ */
 const year = date.slice(0, 4);
@@ -55,11 +75,22 @@ const gradient = `linear-gradient(135deg, oklch(0.35 0.13 ${hue}) 0%, oklch(0.55
     ]}
     class:list={['bg-surface border-border shadow-[0_1px_4px_var(--color-shadow-sm)]']}
   >
-    <!-- グラデーションプレースホルダー -->
+    <!-- サムネイル（画像があれば表示、なければグラデーションプレースホルダー） -->
     <div
-      class="aspect-[1200/630] w-full"
+      class="aspect-[1200/630] w-full overflow-hidden"
       style={`background: ${gradient};`}
-    />
+    >
+      {thumbnail && (
+        <Image
+          src={thumbnail}
+          alt={`${event} — ${title}`}
+          width={1200}
+          class="w-full h-full object-contain"
+          loading="lazy"
+          decoding="async"
+        />
+      )}
+    </div>
 
     <!-- テキスト -->
     <div class="flex flex-col gap-1 p-3 flex-1">
