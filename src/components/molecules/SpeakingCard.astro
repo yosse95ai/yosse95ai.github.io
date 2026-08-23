@@ -77,18 +77,34 @@ const gradient = `linear-gradient(135deg, oklch(0.35 0.13 ${hue}) 0%, oklch(0.55
   >
     <!-- サムネイル（画像があれば表示、なければグラデーションプレースホルダー） -->
     <div
-      class="aspect-[1200/630] w-full overflow-hidden"
+      class="relative aspect-[1200/630] w-full overflow-hidden"
       style={`background: ${gradient};`}
     >
       {thumbnail && (
-        <Image
-          src={thumbnail}
-          alt={`${event} — ${title}`}
-          width={1200}
-          class="w-full h-full object-contain"
-          loading="lazy"
-          decoding="async"
-        />
+        <>
+          <!--
+            画像はアスペクト比がカード枠と一致しないため object-contain で全体を表示する。
+            余白は画像自身をぼかして cover したものを敷くことで、画像ごとに背景色を
+            指定しなくても縁の色と自然につながるようにしている。
+          -->
+          <Image
+            src={thumbnail}
+            alt=""
+            aria-hidden="true"
+            width={64}
+            class="absolute inset-0 w-full h-full object-cover scale-110 blur-lg"
+            loading="lazy"
+            decoding="async"
+          />
+          <Image
+            src={thumbnail}
+            alt={`${event} — ${title}`}
+            width={1200}
+            class="relative w-full h-full object-contain"
+            loading="lazy"
+            decoding="async"
+          />
+        </>
       )}
     </div>
 
