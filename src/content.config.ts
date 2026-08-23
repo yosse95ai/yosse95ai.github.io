@@ -83,6 +83,9 @@ const speaking = defineCollection({
     date: z.string().regex(/^\d{4}(-\d{2}(-\d{2})?)?$/, 'date は YYYY / YYYY-MM / YYYY-MM-DD 形式で指定してください'),
     url: z.url().nullable(),
     description: z.string().nullable().optional(),
+    // サムネイル画像。src/assets/speaking/ 配下のファイル名でマッチングする
+    // 未指定の場合は id から生成される決定論的グラデーションを表示する
+    image: z.string().optional(),
   }),
 });
 
