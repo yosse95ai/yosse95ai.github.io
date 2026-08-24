@@ -21,7 +21,7 @@
     "@iconify-json/simple-icons": "^1.2.71",
     "@iconify-json/thesvg-color": "^1.2.2",
     "@tailwindcss/vite": "^4.2.0",
-    "astro": "^7.2.2",
+    "astro": "^7.2.4",
     "astro-icon": "^1.2.0",
     "daisyui": "^5.5.19",
     "tailwindcss": "^4.2.0",
