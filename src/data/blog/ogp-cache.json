@@ -53,6 +53,12 @@
     "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/07/07/ogp.png",
     "publishedAt": "2026-07-10T10:21:11+09:00"
   },
+  "https://aws.amazon.com/jp/blogs/news/cloud-sessions/": {
+    "title": "ラップトップを閉じても、エージェントは動き続ける。cloud sessions で開発する | Amazon Web Services",
+    "description": "Kiro の cloud sessions（preview）は、AI エージェントをクラウドのサンドボックスで動かす新機能です。ラップトップを閉じても作業は継続し、CLI、IDE、Web のどのクライアントからでも同じセッションに戻れます。本記事では、EC アプリへの決済 API 追加を題材に、有効化の手順、クラウドプロファイルによるスキル管理、そして Kiro CLI からの起動と再開までを実際の流れに沿って紹介します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/08/20/ogp-6-1200x630.png",
+    "publishedAt": "2026-08-25T12:41:20+09:00"
+  },
   "https://aws.amazon.com/jp/blogs/news/enhanced-genomic-data-storage-and-workflows-with-mgi-sentieon-and-aws/": {
     "title": "MGI、Sentieon、AWS で強化するゲノムデータストレージとワークフロー | Amazon Web Services",
     "description": "MGI、Sentieon、AWS の協業により、ゲノミクスラボは大規模なシーケンシングデータを効率的に管理・解析できます。ベルリンの MGI 欧州本社では、3 台の DNBSEQ-T7 シーケンサーが週あたり合計で最大 63 テラベース生成するゲノムデータを AWS HealthOmics Sequence Store に取り込み、Sentieon の DNAscope や TNseq を Ready2Run ワークフローまたはプライベートワークフローで実行します。Ready2Run の固定料金と自動リソース管理により、コストを予測しやすく、迅速で高精度な発見を実現します。",
