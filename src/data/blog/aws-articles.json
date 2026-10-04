@@ -1,5 +1,10 @@
 [
   {
+    "id": "cloud-sessions",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/cloud-sessions/",
+    "publishedAt": "2026-08-25"
+  },
+  {
     "id": "which-kiro-app-should-i-pick",
     "externalUrl": "https://aws.amazon.com/jp/blogs/news/which-kiro-app-should-i-pick/",
     "publishedAt": "2026-08-17"
