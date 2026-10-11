@@ -21,45 +21,152 @@ function resolveImage(src: string): ImageMetadata | undefined {
   );
   return entry?.[1].default;
 }
+
+// 縦横比（高さ / 幅）をビルド時に埋め込む。列の振り分けを画像の読み込み完了に
+// 依存させないため、実測ではなくこの値だけで各列の高さを見積もる
+const items = images
+  .map((img) => ({ data: img.data, image: resolveImage(img.data.src) }))
+  .filter((item): item is { data: typeof item.data; image: ImageMetadata } =>
+    Boolean(item.image),
+  );
 ---
 
+{/*
+  CSS マルチカラム（columns-*）は使わない。WebKit（iOS/iPadOS Safari）は列の
+  分割位置で生じた余りを次の列の先頭に持ち込むため、列の上端に穴が空く（issue #58）。
+  代わりに列ごとの要素を用意して縦積みするので、フラグメンテーションが介在しない。
+*/}
 <section class="p-4 sm:p-6">
-  <div class="columns-2 sm:columns-3 md:columns-3 lg:columns-4 gap-3">
-    {images.map((img, i) => {
-      const imageSrc = resolveImage(img.data.src);
-      return imageSrc && (
-        // 要素間の余白は「外側の pb-3」で確保する。margin-bottom で取ると
-        // WebKit（iOS/iPadOS Safari）が列の分割位置で下マージンを次の列の先頭に
-        // 持ち込み、列の上端に穴が空く（issue #58）
+  <div class="photo-grid" data-photo-grid>
+    {items.map((item, i) => (
+      <div
+        class="photo-item"
+        data-ratio={(item.image.height / item.image.width).toFixed(4)}
+        style={`animation-delay: ${i * 60}ms;`}
+      >
         <div
-          class="break-inside-avoid pb-3 photo-item"
-          style={`animation-delay: ${i * 60}ms;`}
+          class="overflow-hidden rounded-2xl skeleton skeleton-img"
+          style="box-shadow: 0 1px 4px var(--color-shadow-sm);"
         >
-          <div
-            class="overflow-hidden rounded-2xl skeleton skeleton-img"
-            style="box-shadow: 0 1px 4px var(--color-shadow-sm);"
-          >
-            <Image
-              src={imageSrc}
-              alt={img.data.alt}
-              width={600}
-              class="w-full h-auto block select-none pointer-events-none"
-              loading="lazy"
-              decoding="async"
-              draggable="false"
-            />
-          </div>
+          <Image
+            src={item.image}
+            alt={item.data.alt}
+            width={600}
+            class="w-full h-auto block select-none pointer-events-none"
+            loading="lazy"
+            decoding="async"
+            draggable="false"
+          />
         </div>
-      );
-    })}
+      </div>
+    ))}
   </div>
 </section>
 
+{/*
+  列への振り分けは描画前に終わらせたいので is:inline で同期実行する
+  （バンドルされた script は defer 扱いになり、1 カラムから多カラムへの
+  ちらつきが出るため）。JS が無効な場合は CSS 側のフォールバックで 1 カラムになる。
+*/}
+<script is:inline>
+  (() => {
+    const GAP = 12; // .photo-grid の gap（0.75rem）と一致させる
+    // 画面幅 → 列数（Tailwind の sm / lg と同じ境界）
+    const BREAKPOINTS = [
+      { min: 1024, columns: 4 },
+      { min: 640, columns: 3 },
+      { min: 0, columns: 2 },
+    ];
+
+    const columnsFor = (width) =>
+      BREAKPOINTS.find((bp) => width >= bp.min).columns;
+
+    /** 短い列から詰めていく。高さは data-ratio と実際の列幅から計算する */
+    function pack(grid, columns) {
+      const items = [...grid.querySelectorAll('.photo-item')];
+      if (items.length === 0) return;
+
+      const columnWidth = (grid.clientWidth - GAP * (columns - 1)) / columns;
+      const buckets = Array.from({ length: columns }, () => {
+        const el = document.createElement('div');
+        el.className = 'photo-col';
+        return { el, height: 0 };
+      });
+
+      for (const item of items) {
+        const ratio = Number.parseFloat(item.dataset.ratio) || 1;
+        // 同じ高さなら左の列を優先する（元の並び順に近い見た目を保つ）
+        const shortest = buckets.reduce((a, b) => (b.height < a.height ? b : a));
+        shortest.el.appendChild(item);
+        shortest.height += ratio * columnWidth + GAP;
+      }
+
+      grid.replaceChildren(...buckets.map((b) => b.el));
+      grid.dataset.columns = String(columns);
+    }
+
+    function packAll() {
+      const columns = columnsFor(window.innerWidth);
+      for (const grid of document.querySelectorAll('[data-photo-grid]')) {
+        // 列数が変わらないなら組み替えない（アニメーションの再生を避ける）
+        if (grid.dataset.columns === String(columns)) continue;
+        // 2 回目以降はフェードインをやり直さない
+        if (grid.dataset.columns) grid.dataset.packed = '';
+        pack(grid, columns);
+      }
+    }
+
+    // View Transitions で戻ってきた場合は、この即時実行部分だけを再利用する
+    if (window.__photoGridPack) {
+      window.__photoGridPack();
+      return;
+    }
+    window.__photoGridPack = packAll;
+
+    packAll();
+
+    let timer;
+    window.addEventListener('resize', () => {
+      clearTimeout(timer);
+      timer = setTimeout(packAll, 150);
+    });
+    document.addEventListener('astro:page-load', packAll);
+  })();
+</script>
+
 <style>
+  /* JS 無効時のフォールバック: 1 カラムで縦に並べる */
+  .photo-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .photo-grid[data-columns] {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .photo-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    /* 列幅を均等にする。min-width: 0 がないと画像の内在幅で押し広げられる */
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
   .photo-item {
     opacity: 0;
     transform: translateY(16px);
     animation: photo-fadein 0.45s ease forwards;
+  }
+
+  /* 組み替え後はフェードインを繰り返さない */
+  .photo-grid[data-packed] .photo-item {
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 
   .photo-item .skeleton-img > img {
