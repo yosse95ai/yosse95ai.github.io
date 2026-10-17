@@ -1,5 +1,10 @@
 [
   {
+    "id": "local-sandboxing",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/local-sandboxing/",
+    "publishedAt": "2026-10-15"
+  },
+  {
     "id": "cloud-sessions",
     "externalUrl": "https://aws.amazon.com/jp/blogs/news/cloud-sessions/",
     "publishedAt": "2026-08-25"
