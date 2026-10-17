@@ -149,6 +149,12 @@
     "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/11/20/thumbnail-1-1120x630.png",
     "publishedAt": "2025-11-21T09:40:43+09:00"
   },
+  "https://aws.amazon.com/jp/blogs/news/local-sandboxing/": {
+    "title": "Kiro のローカルサンドボックス: エージェントが実行するコマンドを境界内にとどめる | Amazon Web Services",
+    "description": "Kiro IDE と Kiro CLI で、ローカルサンドボックスが一般提供されました。エージェントが実行するコマンドを OS カーネルが強制するサンドボックスで動かし、書き込み先をプロジェクトに限定し、認証情報パスの読み取りを拒否し、ネットワークをドメイン単位で制限します。本記事では、エージェント自体をサンドボックスの外に置く設計の考え方と、sandbox.json と permissions.yaml による設定方法を紹介します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/10/15/local-sandboxing-ogp.jpg",
+    "publishedAt": "2026-10-15T16:40:28+09:00"
+  },
   "https://aws.amazon.com/jp/blogs/news/minimax-m25-and-glm-5/": {
     "title": "Kiro に MiniMax M2.5 と GLM-5 が追加されました | Amazon Web Services",
     "description": "Kiro に新たに MiniMax M2.5 と GLM-5 の 2 つのオープンウェイトモデルが追加されました。MiniMax M2.5 はクレジット乗数 0.25x の低コストモデルで、SWE-Bench Verified 80.2% を達成し、マルチステップ実装や長時間エージェントセッションに最適です。GLM-5 は 200K コンテキストウィンドウを持つ大規模 MoE モデルで、リポジトリ規模の複雑なアーキテクチャ変更や長期エージェントワークフローに強みを発揮します。両モデルは IDE と CLI から即座に利用可能です。",
@@ -236,7 +242,7 @@
   "https://github.com/aws-samples/dify-self-hosted-on-aws": {
     "title": "GitHub - aws-samples/dify-self-hosted-on-aws: Self-host Dify on AWS",
     "description": "Self-host Dify on AWS. Contribute to aws-samples/dify-self-hosted-on-aws development by creating an account on GitHub.",
-    "ogpImage": "https://opengraph.githubassets.com/cf3a932e84988b597acdf803e65dbc23beb8c1bb3dbc95a2578e14edfe8cedd3/aws-samples/dify-self-hosted-on-aws",
+    "ogpImage": "https://opengraph.githubassets.com/d3bd7538772206e794ae5cfdfb948be94640f15f9e431a84f6c3edb693bbb268/aws-samples/dify-self-hosted-on-aws",
     "publishedAt": null
   },
   "https://github.com/yosse95ai/permissions-for-kiro": {
