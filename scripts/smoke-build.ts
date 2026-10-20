@@ -133,6 +133,34 @@ section('Gallery の表示順（img.json の order 昇順）');
   checkOrder(gallery, expected, 'Gallery');
 }
 
+section('Gallery のレイアウト方式');
+{
+  // CSS マルチカラム（columns-*）は WebKit が列の分割位置の余りを次の列の先頭に
+  // 持ち込むため、iOS/iPadOS Safari で列の上端に穴が空く（issue #58）。
+  // 列は JS で振り分ける方式に変えたので、マルチカラムへの逆戻りを検知する。
+  const multicol = gallery.match(/class="[^"]*\bcolumns-\d[^"]*"/);
+  if (multicol) {
+    ng('ギャラリーが CSS マルチカラムを使っている（#58 が再発する）', [multicol[0]]);
+  } else {
+    ok('CSS マルチカラムを使っていない');
+  }
+
+  if (gallery.includes('data-photo-grid')) {
+    ok('列を振り分けるコンテナ（data-photo-grid）がある');
+  } else {
+    ng('data-photo-grid が無い（PhotoGrid の構造が変わった可能性）');
+  }
+
+  // 列の高さ見積もりに使う縦横比が全画像に埋め込まれていること
+  const ratioCount = (gallery.match(/data-ratio="/g) ?? []).length;
+  const imageCount = readJson<unknown[]>('src/data/gallery/img.json').length;
+  if (ratioCount === imageCount) {
+    ok(`data-ratio が ${ratioCount} 件（img.json の件数と一致）`);
+  } else {
+    ng(`data-ratio が ${ratioCount} 件しかない（img.json は ${imageCount} 件）`);
+  }
+}
+
 section('Speaking の表示順（date 降順）');
 {
   type Speaking = { id: string; date: string; event: string };
