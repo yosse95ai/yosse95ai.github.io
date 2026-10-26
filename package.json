@@ -23,7 +23,7 @@
     "@tailwindcss/vite": "^4.2.0",
     "astro": "^7.4.0",
     "astro-icon": "^1.2.0",
-    "daisyui": "^5.7.47",
+    "daisyui": "^5.7.50",
     "tailwindcss": "^4.2.0",
     "typescript": "^6.0.3"
   },
