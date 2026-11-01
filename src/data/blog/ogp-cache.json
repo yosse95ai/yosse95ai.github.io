@@ -143,6 +143,12 @@
     "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/06/15/ogp.png",
     "publishedAt": "2026-06-16T08:18:54+09:00"
   },
+  "https://aws.amazon.com/jp/blogs/news/kiros-new-free-trial-gives-you-500-extra-credits/": {
+    "title": "Kiro の新しい無料トライアルで 500 クレジットを追加提供 | Amazon Web Services",
+    "description": "11 月 1 日から Kiro の無料トライアルが変わります。初めて Pro にアップグレードすると、その月の残りは無料になり、12 か月間使える 500 トライアルクレジットも付与されます。プラン料金とクレジットは秒単位で日割り計算されます。上位プランで開始した場合は、日割りの Pro 料金との差額のみを支払います。本記事では、変更内容、計算方法、15 日にアップグレードした場合の各プランの金額とクレジットを紹介します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/10/28/kiros-new-free-trial-gives-you-500-extra-credits-ogp.jpg",
+    "publishedAt": "2026-10-28T15:20:37+09:00"
+  },
   "https://aws.amazon.com/jp/blogs/news/kiroweeeeeeek-in-japan-day-3-security-governance/": {
     "title": "Kiro を組織で利用するためのセキュリティとガバナンス | Amazon Web Services",
     "description": "本ブログは Kiroweeeeeek (X:#kiroweeeeeeek) の第 3 日目です。本ブログでは、Kiro を組織で利用するにあたって気になるセキュリティとガバナンス機能についてご紹介します。",
@@ -203,6 +209,12 @@
     "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2025/03/17/webhook_thumb-1.png",
     "publishedAt": "2025-04-09T17:30:32+09:00"
   },
+  "https://aws.amazon.com/jp/blogs/news/software-factory-stability/": {
+    "title": "週 1,000 件の PR でもソフトウェアファクトリーを安定させる方法 | Amazon Web Services",
+    "description": "Kiro Crew チームが、週 1,000 件のプルリクエストをマージしながら品質を保つ方法を紹介します。人間がすべての行を読まなくても確信を得られるよう、レビューの重大度分け、役割別の AI レビュアー、80 件以上のチェックを 1 つにまとめる PR Readiness 判定、prepare-pr スキルによる自動修正ループ、マージ後のセキュリティ対策へと段階的に発展させた過程を解説します。過剰なエンジニアリングへの対処法も紹介します。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/10/28/software-factory-stability-ogp.jpg",
+    "publishedAt": "2026-10-28T19:59:02+09:00"
+  },
   "https://aws.amazon.com/jp/blogs/news/sonnet-4-6/": {
     "title": "Claude Sonnet 4.6 が Kiro で利用可能になりました | Amazon Web Services",
     "description": "本日より Kiro IDE と CLI で Claude Sonnet 4.6 が利用可能になりました。Sonnet 4.6 は Opus 4.6 の知能に近づきながらトークン効率が高く、複雑なコードベースでの機能構築、リファクタリング、デバッグなどの反復的なワークフローを高品質に処理します。マルチモデルパイプラインでリードエージェントとサブエージェントの両方の役割を果たし、エージェント作業に最適化されています。Pro、Pro+、Power のお客様に AWS の 2 リージョンで提供され、1.3 倍のクレジット乗数でコスト効率も優れています。",
@@ -242,7 +254,7 @@
   "https://github.com/aws-samples/dify-self-hosted-on-aws": {
     "title": "GitHub - aws-samples/dify-self-hosted-on-aws: Self-host Dify on AWS",
     "description": "Self-host Dify on AWS. Contribute to aws-samples/dify-self-hosted-on-aws development by creating an account on GitHub.",
-    "ogpImage": "https://opengraph.githubassets.com/23f62b53edb72fa46f3161c9690a909239e15d583bc44120c28aa4a60c3caada/aws-samples/dify-self-hosted-on-aws",
+    "ogpImage": "https://opengraph.githubassets.com/4b1647aee0916c32b6fcd26ac1983483d02f9cf34e1620ff4d440b5498b13738/aws-samples/dify-self-hosted-on-aws",
     "publishedAt": null
   },
   "https://github.com/yosse95ai/permissions-for-kiro": {
