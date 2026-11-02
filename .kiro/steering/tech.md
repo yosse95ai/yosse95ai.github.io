@@ -61,6 +61,17 @@ bunx vitest run <path>  # 特定ファイルのみ
 - `withastro/action@v6` の `package-manager: bun` は、`package-lock.json` が無くなった後も**明示を維持する**（lockfile による自動検出に依存しない）
 - **`git push` は自律的に実行しない**（必ずユーザー確認を取る）
 
+### Actions の lockfile（`.github/workflows/actions.lock`）
+- ワークフローが使う action（composite action 経由の推移的依存を含む）は `actions.lock` でコミット SHA に固定している。`uses:` は `@v7.0.1` のような完全なバージョンで書く
+- `actions.lock` は `gh actions-lock` が生成する。**手で編集しない**
+- action を追加・変更・削除するときの手順:
+  1. ワークフローの `uses:` を編集する
+  2. リポジトリルートで `gh actions-lock` を実行する（初回のみ `gh extension install github/gh-actions-lock`）
+  3. `gh actions-lock --verify` で検証し、ワークフローと `actions.lock` を同じコミットに含める
+- lockfile を更新し忘れると、Actions の実行が `Invalid lockfile` で失敗する
+- Dependabot（`github-actions`）は action のバージョンを上げる PR で `actions.lock` の該当エントリも再生成するため、手作業は不要
+- 参考: https://docs.github.com/en/actions/how-tos/secure-your-work/lock-workflow-dependencies
+
 ## 開発コマンド
 ```bash
 bun install      # 依存インストール
