@@ -13,7 +13,9 @@ export default defineConfig({
   build: {
   },
   integrations: [
-    sitemap(),
+    // 開発用のコンポーネントカタログ（/catalog/）は build スクリプトで dist から削除するが、
+    // sitemap は astro build 中に書き出されるため、ここで除外しないと 404 の URL が載る
+    sitemap({ filter: (page) => !new URL(page).pathname.startsWith('/catalog') }),
     icon(),
   ],
   vite: {

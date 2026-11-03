@@ -95,7 +95,7 @@ for (const page of PAGES.filter((p) => p.endsWith('.html') && p !== '404.html'))
 section('sitemap');
 {
   const locs = [...readDist('sitemap-0.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  const expected = [`${SITE}/`, `${SITE}/catalog/`, `${SITE}/gallery/`, `${SITE}/history/`];
+  const expected = [`${SITE}/`, `${SITE}/gallery/`, `${SITE}/history/`];
   if (locs.length === expected.length && expected.every((url) => locs.includes(url))) {
     ok(`${locs.length} URL: ${locs.join(', ')}`);
   } else {
@@ -103,6 +103,19 @@ section('sitemap');
       `期待: ${expected.join(', ')}`,
       `実際: ${locs.join(', ')}`,
     ]);
+  }
+
+  // sitemap はビルド後の削除（rm -rf dist/catalog など）を知らないため、
+  // 載っている URL がすべて dist に実在するかを確認する（公開後に 404 になる URL を検知する）
+  const toDistPath = (loc: string) => {
+    const pathname = decodeURIComponent(new URL(loc).pathname).replace(/^\/+|\/+$/g, '');
+    return pathname === '' ? 'index.html' : join(pathname, 'index.html');
+  };
+  const missing = locs.filter((loc) => !existsSync(distFile(toDistPath(loc))));
+  if (missing.length > 0) {
+    ng('sitemap に dist に存在しない URL が含まれている', missing.map((loc) => `${loc} -> ${toDistPath(loc)}`));
+  } else {
+    ok(`sitemap の ${locs.length} URL すべてが dist に存在する`);
   }
 }
 
