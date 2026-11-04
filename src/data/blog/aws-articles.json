@@ -1,5 +1,15 @@
 [
   {
+    "id": "software-factory-stability",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/software-factory-stability/",
+    "publishedAt": "2026-10-28"
+  },
+  {
+    "id": "kiros-new-free-trial-gives-you-500-extra-credits",
+    "externalUrl": "https://aws.amazon.com/jp/blogs/news/kiros-new-free-trial-gives-you-500-extra-credits/",
+    "publishedAt": "2026-10-28"
+  },
+  {
     "id": "local-sandboxing",
     "externalUrl": "https://aws.amazon.com/jp/blogs/news/local-sandboxing/",
     "publishedAt": "2026-10-15"
