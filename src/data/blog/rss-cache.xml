@@ -5,7 +5,7 @@
 	<atom:link href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/" rel="self" type="application/rss+xml"/>
 	<link>https://aws.amazon.com/jp/blogs/news/</link>
 	<description/>
-	<lastBuildDate>Wed, 28 Oct 2026 10:59:02 +0000</lastBuildDate>
+	<lastBuildDate>Thu, 05 Nov 2026 08:03:25 +0000</lastBuildDate>
 	<language>ja</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -13,6 +13,76 @@
 	1	</sy:updateFrequency>
 	
 	<item>
+		<title>クレジットプーリングで Kiro のクレジットをチーム全体で共有する</title>
+		<link>https://aws.amazon.com/jp/blogs/news/credit-pooling/</link>
+		
+		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
+		<pubDate>Thu, 05 Nov 2026 08:03:25 +0000</pubDate>
+				<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">8c04e5c69bf9e767c48fbe8f84dea91db332b788</guid>
+
+					<description>Kiro Enterprise で、チーム全体の Kiro クレジットを 1 つの共有プールにまとめて使える「クレジットプーリング」が提供開始されました。パワーユーザーはライトユーザーの余剰クレジットを使えるため、無駄を減らせます。管理者は個人・グループ・プロファイルの各レベルで利用上限やしきい値アラートを設定でき、請求は AWS アカウント経由で行われます。</description>
+										<content:encoded>&lt;p&gt;本記事は、2026 年 11 月 4 日に Shweta V A、Ranjith Ramakrishnan、Krishna Parab が公開した「&lt;a href="https://kiro.dev/blog/credit-pooling/" target="_blank" rel="noopener noreferrer"&gt;Share Kiro credits across your team with credit pooling&lt;/a&gt;」を翻訳したものです。&lt;/p&gt; 
+&lt;h2 id="why-ai-spend-is-now-a-budgeting-problem"&gt;AI 利用料が予算の課題になっている理由&lt;/h2&gt; 
+&lt;p&gt;AI コーディングツールが開発の重要な一部になるにつれて、AI のクレジット使用量は急速に増えています。ただし、AI の使われ方は開発者やチームによって一様ではありません。クレジットを個人のサブスクリプションごとに均等に割り当てる方式は、チームのクレジット消費の実態と合いません。その結果、クレジットの使い方に無駄が生じ、毎月の請求額も予測しにくくなります。多くの組織にとって、AI のコストを管理することは、予算計画を立てる際の最大の懸案事項になっています。&lt;/p&gt; 
+&lt;p&gt;心当たりはありませんか。同じ課題を抱えているのはあなただけではありません。よくある状況は次のとおりです。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;一部のパワーユーザーがクレジットの大半を消費する一方、ライトユーザーはクレジットを使い切れずに失効させています。&lt;/li&gt; 
+ &lt;li&gt;AI エージェントが誰にも気づかれないまま、夜間に想定外の料金を発生させることがあります。&lt;/li&gt; 
+ &lt;li&gt;個別のシートライセンスによって請求が分断されます。あるグループの未使用クレジットを、別のグループの超過利用に充てることはできません。&lt;/li&gt; 
+ &lt;li&gt;利用上限を簡単に適用する方法がありません。&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;チームには、AI の購入、共有、ガバナンス、利用予測をより柔軟に行う方法が必要です。今回、この課題に直接取り組みます。クレジットプーリングは、AWS アカウントを通じて請求を行いながら、予測可能な AI 利用料に対するコスト効率、ガバナンス、利用の柔軟性を提供します。Kiro Enterprise のお客様向けに提供を開始しました。チームが AI の利用を共有して統制するための、より賢く経済的な方法です。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-199386"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2 id="what-is-credit-pooling"&gt;クレジットプーリングとは&lt;/h2&gt; 
+&lt;p&gt;クレジットプーリングは、Kiro の企業向け料金モデルです。組織全体の Kiro クレジットを 1 つの共有プールにまとめ、チーム全体で使えるようにします。クレジットは全員が引き出せる共有プールに追加されるため、パワーユーザーはライトユーザーが使っていない分のクレジットを利用できます。管理者は各ユーザーに利用上限を設定でき、その利用分は共有プールから差し引かれます。クレジットプーリングでは、購入、可視化、ガバナンスを一元管理できます。請求は AWS アカウントを通じて行われるため、Kiro の料金は他の AWS の支払いと一緒に表示されます。&lt;/p&gt; 
+&lt;h2 id="how-it-works-the-core-mechanics"&gt;仕組みと中核となるメカニズム&lt;/h2&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;&lt;u&gt;シートあたり月額 $20&lt;/u&gt;（最小 2 シート）：請求サイクルの途中でシートを追加した場合、そのシート料金と、共有プールに追加される 500 クレジットは、残り日数に基づいて初月分が日割りされます。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;シートごとに 500 クレジットを含む&lt;/u&gt;：各請求サイクルで共有プールに追加されます。毎月リセットされます。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;追加クレジットは 1 クレジットあたり $0.04&lt;/u&gt;：購入するとすぐにプールに追加されます。購入したクレジットは最長 12 か月間繰り越せます。そのため、1 回の購買手続きで必要な容量をまとめて確保でき、先々の計画も立てやすくなります。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;スマートなクレジット消費&lt;/u&gt;：チームはまずシート料金に含まれているクレジットを使い、次に追加購入したクレジットを使います。購入分は有効期限が近いものから消費されます。あるチームの余剰分が、別のチームの繁忙期を支えます。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;二重請求は発生しません&lt;/u&gt;：ユーザーが複数のグループに所属していても、組織が支払うのは 1 シート分だけです。&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;クレジットプーリングにより、実際のコスト削減、より強固なガバナンス、AI 利用の柔軟性が得られます。&lt;/p&gt; 
+&lt;h2 id="real-cost-savings-from-shared-credits"&gt;共有クレジットによる実際のコスト削減&lt;/h2&gt; 
+&lt;p&gt;クレジットプーリングの中核的な価値はシンプルです。どのチームでも、AI の使用量は一様ではありません。開発者は、スプリントの最中には多くのクレジットを使う一方、コードレビューに集中しているときは使用量が少なくなります。クレジットが個人のシートに紐づいていると、ライトユーザーのクレジットは使われないまま残り、ヘビーユーザーは不足して追加購入が必要になります。プーリングによって無駄が減ります。クレジットを共有すれば、メンバー間の使用量のばらつきを組織全体で吸収できます。あるチームの余剰分が、別のチームの繁忙期を支えます。&lt;/p&gt; 
+&lt;p&gt;&lt;em&gt;例：ある企業が 20 シートを購入し、毎月 10,000 のシート料金に含まれたクレジットを共有プールで得ているとします。エンジニアリング（9 人）、デザイン（5 人）、データサイエンス（6 人）のメンバーは、全員が同じプールから引き出します。クレジットプーリングがない場合、AI コーディングツールをほとんど使わない 3 人の開発者は、毎月合計 1,500 の含まれたクレジット（シートあたり 500）を使わないまま残す可能性があります。一方で、含まれたクレジットを使い切った他のメンバーは、追加クレジットを購入する必要が生じるかもしれません。クレジットプーリングでは、これら 1,500 のクレジットが共有プールに追加され、複雑なリファクタリングを実行しているパワーユーザーが自動的に利用できます。そのため、追加クレジットを購入する前に、これらを使えます。手動でのリバランスは不要です。&lt;/em&gt;&lt;/p&gt; 
+&lt;p&gt;チーム間で自然に負荷が分散されることに加えて、グループ単位の購買を積極的に管理する組織では、緊急のクレジット購入が減ります。また、プールの容量を実際のチームの利用パターンに合わせて適正化できるため、さらなる節約につながります。&lt;/p&gt; 
+&lt;h2 id="granular-governance-over-ai-use"&gt;AI 利用をきめ細かく統制する&lt;/h2&gt; 
+&lt;p&gt;クレジットプーリングは、ガバナンスの仕組みとしても機能します。Kiro には、管理者が他の企業リソースと同じように AI 利用を管理できるよう、明確なポリシー、リアルタイムの適用、自動化されたガードレールが備わっています。&lt;/p&gt; 
+&lt;h3 id="three-tier-consumption-limit-hierarchy"&gt;3 段階の利用上限の階層&lt;/h3&gt; 
+&lt;p&gt;管理者は、プロファイル、グループ、個人の 3 つのレベルで利用上限を設定できます。優先度は、プロファイル、グループ、個人の順に高くなります。複数のグループに所属するユーザーには、ユーザーに有利になるよう、最も高いグループの上限が適用されます。開発者が上限に達すると、管理者が追加クレジットを購入するまで、それ以上の利用はブロックされます。そのため、月末に予期しない料金が発生することはありません。&lt;/p&gt; 
+&lt;h3 id="smart-threshold-notifications"&gt;スマートなしきい値通知&lt;/h3&gt; 
+&lt;p&gt;Kiro は、クレジットの使用率が設定したしきい値に達すると、管理者に設定可能なアラートを送信します。初期設定では、次の 3 項目が 80% と 100% に達した時点で通知されます。各ユーザーの限度額に対するクレジット使用率、プールクレジットの限度額、および購入済みシート数に対する割り当て済みシート数の利用率です。管理者は、クレジットが枯渇する前に先手を打てます。&lt;/p&gt; 
+&lt;h3 id="pool-membership-management"&gt;プールメンバーの管理&lt;/h3&gt; 
+&lt;p&gt;シートの照合は自動で行われます。グループは手動で作成することも、AWS IAM Identity Center（IdC）から取り込むこともできます。サードパーティの ID プロバイダーによるグループ管理も、近日中に利用できるようになります。請求サイクルの途中でシートを追加した場合も、クレジットは即座にプールに追加されます。ユーザーが退職したり役割を変えたりしても、請求を中断させることなくシートの割り当てが更新されます。&lt;/p&gt; 
+&lt;p&gt;これらの管理機能に対する API は近日提供予定です。プログラムからガバナンスを管理できるようになります。&lt;/p&gt; 
+&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/11/05/credit-pooling-access-management-seats-and-users.jpg"&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/11/05/credit-pooling-access-management-seats-and-users.jpg" alt="AWS コンソールの Kiro アクセス管理ページ。概要カードには、ユーザー合計 4 人、グループ 0 件、シート 6 件（空き 2 件）、利用可能なクレジット 1,371 と「Buy more credits」のリンクが表示されている。「Seats added to Kiro」パネルには、シート合計 6、空き 2、割り当て済み 4、シート未割り当てのユーザー 0、削除保留 0 が並ぶ。その下の「Users added to Kiro」テーブルには、4 人のユーザーがすべて「Seated」の状態で並び、各行に Remove、Set usage limit、Add seat、Add user の各ボタンがある。" width="800" height="458" class="size-full wp-image-199383"&gt;&lt;/a&gt; 
+&lt;h2 id="greater-visibility-flexibility-and-predictability-for-better-planning"&gt;可視性、柔軟性、予測可能性を高めて計画を立てやすくする&lt;/h2&gt; 
+&lt;p&gt;測定できないものは管理できません。クレジットプーリングは、組織のあらゆるレベルの AI 利用料をリアルタイムで管理者に示すとともに、利用状況の変化に合わせて支出を調整する柔軟性を提供します。&lt;/p&gt; 
+&lt;h3 id="real-time-monitoring-dashboards"&gt;リアルタイムのモニタリングダッシュボード&lt;/h3&gt; 
+&lt;p&gt;プールレベルのダッシュボードには、組織全体で利用可能、消費済み、残りのクレジットの合計が表示されます。シート使用率の追跡により、どのシートが十分に使われていないかを確認できるため、プールの規模を適正化できます。&lt;/p&gt; 
+&lt;h3 id="better-planning"&gt;より良い計画の立案&lt;/h3&gt; 
+&lt;p&gt;クレジットプーリングを使うと、個々のサブスクリプションや割り当て量を都度調整しなくても、利用パターンの変化に対応できます。グループレベルの利用傾向は、長期的な計画に役立ちます。購入したクレジットは最長 12 か月間有効なので、先を見越して追加クレジットを計画的に購入できます。&lt;/p&gt; 
+&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/11/05/credit-pooling-credit-pooling-dashboard.jpg"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/11/05/credit-pooling-credit-pooling-dashboard.jpg" alt="AWS コンソールの Kiro ダッシュボード（Credit sharing タブ）。「Kiro usage this month」カードには、今月の月間クレジット使用量 2,002、追加クレジット使用量 1,377、合計使用量 3,379 が表示され、ドーナツグラフで残りクレジットが 29% と示されている。「Settings」カードでは Kiro Credit Sharing が有効で、月間の共有クレジットは 4,750 となっている。「Insights」の注記では、クレジットは 2027 年 8 月 18 日に枯渇する見込みとされている。週表示の「Daily projected consumption」折れ線グラフは、10 月 5 日から 11 月 14 日までのクレジット使用量の推移を示し、週平均は 577 クレジット、今月の残りは 5 日。下部の 3 つのドーナツグラフは、今月消費したクレジットが 71%、月間クレジットが 6 ユーザーで 2K / 3K、追加クレジットが 79%（1.4K / 1.8K）であることを示している。" width="800" height="460" class="size-full wp-image-199384"&gt;&lt;/a&gt; 
+&lt;h2 id="get-started-with-credit-pooling"&gt;クレジットプーリングを始める&lt;/h2&gt; 
+&lt;p&gt;クレジットプーリングは、企業のエンジニアリングチームが求めていた 3 つのことを実現します。共有クレジットによるコスト効率の向上、きめ細かな制御を備えた一元的なガバナンス、そして、チーム全体で AI 利用料を予測しやすくする利用の柔軟性です。&lt;/p&gt; 
+&lt;p&gt;クレジットプーリングで得られるものは次のとおりです。&lt;/p&gt; 
+&lt;ul&gt; 
+ &lt;li&gt;&lt;u&gt;コスト効率&lt;/u&gt;：ライトユーザーの使われないクレジットを減らす、または無くすことです。パワーユーザーは、チーム全体のプールを利用できます。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;ガバナンスの深さ&lt;/u&gt;：プロファイル、グループ、個人の各レベルで利用上限を設定できる点です。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;計画の確実性&lt;/u&gt;：利用状況のダッシュボードとしきい値アラートで、月末の予想外の事態を防げる点です。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;企業としての信頼&lt;/u&gt;：AWS ネイティブの請求統合と AWS IdC によるグループ管理により、組織全体での AI 利用を支える点です。&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;p&gt;チーム内でクレジットを共有する準備はできましたか。新規の Kiro Enterprise のお客様では、クレジットプーリングがデフォルトです。既存の Enterprise のお客様も、準備ができたら有効にできます。チームでの利用を検討するには &lt;a href="https://kiro.dev/pricing/" target="_blank" rel="noopener noreferrer"&gt;料金ページ&lt;/a&gt; を参照してください。パイロット導入をご希望の場合は、&lt;a href="https://pages.awscloud.com/kiro-contact-us.html" target="_blank" rel="noopener noreferrer"&gt;お問い合わせ&lt;/a&gt;ください。詳しい設定手順は &lt;a href="https://kiro.dev/docs/enterprise/credit-pooling/" target="_blank" rel="noopener noreferrer"&gt;ドキュメント&lt;/a&gt; を参照してください。&lt;/p&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
 		<title>週 1,000 件の PR でもソフトウェアファクトリーを安定させる方法</title>
 		<link>https://aws.amazon.com/jp/blogs/news/software-factory-stability/</link>
 		
@@ -36,7 +106,7 @@
 &lt;h2 id="how-we-got-here"&gt;ここに至るまで&lt;/h2&gt; 
 &lt;p&gt;品質は、コーディング速度の向上と並行して 5 つの段階を経て高まりました。システム全体を最初から計画していたわけではありません。どの段階も、品質の向上と自動化の拡大という同じ 2 つの目標に向かうもので、1 つの問題を解決すると次の問題が見えてくることがほとんどでした。どの段階もまだ完成しておらず、毎週改善を続けています。実際のコードベースでコーディングエージェントを運用する場合、同じ壁に同じ順番で突き当たる可能性が高いでしょう。&lt;/p&gt; 
 &lt;div id="attachment_198599" style="width: 810px" class="wp-caption alignnone"&gt;
- &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/10/28/software-factory-stability-quality-stages.jpg"&gt;&lt;img aria-describedby="caption-attachment-198599" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/10/28/software-factory-stability-quality-stages.jpg" alt="タイトルが「コードは段階ごとに速くなった。チェックはそれに追いつく必要があった。」の図。矢印でつながれた 5 枚のカードが並ぶ。ステージ 1「レビューボット」はボットによるレビューで、手動の E2E とホットフィックスが不足として示され、「手動」とラベル付けされている。ステージ 2「重大度のティア」はブロッキング、懸念、nit（スキップ）、マルチパスエージェントで、「まだ手動」とラベル付けされている。ステージ 3「GitHub CI」はビルドとテスト、自動スクリーンショット、AI レビュアー、モデルファミリーで、「自動化」とラベル付けされている。ステージ 4「ループの完成」は 1 つのチェックマークに集約される格子状のチェックで、「エージェントがグリーンにする」とラベル付けされている。ステージ 5「コードの先へ」はリリーステスト、セキュリティスキャン、ペネトレーションテスト、リファクタリング、自社ホストで、「多層化」とラベル付けされ強調表示されている。" width="800" height="450" class="size-full wp-image-198599"&gt;&lt;/a&gt;
+ &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/10/28/software-factory-stability-quality-stages.jpg"&gt;&lt;img aria-describedby="caption-attachment-198599" loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/10/28/software-factory-stability-quality-stages.jpg" alt="タイトルが「コードは段階ごとに速くなった。チェックはそれに追いつく必要があった。」の図。矢印でつながれた 5 枚のカードが並ぶ。ステージ 1「レビューボット」はボットによるレビューで、手動の E2E とホットフィックスが不足として示され、「手動」とラベル付けされている。ステージ 2「重大度のティア」はブロッキング、懸念、nit（スキップ）、マルチパスエージェントで、「まだ手動」とラベル付けされている。ステージ 3「GitHub CI」はビルドとテスト、自動スクリーンショット、AI レビュアー、モデルファミリーで、「自動化」とラベル付けされている。ステージ 4「ループの完成」は 1 つのチェックマークに集約される格子状のチェックで、「エージェントがグリーンにする」とラベル付けされている。ステージ 5「コードの先へ」はリリーステスト、セキュリティスキャン、ペネトレーションテスト、リファクタリング、自社ホストで、「多層化」とラベル付けされ強調表示されている。" width="800" height="450" class="size-full wp-image-198599"&gt;&lt;/a&gt;
  &lt;p id="caption-attachment-198599" class="wp-caption-text"&gt;図 1: 各段階で、コードの高速化に歩調を合わせるようチェックを追加した。&lt;/p&gt;
 &lt;/div&gt; 
 &lt;h2 id="before-the-stages-human-review"&gt;段階に入る前: 人間によるレビュー&lt;/h2&gt; 
@@ -1002,136 +1072,6 @@ aws-healthomics-tools run_analyzer &amp;lt;RUN_ID&amp;gt; -o Pacbio-WGS-run_anal
   &lt;p&gt;&lt;/p&gt;
  &lt;/div&gt; 
 &lt;/footer&gt; 
-&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>1 つのエージェントで、あらゆるクライアントに: Kiro エージェントハーネスをどう構築したか</title>
-		<link>https://aws.amazon.com/jp/blogs/news/one-agent/</link>
-		
-		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
-		<pubDate>Wed, 05 Aug 2026 00:43:36 +0000</pubDate>
-				<category><![CDATA[Artificial Intelligence]]></category>
-		<category><![CDATA[Developer Tools]]></category>
-		<category><![CDATA[Kiro]]></category>
-		<guid isPermaLink="false">0a506f5d2d96360210ebab6afbd71abb7ade41a5</guid>
-
-					<description>Kiro IDE、CLI、Web に別々に存在した 3 つのエージェントを、単一の Kiro エージェントハーネスに統合した過程を解説します。標準化された Agent Client Protocol (ACP) を採用し、独自の WebSocket トランスポートと Kiro-ACP 拡張、Cedar ベースのケイパビリティ権限モデルを組み合わせることで、仕様駆動開発、カスタムエージェント、フックをすべてのクライアントで一貫して提供します。IDE 1.0、CLI v3、Web、iOS 版で今すぐ試せます。</description>
-										<content:encoded>&lt;p&gt;本記事は 2026 年 8 月 3 日に公開された Clare Liguori、Romain Dura、Al Harris、Richard Threlkeld による “&lt;a href="https://kiro.dev/blog/one-agent/" target="_blank" rel="noopener noreferrer"&gt;One agent, every surface: how we built the Kiro agent harness&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
-&lt;p&gt;Kiro の開発初期、私たちは開発者の 1 日のなかでエージェント駆動の開発がどのように感じられるべきかを議論し始めました。繰り返し立ち返ったのは、セッションがラップトップとクラウドサンドボックスの間を摩擦なく行き来する姿でした。1 日の終わりにラップトップを閉じても、Kiro セッションはクラウドで動き続けます。コーヒーを取りに行く合間にスマートフォンから状況を確認できます。翌朝、Kiro &lt;a href="https://kiro.dev/ide/" target="_blank" rel="noopener noreferrer"&gt;IDE&lt;/a&gt; を開いて中断したところから作業を再開します。&lt;a href="https://kiro.dev/web/" target="_blank" rel="noopener noreferrer"&gt;Web&lt;/a&gt; 版 Kiro でプロジェクトを開始し、Kiro IDE でコンテキストを追加し、既にテストとイテレーションを進めているターミナルでは Kiro &lt;a href="https://kiro.dev/cli/" target="_blank" rel="noopener noreferrer"&gt;CLI&lt;/a&gt; を使い続け、Slack から進捗を確認します。エージェント駆動の開発とは、作業するあらゆるクライアントを横断する 1 つの連続した会話であるべきです。&lt;/p&gt; 
-&lt;p&gt;今年の初め、私たちはエージェントのアーキテクチャがこのビジョンの実現を妨げていることに気づきました。当時、Kiro IDE、CLI、Web の各クライアントは、それぞれ独自のセッションフォーマット、ツールセット、設定モデルを持つ専用のエージェントを実行していました。セッションと環境の間を容易に移動するには、どのクライアントを使っていても、どこで動作していても同じように振る舞う単一のエージェントが必要です。クライアント専用のエージェントアーキテクチャでは、エージェント同士が十分な共通基盤を持っていなかったため、あるクライアントで開始したセッションを別のクライアントに移すことができませんでした。本記事では、3 つのエージェントのコードベースを 1 つの Kiro エージェントハーネスに統合した過程 (もちろん Kiro 自身を使って構築しました) と、私たちのビジョンを実現可能にしたアーキテクチャ上の決定について解説します。&lt;/p&gt; 
-&lt;p&gt;&lt;span id="more-192007"&gt;&lt;/span&gt;&lt;/p&gt; 
-&lt;h2 id="three-diverging-harnesses-"&gt;分岐していった 3 つのハーネス&lt;/h2&gt; 
-&lt;p&gt;Kiro を作り始めた当初、私たちはスピードと実験を優先しました。各クライアントチームが独自のエージェントハーネスを作ることを推奨しました。エージェントハーネスとは、エージェントループ、ツール実行、サブエージェントへの委譲、セッション管理、設定のロード、モデルとの通信を管理するオーケストレーション層のことです。IDE チームは Code OSS の拡張モデルに合わせて TypeScript で、CLI チームはパフォーマンスを重視して Rust で、Web チームは最新のエージェント研究に近い場所に居るために Python で、それぞれ独自に構築しました。&lt;/p&gt; 
-&lt;p&gt;ハーネスを分けたことで各チームは独立して素早くリリースし、イテレーションできましたが、同時にそれぞれのチームが異なる選択をすることも意味しました。セッションストレージはクライアントごとに動作が異なりました。権限システムは独立して設計されており、互換性のない構文を使っていました。CLI は正規表現ベースの &lt;code&gt;allowedCommands&lt;/code&gt;/&lt;code&gt;deniedCommands&lt;/code&gt; を使い、IDE は &lt;code&gt;trustedCommands&lt;/code&gt; にプレフィックスマッチを、denylist にはサブストリングマッチを使っていました。コンパクション戦略も分岐しました。サブエージェントのコンテキスト共有も異なるモデルに従っていました。カスタムエージェントもクライアントごとに動作が違いました。機能セットも分裂しました。仕様駆動開発と powers は IDE のみで動作し、プランモードとコードインテリジェンスは CLI のみで動作していました。&lt;/p&gt; 
-&lt;p&gt;実装コストは時間とともに複利で膨らみました。新しい機能は 3 回作って 3 回保守する必要があり、その結果としてエージェントの挙動がわずかに異なることもありました。バグも 3 回修正する必要がありました。ユーザーはどのクライアントを選ぶかによって不整合を体験することになりました。セッションがクライアントとコンピュートを横断して移動するという私たちのビジョンは、共有のセッションフォーマット、共有のツールセット、共有の設定モデルが存在しないためアーキテクチャ的に不可能でした。各チームの独立性と個別のスピードを維持するために、クライアント間でエージェントの振る舞いに関する契約を合意し、3 つのハーネスそれぞれで実装するという案も検討しました。しかしインターフェースの整合を取ることも、新機能ごとに増えていく調整コストを生みます。新機能ごとに仕様書、3 つの実装、そして同一の振る舞いを継続的に検証する作業が必要になるのです。&lt;/p&gt; 
-&lt;p&gt;転機となったのは、Web 版 Kiro のパブリックローンチの準備を進めていたときでした。Web 版 Kiro を独自のエージェントとともにローンチし、この複利的な実装コストを払い続けるのではなく、各チームが学んだベストな知見を組み合わせた単一のエージェントハーネスを構築することを決めました。単一のハーネスであればチーム間の重複がなくなり、すべての労力を 1 箇所に集中投資できます。&lt;/p&gt; 
-&lt;h2 id="kiro-agent-harness-architecture"&gt;Kiro エージェントハーネスのアーキテクチャ&lt;/h2&gt; 
-&lt;p&gt;私たちが早い段階で下した重要なアーキテクチャ判断は、ハーネスを各クライアントにコンパイルして組み込むライブラリではなく、独立したサーバープロセスとして構築することでした。過去の試みから、共有ライブラリでは十分に強い境界を強制できないことがわかっていました。クライアントコードは公開を意図していない内部メソッドを呼び出し始めるか、ライブラリの上に独自のエージェントロジックを重ねてしまいます。そうなれば実装は再び分岐していきます。独立したプロセスであれば、この分離が現実のものになります。ハーネスとクライアントは同じ言語やランタイムを共有する必要がないため、各クライアントは自分のプラットフォームに適したスタックのまま留まれます。&lt;/p&gt; 
-&lt;p&gt;これにより、3 つの密結合したクライアントとエージェントのペアではなく、&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="language-text"&gt;┌────────────┐      ┌────────────────────────────────┐
-│  Kiro IDE  ├──────│  IDE agent (TypeScript)        │
-└────────────┘      └────────────────────────────────┘
-┌────────────┐      ┌────────────────────────────────┐
-│  Kiro CLI  ├──────│  CLI agent (Rust)              │
-└────────────┘      └────────────────────────────────┘
-┌────────────┐      ┌────────────────────────────────┐
-│  Kiro Web  ├──────│  Web agent (Python)            │
-└────────────┘      └────────────────────────────────┘
-&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;クライアントと単一のエージェントハーネスとの間にきれいな分離ができました。&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="language-text"&gt;┌─────────────────────────┐              ┌─────────────────────────────────┐
-│  Clients                │              │  Kiro agent harness             │
-│                         │              │                                 │
-│  UX and presentation    │              │  Agent loop                     │
-│  User interaction       │───protocol───│  Tools and sub-agents           │
-│  Platform-native tools  │              │  Session state                  │
-│  (optional overrides)   │              │  MCP client                     │
-│                         │              │  Configuration and steering     │
-│                         │              │  Permissions                    │
-│                         │              │  Telemetry                      │
-└─────────────────────────┘              └─────────────────────────────────┘
-&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;Kiro エージェントハーネスはコードベースの隣で動作する軽量なプロセスで、高速に起動し、エージェント側のすべてを所有します。クライアントはユーザーがエージェントとどのようにやり取りするか、エージェントの作業をどのように提示するかを所有します。この境界を越える唯一の方法は、定義されたプロトコルインターフェースです。コンパイルされて組み込まれるライブラリではなく独立したプロセスであるため、あらゆるコンピュート上で動作できます。同じハーネスがラップトップ上でも、クラウド上の VM 内でも、クライアントに意識させることなく起動できます。&lt;/p&gt; 
-&lt;p&gt;サーバーとクライアントの間に明確なインターフェースがあるということは、エージェントのコードがクライアントとは独立して進化することを意味します。ハーネスの変更がプロトコルインターフェースに影響を与えない場合 (たとえば新しいツールの追加、プランニングの改善、エージェントループのチューニング)、クライアント側の変更ゼロですぐにすべてのクライアントにリリースできます。たとえば最近、カスタムエージェントのライブリロード機能を追加しました。セッション中に &lt;code&gt;.kiro/agents/&lt;/code&gt; のファイルを編集すると、ハーネスがすぐに検知し、利用可能なコマンドをクライアントに再度通知します。利用可能なコマンドの通知タイプはすでにプロトコルに存在していたため、クライアントの変更は不要でした。どのクライアントも追加の変更なしにこの機能を手に入れられたのです。&lt;/p&gt; 
-&lt;p&gt;サポート対象のクライアントが多様なため、このハーネスは画一的な設計ではありません。クライアントごとに機能が異なり、一部の操作はクライアントネイティブの機能を使ってクライアント層で実装するほうが理にかなっています。クライアントは独自のツールを提供して組み込みツールを抑制でき、自分のフォームファクター (form factor) に合ったものを使えます。たとえば IDE はファイル操作に Code OSS の API を使い、ファイルシステム上で直接動作するハーネスの組み込みツールではなく、独自のファイル読み書きツールを提供しています。エージェントがこれらのクライアント提供ツールのいずれかを実行する必要があるときは、クライアントに通知し、クライアントがツールを実行して結果を返します。&lt;/p&gt; 
-&lt;h3 id="the-protocol-agent-client-protocol-acp"&gt;プロトコル: Agent Client Protocol (ACP)&lt;/h3&gt; 
-&lt;p&gt;クライアントとハーネスの境界を定義するプロトコルとして、&lt;a target="_blank" rel="noopener noreferrer" href="https://agentclientprotocol.org/"&gt;Agent Client Protocol (ACP)&lt;/a&gt; を選びました。ACP はエージェントとクライアントの通信を標準化した仕様で、2026 年 6 月に 1.0 に到達しました。このプロトコルは JetBrains の IDE、Xcode、Zed といった IDE や、Obsidian、Emacs、Neovim といったほかのエディターでもサポートされています。私たちは今年の初めに &lt;a href="https://aws.amazon.com/jp/blogs/news/kiro-adopts-acp/" target="_blank" rel="noopener noreferrer"&gt;Kiro CLI で ACP を採用した経験&lt;/a&gt;から、これらのアプリケーション内で直接 Kiro とやり取りできるようにしていました。統一されたハーネスにも ACP を採用することにしたのは、サードパーティ製エディター向けだけでなく、Kiro 自身のクライアントと私たち自身のエージェントの間のインターフェースとして使うためです。ACP の 2 つの性質がこれを可能にしました。カスタムメソッドに対する拡張性と、トランスポートの柔軟性です。&lt;/p&gt; 
-&lt;p&gt;ACP は公式にトランスポートとして stdio をサポートしています。これはハーネスがエディターやターミナルの子プロセスとして動作するローカルクライアントで機能します。Web 版 Kiro や iOS アプリのようなリモートクライアントには、別のトランスポートが必要でした。これらのクライアントがクラウドサンドボックスで動作するハーネスに接続できるように、独自の WebSocket ベースのトランスポートを追加しました。クライアントがどのトランスポートを使うかに関わらず、バイナリ、ツール、エージェントの振る舞いは同一です。&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="language-text"&gt;┌─────────────────────────────────────────────────────────────┐
-│                   Kiro agent harness                        │
-└──────────┬────────────────┬────────────────┬────────────────┘
-           │ stdio          │ stdio          │ WebSocket
-           │                │                │
-    ┌──────┴──────┐  ┌──────┴─────┐  ┌───────┴──────────────┐
-    │  Kiro CLI   │  │  Kiro IDE  │  │  Kiro Web · iOS app  │
-    │  (terminal) │  │ (Code OSS) │  │  (browser · mobile)  │
-    └─────────────┘  └────────────┘  └──────────────────────┘
-&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;トランスポートを超えて、私たちは ACP のメソッドセットを Kiro-ACP と呼ぶものに拡張しました。標準の ACP は基本的な部分 (セッションのライフサイクル、メッセージのストリーミング、ツール呼び出しのレポート) を扱いますが、Kiro の機能にはそれ以上のものが必要でした。たとえばライブステアリングを追加しました。ユーザーはエージェントの作業中でもメッセージを送信でき、そのメッセージが次の推論ターンで注入されることで、キャンセルや待機なしにエージェントの方向性を調整できます。ACP はメッセージのキューイングをサポートしていないため、ライブステアリングを実現するために新しいメソッドプロパティと通知で ACP を拡張しました。また Kiro の仕様駆動開発ワークフローを専用のメソッド群としてモデル化し、ACP の基本的なツール承認を豊富なマルチスコープの権限システムへと拡張し、コンテキストウィンドウの使用状況とフック実行に関する通知を追加しました。合計で Kiro-ACP はベースプロトコルに加えて 20 を超えるエージェント呼び出し可能なメソッド、15 のクライアント呼び出し可能なメソッド、20 の通知タイプを追加しています。ACP の拡張モデルはこれをきれいに保ちます。仕様どおり、カスタムメソッドはアンダースコアのプレフィックスを使い、Kiro の拡張はすべて &lt;code&gt;_kiro/&lt;/code&gt; 名前空間の下に配置されています。プロトコルをフォークすることなく、Kiro 固有の機能のために拡張できるのです。&lt;/p&gt; 
-&lt;p&gt;結果として、サードパーティのクライアントはファーストパーティのクライアントと同じ方法で接続できます。ACP 互換のクライアントであれば、ツール、サブエージェント、セッション管理、MCP 接続を含む完全なエージェントを利用できます。ファーストパーティのクライアント (IDE、CLI、Web、iOS) は加えて Kiro-ACP の拡張を利用して、ライブステアリング、仕様、リッチな権限 UI、コンテキスト使用量トラッキングといった機能を提供します。&lt;/p&gt; 
-&lt;h2 id="specs-agents-and-hooks--everywhere"&gt;仕様、エージェント、フックがどこでも使える&lt;/h2&gt; 
-&lt;p&gt;単一のハーネスがもたらす直接的なメリットは、これまで 1 つのクライアントに閉じ込められていた機能が、同じ設定フォーマットと同じ振る舞いで、どのクライアントでも使えるようになったことです。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;仕様駆動開発&lt;/strong&gt;は以前は IDE 限定でした。今では CLI (&lt;code&gt;/spec new&lt;/code&gt; で開始できます) と Web 版 Kiro でも動作します。エージェントは仕様ワークフローを駆動する LLM とのやり取りと自動化された推論 (要件の生成、技術設計の作成、作業のタスクへの分解) を扱い、各クライアントは自分のフォームファクターに合った形でそれを提示します。IDE は仕様のアーティファクトを横並びのペインで表示します。CLI はターミナル内でレンダリングします。Web 版 Kiro はブラウザーでインラインレビューとマルチユーザーコラボレーションとともに表示するので、チームが一緒に仕様をイテレーションできます。エージェントは ACP を話し、クライアントは出力をどう提示するかを決めます。&lt;/p&gt; 
-&lt;p&gt;&lt;strong&gt;カスタムエージェント&lt;/strong&gt;は、どのクライアントでも同じ &lt;code&gt;.kiro/agents/&lt;/code&gt; Markdown フォーマットを使います。エージェントには説明、システムプロンプト、タグベースのツール選択 (個別のツール名ではなく &lt;code&gt;read&lt;/code&gt;、&lt;code&gt;write&lt;/code&gt;、&lt;code&gt;shell&lt;/code&gt; といったシンプルなタグ)、アクセス可能なサブエージェント、インラインの MCP サーバー定義、インラインの権限ルールを定義できます。カスタムエージェントの設定をバージョン管理にコミットすれば、チームメンバー全員がすべてのクライアントで使えるようになります。&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="language-yaml"&gt;---
-description: セキュリティ上の問題を確認するコードレビューエージェント
-tools: [read, shell, "@github"]
-permissions:
-  rules:
-    - capability: fs_read
-      effect: allow
-    - capability: shell
-      match: ["git diff *", "git log *", "npm audit"]
-      effect: allow
-mcpServers:
-  github:
-    url: https://api.githubcopilot.com/mcp/
-    headers:
-      Authorization: Bearer ${GITHUB_TOKEN}
----
-
-あなたはセキュリティに重点を置いたコードレビュアーです。現在の差分を
-レビューし、脆弱性、認証情報の漏洩、安全でないパターンを確認してください。
-依存関係のアドバイザリは npm audit で確認してください。
-&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;&lt;strong&gt;フック&lt;/strong&gt;は同じ &lt;code&gt;.kiro/hooks/*.json&lt;/code&gt; フォーマットを使い、同じトリガー (&lt;code&gt;SessionStart&lt;/code&gt;、&lt;code&gt;PreToolUse&lt;/code&gt;、&lt;code&gt;PostToolUse&lt;/code&gt;、&lt;code&gt;FileCreate&lt;/code&gt;、&lt;code&gt;FileSave&lt;/code&gt;) で、すべてのクライアントで同じように動作します。&lt;/p&gt; 
-&lt;p&gt;機能の可用性を超えて、統一されたハーネスは、正しく作るのが難しい領域でも一貫した振る舞いを提供します。コンテキスト管理、コンパクション、要約は、どのクライアントを使ってもすべて同じように動作します。以前はハーネスごとに独自のコンパクション戦略を持っていたため、IDE、CLI、Web クライアントのどれを使っているかによってセッションが長くなるにつれて振る舞いが変わることがありました。今では 1 箇所で実装、テスト、改善される単一の実装があります。統一されたハーネスをクライアント全体に展開して以来、コンテキスト保持を改善するため、ハーネスにより良いコンパクションプロンプトをすでにリリースしています。またハーネスの深い部分でレジリエンスとパフォーマンスの改善もリリースしました。モデル推論リクエストの改善されたリトライロジック、高速な権限評価、より弾力性のある MCP サーバー接続などです。すべてのクライアントがこれらの変更の恩恵を受けます。結果として、どのクライアントを好むかに関わらず、一貫した品質と信頼性が得られます。&lt;/p&gt; 
-&lt;h2 id="one-policy-language"&gt;単一のポリシー言語&lt;/h2&gt; 
-&lt;p&gt;統一ハーネスが登場する前、各クライアントは異なる構文、異なるセマンティクス、異なる設定場所を持つ独自の権限システムを持っていました。CLI は正規表現パターンによる &lt;code&gt;allowedCommands&lt;/code&gt;/&lt;code&gt;deniedCommands&lt;/code&gt; を使いました。IDE はプレフィックスマッチによる trustedCommands と、サブストリングマッチによる別の &lt;code&gt;commandDenylist&lt;/code&gt; を使いました。どちらのクライアントでも権限はツール単位でした。&lt;code&gt;.env への読み取りを拒否する&lt;/code&gt;といった単一の意図は、ファイルを読める各ツール (read、glob、grep、コードインテリジェンス) に対して個別に設定する必要があります。1 つでも見落とすと、エージェントは別のツール経由でそのファイルにアクセスできてしまうのです。ユーザーはツール呼び出しごとに &lt;code&gt;y&lt;/code&gt; を押し続けるか、すべてを信頼するかの二択を迫られ、その中間の実用的な選択肢がありませんでした。私たちが求めていたのは、ケイパビリティレベルで意図を表現でき、永続的かつ組み合わせ可能な同意によって承認疲れ (acceptance fatigue) を減らせる権限モデルでした。&lt;/p&gt; 
-&lt;p&gt;今では、形式的に検証されたポリシー言語である &lt;a target="_blank" rel="noopener noreferrer" href="https://www.cedarpolicy.com/"&gt;Cedar&lt;/a&gt; に支えられた、単一のケイパビリティベースの権限モデルがあります。1 つのルールで、すべてのツールにまたがる同種の操作をまとめて対象にできます。&lt;/p&gt; 
-&lt;pre&gt;&lt;code class="language-yaml"&gt;rules:
-  # Block all tools that read files from accessing secrets
-  - capability: fs_read
-    match: [".env", ".env.*", "secrets/**", "**/*.pem"]
-    effect: deny
-
-  # Allow specific shell commands without prompting
-  - capability: shell
-    match: ["npm test *", "npm run build", "git status"]
-    effect: allow
-
-  # Allow an MCP server's tools
-  - capability: mcp
-    match: ["github/*"]
-    effect: allow
-&lt;/code&gt;&lt;/pre&gt; 
-&lt;p&gt;ケイパビリティはツールを機能ごとにグループ化します。&lt;code&gt;fs_read&lt;/code&gt;、&lt;code&gt;fs_write&lt;/code&gt;、&lt;code&gt;shell&lt;/code&gt;、&lt;code&gt;web_fetch&lt;/code&gt;、&lt;code&gt;mcp&lt;/code&gt;、&lt;code&gt;subagent&lt;/code&gt; などです。fs_read の deny は、ファイルを読むすべてのツール (&lt;code&gt;read_file&lt;/code&gt;、&lt;code&gt;grep_search&lt;/code&gt;、&lt;code&gt;file_search&lt;/code&gt;、そして今後追加される &lt;code&gt;read&lt;/code&gt; 系ツール) を個別に列挙することなくブロックします。&lt;/p&gt; 
-&lt;p&gt;ポリシーは複数のスコープにまたがって合成でき、deny が常に勝つセマンティクスでマージされます。Kiro 自体は変更不可能なセキュリティ不変条件を適用します (たとえば、エージェントは自身の権限ファイルを変更できません)。エンタープライズ管理者は MDM 経由で制限をプッシュできます。ユーザーは自分のルールをユーザーレベルまたはワークスペースレベルで設定します。エージェントプロファイルはその役割に応じた権限を宣言できます。セッションレベルの判断は、作業しながら積み上がっていきます。事前の設定は不要です。ポリシーは同意の判断を下すにつれて自然に育っていき、意味のあるスコープでそれを永続化できます。&lt;/p&gt; 
-&lt;h2 id="the-harness-unlocks-the-vision-"&gt;ハーネスがビジョンを解き放つ&lt;/h2&gt; 
-&lt;p&gt;新しいエージェントハーネスアーキテクチャの成果はすでに現れています。すべてのクライアントが統一ハーネスに移行して以来、クライアント側の変更ゼロで複数の機能をクライアント横断でリリースしてきました。グローバルフックとポリシープリセットもその一例です。&lt;strong&gt;グローバルフック&lt;/strong&gt;は &lt;code&gt;~/.kiro/hooks/&lt;/code&gt; でフックを一度定義するだけで、すべてのワークスペースで自動的に発火するため、保存時のリント実行やコミット前のセキュリティチェックといった横断的な振る舞いをプロジェクトごとに複製する必要がなくなります。&lt;strong&gt;ポリシープリセット&lt;/strong&gt;は &lt;code&gt;edit-workspace&lt;/code&gt; や &lt;code&gt;dev-shell&lt;/code&gt; のような合成可能な名前付きルールセットで、一般的なワークフローにおけるプロンプト疲れ (prompt fatigue) を減らします。権限にポリシープリセットを追加すると (たとえば &lt;code&gt;policies: [dev-shell, edit-workspace, read-all]&lt;/code&gt;)、ハーネスのポリシーエンジンがロード時にそれらを個別のルールに展開します。どちらの機能もハーネスのアップデートだけですべてのクライアントに提供されました。&lt;/p&gt; 
-&lt;p&gt;本記事の冒頭で述べたビジョンには、まだ構築が必要なエージェントの能力 (ケイパビリティ) がいくつかあります。たとえば、環境間でセッションを移動するためのセッションパッケージングや、ローカルとクラウドの両方のセッションをどのクライアントからも制御できる機能などです。統一されたハーネスなら、新しい能力を一度作るだけで済みます。多くの場合、グローバルフックやポリシープリセットのように、クライアント側の変更ゼロですべてのクライアントに配信できます。統一ハーネスがクライアント側の作業を完全になくしたわけではありませんし、そうしたいわけでもありませんでした。ターミナル、デスクトップの IDE、ブラウザー、スマートフォンは異なるインタラクションモデルを持っており、私たちは画一的な体験を提供するのではなく、各クライアントがそのフォームファクターに合った体験に感じられることを望んでいます。新しいエージェントハーネスアーキテクチャなら、エージェントのロジックはクライアント全体で同一で、各クライアントチームはそれとどうやり取りするのがベストかに集中できます。&lt;/p&gt; 
-&lt;p&gt;Kiro のユーザーとして、新しいエージェントハーネスアーキテクチャは、新しい能力がより速く届き、一貫した振る舞いを示し、あなたが好むクライアントに関わらず同じ設定で動作することを意味します。&lt;/p&gt; 
-&lt;h2 id="try-the-new-kiro-agent-harness-"&gt;新しい Kiro エージェントハーネスを試す&lt;/h2&gt; 
-&lt;p&gt;新しい Kiro エージェントハーネスは 4 つの Kiro クライアントすべてでライブ稼働しているので、今日から試せます。&lt;/p&gt; 
-&lt;ul&gt; 
- &lt;li&gt; &lt;p&gt;&lt;a href="https://kiro.dev/ide/" target="_blank" rel="noopener noreferrer"&gt;&lt;strong&gt;Kiro IDE&lt;/strong&gt;&lt;/a&gt;&lt;strong&gt; 1.0&lt;/strong&gt; は、ケイパビリティベースの権限、タグベースツールとインライン MCP を備えたカスタムエージェント、並列セッションを指揮するためのエージェントフォーカスモード、ドッキング可能なチャットタブ、セッションエクスポートを提供します。&lt;a href="https://kiro.dev/docs/whats-new-1-0/" target="_blank" rel="noopener noreferrer"&gt;IDE 1.0 のドキュメントと移行方法&lt;/a&gt;を参照してください。&lt;/p&gt; &lt;/li&gt; 
- &lt;li&gt; &lt;p&gt;&lt;a href="https://kiro.dev/cli/" target="_blank" rel="noopener noreferrer"&gt;&lt;strong&gt;Kiro CLI&lt;/strong&gt;&lt;/a&gt;&lt;strong&gt; v3&lt;/strong&gt; (アーリーアクセス) は、仕様駆動開発、permissions.yaml、拡張されたフック、新しいエージェント設定フォーマットを備え、ターミナルで同じ統一ハーネスを実行します。&lt;code&gt;kiro-cli --v3&lt;/code&gt; で試せます。&lt;a href="https://kiro.dev/docs/cli/v3/" target="_blank" rel="noopener noreferrer"&gt;CLI v3 のドキュメントと移行方法&lt;/a&gt;を参照してください。&lt;/p&gt; &lt;/li&gt; 
- &lt;li&gt; &lt;p&gt;&lt;a href="https://kiro.dev/web/" target="_blank" rel="noopener noreferrer"&gt;&lt;strong&gt;Web 版 Kiro&lt;/strong&gt;&lt;/a&gt; (プレビュー) はクラウドサンドボックスでハーネスを実行し、ブラウザーで仕様を使った自律的な開発、マルチリポジトリセッション、GitHub と GitLab の統合を提供します。&lt;a target="_blank" rel="noopener noreferrer" href="https://app.kiro.dev"&gt;サインイン / サインアップ&lt;/a&gt;できます。&lt;/p&gt; &lt;/li&gt; 
- &lt;li&gt; &lt;p&gt;&lt;a href="https://kiro.dev/mobile/" target="_blank" rel="noopener noreferrer"&gt;&lt;strong&gt;iOS 版 Kiro&lt;/strong&gt;&lt;/a&gt; (プレビュー) は Web 版 Kiro と同じクラウドセッションにスマートフォンから接続し、ラップトップを開かずに自律的な作業のキックオフ、差分のレビュー、変更の承認を行えます。&lt;a href="https://kiro.dev/mobile/" target="_blank" rel="noopener noreferrer"&gt;アーリーアクセスをリクエスト&lt;/a&gt;してください。&lt;/p&gt; &lt;/li&gt; 
-&lt;/ul&gt; 
 &lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
 					
 		
