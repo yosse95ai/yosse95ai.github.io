@@ -17,9 +17,9 @@
   "dependencies": {
     "@astrojs/check": "^0.9.6",
     "@astrojs/sitemap": "^3.7.4",
-    "@iconify-json/devicon": "^1.2.69",
-    "@iconify-json/simple-icons": "^1.2.99",
-    "@iconify-json/thesvg-color": "^1.2.15",
+    "@iconify-json/devicon": "^1.2.71",
+    "@iconify-json/simple-icons": "^1.2.100",
+    "@iconify-json/thesvg-color": "^1.2.19",
     "@tailwindcss/vite": "^4.2.0",
     "astro": "^7.4.0",
     "astro-icon": "^1.2.0",
