@@ -7,9 +7,9 @@
       "dependencies": {
         "@astrojs/check": "^0.9.6",
         "@astrojs/sitemap": "^3.7.4",
-        "@iconify-json/devicon": "^1.2.71",
-        "@iconify-json/simple-icons": "^1.2.100",
-        "@iconify-json/thesvg-color": "^1.2.19",
+        "@iconify-json/devicon": "^1.2.77",
+        "@iconify-json/simple-icons": "^1.2.101",
+        "@iconify-json/thesvg-color": "^1.2.24",
         "@tailwindcss/vite": "^4.2.0",
         "astro": "^7.4.0",
         "astro-icon": "^1.2.0",
@@ -123,11 +123,11 @@
 
     "@emnapi/wasi-threads": ["@emnapi/wasi-threads@1.2.3", "", { "dependencies": { "tslib": "^2.4.0" } }, "sha512-ELEBe8PsLvvJ6QMr0zLt8ffvOHW/dc1m3CEzNMg7aJUv3bMaoDtw2TXyDAwkYBuroxxuHEwhRTLJSe5sya547g=="],
 
-    "@iconify-json/devicon": ["@iconify-json/devicon@1.2.71", "", { "dependencies": { "@iconify/types": "*" } }, "sha512-1o+Zl3QveZZoE6VMUl9hL4FEtyHC1NeUHO8sqBm2vb7oG1hL/43uzjKPXolG2tkQRkcEoi6TjH2qMss+xPCdAw=="],
+    "@iconify-json/devicon": ["@iconify-json/devicon@1.2.77", "", { "dependencies": { "@iconify/types": "*" } }, "sha512-yH3tZ5ypBUHVTkZOUh+IzkC9qrUH+1bYGgpfMVScXvKJpjVFb6qvi0TidyX54G3rlXBQyg3ilF4zYeE4araNDg=="],
 
-    "@iconify-json/simple-icons": ["@iconify-json/simple-icons@1.2.100", "", { "dependencies": { "@iconify/types": "*" } }, "sha512-536pN2RCEQyy5bYwzayrs4e9egr8cmtVcbdSHLaQl/ULUsihzn1eZ0+Hhn50zgz9cbEotiynKsKQSEjFJ7qKmw=="],
+    "@iconify-json/simple-icons": ["@iconify-json/simple-icons@1.2.101", "", { "dependencies": { "@iconify/types": "*" } }, "sha512-MXJkMZDancJ/9I+Bgdthi9kXvn3AwWStxoTHwEPwAFQ9kMLBASO1BSstg52fNtjXeizm1Wi91R+QnWxNGkWHPQ=="],
 
-    "@iconify-json/thesvg-color": ["@iconify-json/thesvg-color@1.2.19", "", { "dependencies": { "@iconify/types": "*" } }, "sha512-/96WAwrDdbAAaA64cbgcAEFjkmy0JuxwfeL8J6jgxiNSwEA0D1g7M5HF4Y6i8WKieq/Hw6SGv14Fos0B+LKfTQ=="],
+    "@iconify-json/thesvg-color": ["@iconify-json/thesvg-color@1.2.24", "", { "dependencies": { "@iconify/types": "*" } }, "sha512-IcLKwVl1cOiTSjNyvQxX9+m/YTn4WilLFmXC47SiDvLJtkx1irXF4rKb+S5FwMpepVhHTT+Smlx87VpqcMzN/g=="],
 
     "@iconify/tools": ["@iconify/tools@5.0.12", "", { "dependencies": { "@cyberalien/svg-utils": "^1.2.15", "@iconify/types": "^2.0.0", "@iconify/utils": "^3.1.3", "fflate": "^0.8.3", "modern-tar": "^0.7.6", "pathe": "^2.0.3", "svgo": "^4.0.1" } }, "sha512-aFPwSFmFphUPVjNLUkgxgUPSPVgTEEjv0mE7NgvfoQBuE5TtsMrKa4HTY65cM5oXZ2a1xKQcW/RKhiOKEiAarw=="],
 
