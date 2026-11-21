@@ -5,7 +5,7 @@
 	<atom:link href="https://aws.amazon.com/jp/blogs/news/author/yhiroaky/feed/" rel="self" type="application/rss+xml"/>
 	<link>https://aws.amazon.com/jp/blogs/news/</link>
 	<description/>
-	<lastBuildDate>Thu, 05 Nov 2026 08:03:25 +0000</lastBuildDate>
+	<lastBuildDate>Wed, 18 Nov 2026 16:10:48 +0000</lastBuildDate>
 	<language>ja</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -13,6 +13,48 @@
 	1	</sy:updateFrequency>
 	
 	<item>
+		<title>100 万回の評価から得られた教訓</title>
+		<link>https://aws.amazon.com/jp/blogs/news/1m-evals-lessons/</link>
+		
+		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
+		<pubDate>Wed, 18 Nov 2026 16:06:27 +0000</pubDate>
+				<category><![CDATA[Developer Tools]]></category>
+		<category><![CDATA[Kiro]]></category>
+		<guid isPermaLink="false">cb8dfe4b2f4d0a0e64853136a8ed20a29605e09c</guid>
+
+					<description>Kiro で数百万回の評価を実行して得た教訓を紹介します。固定タスクと合格率だけの評価は、ベンチマークの飽和や、顧客の体験とのずれを招きます。Kiro では、利用状況に合わせた動的なベンチマーク、3 層の判定、ライブシグナルによる検証で評価スイートを運用しています。ツールの失敗率などの指標を使った改善例と、今後の課題も取り上げます。</description>
+										<content:encoded>&lt;p&gt;本記事は、2026 年 11 月 17 日に Mac Merritt が公開した「&lt;a href="https://kiro.dev/blog/1m-evals-lessons/" target="_blank" rel="noopener noreferrer"&gt;Lessons learned from one million evaluations&lt;/a&gt;」を翻訳したものです。&lt;/p&gt; 
+&lt;p&gt;コーディングエージェントの評価は、多くの場合、固定されたタスク群を二値の合格率でスコアリングする形で始まります。タスク群は、一般に公開されているものから選ばれます。この方法がうまく機能する場面もありますが、評価として役に立たなくなる問題がいくつか起こり得ます。1 つ目は、エージェントやモデルが改善するにつれて、固定されたタスク群での合格率が上昇することです。残った合格率の差は、エージェントやモデルの性能だけでなく、ベンチマーク自体のノイズによって生じていることもよくあります。これをベンチマークの飽和と呼んでいます。飽和すると、ベンチマークは本来測りたいシグナルを測れなくなります。最近、Kiro に新しいモデルを追加した際に、この状況に直面しました。Terminal Bench 2.1 での合格率は想定どおりでした。Terminal Bench 2.1 が飽和に近づいていることは把握していましたが、大きなリグレッションのリスクであれば、合格率でまだ測れると考えていました。その後、社内のテストユーザーから、新しいモデルの使用感は他のモデルより悪いという声が寄せられ始めました。詳しく調べると、合格率は妥当だったにもかかわらず、一部のツールで呼び出しの 40% が失敗していました。他のモデルでは問題なく動いていたツールの説明が、新しいモデルでは無効な入力でツールを呼び出す原因になっていたのです。&lt;/p&gt; 
+&lt;p&gt;この件は 2 つ目の問題につながります。合格か不合格かというシグナルだけでは、十分でない可能性があります。このケースでは、モデルが試行を繰り返して正しいリクエストの送り方を見つけられたため、合格率には影響しませんでした。しかし、その試行錯誤の間にトークンが消費され、レイテンシーが増え、顧客にとっての全体的な価値は低下しました。顧客の体験は、Kiro がタスクをやり遂げられたかどうかだけでは決まりません。この点が 3 つ目の問題につながります。評価が現実の顧客の体験を代表していない可能性がある、ということです。顧客には、Kiro が高い品質基準でタスクを素早くやり遂げられるという確信が必要です。それを測るには、実際の顧客の体験を反映したベンチマークを実行していることと、その体験に影響し得るすべてのシグナルを追跡していることを確認する必要があります。Kiro では、顧客のために製品を改善する過程で何百万回もの評価を実行してきました。その中で、これらの問題のすべてに遭遇しました。&lt;/p&gt; 
+&lt;p&gt;この記事では、私たちが学んだことと、顧客にとって重要なことを測るために Kiro の評価スイートを現在どのように運用しているかを紹介します。&lt;/p&gt; 
+&lt;p&gt;&lt;span id="more-200432"&gt;&lt;/span&gt;&lt;/p&gt; 
+&lt;h2 id="the-problem"&gt;課題&lt;/h2&gt; 
+&lt;p&gt;評価は、エージェント開発に欠かせません。変更に対してモデルがどう応答するかを推論することはできますが、確実に予測することはできません。プロンプト、ツールの説明、あるいはモデル自体に小さな変更を加えるだけで、誰も予想しなかった形で挙動が変わることがあります。確実に知る唯一の方法は、実際のモデルに対して実行することです。だからこそ、経験豊富なエンジニアやサイエンティストでさえ、何がエージェントの性能を高め、何が性能を損なうかについて意見が分かれることがよくあります。たとえば、サブエージェントをいつ、どのように使うか、AGENTS.md ファイルに何を書くべきか、ツールの数はいくつから多すぎるのか、どのような種類のメモリーが有益または有害か、スキルとカスタム MCP ツールのどちらにより重点を置くか、といった点です。そのため、どのトレードオフが顧客の役に立つかを判断できる、信頼できる結果を出す評価が必要です。&lt;/p&gt; 
+&lt;p&gt;多くの評価は、合格か不合格かを判定する固定のシナリオ群です。シナリオは、入手しやすさや人気を理由に選ばれており、必ずしも顧客にとっての価値を明確に反映しているわけではありません。この方式は 3 つの問題を引き起こす可能性があります。1 つ目は、固定のベンチマークが飽和し得ることです。この場合、リグレッションがあってもエージェントはベンチマークを解けてしまいます。そのため、何を改善すべきかについて意味のあるシグナルを見つけにくくなります。2 つ目は、合格か不合格かという粗い採点では、エージェントがタスクをどのように解いたかがわからず、顧客にとって重要なシグナルが隠れてしまうことです。顧客が気にするのは、コスト、Kiro がタスクを実行するのにかかる時間、そしてテスト要件を満たしたかどうかだけにとどまらないコードの品質です。合格というシグナルだけでは、これらの詳細がわかりません。3 つ目は、ベンチマーク自体が顧客にとって重要なシグナルを測定できていない可能性があることです。Terminal Bench は非常に複雑なタスクを完了するエージェントの能力を測定します。一方で、対象とするユースケースに含まれないシグナルは重視されず、十分に反映されません。たとえば、さまざまなプログラミング言語、DevOps のユースケース、コードの理解などです。これらのユースケースは Terminal Bench の中心ではありませんが、Kiro の顧客にとっては重要です。&lt;/p&gt; 
+&lt;h2 id="the-approach"&gt;アプローチ&lt;/h2&gt; 
+&lt;p&gt;評価手法を成熟させるには、評価が顧客のユースケースをどの程度反映しているかを測定し、改善するための仕組みを構築する必要がありました。&lt;/p&gt; 
+&lt;ol&gt; 
+ &lt;li&gt;&lt;u&gt;静的なセットから動的なベンチマークへ。&lt;/u&gt;目標は、開発者による Kiro の使われ方に合ったシナリオで構成されるベンチマークスイートです。その方法の 1 つとして、Amazon 社内の Kiro ユーザーの利用状況を、集約したカテゴリーで測定しています。利用状況を 20 以上のタスクカテゴリー、25 以上のドメイン、プログラミング言語、セッションあたりのプロンプト数でグループ化し、ベンチマークのシナリオにも同じカテゴリーのラベルを付けています。そして、これらのカテゴリーを 3 つのソースからのシナリオで埋めていきます。自分たちで書いたシナリオ、Amazon の他のチームからのシナリオ、公開ベンチマークです。実際の利用状況と比べてカテゴリー内のシナリオが少ない場合は追加します。こうしたギャップは、どのベンチマークに注力すべきかの優先順位付けにも役立ちます。その結果、利用状況や機能の進化に合わせて定期的に更新する、バージョン管理されたベンチマークスイートができあがります。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;合格か不合格かから、段階的な判定へ。&lt;/u&gt;すべてのベンチマークで、3 つの粒度のレイヤーを追跡しています。合格か不合格かは最初に見る指標で、パフォーマンスの総合的な目安になります。次に、各ベンチマーク実行から、顧客にとって重要だとわかっている出力シグナルを追跡します。最も単純なものはレイテンシーとトークン使用量ですが、場合によっては、コードの複雑さや生成された成果物のサイズの測定値を含めることもあります。最後に、ベンチマークの実行履歴を LLM-as-judge で評価します。対象は、決定論的に測定するのが難しい一方で顧客にとっては重要なシグナルで、たとえばコードの品質や応答のトーンです。これらの領域のいずれかで改善の機会やリグレッションを見つけたら、ベンチマークの詳細な実行履歴を確認します。その指標が想定より悪い理由と、Kiro を改善するための選択肢を把握するためです。ベンチマークの最大の価値の 1 つは、改善案を再テストして、対象としている課題にどれが最も効果的かを判断できる点にあります。&lt;/li&gt; 
+ &lt;li&gt;&lt;u&gt;ライブシグナルで信頼性を築く。&lt;/u&gt;静的なベンチマークから動的なベンチマークへ移行する際に使うシグナルは、ベンチマークを顧客のユースケースに近づけるのに役立ちます。それでも、測定している次元の外にある理由で、顧客のペインポイントを見逃す可能性があります。ベンチマークがカテゴリー、ドメイン、言語、タスクの長さ（horizon）の点で顧客と一致していても、顧客の体験を反映していないことがあります。理由としては、ベンチマークが飽和している、カテゴリーの粒度が十分に細かくなかった、シナリオ自体に関連するその他の要因がある、などが考えられます。どのシナリオを実行するかに加えて、ベンチマークをどのように実行するかによっても、顧客のペインポイントを見逃すリスクがあります。モデルの選択、思考レベル、ツールの選択、クライアントの設定などはすべてエージェントの品質に影響します。顧客がこれらを評価では見落としかねない方法で設定している可能性があります。私たちの選定プロセスにより、顧客の体験を代表する可能性が高いベンチマークに焦点を当てられます。しかし最終的には、実際の顧客の体験が信頼できる情報源です。ジェフ・ベゾスはかつて “When the data and the anecdotes disagree, the anecdotes are usually right.”（データと逸話が食い違っているときは、たいてい逸話のほうが正しい）と述べました。ライブシグナルで信頼性を築く背景には、この考え方があります。アンケートや集約した満足度評価のデータと、ユーザーとの対話から得た逸話を使います。社外の顧客へのアンケートや対話も使い、社内ユーザーが同様の体験をしていることを確認します。これにより、評価システム自体を継続的に評価し、データが実際の顧客のシグナルと一致していることを確かめられます。&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;div id="attachment_200430" style="width: 810px" class="wp-caption aligncenter"&gt;
+ &lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/11/18/1m-evals-lessons-evaluation-cycle.jpg"&gt;&lt;img aria-describedby="caption-attachment-200430" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/11/18/1m-evals-lessons-evaluation-cycle.jpg" alt="Kiro が評価の信頼性を保つ方法：4 ステップの評価サイクル" width="800" height="721" class="size-full wp-image-200430"&gt;&lt;/a&gt;
+ &lt;p id="caption-attachment-200430" class="wp-caption-text"&gt;Kiro の評価サイクルを 4 つのステップで示したフローチャート。ユーザーがフィードバックを提供し、ライブシグナルがアンケートと評価を通じてデータを収集し、オフラインベンチマークが 3 つのレイヤーでパフォーマンスを測定し、Kiro の改善が得られた知見に基づいて問題を修正する。&lt;/p&gt;
+&lt;/div&gt; 
+&lt;h3 id="a-real-measurement"&gt;実際の測定&lt;/h3&gt; 
+&lt;p&gt;そのモデルのローンチで教訓を得たあと、より体系的なアプローチを適用しました。Kiro を多数のベンチマークのシナリオにわたって測定しました。汚染のリスクを避けるための複数のプライベートベンチマーク、Terminal Bench 4.0、Deep SWE、SWE Marathon などが含まれます。ツールの失敗率、トークン効率、レイテンシーに関する詳細な指標にも注意を払いました。ツールの失敗率のデータは、前述したツールの説明に一貫性がないという問題の解決に役立ちました。効率に関するデータと、より網羅的になった評価セットをもとに、数十件の変更を加えました。これらの変更は機能を改善し、Kiro のハーネスのバグを修正し、顧客のコスト削減に直結する形で効率を高めました。&lt;/p&gt; 
+&lt;h2 id="lessons-and-future-research"&gt;得られた教訓と今後の研究&lt;/h2&gt; 
+&lt;p&gt;利用状況のカテゴリーに合わせたスイートがあっても、適切なシナリオをそこに取り込むのは困難です。成功に見えるシグナルが誤解を招くこともあります。たとえば最近、社内のプルリクエストをベンチマークのシナリオとして検討しました。そのプルリクエストはマージされ、ユーザーはエージェントに 5 つ星を付けていたため、成功したタスクの理想的な例に見えました。ところが、リポジトリの履歴を確認すると、次のコミットで、そのプルリクエストが混入させたバグが修正されていました。これを追加していたら、ベンチマークはバグのあるコードを正解として扱っていたことになります。今後の研究では、ベンチマークのキュレーションをスケールさせることに注力します。5 つ星が付いたのに取り消されたこのプルリクエストのようなシナリオを検出しながら、スイートを更新し続けるためです。&lt;/p&gt; 
+&lt;p&gt;現在のプロセスには、評価中の Kiro の設定による制約もあります。評価は、モデルの選択と Kiro クライアントについて、顧客の使い方に合わせて実行しています。今後の研究では、MCP サーバー、ステアリングファイル、詳細なスキル、コメントが大量に書かれたコードベースといった複雑な顧客の設定で、Kiro がどのように動作するかを調査します。&lt;/p&gt; 
+&lt;h2 id="try-it-and-further-reading"&gt;試してみる、さらに読む&lt;/h2&gt; 
+&lt;p&gt;&lt;a href="https://kiro.dev/downloads/" target="_blank" rel="noopener noreferrer"&gt;Kiro を試す&lt;/a&gt;ことができます。この背景にある詳細な手法については、LLM-judge のルーブリック、A/B のセットアップ、測定結果を含め、&lt;a href="https://aws.amazon.com/jp/blogs/news/continuous-prompt-evaluation/" target="_blank" rel="noopener noreferrer"&gt;「継続的なプロンプト評価: LLM ジャッジとライブシグナルを使って Kiro エージェントの品質を高める方法」&lt;/a&gt;をお読みください。エージェントが時間とともに本当に改善しているのかという、より大きな問いについては、&lt;a href="https://aws.amazon.com/jp/blogs/news/diagnostics-over-time/" target="_blank" rel="noopener noreferrer"&gt;「AI コーディングエージェントは本当に良くなっているのか？」&lt;/a&gt;をお読みください。&lt;/p&gt; 
+&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
+					
+		
+		
+			</item>
+		<item>
 		<title>クレジットプーリングで Kiro のクレジットをチーム全体で共有する</title>
 		<link>https://aws.amazon.com/jp/blogs/news/credit-pooling/</link>
 		
@@ -59,7 +101,7 @@
 &lt;h3 id="pool-membership-management"&gt;プールメンバーの管理&lt;/h3&gt; 
 &lt;p&gt;シートの照合は自動で行われます。グループは手動で作成することも、AWS IAM Identity Center（IdC）から取り込むこともできます。サードパーティの ID プロバイダーによるグループ管理も、近日中に利用できるようになります。請求サイクルの途中でシートを追加した場合も、クレジットは即座にプールに追加されます。ユーザーが退職したり役割を変えたりしても、請求を中断させることなくシートの割り当てが更新されます。&lt;/p&gt; 
 &lt;p&gt;これらの管理機能に対する API は近日提供予定です。プログラムからガバナンスを管理できるようになります。&lt;/p&gt; 
-&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/11/05/credit-pooling-access-management-seats-and-users.jpg"&gt;&lt;img src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/11/05/credit-pooling-access-management-seats-and-users.jpg" alt="AWS コンソールの Kiro アクセス管理ページ。概要カードには、ユーザー合計 4 人、グループ 0 件、シート 6 件（空き 2 件）、利用可能なクレジット 1,371 と「Buy more credits」のリンクが表示されている。「Seats added to Kiro」パネルには、シート合計 6、空き 2、割り当て済み 4、シート未割り当てのユーザー 0、削除保留 0 が並ぶ。その下の「Users added to Kiro」テーブルには、4 人のユーザーがすべて「Seated」の状態で並び、各行に Remove、Set usage limit、Add seat、Add user の各ボタンがある。" width="800" height="458" class="size-full wp-image-199383"&gt;&lt;/a&gt; 
+&lt;a href="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/11/05/credit-pooling-access-management-seats-and-users.jpg"&gt;&lt;img loading="lazy" src="https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/11/05/credit-pooling-access-management-seats-and-users.jpg" alt="AWS コンソールの Kiro アクセス管理ページ。概要カードには、ユーザー合計 4 人、グループ 0 件、シート 6 件（空き 2 件）、利用可能なクレジット 1,371 と「Buy more credits」のリンクが表示されている。「Seats added to Kiro」パネルには、シート合計 6、空き 2、割り当て済み 4、シート未割り当てのユーザー 0、削除保留 0 が並ぶ。その下の「Users added to Kiro」テーブルには、4 人のユーザーがすべて「Seated」の状態で並び、各行に Remove、Set usage limit、Add seat、Add user の各ボタンがある。" width="800" height="458" class="size-full wp-image-199383"&gt;&lt;/a&gt; 
 &lt;h2 id="greater-visibility-flexibility-and-predictability-for-better-planning"&gt;可視性、柔軟性、予測可能性を高めて計画を立てやすくする&lt;/h2&gt; 
 &lt;p&gt;測定できないものは管理できません。クレジットプーリングは、組織のあらゆるレベルの AI 利用料をリアルタイムで管理者に示すとともに、利用状況の変化に合わせて支出を調整する柔軟性を提供します。&lt;/p&gt; 
 &lt;h3 id="real-time-monitoring-dashboards"&gt;リアルタイムのモニタリングダッシュボード&lt;/h3&gt; 
@@ -1010,66 +1052,6 @@ aws-healthomics-tools run_analyzer &amp;lt;RUN_ID&amp;gt; -o Pacbio-WGS-run_anal
   &lt;/div&gt; 
   &lt;h3 class="lb-h4"&gt;Maruthi Alamuru&lt;/h3&gt; 
   &lt;p&gt;Maruthi は AWS Healthcare and Life Sciences 業界担当のメンバーです。15 年以上にわたり、ライフサイエンスおよびヘルスケア企業が最先端テクノロジーと実世界の成果とのギャップを埋めるのを支援してきました。これにより企業は、創薬の加速、患者体験の再構築、そして生命を変える治療法や製品をこれまでにない速さで市場に届けることができるようになっています。&lt;/p&gt; 
- &lt;/div&gt; 
-&lt;/footer&gt; 
-&lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>
-					
-		
-		
-			</item>
-		<item>
-		<title>AWS が Agent Plugins をサポート: ポータブルなエージェント拡張のためのオープン標準</title>
-		<link>https://aws.amazon.com/jp/blogs/news/aws-supports-agent-plugins-an-open-standard-for-portable-agent-extensions/</link>
-		
-		<dc:creator><![CDATA[吉村 弘明]]></dc:creator>
-		<pubDate>Mon, 10 Aug 2026 12:31:46 +0000</pubDate>
-				<category><![CDATA[Open Source]]></category>
-		<guid isPermaLink="false">aead422d64027aec1677f49a1f0139c6830dd14d</guid>
-
-					<description>AWS は Cursor、Microsoft、OpenAI、Vercel とともに Agent Plugins Technical Steering Committee の設立メンバーとして参画します。Agent Plugins 1.0.0 は AI エージェント拡張のためのオープンかつベンダーニュートラルなパッケージ仕様で、Agent Skills と MCP サーバーを 1 度パッケージ化すれば、Kiro、VS Code、Cursor など仕様に対応した任意のクライアントに配布できます。AWS Agent Toolkit と Kiro Powers がローンチと同時にサポートを開始します。</description>
-										<content:encoded>&lt;p&gt;本記事は 2026 年 8 月 6 日に公開された Libby Clark、James Ward による “&lt;a href="https://aws.amazon.com/blogs/opensource/aws-supports-agent-plugins-an-open-standard-for-portable-agent-extensions/" target="_blank" rel="noopener"&gt;AWS Supports Agent Plugins: An Open Standard for Portable Agent Extensions&lt;/a&gt;” を翻訳したものです。&lt;/p&gt; 
-&lt;p&gt;MCP サーバーやエージェントスキルを構築したことがある方なら、それをパッケージ化するには 1 つのクライアント向けに調整し、別のクライアント向けに書き直し、チームで使うツールごとにその作業を繰り返すことになるとご存知でしょう。&lt;a href="https://agent-plugins.org" target="_blank" rel="noopener"&gt;Agent Plugins 1.0.0&lt;/a&gt; は、AI エージェントの拡張機能に共通のパッケージ形式を提供するオープンソースかつベンダーニュートラルな仕様です。拡張機能を 1 度パッケージ化すれば、Kiro、VS Code、Cursor など、この仕様を実装した任意のクライアントに配布できます。&lt;/p&gt; 
-&lt;p&gt;&lt;span id="more-192383"&gt;&lt;/span&gt;&lt;/p&gt; 
-&lt;p&gt;AWS は、Cursor、Microsoft、OpenAI、Vercel と並ぶ Agent Plugins Technical Steering Committee の設立メンバーであり、エージェント間でスキルや MCP のパッケージングにポータビリティをもたらすこの標準を支持できることを嬉しく思います。すでに &lt;a href="https://github.com/aws/agent-toolkit-for-aws" target="_blank" rel="noopener"&gt;AWS Agent Toolkit&lt;/a&gt; を対応させており、&lt;a href="https://kiro.dev" target="_blank" rel="noopener"&gt;Kiro&lt;/a&gt; でも Agent Plugins 仕様のサポートを順次展開しています。&lt;/p&gt; 
-&lt;p&gt;拡張機能とは、スキル、MCP サーバー、フック、サブエージェントのように、AI エージェントに新たな能力を与えたり、外部ツールやデータへ接続したり、エージェントに代わってタスクを自動化したりする再利用可能なコンポーネントのことです。Agent Plugins の初版では、現在最も採用が進んでいる 2 つのコンポーネントタイプ、Agent Skills と MCP サーバーを標準化しています。フックやカスタムエージェントといった追加の拡張機能タイプは、将来のバージョンに向けたロードマップに含まれています。&lt;/p&gt; 
-&lt;p&gt;モデル選択が、どの AI を使うかについての柔軟性を開発者に与えるのに対して、Agent Plugins は、その選択を特定のクライアントやプロバイダーに縛られることなく、AI がどのツールを使うかについての柔軟性を与えます。&lt;/p&gt; 
-&lt;h2&gt;エージェント型 AI にとってオープン標準が重要な理由&lt;/h2&gt; 
-&lt;p&gt;これまで、エージェント拡張の管理は、パッケージマネージャー登場前のライブラリ配布や、標準的なコンテナ形式が確立する前のアプリケーション配布に少し似ていました。JavaScript が package.json という共通の形式に落ち着いたことで、npm、yarn、pnpm のいずれからも同じパッケージをインストールできるようになり、手作業でのスクリプトダウンロードやコピー&amp;amp;ペーストによる依存関係管理は終焉を迎えました。同様に、OCI がベンダーニュートラルな形式をコンテナイメージにもたらしたことで、1 度ビルドしたイメージが Docker、containerd、Podman、あるいは仕様に準拠した任意のランタイムで実行できるようになり、Docker 独自のイメージ仕様を置き換えました。オープン標準は、その上に築ける共通の土台を全員に提供します。&lt;/p&gt; 
-&lt;p&gt;AWS は、オープンソースとオープン標準による構築こそが AI アーキテクチャの柔軟性と相互運用性を保つと考えています。オープン標準は、開発者に自らの条件でワークロードを組み合わせ、拡張し、移行する自由を与えます。私たちが &lt;a href="https://modelcontextprotocol.io/specification/2026-07-28" target="_blank" rel="noopener"&gt;Model Context Protocol&lt;/a&gt; (MCP)、&lt;a href="https://github.com/agentclientprotocol/agent-client-protocol" target="_blank" rel="noopener"&gt;Agent Client Protocol&lt;/a&gt; (ACP)、&lt;a href="https://github.com/x402-foundation/x402" target="_blank" rel="noopener"&gt;x402&lt;/a&gt;、そして Agent Plugins のような&lt;a href="https://aws.amazon.com/blogs/opensource/open-protocols-with-the-strands-agents-sdk/" target="_blank" rel="noopener"&gt;標準に投資している&lt;/a&gt;のは、モデル、ツール、クライアントに至るまで、皆さんが選んだいかなる決定も特定のベンダーに縛られないようにするためです。&lt;/p&gt; 
-&lt;h2&gt;Agent Plugins とは&lt;/h2&gt; 
-&lt;p&gt;Agent Plugins は、ツール間で容易に共有・バージョン管理・インストールできるように、エージェント拡張をどうパッケージ化するかを定義します。内部的には、プラグインはディレクトリであり、その中にプラグインの識別情報とエントリーポイントを宣言する JSON マニフェストと、コンポーネントの固定配置場所を持ちます。互換性のあるクライアントは、ディレクトリ構造をスキャンして内部に何があるかを検出します。skills/ フォルダーがあればスキルを読み込み、MCP 設定があればそれらのサーバーに接続します。&lt;/p&gt; 
-&lt;p&gt;フォーマットは意図的に小さく保たれています。バージョン 1.0.0 では、Agent Skills (エージェント向けの再利用可能な指示およびリソース) と MCP サーバー (外部ツールやデータへの接続) を標準化しています。クライアントがプラグインをどのようにインストール、表示、配布するかは、意図的に仕様の対象外としています。これらは、共通のフォーマットを共有しつつ、クライアントが差別化できる領域だからです。&lt;/p&gt; 
-&lt;p&gt;これは正しい設計思想です。共有フォーマットは、相互運用に不可欠なコンポーネントを定義したうえで、それ以上のことには介入しないべきです。拡張機能の作者は 1 度パッケージ化するだけで、互換性のあるクライアントが同じ構造からコンポーネントを検出して読み込みます。クライアントは、名前空間で分離した拡張機能によってプロプライエタリな機能を追加する自由を保ちつつ、ポータブルなコアを煩雑にしないでいられます。&lt;/p&gt; 
-&lt;h2&gt;Agent Plugins はコミュニティによる取り組み&lt;/h2&gt; 
-&lt;p&gt;Agent Plugins は、エージェント向けツールを構築するあらゆるチームが独立して直面してきた実務的な課題から生まれました。拡張機能の作者は同じコンポーネントを異なるクライアント向けに調整する冗長な作業を強いられ、開発者は互換性のないパッケージング慣習を渡り歩くことで時間を失っていました。&lt;/p&gt; 
-&lt;p&gt;Vercel が仕様の初期ドラフトを公開し、その後、それぞれのやり方でこの問題を解決してきた各社のチームからなるワーキンググループを結成しました。AWS、Cursor、Microsoft、OpenAI、Vercel の代表者たちは、日々開発者が使うエージェントクライアントを構築してきた自らの経験を持ち寄って、共同で仕様を洗練させました。このグループは、1 社のプロダクトロードマップがフォーマットの方向性を左右することがないようにするガバナンス構造を確立しました。&lt;/p&gt; 
-&lt;p&gt;その結果として得られたのは、拡張機能の作者とクライアント実装者の両方の視点が場に揃っていたからこそ実現できた、両者の実際のニーズを反映した仕様です。Technical Steering Committee には設立 5 社すべてからコアメンテナーが参加しており、プロジェクトのコントリビューションプロセスと技術的な意思決定は完全に公開されています。&lt;/p&gt; 
-&lt;p&gt;これこそが、最良の標準が生まれるあり方です。1 社のビジョンをエコシステムに押し付けるのではなく、共有された課題を各社が共に解決していく中での収束から生まれるのです。ツール連携における MCP、可観測性における OpenTelemetry、そしてそれ以前のコンテナ標準でも、私たちは同じパターンを目の当たりにしてきました。&lt;/p&gt; 
-&lt;h2&gt;AWS による Agent Plugins のサポート&lt;/h2&gt; 
-&lt;p&gt;私たちは、開発者が AWS 上で AI エージェントを構築・拡張する 2 つの主要なオファリングである Kiro と AWS Agent Toolkit の両方で、Agent Plugins のサポートをローンチと同時に提供します。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://kiro.dev" target="_blank" rel="noopener"&gt;Kiro&lt;/a&gt; は、開発ライフサイクル全体を通じてエージェントを開発者の意図に沿わせ続けるための spec、フック、自動テストといったステアリング機構を備えたエージェントハーネスです。今回のローンチにより、インストール可能なパッケージによって Kiro を拡張する &lt;a href="https://kiro.dev/powers/" target="_blank" rel="noopener"&gt;Kiro Powers&lt;/a&gt; が Agent Plugins 仕様をネイティブにサポートするようになりました。開発者は、Skills と MCP サーバーをまとめてバンドルしたプラグインをインストールでき、それぞれのコンポーネントを手動で構成することなく、シームレスに動作する機能を利用できます。&lt;/p&gt; 
-&lt;p&gt;&lt;a href="https://github.com/aws/agent-toolkit-for-aws" target="_blank" rel="noopener"&gt;AWS Agent Toolkit&lt;/a&gt; は、AI コーディングエージェントが AWS 上で信頼性高く構築できるようにする、公式にサポートされた MCP サーバー、スキル、エージェントプラグインのコレクションです。これらは複数のパッケージング形式で提供され、Lambda、S3、DynamoDB、CDK などのサービスをカバーする 30 以上の厳選されたスキルを、複数のプラグインとしてバンドルしています。新しい Agent Plugins 仕様をサポートすることで、異なるハーネスやコード支援ツールが同じパッケージング形式を利用できるようになり、AWS Agent Toolkit のようなエージェント拡張のパッケージをエージェントがどのように取り込むかに関するフラグメンテーションが最終的に減少します。&lt;/p&gt; 
-&lt;h2&gt;今後の展望&lt;/h2&gt; 
-&lt;p&gt;Agent Plugins 1.0.0 は出発点です。仕様は、ポータビリティの恩恵を受ける追加のコンポーネントタイプをエコシステムが見出すにつれて進化していきます。Technical Steering Committee では、フック、サブエージェント、その他の拡張機能タイプが将来のバージョンでどのように Plugins に加わりうるかについて、すでに検討が始まっています。&lt;/p&gt; 
-&lt;p&gt;私たちがこの取り組みに真剣に向き合っているのは、オープン標準が開発者の生産性にもたらす効果を見てきたからです。オープン標準は、優れたツールがそれを必要とする人々の手元に届くのを妨げている摩擦を取り除きます。今日、その対象はエージェント拡張ですが、エージェント型 AI エコシステムが進化を続けるにつれて、さらに多くの標準が生まれてくると私たちは考えています。&lt;/p&gt; 
-&lt;p&gt;仕様の詳細は &lt;a href="https://agent-plugins.org" target="_blank" rel="noopener"&gt;agent-plugins.org&lt;/a&gt; でご確認いただけます。&lt;a href="https://github.com/agentplugins/agent-plugins-spec" target="_blank" rel="noopener"&gt;GitHub リポジトリ&lt;/a&gt;を確認したり、Kiro で最初のプラグインをインストールしたりしてみてください。&lt;/p&gt; 
-&lt;h2&gt;著者について&lt;/h2&gt; 
-&lt;footer&gt; 
- &lt;div class="blog-author-box"&gt; 
-  &lt;div class="blog-author-image"&gt; 
-   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/ca3512f4dfa95a03169c5a670a4c91a19b3077b4/2023/04/03/Libby-Clark.jpg" alt="Libby Clark" width="125"&gt; 
-  &lt;/div&gt; 
-  &lt;h3 class="lb-h4"&gt;Libby Clark&lt;/h3&gt; 
-  &lt;p&gt;Libby Clark は AI に注力するプリンシパルオープンソースストラテジストです。&lt;/p&gt; 
-  &lt;p&gt;&lt;/p&gt;
- &lt;/div&gt; 
- &lt;div class="blog-author-box"&gt; 
-  &lt;div class="blog-author-image"&gt; 
-   &lt;img loading="lazy" class="alignleft" src="https://d2908q01vomqb2.cloudfront.net/ca3512f4dfa95a03169c5a670a4c91a19b3077b4/2025/07/10/James-Ward.png" alt="James Ward" width="125"&gt; 
-  &lt;/div&gt; 
-  &lt;h3 class="lb-h4"&gt;James Ward&lt;/h3&gt; 
-  &lt;p&gt;James Ward は AWS のプリンシパルデベロッパーアドボケイトです。James は世界を飛び回りながら、エンタープライズ開発者が信頼性の高いシステムを構築する方法を学ぶのを支援しています。現在は、Spring AI、Embabel、Strands Agents、Amazon Bedrock、MCP、A2A を用いた AI エージェントシステムを開発者が構築できるように支援することに注力しています。&lt;/p&gt; 
-  &lt;p&gt;&lt;/p&gt;
  &lt;/div&gt; 
 &lt;/footer&gt; 
 &lt;p&gt;翻訳は Solutions Architect の吉村が担当いたしました。&lt;/p&gt;</content:encoded>

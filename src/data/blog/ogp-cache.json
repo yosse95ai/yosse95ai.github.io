@@ -1,4 +1,10 @@
 {
+  "https://aws.amazon.com/jp/blogs/news/1m-evals-lessons/": {
+    "title": "100 万回の評価から得られた教訓 | Amazon Web Services",
+    "description": "Kiro で数百万回の評価を実行して得た教訓を紹介します。固定タスクと合格率だけの評価は、ベンチマークの飽和や、顧客の体験とのずれを招きます。Kiro では、利用状況に合わせた動的なベンチマーク、3 層の判定、ライブシグナルによる検証で評価スイートを運用しています。ツールの失敗率などの指標を使った改善例と、今後の課題も取り上げます。",
+    "ogpImage": "https://d2908q01vomqb2.cloudfront.net/b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f/2026/11/18/1m-evals-lessons-ogp.jpg",
+    "publishedAt": "2026-11-19T01:06:27+09:00"
+  },
   "https://aws.amazon.com/jp/blogs/news/accelerating-life-sciences-research-with-kiro-a-unified-ai-interface-to-100-open-source-databases/": {
     "title": "Kiro でライフサイエンス研究を加速する: 100 以上のオープンソースデータベースへの統合 AI インターフェース | Amazon Web Services",
     "description": "ライフサイエンス研究者は、遺伝子、バリアント、構造、薬剤、疾患を調べるたびに、API や認証、データ形式が異なる何十ものデータベースを行き来する必要があります。本記事では、Kiro を 24 分野・100 以上のデータベースを横断する統合研究インターフェースへと拡張する Kiro power パッケージ「Kiro for Life Sciences」を紹介します。24 のドメイン特化 MCP サーバーとデータベース横断検索、ガイド付きワークフロー、ドメインスキルにより、自然言語での質問から構造化された結果までを一気通貫で得られます。",
@@ -260,7 +266,7 @@
   "https://github.com/aws-samples/dify-self-hosted-on-aws": {
     "title": "GitHub - aws-samples/dify-self-hosted-on-aws: Self-host Dify on AWS",
     "description": "Self-host Dify on AWS. Contribute to aws-samples/dify-self-hosted-on-aws development by creating an account on GitHub.",
-    "ogpImage": "https://opengraph.githubassets.com/4b1647aee0916c32b6fcd26ac1983483d02f9cf34e1620ff4d440b5498b13738/aws-samples/dify-self-hosted-on-aws",
+    "ogpImage": "https://opengraph.githubassets.com/316150ae31dea4ecbf1b6233f4a2a9bd346fcd8ebdf3e0b658077ea6a6bd8928/aws-samples/dify-self-hosted-on-aws",
     "publishedAt": null
   },
   "https://github.com/yosse95ai/permissions-for-kiro": {
